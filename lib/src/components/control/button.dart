@@ -3266,14 +3266,15 @@ extension ButtonStyleExtension on AbstractButtonStyle {
       EdgeInsetsGeometry? focusPadding,
       EdgeInsetsGeometry? disabledPadding}) {
     return copyWith(
-      padding: (context, states, padding) {
+      padding: (context, states, defaultPadding) {
+        final fallbackPadding = padding ?? defaultPadding;
         return states.disabled
-            ? disabledPadding ?? padding
+            ? disabledPadding ?? fallbackPadding
             : states.hovered
-                ? hoverPadding ?? padding
+                ? hoverPadding ?? fallbackPadding
                 : states.focused
-                    ? focusPadding ?? padding
-                    : padding;
+                    ? focusPadding ?? fallbackPadding
+                    : fallbackPadding;
       },
     );
   }
