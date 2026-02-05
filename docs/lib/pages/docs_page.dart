@@ -207,7 +207,7 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Avatar', 'avatar'),
         ShadcnDocsPage('Avatar Group', 'avatar_group'),
         ShadcnDocsPage('Code Snippet', 'code_snippet'),
-        ShadcnDocsPage('Chat Bubble', 'chat', ShadcnFeatureTag.experimental),
+        ShadcnDocsPage('Chat Bubble', 'chat', ShadcnFeatureTag.newFeature),
         ShadcnDocsPage('Table', 'table'),
         ShadcnDocsPage('Tracker', 'tracker'),
       ],
