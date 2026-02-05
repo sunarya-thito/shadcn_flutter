@@ -1,4 +1,5 @@
 import 'package:docs/pages/docs/component_page.dart';
+import 'package:docs/pages/docs/components/number_ticker/number_ticker_example_2.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -20,6 +21,12 @@ class NumberTickerExample extends StatelessWidget {
           path:
               'lib/pages/docs/components/number_ticker/number_ticker_example_1.dart',
           child: NumberTickerExample1(),
+        ),
+        WidgetUsageExample(
+          title: 'Flipper Example',
+          path:
+              'lib/pages/docs/components/number_ticker/number_ticker_example_2.dart',
+          child: NumberTickerExample2(),
         ),
       ],
     );

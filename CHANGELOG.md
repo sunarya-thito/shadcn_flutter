@@ -1,3 +1,9 @@
+## [0.0.49]
+
+- Fixed clip behavior in paint order patched layout widgets (Flex, Row, Column,
+  Stack)
+- Added TextFlipper widget (part of Number Ticker component)
+
 ## [0.0.48]
 
 ### Added
@@ -63,6 +69,8 @@ final bg = colors.background; // or a custom ThemeExtension
 - [#378] Fixed issue with RepeatMode declaration in flutter master channel
 - [#373] Scaffold: Set height constraints to correctly measure header size (by
   @xdidx)
+- [#394] Fixes ButtonStyle.withPadding by removing shadowed variable (by
+  @craiglabenz)
 
 ## 0.0.47
 
