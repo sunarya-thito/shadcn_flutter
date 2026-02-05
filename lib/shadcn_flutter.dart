@@ -23,6 +23,15 @@ export 'package:flutter/material.dart'
     show Icons, MaterialPageRoute, MaterialPage, SliverAppBar, FlutterLogo;
 export 'package:flutter/widgets.dart'
     hide
+        // these widgets are patched, see the patch export below
+        Flexible,
+        Expanded,
+        Row,
+        Column,
+        Flex,
+        Stack,
+        Positioned,
+        // hide these form widgets in favor of shadcn_flutter versions
         ErrorWidgetBuilder,
         Form,
         FormState,
@@ -39,6 +48,10 @@ export 'package:phonecodes/phonecodes.dart' show Countries, Country;
 // bundle from skeletonizer https://pub.dev/packages/skeletonizer
 export 'package:skeletonizer/skeletonizer.dart' show Bone, BoneMock;
 
+// patched flex with paint order
+export 'src/components/layout/flex.dart';
+
+//
 export 'src/animation.dart';
 export 'src/collection.dart';
 export 'src/components/async.dart';
@@ -162,3 +175,4 @@ export 'src/components/form/color/solid/slider/alpha.dart';
 export 'src/components/form/color/solid/slider/hsl.dart';
 export 'src/components/form/color/solid/slider/hsv.dart';
 export 'src/components/form/color/solid/color_input.dart';
+export 'src/theme/density.dart';
