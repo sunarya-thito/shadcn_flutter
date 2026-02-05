@@ -312,30 +312,74 @@ class NumberTicker extends StatelessWidget {
   }
 }
 
+/// Defines a character set for [FlipperCharacter] and [TextFlipper].
 class FlipperCharset {
+  /// Digits 0–9.
   static const FlipperCharset numbers = FlipperCharset('0123456789');
+
+  /// Uppercase Latin letters.
   static const FlipperCharset uppercase =
       FlipperCharset('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+  /// Lowercase Latin letters.
   static const FlipperCharset lowercase =
       FlipperCharset('abcdefghijklmnopqrstuvwxyz');
+
+  /// Uppercase and lowercase Latin letters.
   static const FlipperCharset letters =
       FlipperCharset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+
+  /// Alphanumeric characters.
   static const FlipperCharset alphanumeric = FlipperCharset(
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+
+  /// Common symbol characters.
   static const FlipperCharset symbols =
       FlipperCharset('!@#\$%^&*()-_=+[]{}|;:\'",.<>?/`~');
+
+  /// Letters, numbers, and symbols.
   static const FlipperCharset all = FlipperCharset(
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*()-_=+[]{}|;:\'",.<>?/`~');
+
+  /// The characters available to flip through.
   final String characters;
+
+  /// Creates a [FlipperCharset] from a string of characters.
   const FlipperCharset(this.characters);
+
+  /// Combines two [FlipperCharset] instances into one.
+  FlipperCharset operator +(FlipperCharset other) {
+    return FlipperCharset(characters + other.characters);
+  }
+
+  @override
+  String toString() => 'FlipperCharset($characters)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is FlipperCharset && other.characters == characters;
+  }
+
+  @override
+  int get hashCode => characters.hashCode;
 }
 
+/// Animates a single character by flipping through [FlipperCharset].
 class FlipperCharacter extends StatelessWidget {
+  /// The character set used for flipping.
   final FlipperCharset charset;
+
+  /// The target character to display.
   final String character;
+
+  /// Duration of the flip animation.
   final Duration duration;
+
+  /// Curve used for the flip animation.
   final Curve curve;
 
+  /// Creates a [FlipperCharacter].
   const FlipperCharacter({
     super.key,
     required this.charset,
@@ -458,11 +502,21 @@ class _FlipperGradientMask extends StatelessWidget {
   }
 }
 
+/// Animates a string by flipping each character.
 class TextFlipper extends StatelessWidget {
+  /// The character set used for each character flip.
   final FlipperCharset charset;
+
+  /// The text to animate.
   final String text;
+
+  /// Duration of the flip animation for each character.
   final Duration duration;
+
+  /// Curve used for the flip animation.
   final Curve curve;
+
+  /// Creates a [TextFlipper].
   const TextFlipper({
     super.key,
     this.charset = FlipperCharset.all,

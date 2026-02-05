@@ -177,6 +177,7 @@ mixin PaintOrderMixin on rendering.RenderBox {
     return head;
   }
 
+  /// Optional clip behavior used by [paintSorted].
   Clip? get optionalClipBehavior => null;
 
   /// Paints children in sorted paint order.
