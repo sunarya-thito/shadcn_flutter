@@ -305,9 +305,9 @@ class _ThemePageState extends State<ThemePage> {
                     child: FocusTraversalGroup(
                       child: SingleChildScrollView(
                         key: const PageStorageKey('sidebar'),
-                        padding:
-                            const EdgeInsets.only(top: 32, left: 24, bottom: 32) *
-                                Theme.of(context).scaling,
+                        padding: const EdgeInsets.only(
+                                top: 32, left: 24, bottom: 32) *
+                            Theme.of(context).scaling,
                         child: _ThemeSidebar(
                           sections: DocsPageState.sections,
                           pageName: _pageName,
@@ -615,7 +615,9 @@ class _ThemePageState extends State<ThemePage> {
                     children: [
                       const Text('Two-factor authentication').medium,
                       const DensityGap(gapXs),
-                      const Text('Verify via email or phone number.').muted.small,
+                      const Text('Verify via email or phone number.')
+                          .muted
+                          .small,
                     ],
                   ),
                 ),
@@ -649,7 +651,9 @@ class _ThemePageState extends State<ThemePage> {
           const DensityGap(gapXl),
           const Text('Compute Environment').medium,
           const DensityGap(gapXs),
-          const Text('Select the compute environment for your cluster.').muted.small,
+          const Text('Select the compute environment for your cluster.')
+              .muted
+              .small,
           const DensityGap(gapMd),
           RadioCard(
             filled: true,
@@ -767,7 +771,9 @@ class _ThemePageState extends State<ThemePage> {
           const DensityGap(gapXl),
           const Text('No Team Members').small,
           const DensityGap(gapSm),
-          const Text('Invite your team to collaborate on this project.').muted.small,
+          const Text('Invite your team to collaborate on this project.')
+              .muted
+              .small,
           const DensityGap(gapMd),
           Button(
             leading: const Icon(Icons.add),
@@ -887,8 +893,8 @@ class _ThemePageState extends State<ThemePage> {
       features: [
         InputFeature.leading(const Text('https://').muted.small.medium),
         InputFeature.hint(
-            popupBuilder:
-                const TooltipContainer(child: Text('This is content in a tooltip'))),
+            popupBuilder: const TooltipContainer(
+                child: Text('This is content in a tooltip'))),
       ],
     );
   }

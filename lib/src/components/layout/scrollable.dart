@@ -417,7 +417,7 @@ class FadedScrollableViewport extends StatefulWidget {
   });
 
   @override
-    State<FadedScrollableViewport> createState() =>
+  State<FadedScrollableViewport> createState() =>
       _FadedScrollableViewportState();
 }
 
