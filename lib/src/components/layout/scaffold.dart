@@ -363,7 +363,9 @@ class ScaffoldState extends State<Scaffold> {
                         true)
                     ? Container(
                         // Clamp to prevent negative padding on web when keyboard appears
-                        padding: EdgeInsets.only(bottom: viewInsets.bottom.clamp(0.0, double.infinity)),
+                        padding: EdgeInsets.only(
+                            bottom:
+                                viewInsets.bottom.clamp(0.0, double.infinity)),
                         child: MediaQuery(
                           data: MediaQuery.of(context).copyWith(
                             viewInsets: viewInsets.copyWith(bottom: 0),
@@ -728,6 +730,9 @@ class _AppBarState extends State<AppBar> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     final barData = Data.maybeOf<ScaffoldBarData>(context);
     var surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
     var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
@@ -743,8 +748,10 @@ class _AppBarState extends State<AppBar> {
                 theme.colorScheme.card.scaleAlpha(surfaceOpacity ?? 1),
             alignment: widget.alignment,
             padding: widget.padding ??
-                (const EdgeInsets.symmetric(horizontal: 18, vertical: 12) *
-                    scaling),
+                EdgeInsets.symmetric(
+                  horizontal: densityContainerPadding * 1.125,
+                  vertical: densityGap * 1.5,
+                ),
             child: SafeArea(
               top: widget.useSafeArea &&
                   barData?.isHeader == true &&
@@ -764,7 +771,7 @@ class _AppBarState extends State<AppBar> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: widget.leading,
-                        ).gap(widget.leadingGap ?? (4 * scaling)),
+                        ).gap(widget.leadingGap ?? (densityGap * 0.5)),
                       Flexible(
                         fit: widget.trailingExpanded
                             ? FlexFit.loose
@@ -797,16 +804,16 @@ class _AppBarState extends State<AppBar> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: widget.trailing,
-                          ).gap(widget.trailingGap ?? (4 * scaling))
+                          ).gap(widget.trailingGap ?? (densityGap * 0.5))
                         else
                           Expanded(
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: widget.trailing,
-                            ).gap(widget.trailingGap ?? (4 * scaling)),
+                            ).gap(widget.trailingGap ?? (densityGap * 0.5)),
                           ),
                     ],
-                  ).gap(18 * scaling),
+                  ).gap(densityGap * 2.25),
                 ),
               ),
             ),

@@ -2309,17 +2309,18 @@ class _TreeItemViewState extends State<TreeItemView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final data = _data;
     assert(data != null, 'TreeItemView must be a descendant of TreeView');
     List<Widget> rowChildren = [];
-    if (data!.expandIcon) rowChildren.add(SizedBox(width: 8 * scaling));
+    if (data!.expandIcon) rowChildren.add(SizedBox(width: densityGap));
     for (int i = 0; i < data.depth.length; i++) {
       if (i == 0) {
         continue; // skip the first depth
       }
-      if (!data.expandIcon) rowChildren.add(SizedBox(width: 8 * scaling));
+      if (!data.expandIcon) rowChildren.add(SizedBox(width: densityGap));
       rowChildren.add(SizedBox(
-        width: 16 * scaling,
+        width: densityGap * 2,
         child: data.indentGuide.build(
           context,
           data.depth,
@@ -2347,7 +2348,7 @@ class _TreeItemViewState extends State<TreeItemView> {
       } else {
         if (data.depth.length > 1) {
           rowChildren.add(SizedBox(
-            width: 16 * scaling,
+            width: densityGap * 2,
             child: data.indentGuide.build(
               context,
               data.depth,
@@ -2356,25 +2357,27 @@ class _TreeItemViewState extends State<TreeItemView> {
           ));
         } else {
           rowChildren.add(SizedBox(
-            width: 16 * scaling,
+            width: densityGap * 2,
           ));
         }
       }
     }
     if (widget.leading != null) {
       subRowChildren.add(widget.leading!);
-      subRowChildren.add(SizedBox(width: 8 * scaling));
+      subRowChildren.add(SizedBox(width: densityGap));
     }
     subRowChildren.add(Expanded(child: widget.child));
     if (widget.trailing != null) {
-      subRowChildren.add(SizedBox(width: 8 * scaling));
+      subRowChildren.add(SizedBox(width: densityGap));
       subRowChildren.add(widget.trailing!);
     }
     rowChildren.add(
       Expanded(
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 4) * scaling,
+          padding: EdgeInsets.symmetric(
+            horizontal: densityGap,
+            vertical: densityGap * 0.5,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: subRowChildren,

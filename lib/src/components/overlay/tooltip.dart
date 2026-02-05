@@ -135,6 +135,8 @@ class TooltipContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<TooltipTheme>(context);
     Color backgroundColor = styleValue(
         widgetValue: this.backgroundColor,
@@ -146,18 +148,22 @@ class TooltipContainer extends StatelessWidget {
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
     final padding = styleValue(
-                widgetValue: this.padding,
-                themeValue: compTheme?.padding,
-                defaultValue:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6))
-            .resolve(Directionality.of(context)) *
-        scaling;
+        widgetValue: this.padding,
+        themeValue: compTheme?.padding,
+        defaultValue: EdgeInsets.symmetric(
+          horizontal: densityContentPadding * 0.75,
+          vertical: densityGap * 0.75,
+        ));
+    final resolvedPadding = resolveEdgeInsets(
+      padding,
+      densityContentPadding,
+    ).resolve(Directionality.of(context));
     final borderRadius = styleValue(
         widgetValue: this.borderRadius,
         themeValue: compTheme?.borderRadius,
         defaultValue: BorderRadius.circular(theme.radiusSm));
     Widget animatedContainer = Container(
-      padding: padding,
+      padding: resolvedPadding,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: borderRadius,
@@ -172,7 +178,7 @@ class TooltipContainer extends StatelessWidget {
       );
     }
     return Padding(
-      padding: const EdgeInsets.all(6) * scaling,
+      padding: EdgeInsets.all(densityGap * 0.75),
       child: animatedContainer,
     );
   }
@@ -576,7 +582,10 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
                           regionGroupId: regionGroupId,
                           offset: offset,
                           transitionAlignment: Alignment.center,
-                          margin: const EdgeInsets.all(48) * theme.scaling,
+                          margin: EdgeInsets.all(
+                              theme.density.baseContentPadding *
+                                  theme.scaling *
+                                  3),
                           follow: false,
                           consumeOutsideTaps: consumeOutsideTaps,
                           allowInvertHorizontal: allowInvertHorizontal,

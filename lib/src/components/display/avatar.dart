@@ -419,6 +419,7 @@ class _AvatarState extends State<Avatar> {
   Widget _buildInitials(BuildContext context, double borderRadius) {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<AvatarTheme>(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return Container(
       decoration: BoxDecoration(
         color: styleValue(
@@ -430,7 +431,7 @@ class _AvatarState extends State<Avatar> {
       child: FittedBox(
         fit: BoxFit.fill,
         child: Padding(
-          padding: EdgeInsets.all(theme.scaling * 8),
+          padding: EdgeInsets.all(densityGap),
           child: DefaultTextStyle.merge(
             child: Center(
               child: Text(

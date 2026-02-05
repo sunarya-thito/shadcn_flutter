@@ -43,8 +43,10 @@ class _ArrowSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12 * scaling),
+      padding: EdgeInsets.symmetric(horizontal: densityContentPadding * 0.75),
       child: const Icon(RadixIcons.chevronRight).iconXSmall().muted(),
     );
   }
@@ -57,8 +59,9 @@ class _SlashSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4 * scaling),
+      padding: EdgeInsets.symmetric(horizontal: densityGap * 0.5),
       child: const Text('/').small().muted(),
     );
   }

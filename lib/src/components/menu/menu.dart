@@ -452,21 +452,26 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final menuGroupData = Data.maybeOf<MenuGroupData>(context);
     assert(menuGroupData != null, 'MenuLabel must be a child of MenuGroup');
     return Padding(
-      padding: const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6) *
-              scaling +
+      padding: EdgeInsets.only(
+            left: densityGap,
+            top: densityGap * 0.75,
+            right: densityGap * 0.75,
+            bottom: densityGap * 0.75,
+          ) +
           menuGroupData!.itemPadding,
       child: Basic(
-        contentSpacing: 8 * scaling,
+        contentSpacing: densityGap,
         leading: leading == null && menuGroupData.hasLeading
-            ? SizedBox(width: 16 * scaling)
+            ? SizedBox(width: densityGap * 2)
             : leading == null
                 ? null
                 : SizedBox(
-                    width: 16 * scaling,
-                    height: 16 * scaling,
+                    width: densityGap * 2,
+                    height: densityGap * 2,
                     child: leading!.iconSmall(),
                   ),
         trailing: trailing,
@@ -610,10 +615,11 @@ class _MenuButtonState extends State<MenuButton> {
         builder: (context) {
           final theme = Theme.of(context);
           final scaling = theme.scaling;
+          final densityGap = theme.density.baseGap * scaling;
           var itemPadding = menuGroupData.itemPadding;
           final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
           if (isSheetOverlay) {
-            itemPadding = const EdgeInsets.symmetric(horizontal: 8) * scaling;
+            itemPadding = EdgeInsets.symmetric(horizontal: densityGap * 0.5);
           }
           return ConstrainedBox(
             constraints: const BoxConstraints(
@@ -629,7 +635,7 @@ class _MenuButtonState extends State<MenuButton> {
                       onDismissed: menuGroupData.onDismissed,
                       regionGroupId: menuGroupData.regionGroupId,
                       subMenuOffset: compTheme?.subMenuOffset ??
-                          const Offset(8, -4 + -1) * scaling,
+                          Offset(densityGap, -densityGap * 0.625),
                       itemPadding: itemPadding,
                       autofocus: autofocus,
                       builder: (context, children) {
@@ -683,6 +689,8 @@ class _MenuButtonState extends State<MenuButton> {
                   child: AnimatedBuilder(
                       animation: menuData!.popoverController,
                       builder: (context, child) {
+                        final theme = Theme.of(context);
+                        final densityGap = theme.density.baseGap * scaling;
                         return Button(
                           disableFocusOutline: true,
                           alignment: menuGroupData.direction == Axis.vertical
@@ -724,17 +732,17 @@ class _MenuButtonState extends State<MenuButton> {
                                             RadixIcons.chevronRight,
                                           ).iconSmall(),
                                       ],
-                                    ).gap(8 * scaling)
+                                    ).gap(densityGap)
                                   : null,
                           leading: widget.leading == null &&
                                   menuGroupData.hasLeading &&
                                   menuBarData == null
-                              ? SizedBox(width: 16 * scaling)
+                              ? SizedBox(width: densityGap * 2)
                               : widget.leading == null
                                   ? null
                                   : SizedBox(
-                                      width: 16 * scaling,
-                                      height: 16 * scaling,
+                                      width: densityGap * 2,
+                                      height: densityGap * 2,
                                       child: widget.leading!.iconSmall(),
                                     ),
                           disableTransition: true,

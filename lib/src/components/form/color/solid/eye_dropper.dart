@@ -270,7 +270,11 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
                       right: 0,
                       bottom: 0,
                       child: Padding(
-                        padding: EdgeInsets.all(theme.scaling * 32),
+                        padding: EdgeInsets.all(
+                          theme.density.baseContainerPadding *
+                              theme.scaling *
+                              2,
+                        ),
                         child: Align(
                           alignment: widget.previewAlignment!,
                           child: Stack(

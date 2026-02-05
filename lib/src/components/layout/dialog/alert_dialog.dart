@@ -139,6 +139,9 @@ class _AlertDialogState extends State<AlertDialog> {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     var scaling = themeData.scaling;
+    final densityGap = themeData.density.baseGap * scaling;
+    final densityContainerPadding =
+        themeData.density.baseContainerPadding * scaling;
     return ModalBackdrop(
       borderRadius: themeData.borderRadiusXxl,
       barrierColor: widget.barrierColor ?? Colors.black.withValues(alpha: 0.8),
@@ -150,7 +153,8 @@ class _AlertDialogState extends State<AlertDialog> {
         borderRadius: themeData.borderRadiusXxl,
         borderWidth: 1 * scaling,
         borderColor: themeData.colorScheme.muted,
-        padding: widget.padding ?? EdgeInsets.all(24 * scaling),
+        padding:
+            widget.padding ?? EdgeInsets.all(densityContainerPadding * 1.5),
         surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
         surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
         child: Column(
@@ -175,23 +179,23 @@ class _AlertDialogState extends State<AlertDialog> {
                           if (widget.content != null)
                             widget.content!.small().muted(),
                         ],
-                      ).gap(8 * scaling),
+                      ).gap(densityGap),
                     ),
                   if (widget.trailing != null)
                     widget.trailing!.iconXLarge().iconMutedForeground(),
                 ],
-              ).gap(16 * scaling),
+              ).gap(densityGap * 2),
             ),
             if (widget.actions != null && widget.actions!.isNotEmpty)
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 // children: widget.actions!,
-                children: join(widget.actions!, SizedBox(width: 8 * scaling))
-                    .toList(),
+                children:
+                    join(widget.actions!, SizedBox(width: densityGap)).toList(),
               ),
           ],
-        ).gap(16 * scaling),
+        ).gap(densityGap * 2),
       ),
     );
   }

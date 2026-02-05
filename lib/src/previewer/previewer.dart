@@ -39,10 +39,9 @@ final class ShadcnPreview extends Preview {
       return ShadcnLayer(
         theme: brightness == Brightness.dark
             ? ThemeData.dark(
-                colorScheme: colorScheme ?? ColorSchemes.darkDefaultColor,
+                colorScheme: colorScheme ?? ColorSchemes.darkSlate,
               )
-            : ThemeData(
-                colorScheme: colorScheme ?? ColorSchemes.lightDefaultColor),
+            : ThemeData(colorScheme: colorScheme ?? ColorSchemes.lightSlate),
         child: original.wrapper?.call(child) ?? child,
       );
     };

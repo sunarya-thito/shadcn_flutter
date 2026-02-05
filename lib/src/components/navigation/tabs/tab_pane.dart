@@ -343,6 +343,9 @@ class TabPaneState<T> extends State<TabPane<T>> {
   Widget _childBuilder(
       BuildContext context, TabContainerData data, Widget child) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContentPadding =
+        theme.density.baseContentPadding * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<TabPaneTheme>(context);
     final isFocused = data.index == data.selected;
     final backgroundColor = widget.backgroundColor ??
@@ -366,8 +369,9 @@ class TabPaneState<T> extends State<TabPane<T>> {
                   borderColor: borderColor,
                   borderWidth: borderWidth),
               child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8) * theme.scaling,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: densityContentPadding * 0.5,
+                  ),
                   child: IntrinsicWidth(
                     child: child,
                   ))));
@@ -385,6 +389,9 @@ class TabPaneState<T> extends State<TabPane<T>> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<TabPaneTheme>(context);
     final BorderRadiusGeometry borderRadius =
         widget.borderRadius ?? compTheme?.borderRadius ?? theme.borderRadiusLg;
@@ -394,8 +401,9 @@ class TabPaneState<T> extends State<TabPane<T>> {
         compTheme?.backgroundColor ??
         theme.colorScheme.card;
     final border = widget.border ?? compTheme?.border;
-    final barHeight =
-        widget.barHeight ?? compTheme?.barHeight ?? (32 * theme.scaling);
+    final barHeight = widget.barHeight ??
+        compTheme?.barHeight ??
+        (densityContainerPadding * 2);
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context)
           .copyWith(scrollbars: false, overscroll: false),
@@ -421,10 +429,9 @@ class TabPaneState<T> extends State<TabPane<T>> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 2) * theme.scaling,
+                  padding: EdgeInsets.symmetric(vertical: densityGap * 0.25),
                   child: Row(
-                    spacing: 2 * theme.scaling,
+                    spacing: densityGap * 0.25,
                     children: widget.leading,
                   ),
                 ),
@@ -517,11 +524,11 @@ class TabPaneState<T> extends State<TabPane<T>> {
                                     if (!beforeIsFocused && !afterIsFocused) {
                                       return VerticalDivider(
                                         indent: 8 * theme.scaling,
-                                        endIndent: 8 * theme.scaling,
-                                        width: 8 * theme.scaling,
+                                        endIndent: densityGap,
+                                        width: densityGap,
                                       );
                                     }
-                                    return SizedBox(width: 8 * theme.scaling);
+                                    return SizedBox(width: densityGap);
                                   },
                                   itemCount: children.length,
                                 );
@@ -536,10 +543,9 @@ class TabPaneState<T> extends State<TabPane<T>> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 2) * theme.scaling,
+                  padding: EdgeInsets.symmetric(vertical: densityGap * 0.25),
                   child: Row(
-                    spacing: 2 * theme.scaling,
+                    spacing: densityGap * 0.25,
                     children: widget.trailing,
                   ),
                 ),

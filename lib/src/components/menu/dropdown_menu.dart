@@ -252,6 +252,9 @@ class _DropdownMenuState extends State<DropdownMenu> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContentPadding =
+        theme.density.baseContentPadding * theme.scaling;
     final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     final compTheme = ComponentTheme.maybeOf<DropdownMenuTheme>(context);
     return ConstrainedBox(
@@ -260,9 +263,9 @@ class _DropdownMenuState extends State<DropdownMenu> {
       ),
       child: MenuGroup(
         regionGroupId: Data.maybeOf<DropdownMenuData>(context)?.key,
-        subMenuOffset: const Offset(8, -4) * theme.scaling,
+        subMenuOffset: Offset(densityGap, -densityGap * 0.5),
         itemPadding: isSheetOverlay
-            ? const EdgeInsets.symmetric(horizontal: 8) * theme.scaling
+            ? EdgeInsets.symmetric(horizontal: densityContentPadding * 0.5)
             : EdgeInsets.zero,
         onDismissed: () {
           closeOverlay(context);

@@ -451,14 +451,54 @@ abstract class InputFeature {
   /// - [step] (`double`, default: 1): Increment/decrement step size.
   /// - [enableGesture] (`bool`, default: true): Enable drag gestures.
   /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.spinner({
     InputFeatureVisibility visibility,
     double step,
     bool enableGesture,
     double? invalidValue,
+    double? min,
+    double? max,
     bool skipFocusTraversal,
   }) = InputSpinnerFeature;
+
+  /// Creates an increment button feature for numeric inputs.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [step] (`double`, default: 1): Increment step size.
+  /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [icon] (`Widget?`, optional): Custom icon widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  const factory InputFeature.incrementButton({
+    InputFeatureVisibility visibility,
+    InputFeaturePosition position,
+    double step,
+    double? invalidValue,
+    Widget? icon,
+    bool skipFocusTraversal,
+  }) = InputStepperButtonFeature;
+
+  /// Creates a decrement button feature for numeric inputs.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [step] (`double`, default: 1): Decrement step size.
+  /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [icon] (`Widget?`, optional): Custom icon widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  const factory InputFeature.decrementButton({
+    InputFeatureVisibility visibility,
+    InputFeaturePosition position,
+    double step,
+    double? invalidValue,
+    Widget? icon,
+    bool skipFocusTraversal,
+  }) = InputStepperButtonFeature.decrement;
 
   /// Creates a copy to clipboard button feature.
   ///
@@ -506,6 +546,30 @@ abstract class InputFeature {
     InputFeatureVisibility visibility,
     bool skipFocusTraversal,
   }) = InputTrailingFeature;
+
+  /// Creates a custom widget feature displayed above the input text.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed above the input.
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  const factory InputFeature.above(
+    Widget? child, {
+    InputFeatureVisibility visibility,
+    bool skipFocusTraversal,
+  }) = InputAboveBelowFeature.above;
+
+  /// Creates a custom widget feature displayed below the input text.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed below the input.
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  const factory InputFeature.below(
+    Widget? child, {
+    InputFeatureVisibility visibility,
+    bool skipFocusTraversal,
+  }) = InputAboveBelowFeature.below;
 
   /// Visibility mode for this input feature.
   final InputFeatureVisibility visibility;
@@ -607,6 +671,58 @@ abstract class InputFeatureState<T extends InputFeature> {
     }
   }
 
+  Iterable<Widget> _internalBuildPrefix() sync* {
+    if (_visibilityController.value == 0) {
+      return;
+    }
+    for (final widget in buildPrefix()) {
+      yield Hidden(
+        hidden: _visibilityController.value < 1,
+        duration: kDefaultDuration,
+        child: widget,
+      );
+    }
+  }
+
+  Iterable<Widget> _internalBuildSuffix() sync* {
+    if (_visibilityController.value == 0) {
+      return;
+    }
+    for (final widget in buildSuffix()) {
+      yield Hidden(
+        hidden: _visibilityController.value < 1,
+        duration: kDefaultDuration,
+        child: widget,
+      );
+    }
+  }
+
+  Iterable<Widget> _internalBuildAbove() sync* {
+    if (_visibilityController.value == 0) {
+      return;
+    }
+    for (final widget in buildAbove()) {
+      yield Hidden(
+        hidden: _visibilityController.value < 1,
+        duration: kDefaultDuration,
+        child: widget,
+      );
+    }
+  }
+
+  Iterable<Widget> _internalBuildBelow() sync* {
+    if (_visibilityController.value == 0) {
+      return;
+    }
+    for (final widget in buildBelow()) {
+      yield Hidden(
+        hidden: _visibilityController.value < 1,
+        duration: kDefaultDuration,
+        child: widget,
+      );
+    }
+  }
+
   /// Initializes this feature state.
   ///
   /// Called when the feature is first attached to a text field.
@@ -688,6 +804,20 @@ abstract class InputFeatureState<T extends InputFeature> {
   ///
   /// Override to provide widgets shown after the input.
   Iterable<Widget> buildTrailing() sync* {}
+
+  Iterable<Widget> buildPrefix() sync* {}
+
+  Iterable<Widget> buildSuffix() sync* {}
+
+  /// Builds widgets displayed above the input, inside the decoration.
+  ///
+  /// Override to provide widgets rendered above the editable text.
+  Iterable<Widget> buildAbove() sync* {}
+
+  /// Builds widgets displayed below the input, inside the decoration.
+  ///
+  /// Override to provide widgets rendered below the editable text.
+  Iterable<Widget> buildBelow() sync* {}
 
   /// Builds actions for keyboard shortcuts.
   ///
@@ -2229,6 +2359,8 @@ class TextFieldState extends State<TextField>
 
         List<Widget> leadingChildren = [];
         List<Widget> trailingChildren = [];
+        List<Widget> aboveChildren = [];
+        List<Widget> belowChildren = [];
         for (final attached in _attachedFeatures) {
           leadingChildren.addAll(attached.state._internalBuildLeading().map(
                 (e) => Focus(
@@ -2244,23 +2376,48 @@ class TextFieldState extends State<TextField>
                   child: e,
                 ),
               ));
+          aboveChildren.addAll(attached.state._internalBuildAbove().map(
+                (e) => FocusScope(
+                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
+                      attached.feature.skipFocusTraversal,
+                  child: e,
+                ),
+              ));
+          belowChildren.addAll(attached.state._internalBuildBelow().map(
+                (e) => FocusScope(
+                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
+                      attached.feature.skipFocusTraversal,
+                  child: e,
+                ),
+              ));
         }
+
+        final densityGap = theme.density.baseGap * theme.scaling;
 
         Widget leadingWidget = Row(
           mainAxisSize: MainAxisSize.min,
-          spacing: 4 * theme.scaling,
+          spacing: densityGap * 0.5,
           children: leadingChildren,
         );
 
         Widget trailingWidget = Row(
           mainAxisSize: MainAxisSize.min,
-          spacing: 4 * theme.scaling,
+          spacing: densityGap * 0.5,
           children: trailingChildren,
         );
 
-        return Row(
+        final bool isMultiline = widget.expands ||
+            (widget.maxLines == null) ||
+            (widget.maxLines != null && widget.maxLines! > 1) ||
+            (widget.minLines != null && widget.minLines! > 1);
+        final AlignmentDirectional placeholderAlignment = AlignmentDirectional(
+          0.0,
+          isMultiline ? -1.0 : 0.0,
+        );
+
+        final fieldRow = Row(
           crossAxisAlignment: widget.crossAxisAlignment,
-          spacing: 8.0 * theme.scaling,
+          spacing: densityGap,
           children: [
             // Insert a prefix at the front if the prefix visibility mode matches
             // the current text state.
@@ -2273,7 +2430,7 @@ class TextFieldState extends State<TextField>
                 // the cost of the ability to compute the intrinsic dimensions of
                 // this widget.
                 // See also https://github.com/flutter/flutter/issues/13715.
-                alignment: AlignmentDirectional.center,
+                alignment: placeholderAlignment,
                 textDirection: widget.textDirection,
                 children: <Widget>[
                   if (placeholder != null) placeholder,
@@ -2282,6 +2439,30 @@ class TextFieldState extends State<TextField>
               ),
             ),
             if (trailingChildren.isNotEmpty) trailingWidget,
+          ],
+        );
+
+        if (aboveChildren.isEmpty && belowChildren.isEmpty) {
+          return fieldRow;
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: densityGap * 0.5,
+          children: [
+            if (aboveChildren.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: densityGap * 0.5,
+                children: aboveChildren,
+              ),
+            Expanded(child: fieldRow),
+            if (belowChildren.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: densityGap * 0.5,
+                children: belowChildren,
+              ),
           ],
         );
       },
@@ -2475,8 +2656,24 @@ class TextFieldState extends State<TextField>
 
   @override
   Widget build(BuildContext context) {
-    var widget = this.widget;
     super.build(context); // See AutomaticKeepAliveClientMixin.
+    List<Widget> prefixes = [];
+    List<Widget> suffixes = [];
+
+    for (final attached in _attachedFeatures) {
+      prefixes.addAll(attached.state._internalBuildPrefix());
+      suffixes.addAll(attached.state._internalBuildSuffix());
+    }
+
+    return ButtonGroup.horizontal(children: [
+      ...prefixes,
+      Flexible(child: Builder(builder: _buildDecorated)),
+      ...suffixes,
+    ]);
+  }
+
+  Widget _buildDecorated(BuildContext context) {
+    var widget = this.widget;
     final ThemeData theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<TextFieldTheme>(context);
     assert(debugCheckHasDirectionality(context));
@@ -2558,6 +2755,7 @@ class TextFieldState extends State<TextField>
     final effectiveBorder = styleValue(
       defaultValue: Border.all(
         color: theme.colorScheme.border,
+        strokeAlign: BorderSide.strokeAlignCenter,
       ),
       themeValue: compTheme?.border,
       widgetValue: widget.border,
@@ -2600,6 +2798,9 @@ class TextFieldState extends State<TextField>
             const SpellCheckConfiguration.disabled();
 
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
+    final textDirection = widget.textDirection ?? Directionality.of(context);
     final Widget editable = RepaintBoundary(
       child: UnmanagedRestorationScope(
         bucket: bucket,
@@ -2748,15 +2949,22 @@ class TextFieldState extends State<TextField>
                           alignment: Alignment(-1.0, _textAlignVertical.y),
                           widthFactor: 1.0,
                           heightFactor: 1.0,
-                          child: Padding(
-                            padding: widget.padding ??
-                                compTheme?.padding ??
-                                EdgeInsets.symmetric(
-                                  horizontal: 12 * scaling,
-                                  vertical: 8 * scaling,
-                                ),
-                            child: _addTextDependentAttachments(
-                                editable, defaultTextStyle, theme),
+                          child: Builder(
+                            builder: (context) {
+                              final padding = widget.padding ??
+                                  compTheme?.padding ??
+                                  EdgeInsets.symmetric(
+                                    horizontal: densityContentPadding * 0.75,
+                                    vertical: densityGap,
+                                  );
+                              final resolvedPadding = resolveEdgeInsets(
+                                  padding, densityContentPadding);
+                              return Padding(
+                                padding: resolvedPadding,
+                                child: _addTextDependentAttachments(
+                                    editable, defaultTextStyle, theme),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -2776,9 +2984,14 @@ class TextFieldState extends State<TextField>
 
     double fontHeight =
         (defaultTextStyle.fontSize ?? 14.0) * (defaultTextStyle.height ?? 1.0);
-    double verticalPadding = (widget.padding?.vertical ??
-        compTheme?.padding?.vertical ??
-        (8.0 * 2 * theme.scaling));
+    final padding = widget.padding ??
+        compTheme?.padding ??
+        EdgeInsets.symmetric(
+          horizontal: densityContentPadding * 0.75,
+          vertical: densityGap,
+        );
+    final resolvedPadding = resolveEdgeInsets(padding, densityContentPadding);
+    double verticalPadding = resolvedPadding.resolve(textDirection).vertical;
 
     return ConstrainedBox(
       constraints: BoxConstraints(

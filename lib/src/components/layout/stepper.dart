@@ -268,6 +268,7 @@ class _StepVariantCircle extends StepVariant {
   Widget build(BuildContext context, StepProperties properties) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     if (properties.direction == Axis.horizontal) {
       List<Widget> children = [];
       for (int i = 0; i < properties.steps.length; i++) {
@@ -276,11 +277,11 @@ class _StepVariantCircle extends StepVariant {
           child: Row(
             children: [
               properties[i]?.icon ?? const StepNumber(),
-              Gap(8 * scaling),
+              Gap(densityGap),
               properties.size
                   .wrapper(context, properties[i]?.title ?? const SizedBox()),
               if (i != properties.steps.length - 1) ...[
-                Gap(8 * scaling),
+                Gap(densityGap),
                 Expanded(
                   child: AnimatedBuilder(
                       animation: properties.state,
@@ -296,7 +297,7 @@ class _StepVariantCircle extends StepVariant {
                         );
                       }),
                 ),
-                Gap(8 * scaling),
+                Gap(densityGap),
               ],
             ],
           ),
@@ -352,14 +353,14 @@ class _StepVariantCircle extends StepVariant {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     properties.steps[i].icon ?? const StepNumber(),
-                    Gap(8 * scaling),
+                    Gap(densityGap),
                     properties.size.wrapper(context, properties.steps[i].title),
                   ],
                 ),
-                Gap(8 * scaling),
+                Gap(densityGap),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    minHeight: 16 * scaling,
+                    minHeight: densityGap * 2,
                   ),
                   child: Stack(
                     children: [
@@ -427,7 +428,7 @@ class _StepVariantCircle extends StepVariant {
                         return const SizedBox();
                       }
                       return SizedBox(
-                        height: 8 * scaling,
+                        height: densityGap,
                       );
                     }),
               ],
@@ -450,6 +451,7 @@ class _StepVariantCircleAlternative extends StepVariant {
   Widget build(BuildContext context, StepProperties properties) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final steps = properties.steps;
     if (properties.direction == Axis.horizontal) {
       List<Widget> children = [];
@@ -485,9 +487,9 @@ class _StepVariantCircleAlternative extends StepVariant {
                                       );
                                     }),
                               ),
-                        Gap(4 * scaling),
+                        Gap(densityGap * 0.5),
                         steps[i].icon ?? const StepNumber(),
-                        Gap(4 * scaling),
+                        Gap(densityGap * 0.5),
                         i == steps.length - 1
                             ? const Spacer()
                             : Expanded(
@@ -511,7 +513,7 @@ class _StepVariantCircleAlternative extends StepVariant {
                               ),
                       ],
                     ),
-                    Gap(4 * scaling),
+                    Gap(densityGap * 0.5),
                     Center(
                       child: DefaultTextStyle.merge(
                         textAlign: TextAlign.center,
@@ -570,14 +572,14 @@ class _StepVariantCircleAlternative extends StepVariant {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     properties.steps[i].icon ?? const StepNumber(),
-                    Gap(8 * scaling),
+                    Gap(densityGap),
                     properties.size.wrapper(context, properties.steps[i].title),
                   ],
                 ),
-                Gap(8 * scaling),
+                Gap(densityGap),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    minHeight: 16 * scaling,
+                    minHeight: densityGap * 2,
                   ),
                   child: Stack(
                     children: [
@@ -669,6 +671,7 @@ class _StepVariantLine extends StepVariant {
   Widget build(BuildContext context, StepProperties properties) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final steps = properties.steps;
     if (properties.direction == Axis.horizontal) {
       List<Widget> children = [];
@@ -694,7 +697,7 @@ class _StepVariantLine extends StepVariant {
                                   : theme.colorScheme.border,
                         );
                       }),
-                  Gap(8 * scaling),
+                  Gap(densityGap),
                   properties.size.wrapper(
                     context,
                     steps[i].title,
@@ -713,7 +716,7 @@ class _StepVariantLine extends StepVariant {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: children,
-            ).gap(16 * scaling),
+            ).gap(densityGap * 2),
           ),
           AnimatedBuilder(
               animation: properties.state,
@@ -761,16 +764,16 @@ class _StepVariantLine extends StepVariant {
                                       : theme.colorScheme.border,
                             );
                           }),
-                      Gap(16 * scaling),
+                      Gap(densityGap * 2),
                       properties.size
                           .wrapper(context, properties.steps[i].title)
-                          .withPadding(vertical: 8 * scaling),
+                          .withPadding(vertical: densityGap),
                     ],
                   ),
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    minHeight: 16 * scaling,
+                    minHeight: densityGap * 2,
                   ),
                   child: AnimatedBuilder(
                       animation: properties.state,
@@ -1356,6 +1359,7 @@ class StepTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     return Clickable(
       mouseCursor: WidgetStatePropertyAll(
           onPressed == null ? MouseCursor.defer : SystemMouseCursors.click),
@@ -1366,7 +1370,7 @@ class StepTitle extends StatelessWidget {
           children: [
             title,
             if (subtitle != null) ...[
-              Gap(2 * scaling),
+              Gap(densityGap * 0.25),
               subtitle!.muted().xSmall(),
             ],
           ],
@@ -1447,22 +1451,25 @@ class _StepContainerState extends State<StepContainer> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     if (widget.actions.isEmpty) {
       return widget.child.withPadding(
-        vertical: 16 * scaling,
+        vertical: densityContainerPadding,
       );
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         widget.child,
-        Gap(16 * scaling),
+        Gap(densityGap * 2),
         Row(
           children: widget.actions,
-        ).gap(8 * scaling),
+        ).gap(densityGap),
       ],
     ).withPadding(
-      vertical: 16 * scaling,
+      vertical: densityContainerPadding,
     );
   }
 }

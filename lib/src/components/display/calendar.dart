@@ -322,7 +322,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 ),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
-                  Gap(theme.scaling * 16),
+                  Gap(theme.density.baseGap * theme.scaling * 2),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
                   Expanded(
@@ -388,7 +388,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   ),
               ],
             ),
-            Gap(theme.scaling * 16),
+            Gap(theme.density.baseGap * theme.scaling * 2),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: viewMode == CalendarSelectionMode.range
@@ -425,7 +425,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 ),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
-                  Gap(theme.scaling * 16),
+                  Gap(theme.density.baseGap * theme.scaling * 2),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
                   buildView(
@@ -523,7 +523,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
               ),
             ],
           ),
-          Gap(theme.scaling * 16),
+          Gap(theme.density.baseGap * theme.scaling * 2),
           buildView(
             context,
             _yearSelectStart,
@@ -1380,7 +1380,7 @@ class MonthCalendar extends StatelessWidget {
       );
     }
     for (int i = 0; i < months.length; i += 4) {
-      rows.add(Gap(theme.scaling * 8));
+      rows.add(Gap(theme.density.baseGap * theme.scaling));
       rows.add(Row(
         children: months.sublist(i, i + 4),
       ));
@@ -1478,7 +1478,7 @@ class YearCalendar extends StatelessWidget {
       );
     }
     for (int i = 0; i < years.length; i += 4) {
-      rows.add(Gap(theme.scaling * 8));
+      rows.add(Gap(theme.density.baseGap * theme.scaling));
       rows.add(Row(
         children: years.sublist(i, i + 4),
       ));
@@ -2054,7 +2054,7 @@ class CalendarGrid extends StatelessWidget {
     }
     return Column(
       mainAxisSize: MainAxisSize.min,
-      spacing: theme.scaling * 8,
+      spacing: theme.density.baseGap * theme.scaling,
       children: rows,
     );
   }

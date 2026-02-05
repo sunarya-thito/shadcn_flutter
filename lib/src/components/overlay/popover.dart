@@ -674,6 +674,7 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
             builder: (context, child) {
               final theme = Theme.of(context);
               final scaling = theme.scaling;
+              final densityGap = theme.density.baseGap * scaling;
               return PopoverLayout(
                 alignment: _alignment.optionallyResolve(context),
                 position: _position,
@@ -683,7 +684,7 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget>
                 heightConstraint: _heightConstraint,
                 offset: _offset,
                 margin: _margin?.optionallyResolve(context) ??
-                    (const EdgeInsets.all(8) * scaling),
+                    EdgeInsets.all(densityGap),
                 scale: tweenValue(0.9, 1.0, widget.animation.value),
                 scaleAlignment: (widget.transitionAlignment ?? _alignment)
                     .optionallyResolve(context),

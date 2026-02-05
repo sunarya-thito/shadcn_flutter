@@ -136,9 +136,12 @@ class Steps extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<StepsTheme>(context);
     final indicatorSize = compTheme?.indicatorSize ?? 28 * scaling;
-    final spacing = compTheme?.spacing ?? 18 * scaling;
+    final spacing = compTheme?.spacing ?? densityGap * 2.25;
     final indicatorColor = compTheme?.indicatorColor ?? theme.colorScheme.muted;
     final connectorThickness = compTheme?.connectorThickness ?? 1 * scaling;
     List<Widget> mapped = [];
@@ -164,17 +167,21 @@ class Steps extends StatelessWidget {
                     ).mono().bold(),
                   ),
                 ),
-                Gap(4 * scaling),
+                Gap(densityGap * 0.5),
                 Expanded(
                     child: VerticalDivider(
                   thickness: connectorThickness,
                   color: indicatorColor,
                 )),
-                Gap(4 * scaling),
+                Gap(densityGap * 0.5),
               ],
             ),
             Gap(spacing),
-            Expanded(child: children[i].withPadding(bottom: 32 * scaling)),
+            Expanded(
+              child: children[i].withPadding(
+                bottom: densityContainerPadding * 2,
+              ),
+            ),
           ],
         ),
       ));

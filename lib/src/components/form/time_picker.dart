@@ -498,11 +498,14 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     final localizations = ShadcnLocalizations.of(context);
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
-          padding: EdgeInsets.only(bottom: (16 + 12) * scaling),
+          padding: EdgeInsets.only(bottom: densityContainerPadding * 1.75),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -533,7 +536,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                 ),
               ],
               if (!widget.use24HourFormat) ...[
-                Gap(8 * scaling),
+                Gap(densityGap),
                 IntrinsicWidth(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -836,11 +839,13 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     final localizations = ShadcnLocalizations.of(context);
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Padding(
-          padding: EdgeInsets.only(bottom: (16 + 12) * scaling),
+          padding: EdgeInsets.only(bottom: densityContainerPadding * 1.75),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,

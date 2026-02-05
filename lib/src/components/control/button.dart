@@ -1436,6 +1436,7 @@ class ButtonState<T extends Button> extends State<T> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     bool enableFeedback = widget.enableFeedback ?? _shouldEnableFeedback;
     return Clickable(
       disableFocusOutline: widget.disableFocusOutline,
@@ -1493,7 +1494,7 @@ class ButtonState<T extends Button> extends State<T> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (widget.leading != null) widget.leading!,
-                    if (widget.leading != null) Gap(8 * scaling),
+                    if (widget.leading != null) Gap(densityGap),
                     Expanded(
                       child: Align(
                         widthFactor: 1,
@@ -1503,7 +1504,7 @@ class ButtonState<T extends Button> extends State<T> {
                         child: widget.child,
                       ),
                     ),
-                    if (widget.trailing != null) Gap(8 * scaling),
+                    if (widget.trailing != null) Gap(densityGap),
                     if (widget.trailing != null) widget.trailing!,
                   ],
                 ),
@@ -3434,9 +3435,11 @@ MouseCursor _buttonMouseCursor(BuildContext context, Set<WidgetState> states) {
 
 EdgeInsets _buttonPadding(BuildContext context, Set<WidgetState> states) {
   final theme = Theme.of(context);
+  final baseContentPadding = theme.density.baseContentPadding * theme.scaling;
+  final baseGap = theme.density.baseGap * theme.scaling;
   return EdgeInsets.symmetric(
-    horizontal: theme.scaling * 16,
-    vertical: theme.scaling * 8,
+    horizontal: baseContentPadding,
+    vertical: baseGap,
   );
 }
 
@@ -3492,7 +3495,7 @@ Decoration _buttonCardDecoration(
 
 EdgeInsets _buttonCardPadding(BuildContext context, Set<WidgetState> states) {
   final theme = Theme.of(context);
-  return const EdgeInsets.all(16) * theme.scaling;
+  return EdgeInsets.all(theme.density.baseContentPadding * theme.scaling);
 }
 
 // MENUBUTTON
@@ -3528,18 +3531,33 @@ TextStyle _buttonMenuTextStyle(BuildContext context, Set<WidgetState> states) {
 EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
+  final baseContentPadding = theme.density.baseContentPadding * scaling;
+  final baseGap = theme.density.baseGap * scaling;
   final menuGroupData = Data.maybeOf<MenuGroupData>(context);
   if (menuGroupData != null && menuGroupData.direction == Axis.horizontal) {
-    return const EdgeInsets.symmetric(horizontal: 18, vertical: 6) * scaling;
+    return EdgeInsets.symmetric(
+      horizontal: baseContentPadding * 1.125,
+      vertical: baseGap * 0.75,
+    );
   }
-  return const EdgeInsets.only(left: 8, top: 6, right: 6, bottom: 6) * scaling;
+  return EdgeInsets.only(
+    left: baseGap,
+    top: baseGap * 0.75,
+    right: baseGap * 0.75,
+    bottom: baseGap * 0.75,
+  );
 }
 
 EdgeInsets _buttonMenubarPadding(
     BuildContext context, Set<WidgetState> states) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
-  return const EdgeInsets.symmetric(horizontal: 12, vertical: 4) * scaling;
+  final baseContentPadding = theme.density.baseContentPadding * scaling;
+  final baseGap = theme.density.baseGap * scaling;
+  return EdgeInsets.symmetric(
+    horizontal: baseContentPadding * 0.75,
+    vertical: baseGap * 0.5,
+  );
 }
 
 IconThemeData _buttonMenuIconTheme(
@@ -3641,6 +3659,7 @@ Decoration _buttonOutlineDecoration(
       border: Border.all(
         color: themeData.colorScheme.border,
         width: 1,
+        strokeAlign: BorderSide.strokeAlignCenter,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
@@ -3651,6 +3670,7 @@ Decoration _buttonOutlineDecoration(
       border: Border.all(
         color: themeData.colorScheme.input,
         width: 1,
+        strokeAlign: BorderSide.strokeAlignCenter,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
@@ -3658,7 +3678,8 @@ Decoration _buttonOutlineDecoration(
   return BoxDecoration(
     color: themeData.colorScheme.input.scaleAlpha(0.3),
     border: Border.all(
-      color: themeData.colorScheme.input,
+      color: themeData.colorScheme.border,
+      strokeAlign: BorderSide.strokeAlignCenter,
       width: 1,
     ),
     borderRadius: BorderRadius.circular(themeData.radiusMd),

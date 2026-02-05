@@ -361,6 +361,7 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<SwitchTheme>(context);
     final gap = styleValue(
         widgetValue: widget.gap,
@@ -428,7 +429,7 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                 duration: kSwitchDuration,
                 width: (32 + 4) * scaling,
                 height: (16 + 4) * scaling,
-                padding: EdgeInsets.all(2 * scaling),
+                padding: EdgeInsets.all(densityGap * 0.25),
                 decoration: BoxDecoration(
                   borderRadius:
                       optionallyResolveBorderRadius(context, borderRadius) ??

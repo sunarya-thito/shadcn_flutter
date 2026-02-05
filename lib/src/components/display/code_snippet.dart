@@ -288,6 +288,9 @@ class _CodeSnippetState extends State<CodeSnippet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContentPadding =
+        theme.density.baseContentPadding * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<CodeSnippetTheme>(context);
     final backgroundColor = styleValue(
       themeValue: compTheme?.backgroundColor,
@@ -308,10 +311,10 @@ class _CodeSnippetState extends State<CodeSnippet> {
     final padding = styleValue(
       themeValue: compTheme?.padding,
       defaultValue: EdgeInsets.only(
-        left: theme.scaling * 16,
-        right: theme.scaling * 48,
-        top: theme.scaling * 16,
-        bottom: theme.scaling * 16,
+        left: densityContentPadding,
+        right: densityContentPadding * 3,
+        top: densityContentPadding,
+        bottom: densityContentPadding,
       ),
     );
 
@@ -371,7 +374,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
                 //   child: const Icon(LucideIcons.copy).iconSmall(),
                 // ),
               ],
-            ).gap(4),
+            ).gap(densityGap * 0.5),
           ),
         ],
       ),

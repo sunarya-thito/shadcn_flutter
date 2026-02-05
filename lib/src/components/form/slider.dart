@@ -651,6 +651,7 @@ class _SliderState extends State<Slider>
     with FormValueSupplier<SliderValue, Slider> {
   late SliderValue
       _currentValue; // used for the thumb position (not the trackbar)
+  late SliderValue _externalValue;
   // trackbar position uses the widget.value
   bool _dragging = false;
   bool _moveStart = false;
@@ -663,16 +664,8 @@ class _SliderState extends State<Slider>
   @override
   void initState() {
     super.initState();
-    if (widget.value.isRanged) {
-      var start = (widget.value.start - widget.min) / (widget.max - widget.min);
-      var end = (widget.value.end - widget.min) / (widget.max - widget.min);
-      var newStart = min(start, end);
-      var newEnd = max(start, end);
-      _currentValue = SliderValue.ranged(newStart, newEnd);
-    } else {
-      var value = (widget.value.value - widget.min) / (widget.max - widget.min);
-      _currentValue = SliderValue.single(value);
-    }
+    _externalValue = widget.value;
+    _setCurrentValueFromExternal();
     formValue = _currentValue;
   }
 
@@ -707,21 +700,38 @@ class _SliderState extends State<Slider>
   @override
   void didUpdateWidget(covariant Slider oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.value != oldWidget.value && !_dragging) {
-      if (widget.value.isRanged) {
-        var start =
-            (widget.value.start - widget.min) / (widget.max - widget.min);
-        var end = (widget.value.end - widget.min) / (widget.max - widget.min);
-        var newStart = min(start, end);
-        var newEnd = max(start, end);
-        _currentValue = SliderValue.ranged(newStart, newEnd);
-      } else {
-        var value =
-            (widget.value.value - widget.min) / (widget.max - widget.min);
-        _currentValue = SliderValue.single(value);
+    if (widget.value != oldWidget.value) {
+      _externalValue = widget.value;
+      if (!_dragging) {
+        _setCurrentValueFromExternal();
+        formValue = _currentValue;
       }
-      formValue = _currentValue;
     }
+  }
+
+  void _setCurrentValueFromExternal() {
+    if (_externalValue.isRanged) {
+      var start =
+          (_externalValue.start - widget.min) / (widget.max - widget.min);
+      var end = (_externalValue.end - widget.min) / (widget.max - widget.min);
+      var newStart = min(start, end);
+      var newEnd = max(start, end);
+      _currentValue = SliderValue.ranged(newStart, newEnd);
+    } else {
+      var value =
+          (_externalValue.value - widget.min) / (widget.max - widget.min);
+      _currentValue = SliderValue.single(value);
+    }
+  }
+
+  void _scheduleExternalSync() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (_currentValue == _externalValue) return;
+      setState(() {
+        _setCurrentValueFromExternal();
+      });
+    });
   }
 
   @override
@@ -734,6 +744,7 @@ class _SliderState extends State<Slider>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     return Container(
       constraints: BoxConstraints(
         minWidth: 20 * scaling,
@@ -741,7 +752,7 @@ class _SliderState extends State<Slider>
         maxHeight: 16 * scaling,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.0 * scaling),
+        padding: EdgeInsets.symmetric(horizontal: densityGap * 0.5),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return GestureDetector(
@@ -782,6 +793,7 @@ class _SliderState extends State<Slider>
                             setState(() {
                               _currentValue = SliderValue.ranged(newValue, end);
                             });
+                            _scheduleExternalSync();
                           } else {
                             if (widget.divisions != null) {
                               double deltaValue = newValue - end;
@@ -802,6 +814,7 @@ class _SliderState extends State<Slider>
                               _currentValue =
                                   SliderValue.ranged(start, newValue);
                             });
+                            _scheduleExternalSync();
                           }
                         }
                       : (details) {
@@ -829,6 +842,7 @@ class _SliderState extends State<Slider>
                           setState(() {
                             _currentValue = SliderValue.single(newValue);
                           });
+                          _scheduleExternalSync();
                         },
               onHorizontalDragStart: !enabled
                   ? null
@@ -982,7 +996,9 @@ class _SliderState extends State<Slider>
                             (_currentValue.value * (widget.max - widget.min) +
                                 widget.min)));
                       }
-                      setState(() {});
+                      setState(() {
+                        _setCurrentValueFromExternal();
+                      });
                     },
               child: MouseRegion(
                   cursor: !enabled

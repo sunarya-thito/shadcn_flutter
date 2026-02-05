@@ -218,11 +218,14 @@ class Alert extends StatelessWidget {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<AlertTheme>(context);
     final scaling = theme.scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     var scheme = theme.colorScheme;
     final padding = styleValue(
       themeValue: compTheme?.padding,
       defaultValue: EdgeInsets.symmetric(
-          horizontal: 16 * scaling, vertical: 12 * scaling),
+        horizontal: densityContentPadding,
+        vertical: densityContentPadding * 0.75,
+      ),
     );
     final backgroundColor = styleValue(
       themeValue: compTheme?.backgroundColor,

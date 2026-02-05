@@ -335,6 +335,7 @@ class _AutoCompleteState extends State<AutoComplete> {
         handler: const PopoverOverlayHandler(),
         builder: (context) {
           final theme = Theme.of(context);
+          final densityGap = theme.density.baseGap * theme.scaling;
           final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
           final popoverConstraints = styleValue<BoxConstraints>(
             widgetValue: widget.popoverConstraints,
@@ -347,7 +348,7 @@ class _AutoCompleteState extends State<AutoComplete> {
             child: ConstrainedBox(
               constraints: popoverConstraints,
               child: SurfaceCard(
-                padding: const EdgeInsets.all(4) * theme.scaling,
+                padding: EdgeInsets.all(densityGap * 0.5),
                 child: AnimatedBuilder(
                     animation: Listenable.merge([_suggestions, _selectedIndex]),
                     builder: (context, child) {

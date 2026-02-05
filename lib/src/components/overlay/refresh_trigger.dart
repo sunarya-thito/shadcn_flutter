@@ -296,25 +296,28 @@ class DefaultRefreshIndicator extends StatefulWidget {
 class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
   Widget buildRefreshingContent(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
+    final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(child: Text(localizations.refreshTriggerRefreshing)),
         const CircularProgressIndicator(),
       ],
-    ).gap(8);
+    ).gap(densityGap);
   }
 
   Widget buildCompletedContent(BuildContext context) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     final localizations = ShadcnLocalizations.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(child: Text(localizations.refreshTriggerComplete)),
         SizedBox(
-          width: 12.0 * theme.scaling,
-          height: 8.0 * theme.scaling,
+          width: densityGap * 1.5,
+          height: densityGap,
           child: AnimatedValueBuilder(
               initialValue: 0.0,
               value: 1.0,
@@ -331,11 +334,13 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
               }),
         ),
       ],
-    ).gap(8);
+    ).gap(densityGap);
   }
 
   Widget buildPullingContent(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
+    final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return AnimatedBuilder(
         animation: widget.stage.extent,
         builder: (context, child) {
@@ -363,18 +368,20 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
                 child: const Icon(Icons.arrow_downward),
               ),
             ],
-          ).gap(8);
+          ).gap(densityGap);
         });
   }
 
   Widget buildIdleContent(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
+    final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(child: Text(localizations.refreshTriggerPull)),
       ],
-    ).gap(8);
+    ).gap(densityGap);
   }
 
   @override
@@ -395,12 +402,15 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
         break;
     }
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return Center(
       child: SurfaceCard(
         padding: widget.stage.stage == TriggerStage.pulling
-            ? const EdgeInsets.all(4) * theme.scaling
-            : const EdgeInsets.symmetric(horizontal: 12, vertical: 4) *
-                theme.scaling,
+            ? EdgeInsets.all(densityGap * 0.5)
+            : EdgeInsets.symmetric(
+                horizontal: densityGap * 1.5,
+                vertical: densityGap * 0.5,
+              ),
         borderRadius: theme.borderRadiusXl,
         child: CrossFadedTransition(
           child: KeyedSubtree(
@@ -459,15 +469,17 @@ class RefreshTriggerState extends State<RefreshTrigger>
   void _updateThemeValues() {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<RefreshTriggerTheme>(context);
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * theme.scaling;
 
     _minExtent = styleValue(
         widgetValue: widget.minExtent,
         themeValue: compTheme?.minExtent,
-        defaultValue: 75.0 * theme.scaling);
+        defaultValue: densityContainerPadding * 4.6875);
     _maxExtent = styleValue(
         widgetValue: widget.maxExtent,
         themeValue: compTheme?.maxExtent,
-        defaultValue: 150.0 * theme.scaling);
+        defaultValue: densityContainerPadding * 9.375);
     _indicatorBuilder = widget.indicatorBuilder ??
         compTheme?.indicatorBuilder ??
         RefreshTrigger.defaultIndicatorBuilder;

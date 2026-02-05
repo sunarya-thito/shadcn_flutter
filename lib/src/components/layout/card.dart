@@ -258,10 +258,12 @@ class Card extends StatelessWidget {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<CardTheme>(context);
     final scaling = theme.scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     final padding = styleValue(
       widgetValue: this.padding,
       themeValue: compTheme?.padding,
-      defaultValue: EdgeInsets.all(16 * scaling),
+      defaultValue: EdgeInsets.all(densityContainerPadding),
     );
     final filled = styleValue(
       widgetValue: this.filled,
@@ -431,11 +433,13 @@ class SurfaceCard extends StatelessWidget {
     final compTheme = ComponentTheme.maybeOf<CardTheme>(context);
     var isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     final scaling = theme.scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     if (isSheetOverlay) {
       final padding = styleValue(
         widgetValue: this.padding,
         themeValue: compTheme?.padding,
-        defaultValue: EdgeInsets.all(16 * scaling),
+        defaultValue: EdgeInsets.all(densityContainerPadding),
       );
       return Padding(
         padding: padding,

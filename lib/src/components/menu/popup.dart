@@ -180,6 +180,9 @@ class MenuPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = Data.maybeOf<MenuGroupData>(context);
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContentPadding =
+        theme.density.baseContentPadding * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<MenuPopupTheme>(context);
     final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
     final isDialogOverlay = DialogOverlayHandler.isDialogOverlay(context);
@@ -187,9 +190,11 @@ class MenuPopup extends StatelessWidget {
         widgetValue: padding,
         themeValue: compTheme?.padding,
         defaultValue: isSheetOverlay
-            ? const EdgeInsets.symmetric(vertical: 12, horizontal: 4) *
-                theme.scaling
-            : const EdgeInsets.all(4) * theme.scaling);
+            ? EdgeInsets.symmetric(
+                vertical: densityContentPadding * 0.75,
+                horizontal: densityGap * 0.5,
+              )
+            : EdgeInsets.all(densityGap * 0.5));
     return ModalContainer(
       borderRadius: styleValue(
           widgetValue: borderRadius,

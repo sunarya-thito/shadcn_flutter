@@ -367,6 +367,11 @@ class RadioCard<T> extends StatefulWidget {
   /// Whether this radio card is enabled.
   final bool enabled;
 
+  /// Whether the selected card uses a filled background.
+  ///
+  /// When true, the selected card fills with 50% opacity of the primary color.
+  final bool filled;
+
   /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
 
@@ -376,6 +381,7 @@ class RadioCard<T> extends StatefulWidget {
     required this.child,
     required this.value,
     this.enabled = true,
+    this.filled = false,
     this.focusNode,
   });
 
@@ -522,6 +528,9 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * theme.scaling;
     final componentTheme = ComponentTheme.maybeOf<RadioCardTheme>(context);
     final groupData = Data.maybeOf<RadioGroupData<T>>(context);
     final group = Data.maybeOf<RadioGroupState<T>>(context);
@@ -598,24 +607,31 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
                       defaultValue: 1 * theme.scaling,
                       themeValue: componentTheme?.borderWidth,
                     ),
+              filled: true,
+              fillColor: _hovering
+                  ? styleValue(
+                      defaultValue: widget.filled &&
+                              groupData?.selectedItem == widget.value
+                          ? theme.colorScheme.primary.scaleAlpha(0.1)
+                          : Colors.transparent,
+                      themeValue: componentTheme?.hoverColor,
+                    )
+                  : styleValue(
+                      defaultValue: widget.filled &&
+                              groupData?.selectedItem == widget.value
+                          ? theme.colorScheme.primary.scaleAlpha(0.1)
+                          : Colors.transparent,
+                      themeValue: componentTheme?.color,
+                    ),
               borderRadius: styleValue(
-                  defaultValue: theme.borderRadiusMd,
+                  defaultValue: theme.borderRadiusLg,
                   themeValue: componentTheme?.borderRadius),
               padding: EdgeInsets.zero,
               clipBehavior: Clip.antiAlias,
               duration: kDefaultDuration,
-              fillColor: _hovering
-                  ? styleValue(
-                      defaultValue: theme.colorScheme.muted,
-                      themeValue: componentTheme?.hoverColor,
-                    )
-                  : styleValue(
-                      defaultValue: theme.colorScheme.background,
-                      themeValue: componentTheme?.color,
-                    ),
               child: Container(
                 padding: styleValue(
-                  defaultValue: EdgeInsets.all(16 * theme.scaling),
+                  defaultValue: EdgeInsets.all(densityContainerPadding),
                   themeValue: componentTheme?.padding,
                 ),
                 child: AnimatedPadding(
@@ -629,7 +645,7 @@ class _RadioCardState<T> extends State<RadioCard<T>> {
                         )
                       // to compensate for the border width
                       : styleValue(
-                          defaultValue: EdgeInsets.all(1 * theme.scaling),
+                          defaultValue: EdgeInsets.all(densityGap * 0.125),
                           themeValue: componentTheme?.borderWidth != null &&
                                   componentTheme?.selectedBorderWidth != null
                               ? EdgeInsets.all(

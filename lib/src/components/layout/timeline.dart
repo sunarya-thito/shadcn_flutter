@@ -299,7 +299,8 @@ class Timeline extends StatelessWidget {
     final dotSize = compTheme?.dotSize ?? 12 * scaling;
     final connectorThickness = compTheme?.connectorThickness ?? 2 * scaling;
     final defaultColor = compTheme?.color ?? theme.colorScheme.primary;
-    final rowGap = compTheme?.rowGap ?? 16 * scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final rowGap = compTheme?.rowGap ?? densityGap * 2;
     List<Widget> rows = [];
     for (int i = 0; i < data.length; i++) {
       final data = this.data[i];
@@ -319,7 +320,7 @@ class Timeline extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 4 * scaling),
+                  margin: EdgeInsets.only(top: densityGap * 0.5),
                   width: dotSize,
                   height: dotSize,
                   decoration: BoxDecoration(
@@ -349,8 +350,8 @@ class Timeline extends StatelessWidget {
                       .semiBold()
                       .secondaryForeground()
                       .base()
-                      .withPadding(left: 4 * scaling),
-                  if (data.content != null) Gap(8 * scaling),
+                      .withPadding(left: densityGap * 0.5),
+                  if (data.content != null) Gap(densityGap),
                   if (data.content != null)
                     Expanded(child: data.content!.muted().small()),
                 ],

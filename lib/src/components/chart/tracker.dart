@@ -350,6 +350,7 @@ class Tracker extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final trackerTheme = ComponentTheme.maybeOf<TrackerTheme>(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return ClipRRect(
       borderRadius:
           BorderRadius.circular(trackerTheme?.radius ?? theme.radiusMd),
@@ -370,7 +371,7 @@ class Tracker extends StatelessWidget {
               ),
             )
         ],
-      ).gap(trackerTheme?.gap ?? theme.scaling * 2),
+      ).gap(trackerTheme?.gap ?? densityGap * 0.25),
     );
   }
 }

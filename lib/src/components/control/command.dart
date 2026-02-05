@@ -405,7 +405,11 @@ class _CommandState extends State<Command> {
                                   child: const Center(
                                           child: CircularProgressIndicator())
                                       .withPadding(
-                                          vertical: theme.scaling * 24),
+                                    vertical:
+                                        theme.density.baseContainerPadding *
+                                            theme.scaling *
+                                            1.5,
+                                  ),
                                 ));
                               } else if (items.isEmpty) {
                                 return widget.emptyBuilder?.call(context) ??
@@ -415,7 +419,9 @@ class _CommandState extends State<Command> {
                                 separatorBuilder: (context, index) =>
                                     const Divider(),
                                 padding: EdgeInsets.symmetric(
-                                  vertical: theme.scaling * 2,
+                                  vertical: theme.density.baseGap *
+                                      theme.scaling *
+                                      0.25,
                                 ),
                                 shrinkWrap: true,
                                 itemCount: items.length,
@@ -426,7 +432,11 @@ class _CommandState extends State<Command> {
                             }
                             return widget.loadingBuilder?.call(context) ??
                                 const Center(child: CircularProgressIndicator())
-                                    .withPadding(vertical: theme.scaling * 24);
+                                    .withPadding(
+                                  vertical: theme.density.baseContainerPadding *
+                                      theme.scaling *
+                                      1.5,
+                                );
                           },
                         ),
                       ),
@@ -434,12 +444,15 @@ class _CommandState extends State<Command> {
                       Container(
                         color: theme.colorScheme.card,
                         padding: EdgeInsets.symmetric(
-                          horizontal: theme.scaling * 12,
-                          vertical: theme.scaling * 6,
+                          horizontal: theme.density.baseContentPadding *
+                              theme.scaling *
+                              0.75,
+                          vertical:
+                              theme.density.baseGap * theme.scaling * 0.75,
                         ),
                         child: IntrinsicHeight(
                           child: Row(
-                            spacing: theme.scaling * 8,
+                            spacing: theme.density.baseGap * theme.scaling,
                             children: [
                               const KeyboardDisplay.fromActivator(
                                       activator: SingleActivator(
@@ -629,8 +642,11 @@ class _CommandItemState extends State<CommandItem> {
                 borderRadius: BorderRadius.circular(themeData.radiusSm),
               ),
               padding: EdgeInsets.symmetric(
-                  horizontal: themeData.scaling * 8,
-                  vertical: themeData.scaling * 6),
+                horizontal: themeData.density.baseContentPadding *
+                    themeData.scaling *
+                    0.5,
+                vertical: themeData.density.baseGap * themeData.scaling * 0.75,
+              ),
               child: IconTheme(
                 data: themeData.iconTheme.small.copyWith(
                   color: widget.onTap != null
@@ -647,9 +663,11 @@ class _CommandItemState extends State<CommandItem> {
                   child: Row(
                     children: [
                       if (widget.leading != null) widget.leading!,
-                      if (widget.leading != null) Gap(themeData.scaling * 8),
+                      if (widget.leading != null)
+                        Gap(themeData.density.baseGap * themeData.scaling),
                       Expanded(child: widget.title),
-                      if (widget.trailing != null) Gap(themeData.scaling * 8),
+                      if (widget.trailing != null)
+                        Gap(themeData.density.baseGap * themeData.scaling),
                       if (widget.trailing != null)
                         widget.trailing!.muted().xSmall(),
                     ],

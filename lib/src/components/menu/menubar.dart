@@ -249,14 +249,14 @@ class MenubarState extends State<Menubar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<MenubarTheme>(context);
     final bool border = compTheme?.border ?? widget.border;
     final borderColor = compTheme?.borderColor ?? theme.colorScheme.border;
     final backgroundColor =
         compTheme?.backgroundColor ?? theme.colorScheme.background;
     final borderRadius = compTheme?.borderRadius ?? theme.borderRadiusMd;
-    final padding =
-        compTheme?.padding ?? const EdgeInsets.all(4) * theme.scaling;
+    final padding = compTheme?.padding ?? EdgeInsets.all(densityGap * 0.5);
 
     if (border) {
       return OutlinedContainer(
@@ -287,8 +287,11 @@ class MenubarState extends State<Menubar> {
   Widget buildContainer(BuildContext context, ThemeData theme,
       Offset? subMenuOffset, bool border) {
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final offset = subMenuOffset ??
-        ((border ? const Offset(-4, 8) : const Offset(0, 4)) * scaling);
+        (border
+            ? Offset(-densityGap * 0.5, densityGap)
+            : Offset(0, densityGap * 0.5));
     return Data.inherit(
       data: this,
       child: MenuGroup(

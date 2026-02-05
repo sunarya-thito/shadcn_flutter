@@ -242,6 +242,7 @@ class _TextAreaState extends State<TextArea> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     return SizedBox(
         height: _height,
         width: _width,
@@ -254,6 +255,8 @@ class _TextAreaState extends State<TextArea> {
                 expands: () => true,
                 maxLines: () => null,
                 minLines: () => null,
+                textAlignVertical: () =>
+                    widget.textAlignVertical ?? TextAlignVertical.top,
               ),
             ),
             Positioned(
@@ -290,7 +293,7 @@ class _TextAreaState extends State<TextArea> {
                     }
                   },
                   child: Padding(
-                    padding: EdgeInsets.all(4.0 * scaling),
+                    padding: EdgeInsets.all(densityGap * 0.5),
                     child: CustomPaint(
                       painter: _TextAreaDragHandlePainter(
                           theme.colorScheme.foreground),

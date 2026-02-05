@@ -353,12 +353,11 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
       ),
       child: AnimatedContainer(
         duration: widget.duration ?? Duration.zero,
-        padding: padding,
         clipBehavior: widget.clipBehavior,
         decoration: BoxDecoration(
           borderRadius: subtractByBorder(borderRadius, borderWidth),
         ),
-        child: widget.child,
+        child: DensityContainerPadding(padding: padding, child: widget.child),
       ),
     );
     if (surfaceBlur != null && surfaceBlur > 0) {

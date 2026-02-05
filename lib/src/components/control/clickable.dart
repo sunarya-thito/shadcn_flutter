@@ -948,6 +948,11 @@ class _ClickableState extends State<Clickable> {
       }
       return container;
     }
+    if (decoration is BoxDecoration && decoration.shape == BoxShape.circle) {
+      decoration = decoration.copyWith(
+        borderRadius: null,
+      );
+    }
     Widget animatedContainer = AnimatedContainer(
       clipBehavior: decoration == null ? Clip.none : Clip.antiAlias,
       margin: resolvedMargin,

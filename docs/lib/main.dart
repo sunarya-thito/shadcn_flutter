@@ -161,14 +161,24 @@ void main() async {
       initialColorScheme = colorSchemes[colorScheme];
     }
   }
+  final densityKey = prefs.getString('density');
+  final densityOptions = <String, Density>{
+    'Compact': Density.compactDensity,
+    'Reduced': Density.reducedDensity,
+    'Default': Density.defaultDensity,
+    'Spacious': Density.spaciousDensity,
+  };
+  final initialDensity = densityOptions[densityKey] ?? Density.defaultDensity;
   double initialRadius = prefs.getDouble('radius') ?? 0.5;
   double initialScaling = prefs.getDouble('scaling') ?? 1.0;
   double initialSurfaceOpacity = prefs.getDouble('surfaceOpacity') ?? 1.0;
   double initialSurfaceBlur = prefs.getDouble('surfaceBlur') ?? 0.0;
   String initialPath = prefs.getString('initialPath') ?? '/';
   runApp(MyApp(
-    initialColorScheme: initialColorScheme ?? colorSchemes['darkDefaultColor']!,
+    initialColorScheme:
+        initialColorScheme ?? colorSchemes['dark-slate-base']!,
     initialRadius: initialRadius,
+    initialDensity: initialDensity,
     initialScaling: initialScaling,
     initialSurfaceOpacity: initialSurfaceOpacity,
     initialSurfaceBlur: initialSurfaceBlur,
@@ -179,6 +189,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   final ColorScheme initialColorScheme;
   final double initialRadius;
+  final Density initialDensity;
   final double initialScaling;
   final double initialSurfaceOpacity;
   final double initialSurfaceBlur;
@@ -187,6 +198,7 @@ class MyApp extends StatefulWidget {
     super.key,
     required this.initialColorScheme,
     required this.initialRadius,
+    required this.initialDensity,
     required this.initialScaling,
     required this.initialSurfaceOpacity,
     required this.initialSurfaceBlur,
@@ -802,6 +814,7 @@ class MyAppState extends State<MyApp> {
   ];
   late ColorScheme colorScheme;
   late double radius;
+  late Density density;
   late double scaling;
   late double surfaceOpacity;
   late double surfaceBlur;
@@ -812,6 +825,7 @@ class MyAppState extends State<MyApp> {
     super.initState();
     colorScheme = widget.initialColorScheme;
     radius = widget.initialRadius;
+    density = widget.initialDensity;
     scaling = widget.initialScaling;
     surfaceOpacity = widget.initialSurfaceOpacity;
     surfaceBlur = widget.initialSurfaceBlur;
@@ -854,6 +868,15 @@ class MyAppState extends State<MyApp> {
       this.radius = radius;
       SharedPreferences.getInstance().then((prefs) {
         prefs.setDouble('radius', radius);
+      });
+    });
+  }
+
+  void changeDensity(Density density) {
+    setState(() {
+      this.density = density;
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('density', _densityKeyFromValue(density));
       });
     });
   }
@@ -905,11 +928,19 @@ class MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: colorScheme,
           radius: radius,
+          density: density,
           surfaceBlur: surfaceBlur,
           surfaceOpacity: surfaceOpacity,
         ),
       ),
     );
+  }
+
+  String _densityKeyFromValue(Density density) {
+    if (density == Density.compactDensity) return 'Compact';
+    if (density == Density.reducedDensity) return 'Reduced';
+    if (density == Density.spaciousDensity) return 'Spacious';
+    return 'Default';
   }
 }
 

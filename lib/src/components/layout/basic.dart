@@ -190,19 +190,23 @@ class Basic extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<BasicTheme>(context);
     final padding = styleValue(
         widgetValue: this.padding,
         themeValue: compTheme?.padding,
         defaultValue: EdgeInsets.zero);
+    final resolvedPadding = resolveEdgeInsets(padding, densityContainerPadding);
     final contentSpacing = styleValue(
         widgetValue: this.contentSpacing,
         themeValue: compTheme?.contentSpacing,
-        defaultValue: 16 * scaling);
+        defaultValue: densityGap * 2);
     final titleSpacing = styleValue(
         widgetValue: this.titleSpacing,
         themeValue: compTheme?.titleSpacing,
-        defaultValue: 4 * scaling);
+        defaultValue: densityGap * 0.5);
     final leadingAlignment = styleValue(
         widgetValue: this.leadingAlignment,
         themeValue: compTheme?.leadingAlignment,
@@ -228,7 +232,7 @@ class Basic extends StatelessWidget {
         themeValue: compTheme?.mainAxisAlignment,
         defaultValue: MainAxisAlignment.center);
     return Padding(
-      padding: padding,
+      padding: resolvedPadding,
       child: IntrinsicWidth(
         child: IntrinsicHeight(
           child: Row(
@@ -255,7 +259,7 @@ class Basic extends StatelessWidget {
                           child: title!,
                         ).small().medium(),
                       if (title != null && subtitle != null)
-                        SizedBox(height: 2 * scaling),
+                        SizedBox(height: densityGap * 0.25),
                       if (subtitle != null)
                         Align(
                           alignment: subtitleAlignment,

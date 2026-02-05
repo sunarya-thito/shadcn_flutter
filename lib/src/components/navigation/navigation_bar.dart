@@ -364,6 +364,8 @@ class _NavigationBarState extends State<NavigationBar>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<NavigationBarTheme>(context);
     final alignment = styleValue(
       widgetValue: widget.alignment,
@@ -378,7 +380,7 @@ class _NavigationBarState extends State<NavigationBar>
     final spacing = styleValue<double>(
       widgetValue: widget.spacing,
       themeValue: compTheme?.spacing,
-      defaultValue: 8 * scaling,
+      defaultValue: densityGap,
     );
     final labelType = styleValue(
       widgetValue: widget.labelType,
@@ -398,8 +400,10 @@ class _NavigationBarState extends State<NavigationBar>
     final parentPadding = styleValue(
       widgetValue: widget.padding,
       themeValue: compTheme?.padding,
-      defaultValue:
-          const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling,
+      defaultValue: EdgeInsets.symmetric(
+        vertical: densityGap,
+        horizontal: densityContentPadding * 0.75,
+      ),
     );
     final backgroundColor = styleValue<Color?>(
       widgetValue: widget.backgroundColor,
@@ -778,8 +782,13 @@ class _NavigationRailState extends State<NavigationRail>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     var parentPadding = widget.padding ??
-        (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
+        EdgeInsets.symmetric(
+          vertical: densityGap,
+          horizontal: densityContentPadding * 0.75,
+        );
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
     return RepaintBoundary(
@@ -795,7 +804,7 @@ class _NavigationRailState extends State<NavigationRail>
           onSelected: _onSelected,
           expanded: widget.expanded,
           childCount: widget.children.length,
-          spacing: widget.spacing ?? (8 * scaling),
+          spacing: widget.spacing ?? densityGap,
           keepCrossAxisSize: widget.keepCrossAxisSize,
           keepMainAxisSize: widget.keepMainAxisSize,
         ),
@@ -1037,9 +1046,14 @@ class _NavigationSidebarState extends State<NavigationSidebar>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     List<Widget> children = wrapChildren(context, widget.children);
     var parentPadding = widget.padding ??
-        (const EdgeInsets.symmetric(vertical: 8, horizontal: 12) * scaling);
+        EdgeInsets.symmetric(
+          vertical: densityGap,
+          horizontal: densityContentPadding * 0.75,
+        );
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
     const direction = Axis.vertical;
@@ -1387,16 +1401,22 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
       return SliverToBoxAdapter(
         child: Padding(
           padding: direction == Axis.vertical
-              ? EdgeInsets.symmetric(vertical: 8 * scaling)
-              : EdgeInsets.symmetric(horizontal: 8 * scaling),
+              ? EdgeInsets.symmetric(vertical: theme.density.baseGap * scaling)
+              : EdgeInsets.symmetric(
+                  horizontal: theme.density.baseGap * scaling,
+                ),
           child: child,
         ),
       );
     }
     return Padding(
       padding: direction == Axis.vertical
-          ? EdgeInsets.symmetric(vertical: 4 * scaling)
-          : EdgeInsets.symmetric(horizontal: 4 * scaling),
+          ? EdgeInsets.symmetric(
+              vertical: theme.density.baseGap * scaling * 0.5,
+            )
+          : EdgeInsets.symmetric(
+              horizontal: theme.density.baseGap * scaling * 0.5,
+            ),
       child: child,
     );
   }
@@ -1482,6 +1502,7 @@ class _NavigationItemState
   ) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     final direction = data?.direction ?? Axis.vertical;
     var index = childData?.index ?? widget.index;
@@ -1541,7 +1562,7 @@ class _NavigationItemState
           keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
           keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
           position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
-          spacing: widget.spacing ?? (8 * scaling),
+          spacing: widget.spacing ?? densityGap,
           child: widget.child,
         ),
       ),
@@ -1611,6 +1632,7 @@ class _NavigationButtonState
   ) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     final direction = data?.direction ?? Axis.vertical;
     bool showLabel = labelType == NavigationLabelType.all ||
@@ -1655,7 +1677,7 @@ class _NavigationButtonState
           keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
           keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
           position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
-          spacing: widget.spacing ?? (8 * scaling),
+          spacing: widget.spacing ?? densityGap,
           child: widget.child,
         ),
       ),
@@ -2021,11 +2043,13 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   Widget buildBox(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     return DefaultTextStyle.merge(
       textAlign: TextAlign.center,
       child: Container(
         alignment: alignment ?? Alignment.center,
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 8 * scaling),
+        padding: padding ??
+            EdgeInsets.symmetric(horizontal: densityContentPadding * 0.5),
         child: buildChild(context, data).xSmall(),
       ),
     );
@@ -2044,6 +2068,9 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   Widget buildSliver(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
     return AnimatedValueBuilder(
       duration: kDefaultDuration,
       curve: Curves.easeInOut,
@@ -2054,8 +2081,8 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
           pinned: pinned,
           floating: floating,
           delegate: _NavigationLabelDelegate(
-            maxExtent: 48 * scaling * value,
-            minExtent: 48 * scaling * value,
+            maxExtent: densityContainerPadding * 3 * value,
+            minExtent: densityContainerPadding * 3 * value,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
@@ -2067,8 +2094,8 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
               },
               child: Container(
                 alignment: alignment ?? AlignmentDirectional.centerStart,
-                padding:
-                    padding ?? EdgeInsets.symmetric(horizontal: 16 * scaling),
+                padding: padding ??
+                    EdgeInsets.symmetric(horizontal: densityContentPadding),
                 child: child!.semiBold().large(),
               ),
             ),

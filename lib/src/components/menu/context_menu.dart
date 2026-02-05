@@ -742,12 +742,16 @@ class ContextMenuPopup extends StatelessWidget {
           onTickFollow: onTickFollow,
           builder: (context) {
             final theme = Theme.of(context);
+            final densityContentPadding =
+                theme.density.baseContentPadding * theme.scaling;
             return LimitedBox(
               maxWidth: 192 * theme.scaling,
               child: MenuGroup(
                 direction: direction,
                 itemPadding: isSheetOverlay
-                    ? const EdgeInsets.symmetric(horizontal: 8) * theme.scaling
+                    ? EdgeInsets.symmetric(
+                        horizontal: densityContentPadding * 0.5,
+                      )
                     : EdgeInsets.zero,
                 builder: (context, children) {
                   final compTheme =

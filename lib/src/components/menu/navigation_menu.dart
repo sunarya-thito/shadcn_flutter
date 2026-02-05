@@ -338,10 +338,11 @@ class NavigationMenuContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     return Button(
       style: ButtonVariance.ghost.copyWith(
         padding: (context, states, value) {
-          return const EdgeInsets.all(12) * scaling;
+          return EdgeInsets.all(densityContentPadding * 0.75);
         },
       ),
       onPressed: onPressed,
@@ -622,23 +623,22 @@ class NavigationMenuState extends State<NavigationMenu> {
     }
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
     _popoverController.show(
       context: context,
       alignment: Alignment.topCenter,
       regionGroupId: this,
-      offset: compTheme?.offset ?? const Offset(0, 4) * scaling,
+      offset: compTheme?.offset ?? Offset(0, densityGap * 0.5),
       builder: buildPopover,
       modal: false,
-      margin: requestMargin() ??
-          compTheme?.margin ??
-          (const EdgeInsets.all(8) * scaling),
+      margin:
+          requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap),
       allowInvertHorizontal: false,
       allowInvertVertical: false,
       onTickFollow: (value) {
-        value.margin = requestMargin() ??
-            compTheme?.margin ??
-            (const EdgeInsets.all(8) * scaling);
+        value.margin =
+            requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap);
       },
     );
   }
@@ -675,10 +675,11 @@ class NavigationMenuState extends State<NavigationMenu> {
     NavigationMenuItemState? item = findByWidget(widget.children[index]);
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     if (item != null) {
       return Data<NavigationMenuState>.boundary(
         child: Padding(
-          padding: const EdgeInsets.all(12.0) * scaling,
+          padding: EdgeInsets.all(densityContentPadding * 0.75),
           child: _contentBuilders[item]!(context),
         ),
       );

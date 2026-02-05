@@ -612,17 +612,19 @@ class _ToastLayerState extends State<ToastLayer> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final baseGap = theme.density.baseGap;
+    final baseContainerPadding = theme.density.baseContainerPadding;
     final compTheme = ComponentTheme.maybeOf<ToastTheme>(context);
     final maxStackedEntries =
         compTheme?.maxStackedEntries ?? widget.maxStackedEntries;
     final expandMode = compTheme?.expandMode ?? widget.expandMode;
     final collapsedOffset = (compTheme?.collapsedOffset ??
             widget.collapsedOffset ??
-            const Offset(0, 12)) *
+            Offset(0, baseGap * 1.5)) *
         scaling;
     final padding = (compTheme?.padding?.optionallyResolve(context) ??
             widget.padding?.optionallyResolve(context) ??
-            const EdgeInsets.all(24)) *
+            EdgeInsets.all(baseContainerPadding * 1.5)) *
         scaling;
     final toastConstraints = compTheme?.toastConstraints ??
         widget.toastConstraints ??
@@ -1159,10 +1161,11 @@ class _ToastEntryLayoutState extends State<ToastEntryLayout> {
         indexProgress;
 
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
 
     Offset expandingShift = Offset(
-      previousAlignment.x * (16 * theme.scaling) * expandProgress,
-      previousAlignment.y * (16 * theme.scaling) * expandProgress,
+      previousAlignment.x * (densityGap * 2) * expandProgress,
+      previousAlignment.y * (densityGap * 2) * expandProgress,
     );
 
     offset += expandingShift;

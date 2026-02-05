@@ -589,10 +589,12 @@ class DialogRoute<T> extends RawDialogRoute<T> {
               builder: (context) {
                 final theme = Theme.of(context);
                 final scaling = theme.scaling;
+                final densityContainerPadding =
+                    theme.density.baseContainerPadding * scaling;
                 return Padding(
                   padding: fullScreen
                       ? EdgeInsets.zero
-                      : const EdgeInsets.all(16) * scaling,
+                      : EdgeInsets.all(densityContainerPadding),
                   child: builder(context),
                 );
               },

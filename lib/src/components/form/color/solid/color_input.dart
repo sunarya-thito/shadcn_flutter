@@ -268,6 +268,7 @@ class _ColorInputState extends State<ColorInput>
   Widget build(BuildContext context) {
     final locale = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     final componentTheme = ComponentTheme.maybeOf<ColorInputTheme>(context);
     final showAlpha = styleValue(
         defaultValue: true,
@@ -353,7 +354,7 @@ class _ColorInputState extends State<ColorInput>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Flexible(child: Text(colorToHex(value.toColor(), showAlpha))),
-              Gap(8 * theme.scaling),
+              Gap(densityGap),
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(

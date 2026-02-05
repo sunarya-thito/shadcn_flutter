@@ -412,12 +412,13 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
     }
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return Data<ObjectFormHandler<T>>.inherit(
       data: this,
       child: AlertDialog(
         title: widget.dialogTitle,
         content: Padding(
-          padding: EdgeInsets.only(top: 8 * theme.scaling),
+          padding: EdgeInsets.only(top: densityGap),
           child: widget.editorBuilder(
             context,
             this,

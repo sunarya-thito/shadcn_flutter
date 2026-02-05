@@ -370,6 +370,7 @@ class GridItemPickerLayout extends ItemPickerLayout {
   Widget build(BuildContext context, ItemChildDelegate items,
       ItemPickerBuilder builder) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     final padding = MediaQuery.paddingOf(context);
     return MediaQuery.removePadding(
       context: context,
@@ -380,8 +381,8 @@ class GridItemPickerLayout extends ItemPickerLayout {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
-          mainAxisSpacing: 4.0 * theme.scaling,
-          crossAxisSpacing: 4.0 * theme.scaling,
+          mainAxisSpacing: densityGap * 0.5,
+          crossAxisSpacing: densityGap * 0.5,
         ),
         padding: padding,
         itemCount: items.itemCount,
@@ -484,13 +485,16 @@ class _InternalItemPicker<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final padding = MediaQuery.paddingOf(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * theme.scaling;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null)
           Padding(
-            padding: EdgeInsets.all(16.0 * theme.scaling) +
+            padding: EdgeInsets.all(densityContainerPadding) +
                 EdgeInsets.only(top: padding.top),
             child: title?.large.semiBold,
           ),
@@ -504,10 +508,12 @@ class _InternalItemPicker<T> extends StatelessWidget {
             data: MediaQuery.of(context).copyWith(
               padding: title != null
                   ? padding.copyWith(top: 0) +
-                      const EdgeInsets.only(
-                              bottom: 8.0, left: 8.0, right: 8.0) *
-                          theme.scaling
-                  : padding + const EdgeInsets.all(8) * theme.scaling,
+                      EdgeInsets.only(
+                        bottom: densityGap,
+                        left: densityGap,
+                        right: densityGap,
+                      )
+                  : padding + EdgeInsets.all(densityGap),
             ),
             child: ItemPickerDialog<T>(
               items: items,

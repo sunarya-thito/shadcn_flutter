@@ -725,8 +725,9 @@ class SelectLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     return Padding(
-      padding: const EdgeInsets.all(8) * scaling,
+      padding: EdgeInsets.all(densityGap),
       child: child.semiBold().small(),
     );
   }
@@ -1143,7 +1144,7 @@ class SelectState<T> extends State<Select<T>>
 
   Widget get _placeholder {
     if (widget.placeholder != null) {
-      return widget.placeholder!;
+      return widget.placeholder!.muted;
     }
     return const SizedBox();
   }
@@ -1196,6 +1197,7 @@ class SelectState<T> extends State<Select<T>>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     var enabled = widget.enabled ?? widget.onChanged != null;
     return IntrinsicWidth(
       child: ConstrainedBox(
@@ -1224,13 +1226,12 @@ class SelectState<T> extends State<Select<T>>
                     _popoverController
                         .show(
                       context: context,
-                      offset: Offset(0, 8 * scaling),
+                      offset: Offset(0, densityGap),
                       alignment: _popoverAlignment,
                       anchorAlignment: _popoverAnchorAlignment,
                       widthConstraint: widget.popupWidthConstraint,
                       overlayBarrier: OverlayBarrier(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 8) * scaling,
+                        padding: EdgeInsets.symmetric(vertical: densityGap),
                         borderRadius: BorderRadius.circular(theme.radiusLg),
                       ),
                       builder: (context) {
@@ -1527,9 +1528,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   ) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     return Wrap(
-      spacing: 4 * scaling,
-      runSpacing: 4 * scaling,
+      spacing: densityGap * 0.5,
+      runSpacing: densityGap * 0.5,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [for (var value in value) multiItemBuilder(context, value)],
     );

@@ -1986,8 +1986,9 @@ class _WindowLayerGroup extends StatelessWidget {
                                 translation: Offset(0, value),
                                 child: OutlinedContainer(
                                   height: 100,
-                                  padding:
-                                      const EdgeInsets.all(8) * theme.scaling,
+                                  padding: EdgeInsets.all(
+                                    theme.density.baseGap * theme.scaling,
+                                  ),
                                   child: Opacity(
                                     opacity: unlerpDouble(value, -0.85, 0.0)
                                         .clamp(0, 1),
@@ -1995,7 +1996,8 @@ class _WindowLayerGroup extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       mainAxisSize: MainAxisSize.min,
-                                      spacing: 8 * theme.scaling,
+                                      spacing:
+                                          theme.density.baseGap * theme.scaling,
                                       children: [
                                         // 0.5 | 0.5
                                         AspectRatio(
@@ -2827,6 +2829,7 @@ class _BlurContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final densityGap = theme.density.baseGap * theme.scaling;
     return AnimatedValueBuilder(
         initialValue: 0.0,
         value: 1.0,
@@ -2838,7 +2841,7 @@ class _BlurContainer extends StatelessWidget {
             child: Transform.scale(
               scale: lerpDouble(0.8, 1.0, value)!,
               child: Padding(
-                padding: const EdgeInsets.all(8) * theme.scaling,
+                padding: EdgeInsets.all(densityGap),
                 child: ClipRRect(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),

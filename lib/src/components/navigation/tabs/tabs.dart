@@ -181,10 +181,14 @@ class Tabs extends StatelessWidget {
   ) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<TabsTheme>(context);
     final tabPadding = styleValue(
-      defaultValue:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 4) * scaling,
+      defaultValue: EdgeInsets.symmetric(
+        horizontal: densityContentPadding,
+        vertical: densityGap * 0.5,
+      ),
       themeValue: compTheme?.tabPadding,
       widgetValue: padding,
     );
@@ -219,9 +223,10 @@ class Tabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<TabsTheme>(context);
     final containerPadding = styleValue(
-      defaultValue: const EdgeInsets.all(4) * scaling,
+      defaultValue: EdgeInsets.all(densityGap * 0.5),
       themeValue: compTheme?.containerPadding,
     );
     final backgroundColor = styleValue(
