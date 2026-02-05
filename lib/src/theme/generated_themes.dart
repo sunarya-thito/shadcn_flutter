@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import '../../shadcn_flutter.dart';
 void _assertNotThemeModeSystem(ThemeMode mode, String label) {
   if (mode == ThemeMode.system) {

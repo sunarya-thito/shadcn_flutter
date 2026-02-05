@@ -1624,7 +1624,6 @@ class _ThemePageState extends State<ThemePage> {
         scheme.accent == baseScheme.accent &&
         scheme.accentForeground == baseScheme.accentForeground &&
         scheme.destructive == baseScheme.destructive &&
-        scheme.destructiveForeground == baseScheme.destructiveForeground &&
         scheme.border == baseScheme.border &&
         scheme.input == baseScheme.input &&
         scheme.chart1 == baseScheme.chart1 &&

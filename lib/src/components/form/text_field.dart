@@ -805,8 +805,14 @@ abstract class InputFeatureState<T extends InputFeature> {
   /// Override to provide widgets shown after the input.
   Iterable<Widget> buildTrailing() sync* {}
 
+  /// Builds prefix widgets for the text field.
+  ///
+  /// Override to provide widgets shown before the editable text.
   Iterable<Widget> buildPrefix() sync* {}
 
+  /// Builds suffix widgets for the text field.
+  ///
+  /// Override to provide widgets shown after the editable text.
   Iterable<Widget> buildSuffix() sync* {}
 
   /// Builds widgets displayed above the input, inside the decoration.

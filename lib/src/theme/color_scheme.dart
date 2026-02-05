@@ -920,7 +920,9 @@ extension _DynamicMapColorGetter on Map<String, dynamic> {
   }
 }
 
+/// Helpers for deriving accent variants from a base [ColorScheme].
 extension ColorSchemeRecolorExtension on ColorScheme {
+  /// Returns a copy of this scheme using [primary] as the accent color.
   ColorScheme recolor(Color primary) {
     return copyWith(
       primary: () => primary,
@@ -929,47 +931,69 @@ extension ColorSchemeRecolorExtension on ColorScheme {
     );
   }
 
+  /// Returns a slate-accented scheme.
   ColorScheme get slate => recolor(Colors.slate);
 
+  /// Returns a gray-accented scheme.
   ColorScheme get gray => recolor(Colors.gray);
 
+  /// Returns a zinc-accented scheme.
   ColorScheme get zinc => recolor(Colors.zinc);
 
+  /// Returns a neutral-accented scheme.
   ColorScheme get neutral => recolor(Colors.neutral);
 
+  /// Returns a stone-accented scheme.
   ColorScheme get stone => recolor(Colors.stone);
 
+  /// Returns a red-accented scheme.
   ColorScheme get red => recolor(Colors.red);
 
+  /// Returns an orange-accented scheme.
   ColorScheme get orange => recolor(Colors.orange);
 
+  /// Returns an amber-accented scheme.
   ColorScheme get amber => recolor(Colors.amber);
 
+  /// Returns a yellow-accented scheme.
   ColorScheme get yellow => recolor(Colors.yellow);
 
+  /// Returns a lime-accented scheme.
   ColorScheme get lime => recolor(Colors.lime);
 
+  /// Returns a green-accented scheme.
   ColorScheme get green => recolor(Colors.green);
 
+  /// Returns an emerald-accented scheme.
   ColorScheme get emerald => recolor(Colors.emerald);
 
+  /// Returns a teal-accented scheme.
   ColorScheme get teal => recolor(Colors.teal);
 
+  /// Returns a cyan-accented scheme.
   ColorScheme get cyan => recolor(Colors.cyan);
 
+  /// Returns a sky-accented scheme.
   ColorScheme get sky => recolor(Colors.sky);
 
+  /// Returns a blue-accented scheme.
   ColorScheme get blue => recolor(Colors.blue);
 
+  /// Returns an indigo-accented scheme.
   ColorScheme get indigo => recolor(Colors.indigo);
 
+  /// Returns a violet-accented scheme.
   ColorScheme get violet => recolor(Colors.violet);
 
+  /// Returns a purple-accented scheme.
   ColorScheme get purple => recolor(Colors.purple);
 
+  /// Returns a fuchsia-accented scheme.
   ColorScheme get fuchsia => recolor(Colors.fuchsia);
 
+  /// Returns a pink-accented scheme.
   ColorScheme get pink => recolor(Colors.pink);
 
+  /// Returns a rose-accented scheme.
   ColorScheme get rose => recolor(Colors.rose);
 }

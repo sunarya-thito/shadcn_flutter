@@ -169,6 +169,7 @@ class ThemeData {
   /// Default blur radius for surface effects.
   final double? surfaceBlur;
 
+  /// Density settings that scale spacing and padding.
   final Density density;
 
   /// Creates a [ThemeData] with light color scheme.

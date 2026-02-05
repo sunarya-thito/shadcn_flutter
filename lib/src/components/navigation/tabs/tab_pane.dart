@@ -343,7 +343,6 @@ class TabPaneState<T> extends State<TabPane<T>> {
   Widget _childBuilder(
       BuildContext context, TabContainerData data, Widget child) {
     final theme = Theme.of(context);
-    final densityGap = theme.density.baseGap * theme.scaling;
     final densityContentPadding =
         theme.density.baseContentPadding * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<TabPaneTheme>(context);
