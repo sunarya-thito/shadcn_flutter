@@ -19,7 +19,7 @@ extension WidgetExtension on Widget {
   /// - [height] (`double?`, optional): Desired height.
   ///
   /// Returns: `Widget` — sized widget.
-  Widget sized({double? width, double? height});
+  Widget sized({double? width, double? height, double? size});
   /// Wraps this widget in a [ConstrainedBox] with specified constraints.
   ///
   /// If this widget is already a [ConstrainedBox], merges the constraints.

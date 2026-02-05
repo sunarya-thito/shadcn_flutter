@@ -12,5 +12,7 @@ class WidgetPart extends InputPart {
   const WidgetPart(this.widget);
   Widget build(BuildContext context, FormattedInputData data);
   Object? get partKey;
+  bool operator ==(Object other);
+  int get hashCode;
 }
 ```

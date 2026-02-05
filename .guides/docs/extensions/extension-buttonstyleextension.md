@@ -111,10 +111,6 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   /// - [hoverPadding]: Padding when hovered
   /// - [focusPadding]: Padding when focused
   /// - [disabledPadding]: Padding when disabled
-  ///
-  /// Note: The implementation currently doesn't change padding based on state
-  /// due to a limitation in the state resolution logic, but the API is provided
-  /// for consistency with other style properties.
   AbstractButtonStyle withPadding({EdgeInsetsGeometry? padding, EdgeInsetsGeometry? hoverPadding, EdgeInsetsGeometry? focusPadding, EdgeInsetsGeometry? disabledPadding});
 }
 ```

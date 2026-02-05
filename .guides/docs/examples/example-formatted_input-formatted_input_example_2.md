@@ -21,8 +21,6 @@ class _FormattedInputExample2State extends State<FormattedInputExample2> {
     return Column(
       children: [
         DateInput(
-          // Input only month and year
-          datePartsOrder: const [DatePart.month, DatePart.year],
           onChanged: (value) => setState(() => _selectedDate = value),
         ),
         const Gap(16),

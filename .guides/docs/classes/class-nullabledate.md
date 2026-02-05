@@ -40,7 +40,7 @@ class NullableDate {
   ///
   /// Returns: A new [NullableDate] with updated parts.
   NullableDate copyWith({ValueGetter<int?>? year, ValueGetter<int?>? month, ValueGetter<int?>? day});
-  /// Converts to [DateTime], using 0 for missing parts.
+  /// Converts to [DateTime], using 1 for missing parts (month/day) to avoid year shift.
   ///
   /// Returns: A [DateTime] instance (may be invalid if parts are null/0).
   DateTime get date;
@@ -56,7 +56,7 @@ class NullableDate {
   /// - [defaultDay] (`int`, optional): Default day value (1-31).
   ///
   /// Returns: A [DateTime] instance with non-null parts.
-  DateTime? getDateTime({int? defaultYear = 0, int? defaultMonth = 0, int? defaultDay = 0});
+  DateTime? getDateTime({int? defaultYear = 0, int? defaultMonth = 1, int? defaultDay = 1});
   /// Retrieves the value of a specific date part.
   ///
   /// Parameters:

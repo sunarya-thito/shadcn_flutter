@@ -35,5 +35,7 @@ abstract class InputPart implements FormattedValuePart {
   InputPart get part;
   /// Creates a copy of this part with the specified value.
   FormattedValuePart withValue(String value);
+  bool operator ==(Object other);
+  int get hashCode;
 }
 ```

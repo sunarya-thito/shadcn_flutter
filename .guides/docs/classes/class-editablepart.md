@@ -36,5 +36,7 @@ class EditablePart extends InputPart {
   bool get canHaveValue;
   Widget build(BuildContext context, FormattedInputData data);
   String toString();
+  bool operator ==(Object other);
+  int get hashCode;
 }
 ```

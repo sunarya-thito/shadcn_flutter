@@ -53,6 +53,16 @@ abstract class InputFeatureState<T extends InputFeature> {
   ///
   /// Override to provide widgets shown after the input.
   Iterable<Widget> buildTrailing();
+  Iterable<Widget> buildPrefix();
+  Iterable<Widget> buildSuffix();
+  /// Builds widgets displayed above the input, inside the decoration.
+  ///
+  /// Override to provide widgets rendered above the editable text.
+  Iterable<Widget> buildAbove();
+  /// Builds widgets displayed below the input, inside the decoration.
+  ///
+  /// Override to provide widgets rendered below the editable text.
+  Iterable<Widget> buildBelow();
   /// Builds actions for keyboard shortcuts.
   ///
   /// Override to provide custom actions.

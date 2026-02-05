@@ -14,10 +14,14 @@ class RadioCard<T> extends StatefulWidget {
   final T value;
   /// Whether this radio card is enabled.
   final bool enabled;
+  /// Whether the selected card uses a filled background.
+  ///
+  /// When true, the selected card fills with 50% opacity of the primary color.
+  final bool filled;
   /// Focus node for keyboard navigation.
   final FocusNode? focusNode;
   /// Creates a radio card.
-  const RadioCard({super.key, required this.child, required this.value, this.enabled = true, this.focusNode});
+  const RadioCard({super.key, required this.child, required this.value, this.enabled = true, this.filled = false, this.focusNode});
   State<RadioCard<T>> createState();
 }
 ```

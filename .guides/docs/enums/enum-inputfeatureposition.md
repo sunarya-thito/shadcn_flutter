@@ -13,5 +13,9 @@ enum InputFeaturePosition {
   leading,
   /// Display the feature on the trailing side.
   trailing,
+  /// Display above the editable text.
+  above,
+  /// Display below the editable text.
+  below,
 }
 ```

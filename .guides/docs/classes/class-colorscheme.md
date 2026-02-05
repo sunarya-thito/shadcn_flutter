@@ -8,7 +8,7 @@ description: "The color scheme for shadcn_flutter applications."
 ///
 /// Defines all the semantic colors used throughout the app including
 /// background, foreground, primary, secondary, destructive colors, etc.
-/// Also includes sidebar and chart colors.
+/// Also includes chart colors.
 class ColorScheme implements ChartColorScheme {
   /// Returns the color scheme for the given context.
   ///
@@ -62,29 +62,13 @@ class ColorScheme implements ChartColorScheme {
   final Color input;
   /// The focus ring color.
   final Color ring;
-  /// The sidebar background color.
-  final Color sidebar;
-  /// The sidebar foreground color.
-  final Color sidebarForeground;
-  /// The sidebar primary color.
-  final Color sidebarPrimary;
-  /// The sidebar primary foreground color.
-  final Color sidebarPrimaryForeground;
-  /// The sidebar accent color.
-  final Color sidebarAccent;
-  /// The sidebar accent foreground color.
-  final Color sidebarAccentForeground;
-  /// The sidebar border color.
-  final Color sidebarBorder;
-  /// The sidebar ring color.
-  final Color sidebarRing;
   final Color chart1;
   final Color chart2;
   final Color chart3;
   final Color chart4;
   final Color chart5;
   /// Creates a color scheme with all required colors.
-  const ColorScheme({required this.brightness, required this.background, required this.foreground, required this.card, required this.cardForeground, required this.popover, required this.popoverForeground, required this.primary, required this.primaryForeground, required this.secondary, required this.secondaryForeground, required this.muted, required this.mutedForeground, required this.accent, required this.accentForeground, required this.destructive, this.destructiveForeground = Colors.transparent, required this.border, required this.input, required this.ring, required this.chart1, required this.chart2, required this.chart3, required this.chart4, required this.chart5, required this.sidebar, required this.sidebarForeground, required this.sidebarPrimary, required this.sidebarPrimaryForeground, required this.sidebarAccent, required this.sidebarAccentForeground, required this.sidebarBorder, required this.sidebarRing});
+  const ColorScheme({required this.brightness, required this.background, required this.foreground, required this.card, required this.cardForeground, required this.popover, required this.popoverForeground, required this.primary, required this.primaryForeground, required this.secondary, required this.secondaryForeground, required this.muted, required this.mutedForeground, required this.accent, required this.accentForeground, required this.destructive, this.destructiveForeground = Colors.transparent, required this.border, required this.input, required this.ring, required this.chart1, required this.chart2, required this.chart3, required this.chart4, required this.chart5});
   /// Creates a color scheme from a map of color names to values.
   ColorScheme.fromMap(Map<String, dynamic> map);
   /// Converts the color scheme to a map of hex color strings.
@@ -132,7 +116,7 @@ class ColorScheme implements ChartColorScheme {
   ///   foreground: () => Colors.black,
   /// )
   /// ```
-  ColorScheme copyWith({ValueGetter<Brightness>? brightness, ValueGetter<Color>? background, ValueGetter<Color>? foreground, ValueGetter<Color>? card, ValueGetter<Color>? cardForeground, ValueGetter<Color>? popover, ValueGetter<Color>? popoverForeground, ValueGetter<Color>? primary, ValueGetter<Color>? primaryForeground, ValueGetter<Color>? secondary, ValueGetter<Color>? secondaryForeground, ValueGetter<Color>? muted, ValueGetter<Color>? mutedForeground, ValueGetter<Color>? accent, ValueGetter<Color>? accentForeground, ValueGetter<Color>? destructive, ValueGetter<Color>? destructiveForeground, ValueGetter<Color>? border, ValueGetter<Color>? input, ValueGetter<Color>? ring, ValueGetter<Color>? chart1, ValueGetter<Color>? chart2, ValueGetter<Color>? chart3, ValueGetter<Color>? chart4, ValueGetter<Color>? chart5, ValueGetter<Color>? sidebar, ValueGetter<Color>? sidebarForeground, ValueGetter<Color>? sidebarPrimary, ValueGetter<Color>? sidebarPrimaryForeground, ValueGetter<Color>? sidebarAccent, ValueGetter<Color>? sidebarAccentForeground, ValueGetter<Color>? sidebarBorder, ValueGetter<Color>? sidebarRing});
+  ColorScheme copyWith({ValueGetter<Brightness>? brightness, ValueGetter<Color>? background, ValueGetter<Color>? foreground, ValueGetter<Color>? card, ValueGetter<Color>? cardForeground, ValueGetter<Color>? popover, ValueGetter<Color>? popoverForeground, ValueGetter<Color>? primary, ValueGetter<Color>? primaryForeground, ValueGetter<Color>? secondary, ValueGetter<Color>? secondaryForeground, ValueGetter<Color>? muted, ValueGetter<Color>? mutedForeground, ValueGetter<Color>? accent, ValueGetter<Color>? accentForeground, ValueGetter<Color>? destructive, ValueGetter<Color>? destructiveForeground, ValueGetter<Color>? border, ValueGetter<Color>? input, ValueGetter<Color>? ring, ValueGetter<Color>? chart1, ValueGetter<Color>? chart2, ValueGetter<Color>? chart3, ValueGetter<Color>? chart4, ValueGetter<Color>? chart5});
   List<Color> get chartColors;
   /// Linearly interpolates between two ColorSchemes.
   ///

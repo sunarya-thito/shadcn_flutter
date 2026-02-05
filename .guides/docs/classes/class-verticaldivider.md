@@ -23,8 +23,10 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   final Widget? child;
   /// Padding around the divider content.
   final EdgeInsetsGeometry? padding;
+  /// Alignment of the [child] along the divider axis.
+  final AxisAlignmentGeometry? childAlignment;
   /// Creates a vertical divider.
-  const VerticalDivider({super.key, this.color, this.width, this.thickness, this.indent, this.endIndent, this.child, this.padding = const EdgeInsets.symmetric(vertical: 8)});
+  const VerticalDivider({super.key, this.color, this.width, this.thickness, this.indent, this.endIndent, this.child, this.padding = const EdgeInsets.symmetric(vertical: 8), this.childAlignment});
   Size get preferredSize;
   Widget build(BuildContext context);
 }

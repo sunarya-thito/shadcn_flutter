@@ -21,5 +21,7 @@ class StaticPart extends InputPart {
   Widget build(BuildContext context, FormattedInputData data);
   String get partKey;
   String toString();
+  bool operator ==(Object other);
+  int get hashCode;
 }
 ```

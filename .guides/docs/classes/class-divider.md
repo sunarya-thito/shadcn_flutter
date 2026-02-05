@@ -64,8 +64,10 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
   final Widget? child;
   /// Padding around the divider content.
   final EdgeInsetsGeometry? padding;
+  /// Alignment of the [child] along the divider axis.
+  final AxisAlignmentGeometry? childAlignment;
   /// Creates a horizontal divider.
-  const Divider({super.key, this.color, this.height, this.thickness, this.indent, this.endIndent, this.child, this.padding});
+  const Divider({super.key, this.color, this.height, this.thickness, this.indent, this.endIndent, this.child, this.padding, this.childAlignment});
   Size get preferredSize;
   Widget build(BuildContext context);
 }

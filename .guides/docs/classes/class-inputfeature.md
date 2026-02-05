@@ -83,8 +83,30 @@ abstract class InputFeature {
   /// - [step] (`double`, default: 1): Increment/decrement step size.
   /// - [enableGesture] (`bool`, default: true): Enable drag gestures.
   /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
-  factory InputFeature.spinner({InputFeatureVisibility visibility, double step, bool enableGesture, double? invalidValue, bool skipFocusTraversal});
+  factory InputFeature.spinner({InputFeatureVisibility visibility, double step, bool enableGesture, double? invalidValue, double? min, double? max, bool skipFocusTraversal});
+  /// Creates an increment button feature for numeric inputs.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [step] (`double`, default: 1): Increment step size.
+  /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [icon] (`Widget?`, optional): Custom icon widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  factory InputFeature.incrementButton({InputFeatureVisibility visibility, InputFeaturePosition position, double step, double? invalidValue, Widget? icon, bool skipFocusTraversal});
+  /// Creates a decrement button feature for numeric inputs.
+  ///
+  /// Parameters:
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
+  /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
+  /// - [step] (`double`, default: 1): Decrement step size.
+  /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [icon] (`Widget?`, optional): Custom icon widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  factory InputFeature.decrementButton({InputFeatureVisibility visibility, InputFeaturePosition position, double step, double? invalidValue, Widget? icon, bool skipFocusTraversal});
   /// Creates a copy to clipboard button feature.
   ///
   /// Parameters:
@@ -110,6 +132,20 @@ abstract class InputFeature {
   factory InputFeature.leading(Widget child, {InputFeatureVisibility visibility, bool skipFocusTraversal});
   /// Creates a custom trailing widget feature.
   factory InputFeature.trailing(Widget child, {InputFeatureVisibility visibility, bool skipFocusTraversal});
+  /// Creates a custom widget feature displayed above the input text.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed above the input.
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  factory InputFeature.above(Widget? child, {InputFeatureVisibility visibility, bool skipFocusTraversal});
+  /// Creates a custom widget feature displayed below the input text.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed below the input.
+  /// - [visibility] (`InputFeatureVisibility`, default: always): When to show widget.
+  /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
+  factory InputFeature.below(Widget? child, {InputFeatureVisibility visibility, bool skipFocusTraversal});
   /// Visibility mode for this input feature.
   final InputFeatureVisibility visibility;
   /// Whether to skip this feature in focus traversal.
