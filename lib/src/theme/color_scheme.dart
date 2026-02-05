@@ -407,7 +407,7 @@ String hexFromColor(Color color) {
 ///
 /// Defines all the semantic colors used throughout the app including
 /// background, foreground, primary, secondary, destructive colors, etc.
-/// Also includes sidebar and chart colors.
+/// Also includes chart colors.
 class ColorScheme implements ChartColorScheme {
   /// Returns the color scheme for the given context.
   ///
@@ -511,30 +511,6 @@ class ColorScheme implements ChartColorScheme {
   /// The focus ring color.
   final Color ring;
 
-  /// The sidebar background color.
-  final Color sidebar;
-
-  /// The sidebar foreground color.
-  final Color sidebarForeground;
-
-  /// The sidebar primary color.
-  final Color sidebarPrimary;
-
-  /// The sidebar primary foreground color.
-  final Color sidebarPrimaryForeground;
-
-  /// The sidebar accent color.
-  final Color sidebarAccent;
-
-  /// The sidebar accent foreground color.
-  final Color sidebarAccentForeground;
-
-  /// The sidebar border color.
-  final Color sidebarBorder;
-
-  /// The sidebar ring color.
-  final Color sidebarRing;
-
   @override
   final Color chart1;
   @override
@@ -573,14 +549,6 @@ class ColorScheme implements ChartColorScheme {
     required this.chart3,
     required this.chart4,
     required this.chart5,
-    required this.sidebar,
-    required this.sidebarForeground,
-    required this.sidebarPrimary,
-    required this.sidebarPrimaryForeground,
-    required this.sidebarAccent,
-    required this.sidebarAccentForeground,
-    required this.sidebarBorder,
-    required this.sidebarRing,
   });
 
   /// Creates a color scheme from a map of color names to values.
@@ -610,14 +578,6 @@ class ColorScheme implements ChartColorScheme {
         chart3 = map._col('chart3'),
         chart4 = map._col('chart4'),
         chart5 = map._col('chart5'),
-        sidebar = map._col('sidebar'),
-        sidebarForeground = map._col('sidebarForeground'),
-        sidebarPrimary = map._col('sidebarPrimary'),
-        sidebarPrimaryForeground = map._col('sidebarPrimaryForeground'),
-        sidebarAccent = map._col('sidebarAccent'),
-        sidebarAccentForeground = map._col('sidebarAccentForeground'),
-        sidebarBorder = map._col('sidebarBorder'),
-        sidebarRing = map._col('sidebarRing'),
         brightness = Brightness.values
                 .where((element) => element.name == map['brightness'])
                 .firstOrNull ??
@@ -656,14 +616,6 @@ class ColorScheme implements ChartColorScheme {
       'chart3': hexFromColor(chart3),
       'chart4': hexFromColor(chart4),
       'chart5': hexFromColor(chart5),
-      'sidebar': hexFromColor(sidebar),
-      'sidebarForeground': hexFromColor(sidebarForeground),
-      'sidebarPrimary': hexFromColor(sidebarPrimary),
-      'sidebarPrimaryForeground': hexFromColor(sidebarPrimaryForeground),
-      'sidebarAccent': hexFromColor(sidebarAccent),
-      'sidebarAccentForeground': hexFromColor(sidebarAccentForeground),
-      'sidebarBorder': hexFromColor(sidebarBorder),
-      'sidebarRing': hexFromColor(sidebarRing),
       'brightness': brightness.name,
     };
   }
@@ -701,14 +653,6 @@ class ColorScheme implements ChartColorScheme {
       'chart3': chart3,
       'chart4': chart4,
       'chart5': chart5,
-      'sidebar': sidebar,
-      'sidebarForeground': sidebarForeground,
-      'sidebarPrimary': sidebarPrimary,
-      'sidebarPrimaryForeground': sidebarPrimaryForeground,
-      'sidebarAccent': sidebarAccent,
-      'sidebarAccentForeground': sidebarAccentForeground,
-      'sidebarBorder': sidebarBorder,
-      'sidebarRing': sidebarRing,
     };
   }
 
@@ -756,14 +700,6 @@ class ColorScheme implements ChartColorScheme {
           chart3: colors._col('chart3'),
           chart4: colors._col('chart4'),
           chart5: colors._col('chart5'),
-          sidebar: colors._col('sidebar'),
-          sidebarForeground: colors._col('sidebarForeground'),
-          sidebarPrimary: colors._col('sidebarPrimary'),
-          sidebarPrimaryForeground: colors._col('sidebarPrimaryForeground'),
-          sidebarAccent: colors._col('sidebarAccent'),
-          sidebarAccentForeground: colors._col('sidebarAccentForeground'),
-          sidebarBorder: colors._col('sidebarBorder'),
-          sidebarRing: colors._col('sidebarRing'),
         );
 
   /// Creates a copy of this ColorScheme with specified properties replaced.
@@ -807,14 +743,6 @@ class ColorScheme implements ChartColorScheme {
     ValueGetter<Color>? chart3,
     ValueGetter<Color>? chart4,
     ValueGetter<Color>? chart5,
-    ValueGetter<Color>? sidebar,
-    ValueGetter<Color>? sidebarForeground,
-    ValueGetter<Color>? sidebarPrimary,
-    ValueGetter<Color>? sidebarPrimaryForeground,
-    ValueGetter<Color>? sidebarAccent,
-    ValueGetter<Color>? sidebarAccentForeground,
-    ValueGetter<Color>? sidebarBorder,
-    ValueGetter<Color>? sidebarRing,
   }) {
     return ColorScheme(
       brightness: brightness == null ? this.brightness : brightness(),
@@ -854,23 +782,6 @@ class ColorScheme implements ChartColorScheme {
       chart3: chart3 == null ? this.chart3 : chart3(),
       chart4: chart4 == null ? this.chart4 : chart4(),
       chart5: chart5 == null ? this.chart5 : chart5(),
-      sidebar: sidebar == null ? this.sidebar : sidebar(),
-      sidebarForeground: sidebarForeground == null
-          ? this.sidebarForeground
-          : sidebarForeground(),
-      sidebarPrimary:
-          sidebarPrimary == null ? this.sidebarPrimary : sidebarPrimary(),
-      sidebarPrimaryForeground: sidebarPrimaryForeground == null
-          ? this.sidebarPrimaryForeground
-          : sidebarPrimaryForeground(),
-      sidebarAccent:
-          sidebarAccent == null ? this.sidebarAccent : sidebarAccent(),
-      sidebarAccentForeground: sidebarAccentForeground == null
-          ? this.sidebarAccentForeground
-          : sidebarAccentForeground(),
-      sidebarBorder:
-          sidebarBorder == null ? this.sidebarBorder : sidebarBorder(),
-      sidebarRing: sidebarRing == null ? this.sidebarRing : sidebarRing(),
     );
   }
 
@@ -917,17 +828,6 @@ class ColorScheme implements ChartColorScheme {
       chart3: Color.lerp(a.chart3, b.chart3, t)!,
       chart4: Color.lerp(a.chart4, b.chart4, t)!,
       chart5: Color.lerp(a.chart5, b.chart5, t)!,
-      sidebar: Color.lerp(a.sidebar, b.sidebar, t)!,
-      sidebarForeground:
-          Color.lerp(a.sidebarForeground, b.sidebarForeground, t)!,
-      sidebarPrimary: Color.lerp(a.sidebarPrimary, b.sidebarPrimary, t)!,
-      sidebarPrimaryForeground: Color.lerp(
-          a.sidebarPrimaryForeground, b.sidebarPrimaryForeground, t)!,
-      sidebarAccent: Color.lerp(a.sidebarAccent, b.sidebarAccent, t)!,
-      sidebarAccentForeground:
-          Color.lerp(a.sidebarAccentForeground, b.sidebarAccentForeground, t)!,
-      sidebarBorder: Color.lerp(a.sidebarBorder, b.sidebarBorder, t)!,
-      sidebarRing: Color.lerp(a.sidebarRing, b.sidebarRing, t)!,
     );
   }
 
@@ -959,15 +859,7 @@ class ColorScheme implements ChartColorScheme {
           chart2 == other.chart2 &&
           chart3 == other.chart3 &&
           chart4 == other.chart4 &&
-          chart5 == other.chart5 &&
-          sidebar == other.sidebar &&
-          sidebarForeground == other.sidebarForeground &&
-          sidebarPrimary == other.sidebarPrimary &&
-          sidebarPrimaryForeground == other.sidebarPrimaryForeground &&
-          sidebarAccent == other.sidebarAccent &&
-          sidebarAccentForeground == other.sidebarAccentForeground &&
-          sidebarBorder == other.sidebarBorder &&
-          sidebarRing == other.sidebarRing;
+          chart5 == other.chart5;
 
   @override
   int get hashCode => Object.hash(
@@ -994,26 +886,13 @@ class ColorScheme implements ChartColorScheme {
           input,
           ring,
         ),
-        Object.hash(
-            chart1,
-            chart2,
-            chart3,
-            chart4,
-            chart5,
-            sidebar,
-            sidebarForeground,
-            sidebarPrimary,
-            sidebarPrimaryForeground,
-            sidebarAccent,
-            sidebarAccentForeground,
-            sidebarBorder,
-            sidebarRing),
+        Object.hash(chart1, chart2, chart3, chart4, chart5),
       );
 
   @override
   String toString() {
     // ignore: deprecated_member_use_from_same_package
-    return 'ColorScheme{brightness: $brightness, background: $background, foreground: $foreground, card: $card, cardForeground: $cardForeground, popover: $popover, popoverForeground: $popoverForeground, primary: $primary, primaryForeground: $primaryForeground, secondary: $secondary, secondaryForeground: $secondaryForeground, muted: $muted, mutedForeground: $mutedForeground, accent: $accent, accentForeground: $accentForeground, destructive: $destructive, destructiveForeground: $destructiveForeground, border: $border, input: $input, ring: $ring, chart1: $chart1, chart2: $chart2, chart3: $chart3, chart4: $chart4, chart5: $chart5, sidebar: $sidebar, sidebarForeground: $sidebarForeground, sidebarPrimary: $sidebarPrimary, sidebarPrimaryForeground: $sidebarPrimaryForeground, sidebarAccent: $sidebarAccent, sidebarAccentForeground: $sidebarAccentForeground, sidebarBorder: $sidebarBorder, sidebarRing: $sidebarRing}';
+    return 'ColorScheme{brightness: $brightness, background: $background, foreground: $foreground, card: $card, cardForeground: $cardForeground, popover: $popover, popoverForeground: $popoverForeground, primary: $primary, primaryForeground: $primaryForeground, secondary: $secondary, secondaryForeground: $secondaryForeground, muted: $muted, mutedForeground: $mutedForeground, accent: $accent, accentForeground: $accentForeground, destructive: $destructive, destructiveForeground: $destructiveForeground, border: $border, input: $input, ring: $ring, chart1: $chart1, chart2: $chart2, chart3: $chart3, chart4: $chart4, chart5: $chart5}';
   }
 }
 
@@ -1039,4 +918,58 @@ extension _DynamicMapColorGetter on Map<String, dynamic> {
     assert(parse != null, 'ColorScheme: Invalid hex color value $value');
     return Color(parse!);
   }
+}
+
+extension ColorSchemeRecolorExtension on ColorScheme {
+  ColorScheme recolor(Color primary) {
+    return copyWith(
+      primary: () => primary,
+      primaryForeground: () => primary.getContrastColor(),
+      ring: () => primary,
+    );
+  }
+
+  ColorScheme get slate => recolor(Colors.slate);
+
+  ColorScheme get gray => recolor(Colors.gray);
+
+  ColorScheme get zinc => recolor(Colors.zinc);
+
+  ColorScheme get neutral => recolor(Colors.neutral);
+
+  ColorScheme get stone => recolor(Colors.stone);
+
+  ColorScheme get red => recolor(Colors.red);
+
+  ColorScheme get orange => recolor(Colors.orange);
+
+  ColorScheme get amber => recolor(Colors.amber);
+
+  ColorScheme get yellow => recolor(Colors.yellow);
+
+  ColorScheme get lime => recolor(Colors.lime);
+
+  ColorScheme get green => recolor(Colors.green);
+
+  ColorScheme get emerald => recolor(Colors.emerald);
+
+  ColorScheme get teal => recolor(Colors.teal);
+
+  ColorScheme get cyan => recolor(Colors.cyan);
+
+  ColorScheme get sky => recolor(Colors.sky);
+
+  ColorScheme get blue => recolor(Colors.blue);
+
+  ColorScheme get indigo => recolor(Colors.indigo);
+
+  ColorScheme get violet => recolor(Colors.violet);
+
+  ColorScheme get purple => recolor(Colors.purple);
+
+  ColorScheme get fuchsia => recolor(Colors.fuchsia);
+
+  ColorScheme get pink => recolor(Colors.pink);
+
+  ColorScheme get rose => recolor(Colors.rose);
 }

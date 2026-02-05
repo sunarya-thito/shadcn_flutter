@@ -12,7 +12,7 @@ class AppExample2 extends StatelessWidget {
     return const ShadcnApp(
       theme: ThemeData(
           // Customize light mode colors and design tokens.
-          colorScheme: ColorSchemes.lightGreen,
+          colorScheme: ColorSchemes.lightSlate,
           // Corner radius scale applied across components.
           radius: 0.25,
           // Global size scale multiplier.
@@ -31,7 +31,7 @@ class AppExample2 extends StatelessWidget {
           )),
       darkTheme: ThemeData.dark(
           // Mirror customizations for dark mode.
-          colorScheme: ColorSchemes.darkGreen,
+          colorScheme: ColorSchemes.darkSlate,
           radius: 0.25,
           scaling: 1.2,
           surfaceOpacity: 0.8,

@@ -43,10 +43,10 @@ class AppExample3 extends StatelessWidget {
         ),
       ]),
       theme: const ThemeData(
-        colorScheme: ColorSchemes.lightGreen,
+        colorScheme: ColorSchemes.lightSlate,
       ),
       darkTheme: const ThemeData.dark(
-        colorScheme: ColorSchemes.darkGreen,
+        colorScheme: ColorSchemes.darkSlate,
       ),
     );
   }

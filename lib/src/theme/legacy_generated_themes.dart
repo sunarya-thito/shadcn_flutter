@@ -64,16 +64,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 240.0, 0.06, 0.1).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 240.0, 0.05, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 240.0, 0.06, 0.1).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 240.0, 0.06, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 240.0, 0.06, 0.1).toColor(),
     );
   }
 
@@ -106,16 +96,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 240.0, 0.06, 0.1).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 240.0, 0.04, 0.16).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 240.0, 0.04, 0.16).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 240.0, 0.05, 0.84).toColor(),
     );
   }
 
@@ -162,17 +142,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarForeground:
-          const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 222.2, 0.47, 0.11).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 222.2, 0.47, 0.11).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 214.3, 0.32, 0.91).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
     );
   }
 
@@ -207,16 +176,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 222.2, 0.47, 0.11).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 217.2, 0.33, 0.18).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 217.2, 0.33, 0.18).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 212.7, 0.27, 0.84).toColor(),
     );
   }
 
@@ -261,16 +220,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 60.0, 0.05, 0.98).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 60.0, 0.05, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 20.0, 0.06, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
     );
   }
 
@@ -304,16 +253,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 24.0, 0.06, 0.83).toColor(),
     );
   }
 
@@ -360,17 +299,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarForeground:
-          const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 220.9, 0.39, 0.11).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 220.0, 0.14, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 220.9, 0.39, 0.11).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 220.0, 0.13, 0.91).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
     );
   }
 
@@ -405,16 +333,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 220.9, 0.39, 0.11).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 215.0, 0.28, 0.17).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 215.0, 0.28, 0.17).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 216.0, 0.12, 0.84).toColor(),
     );
   }
 
@@ -459,16 +377,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.09).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.09).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
     );
   }
 
@@ -501,16 +409,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.09).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.15).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.15).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.83).toColor(),
     );
   }
 
@@ -555,16 +453,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 0.0, 0.86, 0.97).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 0.0, 0.72, 0.51).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.86, 0.97).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.09).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 0.0, 0.72, 0.51).toColor(),
     );
   }
 
@@ -597,16 +485,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 0.0, 0.72, 0.51).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.86, 0.97).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.15).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.15).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 0.0, 0.72, 0.51).toColor(),
     );
   }
 
@@ -652,16 +530,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 355.7, 1.0, 0.97).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 346.8, 0.77, 0.5).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 355.7, 1.0, 0.97).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 240.0, 0.05, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 240.0, 0.06, 0.1).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 240.0, 0.06, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 346.8, 0.77, 0.5).toColor(),
     );
   }
 
@@ -694,16 +562,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.95).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 346.8, 0.77, 0.5).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 355.7, 1.0, 0.97).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 240.0, 0.04, 0.16).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 240.0, 0.04, 0.16).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 346.8, 0.77, 0.5).toColor(),
     );
   }
 
@@ -748,16 +606,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 24.6, 0.95, 0.53).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 60.0, 0.05, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 20.0, 0.06, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 24.6, 0.95, 0.53).toColor(),
     );
   }
 
@@ -791,16 +639,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 20.5, 0.9, 0.48).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 20.5, 0.9, 0.48).toColor(),
     );
   }
 
@@ -846,16 +684,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 355.7, 1.0, 0.97).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 142.1, 0.76, 0.36).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 355.7, 1.0, 0.97).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 240.0, 0.05, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 240.0, 0.06, 0.1).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 240.0, 0.06, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 142.1, 0.76, 0.36).toColor(),
     );
   }
 
@@ -888,16 +716,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.95).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 142.1, 0.71, 0.45).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 144.9, 0.8, 0.1).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 240.0, 0.04, 0.16).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 142.4, 0.72, 0.29).toColor(),
     );
   }
 
@@ -944,17 +762,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarForeground:
-          const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 221.2, 0.83, 0.53).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 222.2, 0.47, 0.11).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 214.3, 0.32, 0.91).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 221.2, 0.83, 0.53).toColor(),
     );
   }
 
@@ -989,16 +796,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 222.2, 0.84, 0.05).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 217.2, 0.91, 0.6).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 222.2, 0.47, 0.11).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 217.2, 0.33, 0.18).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.4, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 217.2, 0.33, 0.18).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 224.3, 0.76, 0.48).toColor(),
     );
   }
 
@@ -1043,16 +840,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 47.9, 0.96, 0.53).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 26.0, 0.83, 0.14).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 60.0, 0.05, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 24.0, 0.1, 0.1).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 20.0, 0.06, 0.9).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
     );
   }
 
@@ -1086,16 +873,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 20.0, 0.14, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 47.9, 0.96, 0.53).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 26.0, 0.83, 0.14).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 60.0, 0.09, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 12.0, 0.07, 0.15).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 35.5, 0.92, 0.33).toColor(),
     );
   }
 
@@ -1142,17 +919,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
       chart4: const HSLColor.fromAHSL(1, 43.0, 0.74, 0.66).toColor(),
       chart5: const HSLColor.fromAHSL(1, 27.0, 0.87, 0.67).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
-      sidebarForeground:
-          const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 262.1, 0.83, 0.58).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 220.0, 0.14, 0.96).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 220.9, 0.39, 0.11).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 220.0, 0.13, 0.91).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 262.1, 0.83, 0.58).toColor(),
     );
   }
 
@@ -1186,16 +952,6 @@ class LegacyColorSchemes {
       chart3: const HSLColor.fromAHSL(1, 30.0, 0.8, 0.55).toColor(),
       chart4: const HSLColor.fromAHSL(1, 280.0, 0.65, 0.6).toColor(),
       chart5: const HSLColor.fromAHSL(1, 340.0, 0.75, 0.55).toColor(),
-      sidebar: const HSLColor.fromAHSL(1, 224.0, 0.71, 0.04).toColor(),
-      sidebarForeground: const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarPrimary: const HSLColor.fromAHSL(1, 263.4, 0.7, 0.5).toColor(),
-      sidebarPrimaryForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarAccent: const HSLColor.fromAHSL(1, 215.0, 0.28, 0.17).toColor(),
-      sidebarAccentForeground:
-          const HSLColor.fromAHSL(1, 210.0, 0.2, 0.98).toColor(),
-      sidebarBorder: const HSLColor.fromAHSL(1, 215.0, 0.28, 0.17).toColor(),
-      sidebarRing: const HSLColor.fromAHSL(1, 263.4, 0.7, 0.5).toColor(),
     );
   }
 
