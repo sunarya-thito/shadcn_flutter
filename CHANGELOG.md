@@ -15,6 +15,7 @@
   `InputFeaturePosition.above`/`below`
 - Add `Divider.childAlignment` to align divider content
 - Add `Widget.sized(size:)` convenience overload
+- Add `FadedScrollableViewport` helper for scroll fade masks
 - [#371] Create a new page to explain GoRouter integration (by @xdidx)
 
 ### Breaking Changes
@@ -52,7 +53,6 @@ final bg = colors.background; // or a custom ThemeExtension
 - Align remaining layout and form spacing with density defaults
 - Revamp the theme docs page with a kitchen-sink preview and right-side options
   panel
-- Regenerate base color schemes from JSON palettes and switch defaults to Slate
 
 ### Fixed
 
