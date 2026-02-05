@@ -70,6 +70,9 @@ class DividerTheme extends ComponentThemeData {
   /// Padding around the [Divider.child].
   final EdgeInsetsGeometry? padding;
 
+  /// Alignment of [Divider.child] along the divider axis.
+  final AxisAlignmentGeometry? childAlignment;
+
   /// Creates a [DividerTheme].
   const DividerTheme({
     this.color,
@@ -78,6 +81,7 @@ class DividerTheme extends ComponentThemeData {
     this.indent,
     this.endIndent,
     this.padding,
+    this.childAlignment,
   });
 
   /// Creates a copy of this theme but with the given fields replaced by the
@@ -89,6 +93,7 @@ class DividerTheme extends ComponentThemeData {
     ValueGetter<double?>? indent,
     ValueGetter<double?>? endIndent,
     ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<AxisAlignmentGeometry?>? childAlignment,
   }) {
     return DividerTheme(
       color: color == null ? this.color : color(),
@@ -97,6 +102,8 @@ class DividerTheme extends ComponentThemeData {
       indent: indent == null ? this.indent : indent(),
       endIndent: endIndent == null ? this.endIndent : endIndent(),
       padding: padding == null ? this.padding : padding(),
+      childAlignment:
+          childAlignment == null ? this.childAlignment : childAlignment(),
     );
   }
 
@@ -108,11 +115,12 @@ class DividerTheme extends ComponentThemeData {
       thickness == other.thickness &&
       indent == other.indent &&
       endIndent == other.endIndent &&
-      padding == other.padding;
+      padding == other.padding &&
+      childAlignment == other.childAlignment;
 
   @override
-  int get hashCode =>
-      Object.hash(color, height, thickness, indent, endIndent, padding);
+  int get hashCode => Object.hash(
+      color, height, thickness, indent, endIndent, padding, childAlignment);
 }
 
 /// A horizontal line widget used to visually separate content sections.
@@ -182,6 +190,9 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
   /// Padding around the divider content.
   final EdgeInsetsGeometry? padding;
 
+  /// Alignment of the [child] along the divider axis.
+  final AxisAlignmentGeometry? childAlignment;
+
   /// Creates a horizontal divider.
   const Divider({
     super.key,
@@ -192,6 +203,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     this.endIndent,
     this.child,
     this.padding,
+    this.childAlignment,
   });
 
   @override
@@ -201,11 +213,13 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<DividerTheme>(context);
+    final textDirection = Directionality.maybeOf(context) ?? TextDirection.ltr;
     final color = styleValue(
       widgetValue: this.color,
       themeValue: compTheme?.color,
       defaultValue: theme.colorScheme.border,
     );
+    final densityGap = theme.density.baseGap * theme.scaling;
     final thickness = styleValue(
       widgetValue: this.thickness,
       themeValue: compTheme?.thickness,
@@ -229,64 +243,83 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     final padding = styleValue(
       widgetValue: this.padding,
       themeValue: compTheme?.padding,
-      defaultValue: EdgeInsets.symmetric(horizontal: theme.scaling * 8),
+      defaultValue: EdgeInsets.symmetric(horizontal: densityGap),
     );
+    final childAlignment = styleValue(
+      widgetValue: this.childAlignment,
+      themeValue: compTheme?.childAlignment,
+      defaultValue: AxisAlignment.center,
+    ).resolve(textDirection);
     if (child != null) {
+      final clampedAlignmentValue =
+          childAlignment.value.clamp(-1.0, 1.0) as double;
+      final leftRatio = (clampedAlignmentValue + 1) / 2;
+      final rightRatio = 1 - leftRatio;
+      final leftFlex = (leftRatio * 1000).round();
+      final rightFlex = (rightRatio * 1000).round();
       return SizedBox(
         width: double.infinity,
         child: IntrinsicHeight(
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: SizedBox(
-                  height: height,
-                  child: AnimatedValueBuilder(
-                      value: DividerProperties(
-                        color: color,
-                        thickness: thickness,
-                        indent: indent,
-                        endIndent: 0,
-                      ),
-                      duration: kDefaultDuration,
-                      lerp: DividerProperties.lerp,
-                      builder: (context, value, child) {
-                        return CustomPaint(
-                          painter: DividerPainter(
-                            color: value.color,
-                            thickness: value.thickness,
-                            indent: value.indent,
-                            endIndent: value.endIndent,
-                          ),
-                        );
-                      }),
-                ),
-              ),
+              if (leftFlex > 0)
+                Expanded(
+                  flex: leftFlex,
+                  child: SizedBox(
+                    height: height,
+                    child: AnimatedValueBuilder(
+                        value: DividerProperties(
+                          color: color,
+                          thickness: thickness,
+                          indent: indent,
+                          endIndent: 0,
+                        ),
+                        duration: kDefaultDuration,
+                        lerp: DividerProperties.lerp,
+                        builder: (context, value, child) {
+                          return CustomPaint(
+                            painter: DividerPainter(
+                              color: value.color,
+                              thickness: value.thickness,
+                              indent: value.indent,
+                              endIndent: value.endIndent,
+                            ),
+                          );
+                        }),
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
               child!.muted().small().withPadding(padding: padding),
-              Expanded(
-                child: SizedBox(
-                  height: height,
-                  child: AnimatedValueBuilder(
-                      value: DividerProperties(
-                        color: color,
-                        thickness: thickness,
-                        indent: 0,
-                        endIndent: endIndent,
-                      ),
-                      duration: kDefaultDuration,
-                      lerp: DividerProperties.lerp,
-                      builder: (context, value, child) {
-                        return CustomPaint(
-                          painter: DividerPainter(
-                            color: value.color,
-                            thickness: value.thickness,
-                            indent: value.indent,
-                            endIndent: value.endIndent,
-                          ),
-                        );
-                      }),
-                ),
-              ),
+              if (rightFlex > 0)
+                Expanded(
+                  flex: rightFlex,
+                  child: SizedBox(
+                    height: height,
+                    child: AnimatedValueBuilder(
+                        value: DividerProperties(
+                          color: color,
+                          thickness: thickness,
+                          indent: 0,
+                          endIndent: endIndent,
+                        ),
+                        duration: kDefaultDuration,
+                        lerp: DividerProperties.lerp,
+                        builder: (context, value, child) {
+                          return CustomPaint(
+                            painter: DividerPainter(
+                              color: value.color,
+                              thickness: value.thickness,
+                              indent: value.indent,
+                              endIndent: value.endIndent,
+                            ),
+                          );
+                        }),
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
             ],
           ),
         ),
@@ -432,6 +465,9 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   /// Padding around the divider content.
   final EdgeInsetsGeometry? padding;
 
+  /// Alignment of the [child] along the divider axis.
+  final AxisAlignmentGeometry? childAlignment;
+
   /// Creates a vertical divider.
   const VerticalDivider({
     super.key,
@@ -442,6 +478,7 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
     this.endIndent,
     this.child,
     this.padding = const EdgeInsets.symmetric(vertical: 8),
+    this.childAlignment,
   });
 
   @override
@@ -450,62 +487,79 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textDirection = Directionality.maybeOf(context) ?? TextDirection.ltr;
+    final resolvedChildAlignment =
+        (childAlignment ?? AxisAlignment.center).resolve(textDirection);
     if (child != null) {
+      final clampedAlignmentValue =
+          resolvedChildAlignment.value.clamp(-1.0, 1.0);
+      final topRatio = (clampedAlignmentValue + 1) / 2;
+      final bottomRatio = 1 - topRatio;
+      final topFlex = (topRatio * 1000).round();
+      final bottomFlex = (bottomRatio * 1000).round();
       return SizedBox(
         height: double.infinity,
         child: IntrinsicWidth(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: SizedBox(
-                  width: width ?? 1,
-                  child: AnimatedValueBuilder(
-                      value: DividerProperties(
-                        color: color ?? theme.colorScheme.border,
-                        thickness: thickness ?? 1,
-                        indent: indent ?? 0,
-                        endIndent: 0,
-                      ),
-                      duration: kDefaultDuration,
-                      lerp: DividerProperties.lerp,
-                      builder: (context, value, child) {
-                        return CustomPaint(
-                          painter: VerticalDividerPainter(
-                            color: value.color,
-                            thickness: value.thickness,
-                            indent: value.indent,
-                            endIndent: value.endIndent,
-                          ),
-                        );
-                      }),
-                ),
-              ),
+              if (topFlex > 0)
+                Expanded(
+                  flex: topFlex,
+                  child: SizedBox(
+                    width: width ?? 1,
+                    child: AnimatedValueBuilder(
+                        value: DividerProperties(
+                          color: color ?? theme.colorScheme.border,
+                          thickness: thickness ?? 1,
+                          indent: indent ?? 0,
+                          endIndent: 0,
+                        ),
+                        duration: kDefaultDuration,
+                        lerp: DividerProperties.lerp,
+                        builder: (context, value, child) {
+                          return CustomPaint(
+                            painter: VerticalDividerPainter(
+                              color: value.color,
+                              thickness: value.thickness,
+                              indent: value.indent,
+                              endIndent: value.endIndent,
+                            ),
+                          );
+                        }),
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
               child!.muted().small().withPadding(padding: padding),
-              Expanded(
-                child: SizedBox(
-                  width: width ?? 1,
-                  child: AnimatedValueBuilder(
-                      value: DividerProperties(
-                        color: color ?? theme.colorScheme.border,
-                        thickness: thickness ?? 1,
-                        indent: 0,
-                        endIndent: endIndent ?? 0,
-                      ),
-                      duration: kDefaultDuration,
-                      lerp: DividerProperties.lerp,
-                      builder: (context, value, child) {
-                        return CustomPaint(
-                          painter: VerticalDividerPainter(
-                            color: value.color,
-                            thickness: value.thickness,
-                            indent: value.indent,
-                            endIndent: value.endIndent,
-                          ),
-                        );
-                      }),
-                ),
-              ),
+              if (bottomFlex > 0)
+                Expanded(
+                  flex: bottomFlex,
+                  child: SizedBox(
+                    width: width ?? 1,
+                    child: AnimatedValueBuilder(
+                        value: DividerProperties(
+                          color: color ?? theme.colorScheme.border,
+                          thickness: thickness ?? 1,
+                          indent: 0,
+                          endIndent: endIndent ?? 0,
+                        ),
+                        duration: kDefaultDuration,
+                        lerp: DividerProperties.lerp,
+                        builder: (context, value, child) {
+                          return CustomPaint(
+                            painter: VerticalDividerPainter(
+                              color: value.color,
+                              thickness: value.thickness,
+                              indent: value.indent,
+                              endIndent: value.endIndent,
+                            ),
+                          );
+                        }),
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
             ],
           ),
         ),
