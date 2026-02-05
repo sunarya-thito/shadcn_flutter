@@ -22,7 +22,7 @@ dependencies:
   phonecodes: ^0.0.4
   cross_file: ^0.3.4+2
   web: ^1.1.1
-  data_widget: ^0.0.2
+  data_widget: ^0.0.3
   gap: ^3.0.1
   expressions: ^0.2.5+2
   animation_kit: ^0.0.2

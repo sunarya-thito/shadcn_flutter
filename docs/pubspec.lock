@@ -101,10 +101,10 @@ packages:
     dependency: transitive
     description:
       name: data_widget
-      sha256: "95388df890189014f702b7e93f9de6bcf7d45143a99f6288f31899f10be441ba"
+      sha256: "4947aae3c50635496d56f94ad18de98e19015c5ebf01abee0f39a2c098c7021a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.3"
   device_info_plus:
     dependency: transitive
     description:
@@ -435,7 +435,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.47"
+    version: "0.0.48"
   shared_preferences:
     dependency: "direct main"
     description:
