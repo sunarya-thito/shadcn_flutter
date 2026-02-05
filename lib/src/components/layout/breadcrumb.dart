@@ -43,7 +43,6 @@ class _ArrowSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    final densityGap = theme.density.baseGap * scaling;
     final densityContentPadding = theme.density.baseContentPadding * scaling;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: densityContentPadding * 0.75),

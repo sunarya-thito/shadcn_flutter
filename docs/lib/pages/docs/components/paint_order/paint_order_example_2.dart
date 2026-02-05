@@ -59,7 +59,7 @@ class _PaintOrderExample2State extends State<PaintOrderExample2> {
             ],
           ),
           const SizedBox(height: 16),
-          Text('Tap a card to bring it to front'),
+          const Text('Tap a card to bring it to front'),
         ],
       ),
     );

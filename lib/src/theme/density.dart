@@ -244,7 +244,7 @@ class DirectionalEdgeInsetsDensity extends EdgeInsetsDirectional
   }) : super.only();
 
   /// Creates directional density insets with the same value on all sides.
-  const DirectionalEdgeInsetsDensity.all(double value) : super.all(value);
+  const DirectionalEdgeInsetsDensity.all(super.value) : super.all();
 
   /// Creates directional density insets with symmetric values.
   const DirectionalEdgeInsetsDensity.symmetric({
@@ -298,7 +298,7 @@ class EdgeInsetsDensity extends EdgeInsets
   }) : super.only();
 
   /// Creates density insets with the same value on all sides.
-  const EdgeInsetsDensity.all(double value) : super.all(value);
+  const EdgeInsetsDensity.all(super.value) : super.all();
 
   /// Creates density insets with symmetric values.
   const EdgeInsetsDensity.symmetric({

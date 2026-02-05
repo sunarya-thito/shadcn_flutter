@@ -27,10 +27,10 @@ class DividerExample4 extends StatelessWidget {
           PaintOrder(
             paintOrder: 3,
             child: VerticalDivider(
-              childAlignment: AxisAlignment(-0.6),
+              childAlignment: const AxisAlignment(-0.6),
               padding: EdgeInsets.zero,
               child: IconButton.outline(
-                icon: Icon(Icons.arrow_back_ios_new),
+                icon: const Icon(Icons.arrow_back_ios_new),
                 shape: ButtonShape.circle,
                 size: ButtonSize.small,
                 onPressed: () {},

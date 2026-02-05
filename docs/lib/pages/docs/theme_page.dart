@@ -287,7 +287,7 @@ class _ThemePageState extends State<ThemePage> {
                           ),
                         ),
                         child: _buildAppBar(
-                          EdgeInsets.only(
+                          const EdgeInsets.only(
                                   top: 12, bottom: 12, left: 32, right: 32) *
                               Theme.of(context).scaling,
                         ),
@@ -306,7 +306,7 @@ class _ThemePageState extends State<ThemePage> {
                       child: SingleChildScrollView(
                         key: const PageStorageKey('sidebar'),
                         padding:
-                            EdgeInsets.only(top: 32, left: 24, bottom: 32) *
+                            const EdgeInsets.only(top: 32, left: 24, bottom: 32) *
                                 Theme.of(context).scaling,
                         child: _ThemeSidebar(
                           sections: DocsPageState.sections,
@@ -396,29 +396,29 @@ class _ThemePageState extends State<ThemePage> {
   Widget _buildKitchenPreview(BuildContext context) {
     return MediaQueryVisibility(
       minWidth: 1350,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: _buildKitchenPaymentMethod(context)),
-          DensityGap(gap2xl),
-          Expanded(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 400),
-              child: _buildKitchenInputs(context),
-            ),
-          ),
-          DensityGap(gap2xl),
-          Expanded(child: _buildKitchenAppearanceSettings(context)),
-        ],
-      ),
       alternateChild: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildKitchenPaymentMethod(context),
-          DensityGap(gap2xl),
+          const DensityGap(gap2xl),
           _buildKitchenInputs(context),
-          DensityGap(gap2xl),
+          const DensityGap(gap2xl),
           _buildKitchenAppearanceSettings(context),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: _buildKitchenPaymentMethod(context)),
+          const DensityGap(gap2xl),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: _buildKitchenInputs(context),
+            ),
+          ),
+          const DensityGap(gap2xl),
+          Expanded(child: _buildKitchenAppearanceSettings(context)),
         ],
       ),
     );
@@ -427,20 +427,20 @@ class _ThemePageState extends State<ThemePage> {
   Widget _buildKitchenPaymentMethod(BuildContext context) {
     final currentYear = DateTime.now().year;
     return Card(
-      padding: EdgeInsetsDensity.all(padMd),
+      padding: const EdgeInsetsDensity.all(padMd),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Payment Method').medium,
-          DensityGap(gapXs),
-          Text('All transactions are secure and encrypted.').muted.small,
-          DensityGap(gapXl),
-          Text('Name on Card').medium,
-          DensityGap(gapSm),
-          TextField(
+          const Text('Payment Method').medium,
+          const DensityGap(gapXs),
+          const Text('All transactions are secure and encrypted.').muted.small,
+          const DensityGap(gapXl),
+          const Text('Name on Card').medium,
+          const DensityGap(gapSm),
+          const TextField(
             placeholder: Text('John Doe'),
           ),
-          DensityGap(gapXl),
+          const DensityGap(gapXl),
           Row(
             children: [
               Flexible(
@@ -448,23 +448,23 @@ class _ThemePageState extends State<ThemePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Card Number').medium,
-                    DensityGap(gapSm),
-                    TextField(
+                    const Text('Card Number').medium,
+                    const DensityGap(gapSm),
+                    const TextField(
                       placeholder: Text('1234 5678 9012 3456'),
                     ),
                   ],
                 ),
               ),
-              DensityGap(gapXl),
+              const DensityGap(gapXl),
               Flexible(
                 flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('CVV').medium,
-                    DensityGap(gapSm),
-                    TextField(
+                    const Text('CVV').medium,
+                    const DensityGap(gapSm),
+                    const TextField(
                       placeholder: Text('123'),
                     ),
                   ],
@@ -472,9 +472,9 @@ class _ThemePageState extends State<ThemePage> {
               ),
             ],
           ),
-          DensityGap(gapMd),
-          Text('Enter your 16-digit number.').muted,
-          DensityGap(gapLg),
+          const DensityGap(gapMd),
+          const Text('Enter your 16-digit number.').muted,
+          const DensityGap(gapLg),
           // [Month | Year]
           Row(
             children: [
@@ -483,10 +483,10 @@ class _ThemePageState extends State<ThemePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Month').medium,
-                    DensityGap(gapSm),
+                    const Text('Month').medium,
+                    const DensityGap(gapSm),
                     Select<String>(
-                      placeholder: Text('MM'),
+                      placeholder: const Text('MM'),
                       itemBuilder: (context, item) => Text(item),
                       value: null,
                       onChanged: (value) {},
@@ -504,16 +504,16 @@ class _ThemePageState extends State<ThemePage> {
                   ],
                 ),
               ),
-              DensityGap(gapXl),
+              const DensityGap(gapXl),
               Flexible(
                 flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Year').medium,
-                    DensityGap(gapSm),
+                    const Text('Year').medium,
+                    const DensityGap(gapSm),
                     Select<String>(
-                      placeholder: Text('YYYY'),
+                      placeholder: const Text('YYYY'),
                       itemBuilder: (context, item) => Text(item),
                       value: null,
                       onChanged: (value) {},
@@ -533,40 +533,40 @@ class _ThemePageState extends State<ThemePage> {
               ),
             ],
           ),
-          DensityGap(gapXl),
-          Divider(),
-          DensityGap(gapXl),
-          Text('Billing Address').medium,
-          DensityGap(gapXs),
-          Text('The billing address associated with your payment method')
+          const DensityGap(gapXl),
+          const Divider(),
+          const DensityGap(gapXl),
+          const Text('Billing Address').medium,
+          const DensityGap(gapXs),
+          const Text('The billing address associated with your payment method')
               .muted
               .small,
-          DensityGap(gapMd),
+          const DensityGap(gapMd),
           Checkbox(
             state: CheckboxState.checked,
             onChanged: (value) {},
-            trailing: Text('Same as shipping address'),
+            trailing: const Text('Same as shipping address'),
           ),
-          DensityGap(gapXl),
-          Divider(),
-          DensityGap(gapXl),
-          Text('Comments').medium,
-          DensityGap(gapSm),
-          TextArea(
+          const DensityGap(gapXl),
+          const Divider(),
+          const DensityGap(gapXl),
+          const Text('Comments').medium,
+          const DensityGap(gapSm),
+          const TextArea(
             placeholder: Text('Add any additional comments'),
             expandableHeight: true,
             minHeight: 70,
           ),
-          DensityGap(gapLg),
+          const DensityGap(gapLg),
           Row(
             children: [
               Button.primary(
-                child: Text('Submit'),
+                child: const Text('Submit'),
                 onPressed: () {},
               ),
-              DensityGap(gapMd),
+              const DensityGap(gapMd),
               Button.outline(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {},
               ),
             ],
@@ -581,19 +581,19 @@ class _ThemePageState extends State<ThemePage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildKitchenMembers(context),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenBadges(context),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenChatBox(context),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenPriceRange(),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenSearch(),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenURL(),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenAIChat(),
-        DensityGap(gapXl),
+        const DensityGap(gapXl),
         _buildKitchenMentions(),
       ],
     );
@@ -613,14 +613,14 @@ class _ThemePageState extends State<ThemePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Two-factor authentication').medium,
-                      DensityGap(gapXs),
-                      Text('Verify via email or phone number.').muted.small,
+                      const Text('Two-factor authentication').medium,
+                      const DensityGap(gapXs),
+                      const Text('Verify via email or phone number.').muted.small,
                     ],
                   ),
                 ),
                 Button.primary(
-                  style: ButtonStyle.primary(
+                  style: const ButtonStyle.primary(
                     density: ButtonDensity.dense,
                   ),
                   child: const Text('Enable'),
@@ -629,72 +629,72 @@ class _ThemePageState extends State<ThemePage> {
               ],
             ),
           ),
-          DensityGap(gapMd),
+          const DensityGap(gapMd),
           Card(
             child: Row(
               children: [
                 const Icon(LucideIcons.badgeCheck).iconMutedForeground(),
-                DensityGap(gapSm),
+                const DensityGap(gapSm),
                 Expanded(
-                  child: Text('Your profile has been verified.').medium,
+                  child: const Text('Your profile has been verified.').medium,
                 ),
                 const Icon(Icons.chevron_right).iconMutedForeground(),
               ],
             ),
           ),
-          DensityGap(gapXl),
+          const DensityGap(gapXl),
           Divider(
-            child: Text('Appearance Settings').muted.small,
+            child: const Text('Appearance Settings').muted.small,
           ),
-          DensityGap(gapXl),
-          Text('Compute Environment').medium,
-          DensityGap(gapXs),
-          Text('Select the compute environment for your cluster.').muted.small,
-          DensityGap(gapMd),
+          const DensityGap(gapXl),
+          const Text('Compute Environment').medium,
+          const DensityGap(gapXs),
+          const Text('Select the compute environment for your cluster.').muted.small,
+          const DensityGap(gapMd),
           RadioCard(
             filled: true,
+            value: true,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text('Kubernetes').medium,
-                    Spacer(),
-                    Radio(value: true),
+                    const Text('Kubernetes').medium,
+                    const Spacer(),
+                    const Radio(value: true),
                   ],
                 ),
-                DensityGap(gapSm),
-                Text(
+                const DensityGap(gapSm),
+                const Text(
                   'Run GPU workloads on a K8s configured cluster. This is the default.',
                 ).muted.small,
               ],
             ),
-            value: true,
           ),
-          DensityGap(gapSm),
+          const DensityGap(gapSm),
           RadioCard(
             filled: true,
+            value: false,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text('Virtual Machine').medium,
-                    Spacer(),
-                    Radio(value: false),
+                    const Text('Virtual Machine').medium,
+                    const Spacer(),
+                    const Radio(value: false),
                   ],
                 ),
-                DensityGap(gapSm),
-                Text(
+                const DensityGap(gapSm),
+                const Text(
                   'Access a VM configured cluster to run workloads. (Coming soon)',
                 ).muted.small,
               ],
             ),
-            value: false,
           ),
-          DensityGap(gapXl),
-          Divider(),
-          DensityGap(gapXl),
+          const DensityGap(gapXl),
+          const Divider(),
+          const DensityGap(gapXl),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -703,9 +703,9 @@ class _ThemePageState extends State<ThemePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Number of GPUs').medium,
-                    DensityGap(gapXs),
-                    Text('You can add more later.').muted.small,
+                    const Text('Number of GPUs').medium,
+                    const DensityGap(gapXs),
+                    const Text('You can add more later.').muted.small,
                   ],
                 ),
               ),
@@ -715,7 +715,7 @@ class _ThemePageState extends State<ThemePage> {
                   inputFormatters: [
                     TextInputFormatters.digitsOnly(min: 0, max: 64),
                   ],
-                  features: [
+                  features: const [
                     InputFeature.incrementButton(),
                     InputFeature.decrementButton(),
                   ],
@@ -723,18 +723,18 @@ class _ThemePageState extends State<ThemePage> {
               )
             ],
           ),
-          DensityGap(gapXl),
-          Divider(),
-          DensityGap(gapXl),
+          const DensityGap(gapXl),
+          const Divider(),
+          const DensityGap(gapXl),
           Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Wallpaper Tinting').medium,
-                    DensityGap(gapXs),
-                    Text('Allow the wallpaper to be tinted.').muted.small,
+                    const Text('Wallpaper Tinting').medium,
+                    const DensityGap(gapXs),
+                    const Text('Allow the wallpaper to be tinted.').muted.small,
                   ],
                 ),
               ),
@@ -752,30 +752,30 @@ class _ThemePageState extends State<ThemePage> {
   Widget _buildKitchenMembers(BuildContext context) {
     return DashedContainer(
         child: DensityContainerPadding(
-      padding: EdgeInsetsDensity.all(padLg),
+      padding: const EdgeInsetsDensity.all(padLg),
       child: Column(
         children: [
           AvatarGroup.toLeft(
             gap: 2,
             offset: 0.7,
-            children: [
+            children: const [
               Avatar(initials: 'ST'),
               Avatar(initials: 'JS'),
               Avatar(initials: 'MD'),
             ],
           ),
-          DensityGap(gapXl),
-          Text('No Team Members').small,
-          DensityGap(gapSm),
-          Text('Invite your team to collaborate on this project.').muted.small,
-          DensityGap(gapMd),
+          const DensityGap(gapXl),
+          const Text('No Team Members').small,
+          const DensityGap(gapSm),
+          const Text('Invite your team to collaborate on this project.').muted.small,
+          const DensityGap(gapMd),
           Button(
             leading: const Icon(Icons.add),
-            child: Text('Invite Members').small,
-            style: ButtonStyle.primary(
+            style: const ButtonStyle.primary(
               density: ButtonDensity.dense,
             ),
             onPressed: () {},
+            child: const Text('Invite Members').small,
           ),
         ],
       ),
@@ -787,31 +787,31 @@ class _ThemePageState extends State<ThemePage> {
       child: Row(
         children: [
           PrimaryBadge(
-            leading: Center(
+            leading: const Center(
               child: CircularProgressIndicator(
                 onSurface: true,
                 size: 10,
               ),
             ),
-            child: Text('Syncing').small,
+            child: const Text('Syncing').small,
           ),
-          DensityGap(gapSm),
+          const DensityGap(gapSm),
           SecondaryBadge(
-            leading: Center(
+            leading: const Center(
               child: CircularProgressIndicator(
                 size: 10,
               ),
             ),
-            child: Text('Updating').small,
+            child: const Text('Updating').small,
           ),
-          DensityGap(gapSm),
+          const DensityGap(gapSm),
           OutlineBadge(
-            leading: Center(
+            leading: const Center(
               child: CircularProgressIndicator(
                 size: 10,
               ),
             ),
-            child: Text('Loading').small,
+            child: const Text('Loading').small,
           ),
         ],
       ),
@@ -821,12 +821,12 @@ class _ThemePageState extends State<ThemePage> {
   Widget _buildKitchenChatBox(BuildContext context) {
     return IntrinsicHeight(
       child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        IconButton.outline(icon: Icon(Icons.add), onPressed: () {}),
-        DensityGap(gapSm),
+        IconButton.outline(icon: const Icon(Icons.add), onPressed: () {}),
+        const DensityGap(gapSm),
         Expanded(
           child: TextField(
-            placeholder: Text('Send a message...'),
-            padding: DirectionalEdgeInsetsDensity.only(
+            placeholder: const Text('Send a message...'),
+            padding: const DirectionalEdgeInsetsDensity.only(
               start: padSm,
               end: padXs,
               top: 0,
@@ -836,9 +836,9 @@ class _ThemePageState extends State<ThemePage> {
               InputFeature.trailing(
                 WidgetStatesProvider.boundary(
                   child: Tooltip(
-                    tooltip: TooltipContainer(child: Text('Voice Mode')),
+                    tooltip: const TooltipContainer(child: Text('Voice Mode')),
                     child: IconButton.ghost(
-                      icon: Icon(LucideIcons.audioLines),
+                      icon: const Icon(LucideIcons.audioLines),
                       onPressed: () {},
                       shape: ButtonShape.circle,
                     ),
@@ -856,12 +856,12 @@ class _ThemePageState extends State<ThemePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Price Range').medium,
-        DensityGap(gapXs),
-        Text('Set your budget range (\$320 - \$800)').muted,
-        DensityGap(gapMd),
+        const Text('Price Range').medium,
+        const DensityGap(gapXs),
+        const Text('Set your budget range (\$320 - \$800)').muted,
+        const DensityGap(gapMd),
         Slider(
-          value: SliderValue.ranged(320, 800),
+          value: const SliderValue.ranged(320, 800),
           min: 0,
           max: 1000,
           divisions: 20,
@@ -873,22 +873,22 @@ class _ThemePageState extends State<ThemePage> {
 
   Widget _buildKitchenSearch() {
     return TextField(
-      placeholder: Text('Search...'),
+      placeholder: const Text('Search...'),
       features: [
-        InputFeature.leading(Icon(Icons.search).iconMutedForeground),
-        InputFeature.trailing(Text('12 Results').muted.small.medium),
+        InputFeature.leading(const Icon(Icons.search).iconMutedForeground),
+        InputFeature.trailing(const Text('12 Results').muted.small.medium),
       ],
     );
   }
 
   Widget _buildKitchenURL() {
     return TextField(
-      placeholder: Text('example.com'),
+      placeholder: const Text('example.com'),
       features: [
-        InputFeature.leading(Text('https://').muted.small.medium),
+        InputFeature.leading(const Text('https://').muted.small.medium),
         InputFeature.hint(
             popupBuilder:
-                TooltipContainer(child: Text('This is content in a tooltip'))),
+                const TooltipContainer(child: Text('This is content in a tooltip'))),
       ],
     );
   }
@@ -897,11 +897,11 @@ class _ThemePageState extends State<ThemePage> {
     return TextField(
       minLines: 3,
       maxLines: 3,
-      placeholder: Text('Ask, Search, or Chat...'),
+      placeholder: const Text('Ask, Search, or Chat...'),
       features: [
         InputFeature.below(WidgetStatesProvider.boundary(
           child: Padding(
-            padding: EdgeInsetsDensity.only(top: padXl),
+            padding: const EdgeInsetsDensity.only(top: padXl),
             child: IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -910,13 +910,13 @@ class _ThemePageState extends State<ThemePage> {
                       density: ButtonDensity.iconDense,
                       icon: const Icon(Icons.add),
                       onPressed: () {}),
-                  DensityGap(gapSm),
+                  const DensityGap(gapSm),
                   Builder(builder: (context) {
                     return Button(
-                      style: ButtonStyle.ghost(
+                      style: const ButtonStyle.ghost(
                         density: ButtonDensity.dense,
                       ),
-                      child: Text('Auto'),
+                      child: const Text('Auto'),
                       onPressed: () {
                         showDropdown(
                             context: context,
@@ -924,15 +924,15 @@ class _ThemePageState extends State<ThemePage> {
                               return DropdownMenu(
                                 children: [
                                   MenuButton(
-                                    child: Text('Auto'),
+                                    child: const Text('Auto'),
                                     onPressed: (ctx) {},
                                   ),
                                   MenuButton(
-                                    child: Text('Agent'),
+                                    child: const Text('Agent'),
                                     onPressed: (ctx) {},
                                   ),
                                   MenuButton(
-                                    child: Text('Manual'),
+                                    child: const Text('Manual'),
                                     onPressed: (ctx) {},
                                   ),
                                 ],
@@ -941,14 +941,14 @@ class _ThemePageState extends State<ThemePage> {
                       },
                     );
                   }),
-                  Spacer(),
-                  Text('52% Used').muted.small.center(),
-                  DensityGap(gapSm),
-                  VerticalDivider(),
-                  DensityGap(gapSm),
+                  const Spacer(),
+                  const Text('52% Used').muted.small.center(),
+                  const DensityGap(gapSm),
+                  const VerticalDivider(),
+                  const DensityGap(gapSm),
                   IconButton.primary(
                     density: ButtonDensity.iconDense,
-                    icon: Icon(Icons.arrow_upward),
+                    icon: const Icon(Icons.arrow_upward),
                     onPressed: () {},
                   )
                 ],
@@ -962,13 +962,13 @@ class _ThemePageState extends State<ThemePage> {
 
   Widget _buildKitchenMentions() {
     return TextField(
-      placeholder: Text('@sunarya-thito'),
+      placeholder: const Text('@sunarya-thito'),
       features: [
         InputFeature.trailing(IconButton.primary(
           density: ButtonDensity.iconDense,
           size: ButtonSize.small,
           shape: ButtonShape.circle,
-          icon: Icon(Icons.check),
+          icon: const Icon(Icons.check),
           onPressed: () {},
         )),
       ],

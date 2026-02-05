@@ -22,7 +22,7 @@ class _NumberInputExample2State extends State<NumberInputExample2> {
                 this.value = double.tryParse(value) ?? 0;
               });
             },
-            features: [
+            features: const [
               InputFeature.incrementButton(),
               InputFeature.decrementButton(),
             ],

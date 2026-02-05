@@ -252,7 +252,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     ).resolve(textDirection);
     if (child != null) {
       final clampedAlignmentValue =
-          childAlignment.value.clamp(-1.0, 1.0) as double;
+          childAlignment.value.clamp(-1.0, 1.0);
       final leftRatio = (clampedAlignmentValue + 1) / 2;
       final rightRatio = 1 - leftRatio;
       final leftFlex = (leftRatio * 1000).round();

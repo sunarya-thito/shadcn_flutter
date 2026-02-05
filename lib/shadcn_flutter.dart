@@ -39,8 +39,7 @@ export 'package:flutter/widgets.dart'
         TableRow,
         TableCell,
         FormField,
-        RadioGroup,
-        RepeatMode;
+        RadioGroup;
 // bundle from gap
 export 'package:gap/gap.dart';
 // bundle from https://pub.dev/packages/phonecodes
