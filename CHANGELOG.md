@@ -1,15 +1,68 @@
-## 0.0.48
+## [0.0.48]
+
+### Added
+
 - Added Chat component
 - New `ColorScheme.of` method to access color scheme from theme data
+- [#346] Added param to skip focus traversal in Input features
+- [PREVIEW] Added `ShadcnPreview` and `ShadcnMultiPreview` annotation to preview
+  widgets during development
+- Add density system and density-aware padding helpers (`Density`,
+  `EdgeInsetsDensity`)
+- Add paint-order support for `Flex`, `Row`, `Column`, and `Stack` with
+  `PaintOrder` and `Positioned.paintOrder`
+- Add `InputStepperButtonFeature` and support for
+  `InputFeaturePosition.above`/`below`
+- Add `Divider.childAlignment` to align divider content
+- Add `Widget.sized(size:)` convenience overload
+- [#371] Create a new page to explain GoRouter integration (by @xdidx)
+
+### Breaking Changes
+
+- Remove sidebar-specific color tokens from `ColorScheme`
+- [BREAKING] `RepeatMode` has been renamed to `LoopingMode`
+- [BREAKING] `ShadcnLocalizationsDelegate.delegate` has been renamed to
+  `ShadcnLocalizations.delegate`
+
+Migration guide:
+
+1. Remove usages of `ColorScheme.sidebar`, `sidebarForeground`,
+   `sidebarPrimary`, `sidebarPrimaryForeground`, `sidebarAccent`,
+   `sidebarAccentForeground`, `sidebarBorder`, and `sidebarRing`.
+2. Replace them with existing tokens (for example, `background`, `card`, or
+   `accent`) or create a custom theme extension if you still need
+   sidebar-specific colors.
+
+```dart
+// before
+final colors = Theme.of(context).colorScheme;
+final bg = colors.sidebar;
+
+// after
+final colors = Theme.of(context).colorScheme;
+final bg = colors.background; // or a custom ThemeExtension
+```
+
+### Changed
+
+- Integrate density-aware spacing and padding into core layout widgets and form
+  controls
+- Extend density-aware spacing defaults across navigation, menus, overlays, and
+  display components
+- Align remaining layout and form spacing with density defaults
+- Revamp the theme docs page with a kitchen-sink preview and right-side options
+  panel
+- Regenerate base color schemes from JSON palettes and switch defaults to Slate
+
+### Fixed
+
+- Complete `ColorSchemeRecolorExtension` palette getters
+
 - [#380] Fixed issue with DatePicker when using PromptMode.popover
 - [#379] Fixed issue with intrinsic row height in Table component
 - [#378] Fixed issue with RepeatMode declaration in flutter master channel
-- [#346] Added param to skip focus traversal in Input features
-- [PREVIEW] Added `ShadcnPreview` and `ShadcnMultiPreview` annotation to preview widgets during development
-- [BREAKING] `RepeatMode` has been renamed to `LoopingMode`
-- [BREAKING] `ShadcnLocalizationsDelegate.delegate` has been renamed to `ShadcnLocalizations.delegate`
-- [#373] Scaffold: Set height constraints to correctly measure header size (by @xdidx)
-- [#371] Create a new page to explain GoRouter integration (by @xdidx)
+- [#373] Scaffold: Set height constraints to correctly measure header size (by
+  @xdidx)
 
 ## 0.0.47
 
