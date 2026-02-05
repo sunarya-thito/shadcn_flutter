@@ -13,6 +13,12 @@ enum InputFeaturePosition {
 
   /// Display the feature on the trailing side.
   trailing,
+
+  /// Display above the editable text.
+  above,
+
+  /// Display below the editable text.
+  below,
 }
 
 /// Adds a hint/info button to the input field with a popover.
@@ -607,12 +613,20 @@ class InputSpinnerFeature extends InputFeature {
   /// Default value when the input is invalid or empty.
   final double? invalidValue;
 
+  /// Minimum allowed value.
+  final double? min;
+
+  /// Maximum allowed value.
+  final double? max;
+
   /// Creates an [InputSpinnerFeature].
   ///
   /// Parameters:
   /// - [step] (`double`, default: `1.0`): Increment/decrement step size.
   /// - [enableGesture] (`bool`, default: `true`): Enable drag gestures.
   /// - [invalidValue] (`double?`, default: `0.0`): Fallback value for invalid input.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
   /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
   const InputSpinnerFeature({
@@ -621,6 +635,8 @@ class InputSpinnerFeature extends InputFeature {
     this.step = 1.0,
     this.enableGesture = true,
     this.invalidValue = 0.0,
+    this.min,
+    this.max,
   });
 
   @override
@@ -628,6 +644,35 @@ class InputSpinnerFeature extends InputFeature {
 }
 
 class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
+  double _clampValue(double value) {
+    final min = feature.min;
+    final max = feature.max;
+    if (min != null && value < min) {
+      return min;
+    }
+    if (max != null && value > max) {
+      return max;
+    }
+    return value;
+  }
+
+  double? _effectiveValue() {
+    final value = double.tryParse(controller.text);
+    return value ?? feature.invalidValue;
+  }
+
+  bool _canIncrease(double? value) {
+    if (value == null) return false;
+    final max = feature.max;
+    return max == null || value < max;
+  }
+
+  bool _canDecrease(double? value) {
+    if (value == null) return false;
+    final min = feature.min;
+    return min == null || value > min;
+  }
+
   void _replaceText(UnaryOperator<String> replacer) {
     var controller = this.controller;
     var text = controller.text;
@@ -643,11 +688,11 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
       var value = double.tryParse(text);
       if (value == null) {
         if (feature.invalidValue != null) {
-          return _newText(feature.invalidValue!);
+          return _newText(_clampValue(feature.invalidValue!));
         }
         return text;
       }
-      return _newText(value + feature.step);
+      return _newText(_clampValue(value + feature.step));
     });
   }
 
@@ -669,11 +714,11 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
       var value = double.tryParse(text);
       if (value == null) {
         if (feature.invalidValue != null) {
-          return _newText(feature.invalidValue!);
+          return _newText(_clampValue(feature.invalidValue!));
         }
         return text;
       }
-      return _newText(value - feature.step);
+      return _newText(_clampValue(value - feature.step));
     });
   }
 
@@ -693,36 +738,46 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
   Widget _buildButtons() {
     return Builder(builder: (context) {
       final theme = Theme.of(context);
-      return Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          IconButton.text(
-            icon: Transform.translate(
-              offset: Offset(0, -1 * theme.scaling),
-              child: Transform.scale(
-                alignment: Alignment.center,
-                scale: 1.5,
-                child: const Icon(LucideIcons.chevronUp),
+      return ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, child) {
+          final currentValue = _effectiveValue();
+          final clampedValue =
+              currentValue == null ? null : _clampValue(currentValue);
+          final canIncrease = _canIncrease(clampedValue);
+          final canDecrease = _canDecrease(clampedValue);
+          return Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              IconButton.text(
+                icon: Transform.translate(
+                  offset: Offset(0, -1 * theme.scaling),
+                  child: Transform.scale(
+                    alignment: Alignment.center,
+                    scale: 1.5,
+                    child: const Icon(LucideIcons.chevronUp),
+                  ),
+                ),
+                onPressed: canIncrease ? _increase : null,
+                density: ButtonDensity.compact,
+                size: ButtonSize.xSmall,
               ),
-            ),
-            onPressed: _increase,
-            density: ButtonDensity.compact,
-            size: ButtonSize.xSmall,
-          ),
-          IconButton.text(
-            icon: Transform.translate(
-              offset: Offset(0, 1 * theme.scaling),
-              child: Transform.scale(
-                alignment: Alignment.center,
-                scale: 1.5,
-                child: const Icon(LucideIcons.chevronDown),
+              IconButton.text(
+                icon: Transform.translate(
+                  offset: Offset(0, 1 * theme.scaling),
+                  child: Transform.scale(
+                    alignment: Alignment.center,
+                    scale: 1.5,
+                    child: const Icon(LucideIcons.chevronDown),
+                  ),
+                ),
+                onPressed: canDecrease ? _decrease : null,
+                density: ButtonDensity.compact,
+                size: ButtonSize.xSmall,
               ),
-            ),
-            onPressed: _decrease,
-            density: ButtonDensity.compact,
-            size: ButtonSize.xSmall,
-          ),
-        ],
+            ],
+          );
+        },
       );
     });
   }
@@ -733,6 +788,129 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
       yield _wrapGesture(_buildButtons());
     } else {
       yield _buildButtons();
+    }
+  }
+}
+
+/// Adds a single increment button to numeric input fields.
+///
+/// Provides a button that increases the numeric value by a fixed step.
+class InputStepperButtonFeature extends InputFeature {
+  /// The amount to increment on each press.
+  final double step;
+
+  /// Default value when the input is invalid or empty.
+  final double? invalidValue;
+
+  /// Position of the increment button.
+  final InputFeaturePosition position;
+
+  /// Custom icon for the increment button.
+  final Widget? icon;
+
+  /// Creates an [InputStepperButtonFeature].
+  ///
+  /// Parameters:
+  /// - [step] (`double`, default: `1.0`): Increment step size.
+  /// - [invalidValue] (`double?`, default: `0.0`): Fallback value for invalid input.
+  /// - [position] (`InputFeaturePosition`, default: `InputFeaturePosition.trailing`):
+  ///   Where to place the button.
+  /// - [icon] (`Widget?`, optional): Custom icon widget.
+  /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
+  /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
+  const InputStepperButtonFeature({
+    super.visibility,
+    super.skipFocusTraversal,
+    this.step = 1.0,
+    this.invalidValue = 0.0,
+    this.position = InputFeaturePosition.trailing,
+    this.icon = const Icon(LucideIcons.plus),
+  });
+
+  /// Creates a decrement button feature for numeric inputs.
+  ///
+  /// Parameters:
+  /// - [step] (`double`, default: `-1.0`): Decrement step size.
+  /// - [invalidValue] (`double?`, default: `0.0`): Fallback value for invalid input.
+  /// - [position] (`InputFeaturePosition`, default: `InputFeaturePosition.trailing`):
+  ///   Where to place the button.
+  /// - [icon] (`Widget?`, optional): Custom icon widget.
+  /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
+  /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
+  const InputStepperButtonFeature.decrement({
+    super.visibility,
+    super.skipFocusTraversal,
+    this.step = -1.0,
+    this.invalidValue = 0.0,
+    this.position = InputFeaturePosition.trailing,
+    this.icon = const Icon(LucideIcons.minus),
+  });
+
+  @override
+  InputFeatureState createState() => _InputStepperButtonFeatureState();
+}
+
+class _InputStepperButtonFeatureState
+    extends InputFeatureState<InputStepperButtonFeature> {
+  void _replaceText(UnaryOperator<String> replacer) {
+    var controller = this.controller;
+    var text = controller.text;
+    var newText = replacer(text);
+    if (newText != text) {
+      controller.text = newText;
+      input.onChanged?.call(newText);
+    }
+  }
+
+  String _newText(double value) {
+    String newText = value.toString();
+    if (newText.contains('.')) {
+      while (newText.endsWith('0')) {
+        newText = newText.substring(0, newText.length - 1);
+      }
+      if (newText.endsWith('.')) {
+        newText = newText.substring(0, newText.length - 1);
+      }
+    }
+    return newText;
+  }
+
+  void _increase() {
+    _replaceText((text) {
+      var value = double.tryParse(text);
+      if (value == null) {
+        if (feature.invalidValue != null) {
+          return _newText(feature.invalidValue!);
+        }
+        return text;
+      }
+      return _newText(value + feature.step);
+    });
+  }
+
+  Widget _buildButton() {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: IconButton.outline(
+        icon: feature.icon ?? const Icon(LucideIcons.plus),
+        onPressed: _increase,
+        density: ButtonDensity.compact,
+        size: ButtonSize.small,
+      ),
+    );
+  }
+
+  @override
+  Iterable<Widget> buildSuffix() sync* {
+    if (feature.position == InputFeaturePosition.trailing) {
+      yield _buildButton();
+    }
+  }
+
+  @override
+  Iterable<Widget> buildPrefix() sync* {
+    if (feature.position == InputFeaturePosition.leading) {
+      yield _buildButton();
     }
   }
 }
@@ -880,6 +1058,90 @@ class InputTrailingFeature extends InputFeature {
 
   @override
   InputFeatureState createState() => _InputTrailingFeatureState();
+}
+
+/// Adds a custom widget above or below the text input area.
+///
+/// Use this feature to place helper content inside the input decoration,
+/// directly above or below the editable text.
+///
+/// Example:
+/// ```dart
+/// TextField(
+///   features: [
+///     InputAboveBelowFeature(
+///       child: Text('Billing email').small().muted(),
+///       position: InputFeaturePosition.above,
+///     ),
+///   ],
+/// )
+/// ```
+class InputAboveBelowFeature extends InputFeature {
+  /// Widget shown above or below the editable text.
+  final Widget? child;
+
+  /// Position of the [child] relative to the editable text.
+  final InputFeaturePosition position;
+
+  /// Creates an [InputAboveBelowFeature].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed above or below the input text.
+  /// - [position] (`InputFeaturePosition`, default: `InputFeaturePosition.below`): Placement.
+  /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
+  /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
+  const InputAboveBelowFeature({
+    super.visibility,
+    super.skipFocusTraversal,
+    this.child,
+    this.position = InputFeaturePosition.below,
+  });
+
+  /// Creates an [InputAboveBelowFeature] displayed above the input text.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed above the input text.
+  /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
+  /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
+  const InputAboveBelowFeature.above(
+    this.child, {
+    super.visibility,
+    super.skipFocusTraversal,
+  }) : position = InputFeaturePosition.above;
+
+  /// Creates an [InputAboveBelowFeature] displayed below the input text.
+  ///
+  /// Parameters:
+  /// - [child] (`Widget?`, optional): Widget displayed below the input text.
+  /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
+  /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
+  const InputAboveBelowFeature.below(
+    this.child, {
+    super.visibility,
+    super.skipFocusTraversal,
+  }) : position = InputFeaturePosition.below;
+
+  @override
+  InputFeatureState createState() => _InputAboveBelowFeatureState();
+}
+
+class _InputAboveBelowFeatureState
+    extends InputFeatureState<InputAboveBelowFeature> {
+  @override
+  Iterable<Widget> buildAbove() sync* {
+    if (feature.position == InputFeaturePosition.above &&
+        feature.child != null) {
+      yield feature.child!;
+    }
+  }
+
+  @override
+  Iterable<Widget> buildBelow() sync* {
+    if (feature.position == InputFeaturePosition.below &&
+        feature.child != null) {
+      yield feature.child!;
+    }
+  }
 }
 
 class _InputTrailingFeatureState
