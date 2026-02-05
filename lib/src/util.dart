@@ -948,17 +948,17 @@ extension WidgetExtension on Widget {
   /// - [height] (`double?`, optional): Desired height.
   ///
   /// Returns: `Widget` — sized widget.
-  Widget sized({double? width, double? height}) {
+  Widget sized({double? width, double? height, double? size}) {
     if (this is SizedBox) {
       return SizedBox(
-        width: width ?? (this as SizedBox).width,
-        height: height ?? (this as SizedBox).height,
+        width: width ?? size ?? (this as SizedBox).width,
+        height: height ?? size ?? (this as SizedBox).height,
         child: (this as SizedBox).child,
       );
     }
     return SizedBox(
-      width: width,
-      height: height,
+      width: width ?? size,
+      height: height ?? size,
       child: this,
     );
   }
