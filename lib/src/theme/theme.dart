@@ -169,6 +169,9 @@ class ThemeData {
   /// Default blur radius for surface effects.
   final double? surfaceBlur;
 
+  /// Default setting for feedback on IOS mobile
+  final bool? enableFeedback;
+
   /// Density settings that scale spacing and padding.
   final Density density;
 
@@ -191,6 +194,7 @@ class ThemeData {
     this.iconTheme = const IconThemeProperties(),
     TargetPlatform? platform,
     this.surfaceOpacity,
+    this.enableFeedback,
     this.surfaceBlur,
     this.density = Density.defaultDensity,
   }) : _platform = platform;
@@ -216,6 +220,7 @@ class ThemeData {
     this.surfaceOpacity,
     this.surfaceBlur,
     this.density = Density.defaultDensity,
+    this.enableFeedback,
   }) : _platform = platform;
 
   /// The current platform.
@@ -303,6 +308,7 @@ class ThemeData {
     ValueGetter<IconThemeProperties>? iconTheme,
     ValueGetter<double>? surfaceOpacity,
     ValueGetter<double>? surfaceBlur,
+    ValueGetter<bool>? enableFeedback,
     ValueGetter<Density>? density,
   }) {
     return ThemeData(
@@ -315,6 +321,8 @@ class ThemeData {
       surfaceOpacity:
           surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      enableFeedback:
+          enableFeedback == null ? this.enableFeedback : enableFeedback(),
       density: density == null ? this.density : density(),
     );
   }
@@ -341,6 +349,7 @@ class ThemeData {
       iconTheme: IconThemeProperties.lerp(a.iconTheme, b.iconTheme, t),
       surfaceOpacity: lerpDouble(a.surfaceOpacity, b.surfaceOpacity, t),
       surfaceBlur: lerpDouble(a.surfaceBlur, b.surfaceBlur, t),
+      enableFeedback: t < 0.5 ? a.enableFeedback : b.enableFeedback,
       density: Density.lerp(a.density, b.density, t),
     );
   }
@@ -357,7 +366,8 @@ class ThemeData {
         other.iconTheme == iconTheme &&
         other.surfaceOpacity == surfaceOpacity &&
         other.surfaceBlur == surfaceBlur &&
-        other.density == density;
+        other.density == density &&
+        other.enableFeedback == enableFeedback;
   }
 
   @override
@@ -370,13 +380,14 @@ class ThemeData {
       iconTheme,
       surfaceOpacity,
       surfaceBlur,
+      enableFeedback,
       density,
     );
   }
 
   @override
   String toString() {
-    return 'ThemeData(colorScheme: $colorScheme, typography: $typography, radius: $radius, scaling: $scaling, iconTheme: $iconTheme, surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur, density: $density)';
+    return 'ThemeData(colorScheme: $colorScheme, typography: $typography, radius: $radius, scaling: $scaling, iconTheme: $iconTheme, surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur, density: $density, enableFeedback: $enableFeedback)';
   }
 }
 
