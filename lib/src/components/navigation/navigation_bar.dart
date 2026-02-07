@@ -1587,11 +1587,13 @@ class _NavigationItemState
 class NavigationButton extends AbstractNavigationButton {
   /// Callback when button is pressed.
   final VoidCallback? onPressed;
+  final bool? enableFeedback;
 
   /// Creates a navigation button.
   ///
   /// Parameters:
   /// - [child] (Widget, required): Icon or content widget
+  /// - [enableFeedback] (bool?) : Whether to enable haptic feedback
   /// - [onPressed] (VoidCallback?): Press callback
   /// - [label] (Widget?): Optional label text
   /// - [spacing] (double?): Space between icon and label
@@ -1603,6 +1605,7 @@ class NavigationButton extends AbstractNavigationButton {
   const NavigationButton({
     super.key,
     this.onPressed,
+    this.enableFeedback = true,
     super.label,
     super.spacing,
     super.style,
@@ -1662,6 +1665,7 @@ class _NavigationButtonState
         onPressed: widget.onPressed,
         marginAlignment: widget.marginAlignment,
         style: style,
+        enableFeedback: widget.enableFeedback,
         alignment: widget.alignment ??
             (data?.containerType == NavigationContainerType.sidebar &&
                     data?.labelDirection == Axis.horizontal

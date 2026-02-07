@@ -550,6 +550,7 @@ class SelectedButtonState extends State<SelectedButton> {
   /// or created automatically. It tracks and manages the button's interactive
   /// states and updates them based on user interactions and the selection value.
   late WidgetStatesController statesController;
+
   @override
   void initState() {
     super.initState();
@@ -1354,8 +1355,13 @@ class Button extends StatefulWidget {
 /// - Applies style transitions and animations
 class ButtonState<T extends Button> extends State<T> {
   bool get _shouldEnableFeedback {
-    final platform = Theme.of(context).platform;
-    return isMobile(platform);
+    final theme = Theme.of(context);
+    // Use theme setting if provided, otherwise default to platform-specific behavior
+    if (theme.enableFeedback != null) {
+      return theme.enableFeedback!;
+    }
+    // Default: enable feedback on mobile platforms
+    return isMobile(theme.platform);
   }
 
   AbstractButtonStyle? _style;
