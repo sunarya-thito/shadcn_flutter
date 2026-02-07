@@ -1587,7 +1587,7 @@ class _NavigationItemState
 class NavigationButton extends AbstractNavigationButton {
   /// Callback when button is pressed.
   final VoidCallback? onPressed;
-  final bool enableFeedback;
+  final bool? enableFeedback;
 
   /// Creates a navigation button.
   ///
