@@ -1593,7 +1593,7 @@ class NavigationButton extends AbstractNavigationButton {
   ///
   /// Parameters:
   /// - [child] (Widget, required): Icon or content widget
-  /// - [enableFeedback] (bool?) : Weather enable haptic feedback
+  /// - [enableFeedback] (bool?) : Whether to enable haptic feedback
   /// - [onPressed] (VoidCallback?): Press callback
   /// - [label] (Widget?): Optional label text
   /// - [spacing] (double?): Space between icon and label
