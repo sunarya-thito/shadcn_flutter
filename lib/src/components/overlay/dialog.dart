@@ -247,6 +247,7 @@ class ModalBackdrop extends StatelessWidget {
     return RepaintBoundary(
       child: Stack(
         fit: StackFit.passthrough,
+        clipBehavior: Clip.none,
         children: [
           if (!surfaceClip)
             Positioned.fill(
