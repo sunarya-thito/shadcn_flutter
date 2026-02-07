@@ -23,8 +23,8 @@ class _NumberInputExample2State extends State<NumberInputExample2> {
               });
             },
             features: const [
-              InputFeature.incrementButton(),
-              InputFeature.decrementButton(),
+              InputFeature.incrementButton(max: 10),
+              InputFeature.decrementButton(min: -10),
             ],
             submitFormatters: [
               // Allow math expressions (e.g., 1+2*3) that resolve on submit.

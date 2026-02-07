@@ -802,6 +802,12 @@ class InputStepperButtonFeature extends InputFeature {
   /// Default value when the input is invalid or empty.
   final double? invalidValue;
 
+  /// Minimum allowed value.
+  final double? min;
+
+  /// Maximum allowed value.
+  final double? max;
+
   /// Position of the increment button.
   final InputFeaturePosition position;
 
@@ -813,6 +819,8 @@ class InputStepperButtonFeature extends InputFeature {
   /// Parameters:
   /// - [step] (`double`, default: `1.0`): Increment step size.
   /// - [invalidValue] (`double?`, default: `0.0`): Fallback value for invalid input.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [position] (`InputFeaturePosition`, default: `InputFeaturePosition.trailing`):
   ///   Where to place the button.
   /// - [icon] (`Widget?`, optional): Custom icon widget.
@@ -823,6 +831,8 @@ class InputStepperButtonFeature extends InputFeature {
     super.skipFocusTraversal,
     this.step = 1.0,
     this.invalidValue = 0.0,
+    this.min,
+    this.max,
     this.position = InputFeaturePosition.trailing,
     this.icon = const Icon(LucideIcons.plus),
   });
@@ -832,6 +842,8 @@ class InputStepperButtonFeature extends InputFeature {
   /// Parameters:
   /// - [step] (`double`, default: `-1.0`): Decrement step size.
   /// - [invalidValue] (`double?`, default: `0.0`): Fallback value for invalid input.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [position] (`InputFeaturePosition`, default: `InputFeaturePosition.trailing`):
   ///   Where to place the button.
   /// - [icon] (`Widget?`, optional): Custom icon widget.
@@ -842,6 +854,8 @@ class InputStepperButtonFeature extends InputFeature {
     super.skipFocusTraversal,
     this.step = -1.0,
     this.invalidValue = 0.0,
+    this.min,
+    this.max,
     this.position = InputFeaturePosition.trailing,
     this.icon = const Icon(LucideIcons.minus),
   });
@@ -852,6 +866,34 @@ class InputStepperButtonFeature extends InputFeature {
 
 class _InputStepperButtonFeatureState
     extends InputFeatureState<InputStepperButtonFeature> {
+  double _clampValue(double value) {
+    final min = feature.min;
+    final max = feature.max;
+    if (min != null && value < min) {
+      return min;
+    }
+    if (max != null && value > max) {
+      return max;
+    }
+    return value;
+  }
+
+  double? _effectiveValue() {
+    final value = double.tryParse(controller.text);
+    return value ?? feature.invalidValue;
+  }
+
+  bool _canApplyStep(double? value) {
+    if (value == null) return false;
+    final step = feature.step;
+    final min = feature.min;
+    final max = feature.max;
+    if (step >= 0) {
+      return max == null || value < max;
+    }
+    return min == null || value > min;
+  }
+
   void _replaceText(UnaryOperator<String> replacer) {
     var controller = this.controller;
     var text = controller.text;
@@ -880,23 +922,32 @@ class _InputStepperButtonFeatureState
       var value = double.tryParse(text);
       if (value == null) {
         if (feature.invalidValue != null) {
-          return _newText(feature.invalidValue!);
+          return _newText(_clampValue(feature.invalidValue!));
         }
         return text;
       }
-      return _newText(value + feature.step);
+      return _newText(_clampValue(value + feature.step));
     });
   }
 
   Widget _buildButton() {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: IconButton.outline(
-        icon: feature.icon ?? const Icon(LucideIcons.plus),
-        onPressed: _increase,
-        density: ButtonDensity.compact,
-        size: ButtonSize.small,
-      ),
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller,
+      builder: (context, value, child) {
+        final currentValue = _effectiveValue();
+        final clampedValue =
+            currentValue == null ? null : _clampValue(currentValue);
+        final canApplyStep = _canApplyStep(clampedValue);
+        return AspectRatio(
+          aspectRatio: 1,
+          child: IconButton.outline(
+            icon: feature.icon ?? const Icon(LucideIcons.plus),
+            onPressed: canApplyStep ? _increase : null,
+            density: ButtonDensity.compact,
+            size: ButtonSize.small,
+          ),
+        );
+      },
     );
   }
 

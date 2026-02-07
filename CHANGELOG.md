@@ -1,3 +1,13 @@
+## [0.0.50]
+
+### Added
+
+- Add min/max limits to increment/decrement input buttons and disable at bounds
+
+### Fixed
+
+- Fixed clip behavior in Dialog overlay widget
+
 ## [0.0.49]
 
 - Fixed clip behavior in paint order patched layout widgets (Flex, Row, Column,

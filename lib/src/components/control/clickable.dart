@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -749,6 +750,20 @@ class _ClickableState extends State<Clickable> {
     }
   }
 
+  void _updateState(WidgetState state, bool value) {
+    if (!mounted) return;
+    // Avoid notifying listeners during a build; defer to next frame if needed.
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _controller.update(state, value);
+      });
+      return;
+    }
+    _controller.update(state, value);
+  }
+
   @override
   Widget build(BuildContext context) {
     var enabled = widget.enabled;
@@ -803,9 +818,9 @@ class _ClickableState extends State<Clickable> {
             ? (details) {
                 if (widget.enableFeedback) {
                   // also dispatch hover
-                  _controller.update(WidgetState.hovered, true);
+                  _updateState(WidgetState.hovered, true);
                 }
-                _controller.update(WidgetState.pressed, true);
+                _updateState(WidgetState.pressed, true);
                 widget.onTapDown?.call(details);
               }
             : widget.onTapDown,
@@ -813,9 +828,9 @@ class _ClickableState extends State<Clickable> {
             ? (details) {
                 if (widget.enableFeedback) {
                   // also dispatch hover
-                  _controller.update(WidgetState.hovered, false);
+                  _updateState(WidgetState.hovered, false);
                 }
-                _controller.update(WidgetState.pressed, false);
+                _updateState(WidgetState.pressed, false);
                 widget.onTapUp?.call(details);
               }
             : widget.onTapUp,
@@ -823,9 +838,9 @@ class _ClickableState extends State<Clickable> {
             ? () {
                 if (widget.enableFeedback) {
                   // also dispatch hover
-                  _controller.update(WidgetState.hovered, false);
+                  _updateState(WidgetState.hovered, false);
                 }
-                _controller.update(WidgetState.pressed, false);
+                _updateState(WidgetState.pressed, false);
                 widget.onTapCancel?.call();
               }
             : widget.onTapCancel,
@@ -876,12 +891,12 @@ class _ClickableState extends State<Clickable> {
             ...?widget.actions,
           },
           onShowHoverHighlight: (value) {
-            _controller.update(
+            _updateState(
                 WidgetState.hovered, value && !widget.disableHoverEffect);
             widget.onHover?.call(value);
           },
           onShowFocusHighlight: (value) {
-            _controller.update(WidgetState.focused, value);
+            _updateState(WidgetState.focused, value);
             widget.onFocus?.call(value);
           },
           mouseCursor:

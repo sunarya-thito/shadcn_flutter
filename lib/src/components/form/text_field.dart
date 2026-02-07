@@ -471,6 +471,8 @@ abstract class InputFeature {
   /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
   /// - [step] (`double`, default: 1): Increment step size.
   /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [icon] (`Widget?`, optional): Custom icon widget.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.incrementButton({
@@ -478,6 +480,8 @@ abstract class InputFeature {
     InputFeaturePosition position,
     double step,
     double? invalidValue,
+    double? min,
+    double? max,
     Widget? icon,
     bool skipFocusTraversal,
   }) = InputStepperButtonFeature;
@@ -487,8 +491,10 @@ abstract class InputFeature {
   /// Parameters:
   /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
   /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
-  /// - [step] (`double`, default: 1): Decrement step size.
+  /// - [step] (`double`, default: -1): Decrement step size.
   /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [icon] (`Widget?`, optional): Custom icon widget.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
   const factory InputFeature.decrementButton({
@@ -496,6 +502,8 @@ abstract class InputFeature {
     InputFeaturePosition position,
     double step,
     double? invalidValue,
+    double? min,
+    double? max,
     Widget? icon,
     bool skipFocusTraversal,
   }) = InputStepperButtonFeature.decrement;
