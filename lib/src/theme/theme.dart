@@ -308,7 +308,7 @@ class ThemeData {
     ValueGetter<IconThemeProperties>? iconTheme,
     ValueGetter<double>? surfaceOpacity,
     ValueGetter<double>? surfaceBlur,
-    ValueGetter<bool>? enableFeedback,
+    ValueGetter<bool?>? enableFeedback,
     ValueGetter<Density>? density,
   }) {
     return ThemeData(
