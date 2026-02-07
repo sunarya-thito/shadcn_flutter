@@ -169,7 +169,7 @@ class ThemeData {
   /// Default blur radius for surface effects.
   final double? surfaceBlur;
 
-  /// Default setting for feedback on IOS mobile
+  /// Default setting for feedback on mobile platforms (e.g., iOS, Android, Fuchsia).
   final bool? enableFeedback;
 
   /// Density settings that scale spacing and padding.
