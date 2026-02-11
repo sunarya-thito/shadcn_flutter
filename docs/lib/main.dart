@@ -174,15 +174,17 @@ void main() async {
   double initialSurfaceOpacity = prefs.getDouble('surfaceOpacity') ?? 1.0;
   double initialSurfaceBlur = prefs.getDouble('surfaceBlur') ?? 0.0;
   String initialPath = prefs.getString('initialPath') ?? '/';
-  runApp(MyApp(
-    initialColorScheme:
-        initialColorScheme ?? colorSchemes['dark-slate-base']!,
-    initialRadius: initialRadius,
-    initialDensity: initialDensity,
-    initialScaling: initialScaling,
-    initialSurfaceOpacity: initialSurfaceOpacity,
-    initialSurfaceBlur: initialSurfaceBlur,
-    initialPath: kEnablePersistentPath ? initialPath : '/',
+  runApp(ErrorFilter(
+    child: MyApp(
+      initialColorScheme:
+          initialColorScheme ?? colorSchemes['dark-slate-base']!,
+      initialRadius: initialRadius,
+      initialDensity: initialDensity,
+      initialScaling: initialScaling,
+      initialSurfaceOpacity: initialSurfaceOpacity,
+      initialSurfaceBlur: initialSurfaceBlur,
+      initialPath: kEnablePersistentPath ? initialPath : '/',
+    ),
   ));
 }
 

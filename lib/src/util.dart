@@ -2184,3 +2184,48 @@ class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
     return onInvoke(intent, context);
   }
 }
+
+class ErrorFilter extends StatefulWidget {
+  final Widget child;
+  const ErrorFilter({super.key, required this.child});
+
+  @override
+  State<ErrorFilter> createState() => _ErrorFilterState();
+}
+
+class _ErrorFilterState extends State<ErrorFilter> {
+  final Set<int> _loggedErrors = {};
+
+  late void Function(FlutterErrorDetails)? _originalOnError;
+
+  int _hashErrors(String error) {
+    return error.hashCode;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _originalOnError = FlutterError.onError;
+    FlutterError.onError = _onError;
+  }
+
+  void _onError(FlutterErrorDetails details) {
+    final errorHash = _hashErrors(details.toString());
+    if (_loggedErrors.contains(errorHash)) {
+      return;
+    }
+    _loggedErrors.add(errorHash);
+    (_originalOnError ?? FlutterError.presentError)(details);
+  }
+
+  @override
+  void dispose() {
+    FlutterError.onError = _originalOnError;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}

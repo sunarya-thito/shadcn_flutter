@@ -444,4 +444,31 @@ class _RenderHiddenLayout extends RenderBox
       size = constraints.biggest;
     }
   }
+
+  @override
+  Size computeDryLayout(covariant BoxConstraints constraints) {
+    var child = this.child;
+    if (child != null) {
+      Size childSize = constraints.constrain(child.getDryLayout(constraints));
+      double width = childSize.width;
+      double height = childSize.height;
+      if (!keepMainAxisSize) {
+        if (direction == Axis.vertical) {
+          height *= progress;
+        } else {
+          width *= progress;
+        }
+      }
+      if (!keepCrossAxisSize) {
+        if (direction == Axis.vertical) {
+          width *= progress;
+        } else {
+          height *= progress;
+        }
+      }
+      return constraints.constrain(Size(width, height));
+    } else {
+      return constraints.biggest;
+    }
+  }
 }

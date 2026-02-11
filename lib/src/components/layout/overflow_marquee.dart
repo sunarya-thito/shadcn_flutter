@@ -356,12 +356,11 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   }
 }
 
-class _OverflowMarqueeParentData extends ContainerBoxParentData<RenderBox> {
+class _OverflowMarqueeParentData extends BoxParentData {
   double? sizeDiff;
 }
 
-class _RenderOverflowMarqueeLayout extends RenderShiftedBox
-    with ContainerRenderObjectMixin<RenderBox, _OverflowMarqueeParentData> {
+class _RenderOverflowMarqueeLayout extends RenderShiftedBox {
   Axis direction;
   double fadePortion;
   Duration duration;

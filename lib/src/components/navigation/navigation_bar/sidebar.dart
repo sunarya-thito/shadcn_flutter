@@ -1,0 +1,361 @@
+import 'dart:math' as math;
+
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/layout/hidden.dart';
+import 'data.dart';
+import 'theme.dart';
+import 'mixin.dart';
+import 'misc.dart';
+
+/// A full-width navigation sidebar component for comprehensive navigation.
+///
+/// Provides an expanded navigation interface designed for sidebar layouts
+/// with full-width items and extensive labeling support. Unlike [NavigationRail],
+/// the sidebar is optimized for detailed navigation with prominent labels,
+/// descriptions, and expanded interactive areas.
+///
+/// The sidebar always displays labels and typically occupies a dedicated
+/// sidebar area in layouts. Items are arranged vertically with generous
+/// spacing and padding to create a comfortable navigation experience.
+/// Supports badges, icons, and detailed labeling for complex navigation hierarchies.
+///
+/// Integrates with responsive layout systems and can be combined with
+/// collapsible containers or drawer systems for adaptive navigation
+/// experiences across different screen sizes and device types.
+///
+/// Example:
+/// ```dart
+/// NavigationSidebar(
+///   backgroundColor: Colors.grey.shade50,
+///   labelType: NavigationLabelType.all,
+///   index: currentPageIndex,
+///   onSelected: (index) => _navigateToPage(index),
+///   children: [
+///     NavigationBarItem(
+///       icon: Icon(Icons.dashboard),
+///       label: 'Dashboard',
+///       badge: Badge(child: Text('New')),
+///     ),
+///     NavigationBarItem(
+///       icon: Icon(Icons.analytics),
+///       label: 'Analytics',
+///     ),
+///     NavigationBarItem(
+///       icon: Icon(Icons.settings),
+///       label: 'Settings',
+///     ),
+///   ],
+/// )
+/// ```
+class NavigationSidebar extends StatefulWidget {
+  /// Background color for the navigation sidebar surface.
+  ///
+  /// Sets the sidebar's background color to provide visual separation
+  /// from content areas. When null, uses the theme's default surface color.
+  final Color? backgroundColor;
+
+  /// List of navigation items to display in the sidebar.
+  ///
+  /// Each item should be a [NavigationBarItem] that defines the navigation
+  /// destination with icon, label, and optional badge. Items are arranged
+  /// vertically with full-width presentation.
+  final List<NavigationBarItem> children;
+
+  /// Optional fixed header items displayed before the scrollable content.
+  final List<NavigationBarItem>? header;
+
+  /// Optional fixed footer items displayed after the scrollable content.
+  final List<NavigationBarItem>? footer;
+
+  /// Spacing between navigation items.
+  ///
+  /// Controls the vertical gap between adjacent navigation items.
+  /// Larger values create more breathing room in the navigation list.
+  final double? spacing;
+
+  /// Label display behavior for navigation items.
+  ///
+  /// Determines how labels are presented in the sidebar. Sidebars typically
+  /// use expanded label types to show comprehensive navigation information.
+  final NavigationLabelType labelType;
+
+  /// Position of labels relative to icons within items.
+  ///
+  /// Controls label placement within each navigation item. Sidebars
+  /// commonly position labels to the end (right in LTR layouts) of icons.
+  final NavigationLabelPosition labelPosition;
+
+  /// Size variant for label text and item dimensions.
+  ///
+  /// Affects text size and overall item scale. Larger sizes improve
+  /// accessibility and visual prominence in sidebar contexts.
+  final NavigationLabelSize labelSize;
+
+  /// Internal padding applied within the navigation sidebar.
+  ///
+  /// Provides space around navigation items, preventing them from
+  /// touching the sidebar's edges and creating visual comfort.
+  final EdgeInsetsGeometry? padding;
+
+  /// Size constraints for the navigation sidebar container.
+  ///
+  /// Defines width and height bounds for the sidebar. Useful for
+  /// responsive layouts and consistent sidebar sizing.
+  final BoxConstraints? constraints;
+
+  /// Index of the currently selected navigation item.
+  ///
+  /// Highlights the corresponding item with selected styling.
+  /// When null, no item appears selected.
+  final int? index;
+
+  /// Callback invoked when a navigation item is selected.
+  ///
+  /// Called with the index of the selected item. Use this to update
+  /// the selection state and handle navigation actions.
+  final ValueChanged<int>? onSelected;
+
+  /// Opacity level for surface background effects.
+  ///
+  /// Controls transparency of background overlays and blur effects.
+  /// Values range from 0.0 (transparent) to 1.0 (opaque).
+  final double? surfaceOpacity;
+
+  /// Blur intensity for surface background effects.
+  ///
+  /// Controls backdrop blur effects behind the sidebar surface.
+  /// Higher values create more pronounced blur effects.
+  final double? surfaceBlur;
+
+  /// Whether the sidebar should expand to fill available width.
+  ///
+  /// When true, the sidebar uses all available horizontal space.
+  /// When false, the sidebar sizes itself to its content width.
+  final bool expanded;
+
+  /// Whether to maintain intrinsic size along the cross axis.
+  ///
+  /// Controls width sizing behavior when the sidebar's width
+  /// constraints are unconstrained.
+  final bool keepCrossAxisSize;
+
+  /// Whether to maintain intrinsic size along the main axis.
+  ///
+  /// Controls height sizing behavior when the sidebar's height
+  /// constraints are unconstrained.
+  final bool keepMainAxisSize;
+
+  /// Creates a [NavigationSidebar] with the specified configuration and items.
+  ///
+  /// The [children] parameter is required and should contain [NavigationBarItem]
+  /// widgets that define the navigation destinations. Default values are
+  /// optimized for sidebar presentation with expanded labels and large sizing.
+  ///
+  /// The sidebar defaults to expanded label presentation with large sizing
+  /// and end-positioned labels, creating a comprehensive navigation experience
+  /// suitable for desktop and tablet interfaces.
+  ///
+  /// Parameters:
+  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
+  /// - [labelType] (NavigationLabelType, default: expanded): Label display behavior
+  /// - [labelPosition] (NavigationLabelPosition, default: end): Label positioning
+  /// - [labelSize] (NavigationLabelSize, default: large): Size variant for items
+  /// - [index] (int?, optional): Currently selected item index
+  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
+  /// - [expanded] (bool, default: true): Whether to fill available width
+  ///
+  /// Example:
+  /// ```dart
+  /// NavigationSidebar(
+  ///   backgroundColor: Theme.of(context).colorScheme.surface,
+  ///   index: selectedIndex,
+  ///   onSelected: (index) => _handleNavigation(index),
+  ///   children: sidebarItems,
+  /// )
+  /// ```
+  const NavigationSidebar({
+    super.key,
+    this.backgroundColor,
+    this.spacing,
+    this.labelType = NavigationLabelType.expanded,
+    this.labelPosition = NavigationLabelPosition.end,
+    this.labelSize = NavigationLabelSize.large,
+    this.padding,
+    this.constraints,
+    this.index,
+    this.onSelected,
+    this.surfaceOpacity,
+    this.surfaceBlur,
+    this.expanded = true,
+    this.keepCrossAxisSize = false,
+    this.keepMainAxisSize = false,
+    this.header,
+    this.footer,
+    required this.children,
+  });
+
+  @override
+  State<NavigationSidebar> createState() => _NavigationSidebarState();
+}
+
+class _NavigationSidebarState extends State<NavigationSidebar>
+    with NavigationContainerMixin {
+  BoxConstraints getDefaultConstraints(BuildContext context, ThemeData theme) {
+    final scaling = theme.scaling;
+    return BoxConstraints(minWidth: 200 * scaling, maxWidth: 200 * scaling);
+  }
+
+  EdgeInsets _childPadding(EdgeInsets padding, Axis direction) {
+    if (direction == Axis.vertical) {
+      return EdgeInsets.only(left: padding.left, right: padding.right);
+    }
+    return EdgeInsets.only(top: padding.top, bottom: padding.bottom);
+  }
+
+  void _onSelected(int index) {
+    widget.onSelected?.call(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
+    final headerItems = widget.header ?? const <NavigationBarItem>[];
+    final footerItems = widget.footer ?? const <NavigationBarItem>[];
+    int headerSelectable = 0;
+    for (final item in headerItems) {
+      headerSelectable += item.selectableCount;
+    }
+    int bodySelectable = 0;
+    for (final item in widget.children) {
+      bodySelectable += item.selectableCount;
+    }
+    final headerChildren = wrapChildren(context, headerItems, baseIndex: 0);
+    final bodyChildren =
+        wrapChildren(context, widget.children, baseIndex: headerSelectable);
+    final footerChildren = wrapChildren(
+      context,
+      footerItems,
+      baseIndex: headerSelectable + bodySelectable,
+    );
+    var parentPadding = widget.padding ??
+        EdgeInsets.symmetric(
+          vertical: densityGap,
+          horizontal: densityContentPadding * 0.75,
+        );
+    var directionality = Directionality.of(context);
+    var resolvedPadding = parentPadding.resolve(directionality);
+    const direction = Axis.vertical;
+    return Data.inherit(
+      data: NavigationControlData(
+        containerType: NavigationContainerType.sidebar,
+        parentLabelType: widget.labelType,
+        parentLabelPosition: widget.labelPosition,
+        parentLabelSize: widget.labelSize,
+        parentPadding: resolvedPadding,
+        direction: direction,
+        onSelected: _onSelected,
+        selectedIndex: widget.index,
+        expanded: widget.expanded,
+        childCount: widget.children.length,
+        spacing: widget.spacing ?? 0,
+        keepCrossAxisSize: widget.keepCrossAxisSize,
+        keepMainAxisSize: widget.keepMainAxisSize,
+      ),
+      child: ConstrainedBox(
+        constraints:
+            widget.constraints ?? getDefaultConstraints(context, theme),
+        child: SurfaceBlur(
+          surfaceBlur: widget.surfaceBlur,
+          child: Container(
+            color: widget.backgroundColor,
+            child: ClipRect(
+              child: RepaintBoundary(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (headerChildren.isNotEmpty)
+                      _buildFixedSection(
+                        context,
+                        headerChildren,
+                        EdgeInsets.zero,
+                      ),
+                    Expanded(
+                      child: CustomScrollView(
+                        clipBehavior: Clip.none,
+                        shrinkWrap: true,
+                        scrollDirection: direction,
+                        slivers: [
+                          SliverGap(startPadding(resolvedPadding, direction)),
+                          ...bodyChildren.map((e) {
+                            return SliverPadding(
+                              padding: _childPadding(
+                                resolvedPadding,
+                                direction,
+                              ),
+                              sliver: e,
+                            ) as Widget;
+                          }).joinSeparator(SliverGap(widget.spacing ?? 0)),
+                          SliverGap(endPadding(resolvedPadding, direction)),
+                        ],
+                      ),
+                    ),
+                    if (footerChildren.isNotEmpty)
+                      _buildFixedSection(
+                        context,
+                        footerChildren,
+                        EdgeInsets.zero,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFixedSection(
+    BuildContext context,
+    List<Widget> items,
+    EdgeInsets resolvedPadding,
+  ) {
+    return Data.inherit(
+      data: NavigationControlData(
+        containerType: NavigationContainerType.sidebar,
+        parentLabelType: widget.labelType,
+        parentLabelPosition: widget.labelPosition,
+        parentLabelSize: widget.labelSize,
+        parentPadding: resolvedPadding,
+        direction: Axis.vertical,
+        onSelected: _onSelected,
+        selectedIndex: widget.index,
+        expanded: widget.expanded,
+        childCount: items.length,
+        spacing: widget.spacing ?? 0,
+        keepCrossAxisSize: widget.keepCrossAxisSize,
+        keepMainAxisSize: widget.keepMainAxisSize,
+      ),
+      child: CustomScrollView(
+        clipBehavior: Clip.none,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        slivers: [
+          SliverGap(startPadding(resolvedPadding, Axis.vertical)),
+          ...items.map((e) {
+            return SliverPadding(
+              padding: _childPadding(resolvedPadding, Axis.vertical),
+              sliver: e,
+            ) as Widget;
+          }).joinSeparator(SliverGap(widget.spacing ?? 0)),
+          SliverGap(endPadding(resolvedPadding, Axis.vertical)),
+        ],
+      ),
+    );
+  }
+}
+

@@ -17,9 +17,7 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
   // an icon-only sidebar.
   bool expanded = false;
 
-  // Currently selected navigation index. This feeds NavigationRail.index and is
-  // set via onSelected below.
-  int selected = 0;
+  String selected = 'Home';
 
   NavigationItem buildButton(String text, IconData icon) {
     // Convenience factory for a selectable navigation item with left alignment
@@ -28,6 +26,14 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
       label: Text(text),
       alignment: Alignment.centerLeft,
       selectedStyle: const ButtonStyle.primaryIcon(),
+      selected: selected == text,
+      onChanged: (selected) {
+        if (selected) {
+          setState(() {
+            this.selected = text;
+          });
+        }
+      },
       child: Icon(icon),
     );
   }
@@ -52,55 +58,85 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           NavigationRail(
-            backgroundColor: theme.colorScheme.card,
+            backgroundColor: theme.colorScheme.accent.withValues(alpha: 0.4),
             // Expand/collapse behavior is handled by the `expanded` boolean.
             // With labelType.expanded, labels are hidden when collapsed.
             labelType: NavigationLabelType.expanded,
             labelPosition: NavigationLabelPosition.end,
             alignment: NavigationRailAlignment.start,
             expanded: expanded,
-            // Bind the selected index to update highlights and semantics.
-            index: selected,
-            onSelected: (value) {
-              setState(() {
-                selected = value;
-              });
-            },
-            children: [
-              NavigationButton(
-                alignment: Alignment.centerLeft,
-                label: const Text('Menu'),
-                onPressed: () {
-                  setState(() {
-                    // Toggle between expanded and collapsed rail.
-                    expanded = !expanded;
-                  });
-                },
-                child: const Icon(Icons.menu),
+            header: [
+              NavigationSlotItem(
+                leading: IconContainer(
+                  backgroundColor: Colors.blue,
+                  icon: Icon(LucideIcons.galleryVerticalEnd).iconMedium,
+                ),
+                title: Text('Acme Inc').medium.small,
+                subtitle: Text('Enterprise').xSmall.normal,
+                trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
+                onPressed: () {},
               ),
-              const NavigationDivider(),
+            ],
+            footer: [
+              NavigationSlotItem(
+                leading: Avatar(initials: 'SU'),
+                title: Text('sunarya-thito').medium.small,
+                subtitle: Text('m@gmail.com').xSmall.normal,
+                trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
+                onPressed: () {},
+              ),
+            ],
+            children: [
               buildLabel('You'),
               buildButton('Home', Icons.home_filled),
               buildButton('Trending', Icons.trending_up),
               buildButton('Subscription', Icons.subscriptions),
               const NavigationDivider(),
-              buildLabel('History'),
-              buildButton('History', Icons.history),
-              buildButton('Watch Later', Icons.access_time_rounded),
+              NavigationGroup(
+                leading: const Icon(Icons.history),
+                label: const Text('History'),
+                children: [
+                  buildButton('History', Icons.history),
+                  buildButton('Watch Later', Icons.access_time_rounded),
+                ],
+              ),
               const NavigationDivider(),
               buildLabel('Movie'),
               buildButton('Action', Icons.movie_creation_outlined),
               buildButton('Horror', Icons.movie_creation_outlined),
               buildButton('Thriller', Icons.movie_creation_outlined),
               const NavigationDivider(),
-              buildLabel('Short Films'),
-              buildButton('Action', Icons.movie_creation_outlined),
-              buildButton('Horror', Icons.movie_creation_outlined),
+              NavigationGroup(
+                leading: const Icon(Icons.movie_filter_outlined),
+                label: const Text('Short Films'),
+                children: [
+                  buildButton('Action', Icons.movie_creation_outlined),
+                  buildButton('Horror', Icons.movie_creation_outlined),
+                ],
+              ),
             ],
           ),
           const VerticalDivider(),
           // Placeholder for the main content area.
-          const Flexible(child: SizedBox()),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton.ghost(
+                    onPressed: () {
+                      setState(() {
+                        // Toggle between expanded and collapsed rail.
+                        expanded = !expanded;
+                      });
+                    },
+                    icon: const Icon(LucideIcons.panelLeft),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

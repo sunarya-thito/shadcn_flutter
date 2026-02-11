@@ -526,16 +526,21 @@ class TextFlipper extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: text.characters
-          .map((char) => FlipperCharacter(
-                charset: charset,
-                character: char,
-                duration: duration,
-                curve: curve,
-              ))
-          .toList(),
+    // We need to force-clip because Row does not clip its children
+    // if the children overflowed by using Transform.
+    return ClipRect(
+      child: Row(
+        clipBehavior: Clip.none,
+        mainAxisSize: MainAxisSize.min,
+        children: text.characters
+            .map((char) => FlipperCharacter(
+                  charset: charset,
+                  character: char,
+                  duration: duration,
+                  curve: curve,
+                ))
+            .toList(),
+      ),
     );
   }
 }

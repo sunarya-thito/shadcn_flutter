@@ -175,3 +175,4 @@ export 'src/components/form/color/solid/slider/hsl.dart';
 export 'src/components/form/color/solid/slider/hsv.dart';
 export 'src/components/form/color/solid/color_input.dart';
 export 'src/theme/density.dart';
+export 'src/components/layout/icon.dart';

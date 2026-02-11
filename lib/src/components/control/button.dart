@@ -682,6 +682,18 @@ class Button extends StatefulWidget {
   /// Automatically spaced from the [child] with appropriate gaps.
   final Widget? trailing;
 
+  /// Custom gap between [leading] and [child].
+  ///
+  /// When null, defaults to the scaled density gap. Set to override the
+  /// default spacing between the leading widget and the main content.
+  final double? leadingGap;
+
+  /// Custom gap between [child] and [trailing].
+  ///
+  /// When null, defaults to the scaled density gap. Set to override the
+  /// default spacing between the main content and the trailing widget.
+  final double? trailingGap;
+
   /// The primary content displayed in the button.
   ///
   /// Typically contains text, icons, or other widgets that describe the button's
@@ -859,6 +871,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -912,6 +926,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -960,6 +976,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1009,6 +1027,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1058,6 +1078,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1106,6 +1128,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1154,6 +1178,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1203,6 +1229,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1251,6 +1279,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1304,6 +1334,8 @@ class Button extends StatefulWidget {
     this.statesController,
     this.leading,
     this.trailing,
+    this.leadingGap,
+    this.trailingGap,
     required this.child,
     this.onPressed,
     this.focusNode,
@@ -1487,12 +1519,7 @@ class ButtonState<T extends Button> extends State<T> {
       onSecondaryLongPress: widget.onSecondaryLongPress,
       onTertiaryLongPress: widget.onTertiaryLongPress,
       child: widget.leading == null && widget.trailing == null
-          ? Align(
-              heightFactor: 1,
-              widthFactor: 1,
-              alignment: widget.alignment ?? Alignment.center,
-              child: widget.child,
-            )
+          ? _buildAligned()
           : IntrinsicWidth(
               child: IntrinsicHeight(
                 child: Row(
@@ -1500,23 +1527,33 @@ class ButtonState<T extends Button> extends State<T> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (widget.leading != null) widget.leading!,
-                    if (widget.leading != null) Gap(densityGap),
+                    if (widget.leading != null)
+                      Gap(widget.leadingGap ?? densityGap),
                     Expanded(
-                      child: Align(
-                        widthFactor: 1,
-                        heightFactor: 1,
-                        alignment: widget.alignment ??
-                            AlignmentDirectional.centerStart,
-                        child: widget.child,
-                      ),
+                      child: _buildAligned(),
                     ),
-                    if (widget.trailing != null) Gap(densityGap),
+                    if (widget.trailing != null)
+                      Gap(widget.trailingGap ?? densityGap),
                     if (widget.trailing != null) widget.trailing!,
                   ],
                 ),
               ),
             ),
     );
+  }
+
+  Widget _buildAligned() {
+    if (widget.alignment != null) {
+      return AnimatedAlign(
+        duration: kDefaultDuration,
+        curve: Curves.easeInOut,
+        widthFactor: 1,
+        heightFactor: 1,
+        alignment: widget.alignment!,
+        child: widget.child,
+      );
+    }
+    return widget.child;
   }
 }
 

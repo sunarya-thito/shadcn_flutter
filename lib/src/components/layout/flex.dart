@@ -1,4 +1,4 @@
-import 'dart:ui' show Offset, Clip;
+import 'dart:ui' show Offset;
 
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/rendering.dart' as rendering;
@@ -177,26 +177,8 @@ mixin PaintOrderMixin on rendering.RenderBox {
     return head;
   }
 
-  /// Optional clip behavior used by [paintSorted].
-  Clip? get optionalClipBehavior => null;
-
   /// Paints children in sorted paint order.
   void paintSorted(rendering.PaintingContext context, Offset offset) {
-    final clipBehavior = optionalClipBehavior;
-    if (clipBehavior != null && clipBehavior != Clip.none) {
-      context.pushClipRect(
-        needsCompositing,
-        offset,
-        Offset.zero & size,
-        _paintSorted,
-        clipBehavior: clipBehavior,
-      );
-    } else {
-      _paintSorted(context, offset);
-    }
-  }
-
-  void _paintSorted(rendering.PaintingContext context, Offset offset) {
     rendering.RenderBox? child = firstSortedChild;
     while (child != null) {
       final parentData = child.parentData! as PaintOrderParentDataMixin;
@@ -260,9 +242,6 @@ class RenderFlex extends rendering.RenderFlex with PaintOrderMixin {
   rendering.RenderBox? get paintOrderFirstChild => firstChild;
 
   @override
-  Clip? get optionalClipBehavior => clipBehavior;
-
-  @override
   void setupParentData(rendering.RenderBox child) {
     if (child.parentData is! FlexParentData) {
       child.parentData = FlexParentData();
@@ -278,11 +257,12 @@ class RenderFlex extends rendering.RenderFlex with PaintOrderMixin {
 
   bool _checkOverflow() {
     rendering.RenderBox? child = firstChild;
+    final parentRect = Offset.zero & size;
     while (child != null) {
       final parentData = child.parentData! as FlexParentData;
       final childRect = parentData.offset & child.size;
-      if (childRect.right > size.width + 0.001 ||
-          childRect.bottom > size.height + 0.001) {
+      if (!parentRect.contains(childRect.topLeft) ||
+          !parentRect.contains(childRect.bottomRight)) {
         return true;
       }
       child = parentData.nextSibling;
@@ -635,9 +615,6 @@ class RenderStack extends rendering.RenderStack with PaintOrderMixin {
       child.parentData = StackParentData();
     }
   }
-
-  @override
-  Clip? get optionalClipBehavior => clipBehavior;
 
   @override
   void performLayout() {

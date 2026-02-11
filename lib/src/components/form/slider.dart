@@ -1266,7 +1266,7 @@ class _SliderState extends State<Slider>
                 width: (compTheme?.thumbSize ?? 16) * scaling,
                 height: (compTheme?.thumbSize ?? 16) * scaling,
                 decoration: BoxDecoration(
-                  color: compTheme?.thumbColor ?? theme.colorScheme.background,
+                  color: compTheme?.thumbColor ?? theme.colorScheme.primary,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: focusing
