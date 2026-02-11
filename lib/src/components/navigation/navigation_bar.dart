@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
@@ -186,8 +188,8 @@ abstract class NavigationBarItem extends Widget {
   /// Creates a [NavigationBarItem].
   const NavigationBarItem({super.key});
 
-  /// Whether this item can be selected.
-  bool get selectable;
+  /// Number of selectable items represented by this item.
+  int get selectableCount;
 }
 
 /// A flexible navigation container widget for organizing navigation items.
@@ -295,9 +297,6 @@ class NavigationBar extends StatefulWidget {
   /// Internal padding of the navigation bar.
   final EdgeInsetsGeometry? padding;
 
-  /// Size constraints for the navigation bar.
-  final BoxConstraints? constraints;
-
   /// Whether the navigation bar expands to fill available space.
   final bool? expands;
 
@@ -316,6 +315,18 @@ class NavigationBar extends StatefulWidget {
   /// Whether the navigation bar is in expanded state (for collapsible bars).
   final bool? expanded;
 
+  /// Cross-axis size when the navigation bar is expanded.
+  ///
+  /// For horizontal bars, this sets the height. For vertical bars, this sets
+  /// the width.
+  final double? expandedSize;
+
+  /// Cross-axis size when the navigation bar is collapsed.
+  ///
+  /// For horizontal bars, this sets the height. For vertical bars, this sets
+  /// the width.
+  final double? collapsedSize;
+
   /// Whether to keep cross-axis size when expanding/collapsing.
   final bool? keepCrossAxisSize;
 
@@ -333,13 +344,14 @@ class NavigationBar extends StatefulWidget {
     this.labelPosition,
     this.labelSize,
     this.padding,
-    this.constraints,
     this.expands,
     this.index,
     this.onSelected,
     this.surfaceOpacity,
     this.surfaceBlur,
     this.expanded,
+    this.expandedSize,
+    this.collapsedSize,
     this.keepCrossAxisSize,
     this.keepMainAxisSize,
     required this.children,
@@ -397,13 +409,14 @@ class _NavigationBarState extends State<NavigationBar>
       themeValue: compTheme?.labelSize,
       defaultValue: NavigationLabelSize.small,
     );
+    final defaultPadding = EdgeInsets.symmetric(
+      vertical: densityGap,
+      horizontal: densityContentPadding * 0.75,
+    );
     final parentPadding = styleValue(
       widgetValue: widget.padding,
       themeValue: compTheme?.padding,
-      defaultValue: EdgeInsets.symmetric(
-        vertical: densityGap,
-        horizontal: densityContentPadding * 0.75,
-      ),
+      defaultValue: defaultPadding,
     );
     final backgroundColor = styleValue<Color?>(
       widgetValue: widget.backgroundColor,
@@ -444,7 +457,7 @@ class _NavigationBarState extends State<NavigationBar>
         }
       }
     }
-    return AppBar(
+    Widget bar = AppBar(
       padding: EdgeInsets.zero,
       surfaceBlur: widget.surfaceBlur,
       surfaceOpacity: widget.surfaceOpacity,
@@ -485,6 +498,28 @@ class _NavigationBarState extends State<NavigationBar>
         ),
       ),
     );
+    if (widget.expandedSize != null || widget.collapsedSize != null) {
+      final targetMinSize = expanded
+          ? (widget.expandedSize ?? 0.0)
+          : (widget.collapsedSize ?? 0.0);
+      final maxSize = widget.expandedSize ?? double.infinity;
+      bar = AnimatedValueBuilder<double>(
+        value: targetMinSize,
+        duration: kDefaultDuration,
+        curve: Curves.easeInOut,
+        builder: (context, animatedMinSize, child) {
+          return ConstrainedBox(
+            constraints: direction == Axis.vertical
+                ? BoxConstraints(minWidth: animatedMinSize, maxWidth: maxSize)
+                : BoxConstraints(
+                    minHeight: animatedMinSize, maxHeight: maxSize),
+            child: child,
+          );
+        },
+        child: bar,
+      );
+    }
+    return bar;
   }
 
   Widget _wrapIntrinsic(Widget child) {
@@ -519,8 +554,8 @@ mixin NavigationContainerMixin {
   ///
   /// Takes a list of [NavigationBarItem] children and wraps each with
   /// [NavigationChildControlData] that tracks the item's index and selection state.
-  /// Only selectable items receive a selection index, while non-selectable items
-  /// have a null selection index.
+  /// Only items with a selectable count of 1 receive a selection index, while
+  /// non-selectable items have a null selection index.
   ///
   /// Parameters:
   /// - [context] (`BuildContext`, required): Build context for inherited data.
@@ -533,28 +568,45 @@ mixin NavigationContainerMixin {
   /// final wrappedItems = wrapChildren(
   ///   context,
   ///   [
-  ///     NavigationBarItem(icon: Icon(Icons.home), selectable: true),
-  ///     NavigationBarItem(icon: Icon(Icons.settings), selectable: true),
+  ///     NavigationItem(child: Icon(Icons.home)),
+  ///     NavigationItem(child: Icon(Icons.settings)),
   ///   ],
   /// );
   /// ```
   List<Widget> wrapChildren(
     BuildContext context,
-    List<NavigationBarItem> children,
-  ) {
-    int index = 0;
+    List<NavigationBarItem> children, {
+    int baseIndex = 0,
+  }) {
+    int index = baseIndex;
     List<Widget> newChildren = List.of(children);
     for (var i = 0; i < children.length; i++) {
-      if (children[i].selectable) {
+      final child = children[i];
+      final selectableCount = child.selectableCount;
+      if (selectableCount > 1) {
+        newChildren[i] = Data.inherit(
+          data: NavigationChildControlData(index: null, actualIndex: i),
+          child: Data.inherit(
+            data: NavigationGroupControlData(
+              baseIndex: index,
+              selectableCount: selectableCount,
+            ),
+            child: child,
+          ),
+        );
+        index += selectableCount;
+        continue;
+      }
+      if (selectableCount == 1) {
         newChildren[i] = Data.inherit(
           data: NavigationChildControlData(index: index, actualIndex: i),
-          child: children[i],
+          child: child,
         );
         index++;
       } else {
         newChildren[i] = Data.inherit(
           data: NavigationChildControlData(index: null, actualIndex: i),
-          child: children[i],
+          child: child,
         );
       }
     }
@@ -606,7 +658,13 @@ class NavigationRail extends StatefulWidget {
   /// Each item should be a [NavigationBarItem] that defines the icon,
   /// label, and optional badge for a navigation destination. Items are
   /// arranged according to the specified direction and alignment.
-  final List<NavigationBarItem> children;
+  final List<Widget> children;
+
+  /// Optional fixed header items displayed before the scrollable content.
+  final List<Widget>? header;
+
+  /// Optional fixed footer items displayed after the scrollable content.
+  final List<Widget>? footer;
 
   /// Alignment of items within the rail's main axis.
   ///
@@ -659,17 +717,17 @@ class NavigationRail extends StatefulWidget {
   /// Useful for responsive layouts and ensuring consistent sizing.
   final BoxConstraints? constraints;
 
-  /// Index of the currently selected navigation item.
+  /// Cross-axis size when the navigation rail is expanded.
   ///
-  /// Highlights the corresponding item and affects label display based
-  /// on the [labelType] setting. When null, no item is selected.
-  final int? index;
+  /// For vertical rails, this sets the width. For horizontal rails, this sets
+  /// the height.
+  final double? expandedSize;
 
-  /// Callback invoked when a navigation item is selected.
+  /// Cross-axis size when the navigation rail is collapsed.
   ///
-  /// Called with the index of the tapped item. Use this to update
-  /// the selected index and navigate to the corresponding destination.
-  final ValueChanged<int>? onSelected;
+  /// For vertical rails, this sets the width. For horizontal rails, this sets
+  /// the height.
+  final double? collapsedSize;
 
   /// Opacity level for surface background effects.
   ///
@@ -741,13 +799,15 @@ class NavigationRail extends StatefulWidget {
     this.labelSize = NavigationLabelSize.small,
     this.padding,
     this.constraints,
-    this.index,
-    this.onSelected,
+    this.expandedSize,
+    this.collapsedSize,
     this.surfaceOpacity,
     this.surfaceBlur,
     this.expanded = true,
     this.keepMainAxisSize = false,
     this.keepCrossAxisSize = false,
+    this.header,
+    this.footer,
     required this.children,
   });
 
@@ -757,27 +817,6 @@ class NavigationRail extends StatefulWidget {
 
 class _NavigationRailState extends State<NavigationRail>
     with NavigationContainerMixin {
-  AlignmentGeometry get _alignment {
-    switch ((widget.alignment, widget.direction)) {
-      case (NavigationRailAlignment.start, Axis.horizontal):
-        return AlignmentDirectional.centerStart;
-      case (NavigationRailAlignment.center, Axis.horizontal):
-        return AlignmentDirectional.topCenter;
-      case (NavigationRailAlignment.end, Axis.horizontal):
-        return AlignmentDirectional.centerEnd;
-      case (NavigationRailAlignment.start, Axis.vertical):
-        return AlignmentDirectional.topCenter;
-      case (NavigationRailAlignment.center, Axis.vertical):
-        return AlignmentDirectional.center;
-      case (NavigationRailAlignment.end, Axis.vertical):
-        return AlignmentDirectional.bottomCenter;
-    }
-  }
-
-  void _onSelected(int index) {
-    widget.onSelected?.call(index);
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -791,23 +830,61 @@ class _NavigationRailState extends State<NavigationRail>
         );
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
-    return RepaintBoundary(
-      child: Data.inherit(
+    final headerItems = widget.header ?? const <NavigationBarItem>[];
+    final footerItems = widget.footer ?? const <NavigationBarItem>[];
+
+    final baseData = NavigationControlData(
+      containerType: NavigationContainerType.rail,
+      parentLabelType: widget.labelType,
+      parentLabelPosition: widget.labelPosition,
+      parentLabelSize: widget.labelSize,
+      parentPadding: resolvedPadding,
+      direction: widget.direction,
+      expanded: widget.expanded,
+      childCount: widget.children.length,
+      spacing: widget.spacing ?? densityGap,
+      keepCrossAxisSize: widget.keepCrossAxisSize,
+      keepMainAxisSize: widget.keepMainAxisSize,
+    );
+
+    Widget buildSection(List<Widget> items, EdgeInsets sectionPadding) {
+      if (items.isEmpty) {
+        return const SizedBox.shrink();
+      }
+      return Data.inherit(
         data: NavigationControlData(
-          containerType: NavigationContainerType.rail,
-          parentLabelType: widget.labelType,
-          parentLabelPosition: widget.labelPosition,
-          parentLabelSize: widget.labelSize,
-          parentPadding: resolvedPadding,
-          direction: widget.direction,
-          selectedIndex: widget.index,
-          onSelected: _onSelected,
-          expanded: widget.expanded,
-          childCount: widget.children.length,
-          spacing: widget.spacing ?? densityGap,
-          keepCrossAxisSize: widget.keepCrossAxisSize,
-          keepMainAxisSize: widget.keepMainAxisSize,
+          containerType: baseData.containerType,
+          parentLabelType: baseData.parentLabelType,
+          parentLabelPosition: baseData.parentLabelPosition,
+          parentLabelSize: baseData.parentLabelSize,
+          parentPadding: baseData.parentPadding,
+          direction: baseData.direction,
+          selectedIndex: baseData.selectedIndex,
+          onSelected: baseData.onSelected,
+          expanded: baseData.expanded,
+          childCount: items.length,
+          spacing: baseData.spacing,
+          keepCrossAxisSize: baseData.keepCrossAxisSize,
+          keepMainAxisSize: baseData.keepMainAxisSize,
         ),
+        child: SingleChildScrollView(
+          scrollDirection: widget.direction,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: sectionPadding,
+          child: _wrapIntrinsic(
+            Flex(
+              direction: widget.direction,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: items,
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget rail = RepaintBoundary(
+      child: Data.inherit(
+        data: baseData,
         child: SurfaceBlur(
           surfaceBlur: widget.surfaceBlur,
           child: Container(
@@ -815,22 +892,126 @@ class _NavigationRailState extends State<NavigationRail>
                 (theme.colorScheme.background.scaleAlpha(
                   widget.surfaceOpacity ?? 1,
                 )),
-            alignment: _alignment,
-            child: SingleChildScrollView(
-              scrollDirection: widget.direction,
-              padding: resolvedPadding,
-              child: _wrapIntrinsic(
-                Flex(
-                  direction: widget.direction,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: wrapChildren(context, widget.children),
-                ),
+            padding: headerItems.isNotEmpty || footerItems.isNotEmpty
+                ? resolvedPadding.copyWith(
+                    left: 0,
+                    right: 0,
+                  )
+                : null,
+            child: AnimatedSize(
+              duration: kDefaultDuration,
+              curve: Curves.easeInOut,
+              child: Flex(
+                direction: widget.direction,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: baseData.spacing,
+                children: [
+                  if (headerItems.isNotEmpty)
+                    SizedBox(
+                      width:
+                          widget.direction == Axis.vertical && widget.expanded
+                              ? double.infinity
+                              : null,
+                      height:
+                          widget.direction == Axis.horizontal && widget.expanded
+                              ? double.infinity
+                              : null,
+                      child: buildSection(headerItems, EdgeInsets.zero),
+                    ),
+                  Expanded(
+                    child: AnimatedAlign(
+                      duration: kDefaultDuration,
+                      curve: Curves.easeInOut,
+                      alignment: switch ((widget.direction, widget.alignment)) {
+                        (Axis.horizontal, NavigationRailAlignment.start) =>
+                          AlignmentDirectional.centerStart,
+                        (Axis.horizontal, NavigationRailAlignment.center) =>
+                          Alignment.center,
+                        (Axis.horizontal, NavigationRailAlignment.end) =>
+                          AlignmentDirectional.centerEnd,
+                        (Axis.vertical, NavigationRailAlignment.start) =>
+                          AlignmentDirectional.topCenter,
+                        (Axis.vertical, NavigationRailAlignment.center) =>
+                          Alignment.center,
+                        (Axis.vertical, NavigationRailAlignment.end) =>
+                          AlignmentDirectional.bottomCenter,
+                      },
+                      widthFactor:
+                          widget.direction == Axis.horizontal ? 1 : null,
+                      heightFactor:
+                          widget.direction == Axis.vertical ? 1 : null,
+                      child: SizedBox(
+                        width:
+                            widget.direction == Axis.vertical && widget.expanded
+                                ? double.infinity
+                                : null,
+                        height: widget.direction == Axis.horizontal &&
+                                widget.expanded
+                            ? double.infinity
+                            : null,
+                        child: SingleChildScrollView(
+                          scrollDirection: widget.direction,
+                          padding:
+                              headerItems.isNotEmpty || footerItems.isNotEmpty
+                                  ? resolvedPadding.copyWith(
+                                      top: 0,
+                                      bottom: 0,
+                                    )
+                                  : resolvedPadding,
+                          child: Flex(
+                            direction: widget.direction,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            spacing: baseData.spacing,
+                            children: widget.children,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (footerItems.isNotEmpty)
+                    SizedBox(
+                      width:
+                          widget.direction == Axis.vertical && widget.expanded
+                              ? double.infinity
+                              : null,
+                      height:
+                          widget.direction == Axis.horizontal && widget.expanded
+                              ? double.infinity
+                              : null,
+                      child: buildSection(footerItems, EdgeInsets.zero),
+                    ),
+                ],
               ),
             ),
           ),
         ),
       ),
     );
+    if (widget.constraints != null) {
+      rail = ConstrainedBox(constraints: widget.constraints!, child: rail);
+    }
+    if (widget.expandedSize != null || widget.collapsedSize != null) {
+      final targetMinSize = widget.expanded
+          ? (widget.expandedSize ?? 0.0)
+          : (widget.collapsedSize ?? 0.0);
+      final maxSize = widget.expandedSize ?? double.infinity;
+      rail = AnimatedValueBuilder<double>(
+        value: targetMinSize,
+        duration: kDefaultDuration,
+        curve: Curves.easeInOut,
+        builder: (context, animatedMinSize, child) {
+          return ConstrainedBox(
+            constraints: widget.direction == Axis.vertical
+                ? BoxConstraints(minWidth: animatedMinSize, maxWidth: maxSize)
+                : BoxConstraints(
+                    minHeight: animatedMinSize, maxHeight: maxSize),
+            child: child,
+          );
+        },
+        child: rail,
+      );
+    }
+    return _wrapIntrinsic(rail);
   }
 
   Widget _wrapIntrinsic(Widget child) {
@@ -894,6 +1075,12 @@ class NavigationSidebar extends StatefulWidget {
   /// destination with icon, label, and optional badge. Items are arranged
   /// vertically with full-width presentation.
   final List<NavigationBarItem> children;
+
+  /// Optional fixed header items displayed before the scrollable content.
+  final List<NavigationBarItem>? header;
+
+  /// Optional fixed footer items displayed after the scrollable content.
+  final List<NavigationBarItem>? footer;
 
   /// Spacing between navigation items.
   ///
@@ -1017,6 +1204,8 @@ class NavigationSidebar extends StatefulWidget {
     this.expanded = true,
     this.keepCrossAxisSize = false,
     this.keepMainAxisSize = false,
+    this.header,
+    this.footer,
     required this.children,
   });
 
@@ -1048,7 +1237,24 @@ class _NavigationSidebarState extends State<NavigationSidebar>
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final densityContentPadding = theme.density.baseContentPadding * scaling;
-    List<Widget> children = wrapChildren(context, widget.children);
+    final headerItems = widget.header ?? const <NavigationBarItem>[];
+    final footerItems = widget.footer ?? const <NavigationBarItem>[];
+    int headerSelectable = 0;
+    for (final item in headerItems) {
+      headerSelectable += item.selectableCount;
+    }
+    int bodySelectable = 0;
+    for (final item in widget.children) {
+      bodySelectable += item.selectableCount;
+    }
+    final headerChildren = wrapChildren(context, headerItems, baseIndex: 0);
+    final bodyChildren =
+        wrapChildren(context, widget.children, baseIndex: headerSelectable);
+    final footerChildren = wrapChildren(
+      context,
+      footerItems,
+      baseIndex: headerSelectable + bodySelectable,
+    );
     var parentPadding = widget.padding ??
         EdgeInsets.symmetric(
           vertical: densityGap,
@@ -1068,7 +1274,7 @@ class _NavigationSidebarState extends State<NavigationSidebar>
         onSelected: _onSelected,
         selectedIndex: widget.index,
         expanded: widget.expanded,
-        childCount: children.length,
+        childCount: widget.children.length,
         spacing: widget.spacing ?? 0,
         keepCrossAxisSize: widget.keepCrossAxisSize,
         keepMainAxisSize: widget.keepMainAxisSize,
@@ -1082,28 +1288,87 @@ class _NavigationSidebarState extends State<NavigationSidebar>
             color: widget.backgroundColor,
             child: ClipRect(
               child: RepaintBoundary(
-                child: CustomScrollView(
-                  clipBehavior: Clip.none,
-                  shrinkWrap: true,
-                  scrollDirection: direction,
-                  slivers: [
-                    SliverGap(_startPadding(resolvedPadding, direction)),
-                    ...children.map((e) {
-                      return SliverPadding(
-                        padding: _childPadding(
-                          resolvedPadding,
-                          direction,
-                        ),
-                        sliver: e,
-                      ) as Widget;
-                    }).joinSeparator(SliverGap(widget.spacing ?? 0)),
-                    SliverGap(_endPadding(resolvedPadding, direction)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (headerChildren.isNotEmpty)
+                      _buildFixedSection(
+                        context,
+                        headerChildren,
+                        EdgeInsets.zero,
+                      ),
+                    Expanded(
+                      child: CustomScrollView(
+                        clipBehavior: Clip.none,
+                        shrinkWrap: true,
+                        scrollDirection: direction,
+                        slivers: [
+                          SliverGap(_startPadding(resolvedPadding, direction)),
+                          ...bodyChildren.map((e) {
+                            return SliverPadding(
+                              padding: _childPadding(
+                                resolvedPadding,
+                                direction,
+                              ),
+                              sliver: e,
+                            ) as Widget;
+                          }).joinSeparator(SliverGap(widget.spacing ?? 0)),
+                          SliverGap(_endPadding(resolvedPadding, direction)),
+                        ],
+                      ),
+                    ),
+                    if (footerChildren.isNotEmpty)
+                      _buildFixedSection(
+                        context,
+                        footerChildren,
+                        EdgeInsets.zero,
+                      ),
                   ],
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFixedSection(
+    BuildContext context,
+    List<Widget> items,
+    EdgeInsets resolvedPadding,
+  ) {
+    return Data.inherit(
+      data: NavigationControlData(
+        containerType: NavigationContainerType.sidebar,
+        parentLabelType: widget.labelType,
+        parentLabelPosition: widget.labelPosition,
+        parentLabelSize: widget.labelSize,
+        parentPadding: resolvedPadding,
+        direction: Axis.vertical,
+        onSelected: _onSelected,
+        selectedIndex: widget.index,
+        expanded: widget.expanded,
+        childCount: items.length,
+        spacing: widget.spacing ?? 0,
+        keepCrossAxisSize: widget.keepCrossAxisSize,
+        keepMainAxisSize: widget.keepMainAxisSize,
+      ),
+      child: CustomScrollView(
+        clipBehavior: Clip.none,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        slivers: [
+          SliverGap(_startPadding(resolvedPadding, Axis.vertical)),
+          ...items.map((e) {
+            return SliverPadding(
+              padding: _childPadding(resolvedPadding, Axis.vertical),
+              sliver: e,
+            ) as Widget;
+          }).joinSeparator(SliverGap(widget.spacing ?? 0)),
+          SliverGap(_endPadding(resolvedPadding, Axis.vertical)),
+        ],
       ),
     );
   }
@@ -1215,7 +1480,7 @@ class NavigationControlData {
   final int childCount;
 
   /// Callback when an item is selected.
-  final ValueChanged<int> onSelected;
+  final ValueChanged<int>? onSelected;
 
   /// Whether the navigation is expanded to fill available space.
   final bool expanded;
@@ -1262,8 +1527,8 @@ class NavigationControlData {
     required this.parentLabelSize,
     required this.parentPadding,
     required this.direction,
-    required this.selectedIndex,
-    required this.onSelected,
+    this.selectedIndex,
+    this.onSelected,
     required this.expanded,
     required this.childCount,
     required this.spacing,
@@ -1311,6 +1576,24 @@ class NavigationControlData {
   }
 }
 
+/// Control data for navigation groups with nested items.
+///
+/// Provides the base selection index for nested items and the total count
+/// of selectable children within a group.
+class NavigationGroupControlData {
+  /// Base selection index for the group's first selectable child.
+  final int baseIndex;
+
+  /// Total number of selectable items within the group.
+  final int selectableCount;
+
+  /// Creates group control data.
+  const NavigationGroupControlData({
+    required this.baseIndex,
+    required this.selectableCount,
+  });
+}
+
 /// Spacing gap between navigation items.
 ///
 /// Creates empty space in navigation bars or sidebars. Automatically
@@ -1326,7 +1609,7 @@ class NavigationGap extends StatelessWidget implements NavigationBarItem {
   const NavigationGap(this.gap, {super.key});
 
   @override
-  bool get selectable => false;
+  int get selectableCount => 0;
 
   /// Builds the gap widget for box-based navigation containers.
   ///
@@ -1371,7 +1654,7 @@ class NavigationDivider extends StatelessWidget implements NavigationBarItem {
   const NavigationDivider({super.key, this.thickness, this.color});
 
   @override
-  bool get selectable => false;
+  int get selectableCount => 0;
 
   @override
   Widget build(BuildContext context) {
@@ -1482,10 +1765,10 @@ class NavigationItem extends AbstractNavigationButton {
   });
 
   @override
-  bool get selectable {
+  int get selectableCount {
     // if index is not null, then the child itself handles the selection
     // if index is null, then the parent handles the selection
-    return index == null;
+    return index == null ? 1 : 0;
   }
 
   @override
@@ -1541,19 +1824,31 @@ class _NavigationItemState
         onChanged: parentIndex != null || widget.index != null
             ? (value) {
                 widget.onChanged?.call(value);
-                data?.onSelected(parentIndex ?? widget.index!);
+                data?.onSelected?.call(parentIndex ?? widget.index!);
               }
             : widget.onChanged,
         marginAlignment: widget.marginAlignment,
         style: style,
         selectedStyle: selectedStyle,
         alignment: widget.alignment ??
-            (data?.containerType == NavigationContainerType.sidebar &&
-                    data?.labelDirection == Axis.horizontal
-                ? (data?.parentLabelPosition == NavigationLabelPosition.start
-                    ? AlignmentDirectional.centerEnd
-                    : AlignmentDirectional.centerStart)
-                : null),
+            () {
+              if (data?.expanded == true) {
+                return Alignment.center;
+              }
+              if (data?.containerType == NavigationContainerType.sidebar &&
+                  data?.labelDirection == Axis.horizontal) {
+                if (data?.parentLabelPosition ==
+                    NavigationLabelPosition.start) {
+                  return AlignmentDirectional.centerEnd;
+                } else if (data?.parentLabelPosition ==
+                    NavigationLabelPosition.end) {
+                  return AlignmentDirectional.centerStart;
+                } else {
+                  return Alignment.center;
+                }
+              }
+              return null;
+            }(),
         child: _NavigationLabeled(
           label: label,
           showLabel: showLabel,
@@ -1617,9 +1912,7 @@ class NavigationButton extends AbstractNavigationButton {
   });
 
   @override
-  bool get selectable {
-    return false;
-  }
+  int get selectableCount => 0;
 
   @override
   State<AbstractNavigationButton> createState() => _NavigationButtonState();
@@ -1685,6 +1978,442 @@ class _NavigationButtonState
           child: widget.child,
         ),
       ),
+    );
+  }
+}
+
+/// A navigation item that can expand to reveal nested navigation items.
+///
+/// Provides a labeled header row that toggles visibility of sub-items. Intended
+/// for hierarchical navigation structures, especially in vertical sidebars or
+/// rails.
+class NavigationGroup extends StatefulWidget implements NavigationBarItem {
+  /// Optional leading widget for the group header.
+  final Widget? leading;
+
+  /// Label widget for the group header.
+  final Widget label;
+
+  /// The nested navigation items for this group.
+  final List<NavigationBarItem> children;
+
+  /// Whether the group is expanded (controlled mode).
+  final bool? expanded;
+
+  /// Initial expanded state when uncontrolled.
+  final bool initialExpanded;
+
+  /// Callback when expansion state changes.
+  final ValueChanged<bool>? onExpandedChanged;
+
+  /// Custom style when the group header is selected.
+  final AbstractButtonStyle? selectedStyle;
+
+  /// Whether the group header is currently selected.
+  final bool? selected;
+
+  /// Callback when header selection changes.
+  final ValueChanged<bool>? onChanged;
+
+  /// Optional index for selection management.
+  final int? index;
+
+  /// Whether the group header is selectable.
+  final bool selectable;
+
+  /// Optional button style for the header.
+  final AbstractButtonStyle? style;
+
+  /// Optional custom trailing widget for the expand indicator.
+  final Widget? trailing;
+
+  /// Indentation applied to nested items.
+  final double? childIndent;
+
+  /// Branch line style for connecting group items.
+  final BranchLine? branchLine;
+
+  /// Spacing between leading widget and label.
+  final double? spacing;
+
+  /// Content alignment within the header button.
+  final AlignmentGeometry? alignment;
+
+  /// Whether the header is enabled for interaction.
+  final bool? enabled;
+
+  /// How to handle label overflow.
+  final NavigationOverflow overflow;
+
+  /// Creates a [NavigationGroup].
+  const NavigationGroup({
+    super.key,
+    this.leading,
+    required this.label,
+    required this.children,
+    this.expanded,
+    this.initialExpanded = false,
+    this.onExpandedChanged,
+    this.selectedStyle,
+    this.selected,
+    this.onChanged,
+    this.index,
+    this.selectable = false,
+    this.style,
+    this.trailing,
+    this.childIndent,
+    this.branchLine,
+    this.spacing,
+    this.alignment,
+    this.enabled,
+    this.overflow = NavigationOverflow.marquee,
+  });
+
+  @override
+
+  /// Total number of selectable children, including nested groups.
+  int get selectableCount {
+    int count = (selectable && index == null) ? 1 : 0;
+    for (final child in children) {
+      count += child.selectableCount;
+    }
+    return count;
+  }
+
+  @override
+  State<NavigationGroup> createState() => _NavigationGroupState();
+}
+
+class _NavigationGroupState extends State<NavigationGroup>
+    with NavigationContainerMixin {
+  late bool _expanded;
+
+  bool get _isExpanded => widget.expanded ?? _expanded;
+
+  @override
+  void initState() {
+    super.initState();
+    _expanded = widget.expanded ?? widget.initialExpanded;
+  }
+
+  @override
+  void didUpdateWidget(covariant NavigationGroup oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.expanded != null && widget.expanded != oldWidget.expanded) {
+      _expanded = widget.expanded ?? _expanded;
+    }
+  }
+
+  void _toggleExpanded() {
+    if (widget.enabled == false || widget.children.isEmpty) {
+      return;
+    }
+    final next = !_isExpanded;
+    if (widget.expanded == null) {
+      setState(() {
+        _expanded = next;
+      });
+    }
+    widget.onExpandedChanged?.call(next);
+  }
+
+  EdgeInsetsGeometry _indentForDirection(double indent, Axis direction) {
+    if (direction == Axis.vertical) {
+      return EdgeInsetsDirectional.only(start: indent);
+    }
+    return EdgeInsetsDirectional.only(top: indent);
+  }
+
+  Widget _buildGroupGuide(
+    BuildContext context,
+    int childIndex,
+    int childCount,
+    Axis direction,
+  ) {
+    if (direction != Axis.vertical) {
+      return const SizedBox.shrink();
+    }
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final depth = [TreeNodeDepth(childIndex, childCount)];
+    final compTheme = ComponentTheme.maybeOf<TreeTheme>(context);
+    final branchLine =
+        widget.branchLine ?? compTheme?.branchLine ?? BranchLine.line;
+    final guideIndex = branchLine is IndentGuideLine ? 1 : 0;
+    final guide = branchLine.build(context, depth, guideIndex);
+    return SizedBox(width: densityGap * 2, child: guide);
+  }
+
+  Widget _wrapGroupChild(
+    BuildContext context,
+    Widget child,
+    int childIndex,
+    int childCount,
+    Axis direction,
+  ) {
+    final guide = _buildGroupGuide(context, childIndex, childCount, direction);
+    if (direction != Axis.vertical) {
+      return child;
+    }
+    if (child is SliverToBoxAdapter) {
+      return SliverToBoxAdapter(
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              guide,
+              Expanded(child: child.child ?? const SizedBox.shrink()),
+            ],
+          ),
+        ),
+      );
+    }
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          guide,
+          Expanded(child: child),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, NavigationControlData? data) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final labelType = data?.parentLabelType ?? NavigationLabelType.none;
+    final direction = data?.direction ?? Axis.vertical;
+    final showLabel = labelType == NavigationLabelType.all ||
+        (labelType == NavigationLabelType.expanded && data?.expanded == true);
+    final canShowLabel = labelType == NavigationLabelType.expanded ||
+        labelType == NavigationLabelType.all ||
+        labelType == NavigationLabelType.selected;
+    final label = DefaultTextStyle.merge(
+      textAlign: TextAlign.center,
+      child: _NavigationChildOverflowHandle(
+        overflow: widget.overflow,
+        child: data?.parentLabelSize == NavigationLabelSize.small
+            ? widget.label.xSmall()
+            : widget.label,
+      ),
+    );
+    final content = _NavigationLabeled(
+      label: label,
+      showLabel: showLabel,
+      labelType: labelType,
+      direction: direction,
+      keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
+      keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
+      position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
+      spacing: widget.spacing ?? densityGap,
+      child: widget.leading ?? const SizedBox.shrink(),
+    );
+
+    AbstractButtonStyle style = widget.style ??
+        (data?.containerType != NavigationContainerType.sidebar
+            ? const ButtonStyle.ghost(density: ButtonDensity.icon)
+            : const ButtonStyle.ghost());
+    AbstractButtonStyle selectedStyle = widget.selectedStyle ??
+        (data?.containerType != NavigationContainerType.sidebar
+            ? const ButtonStyle.secondary(density: ButtonDensity.icon)
+            : const ButtonStyle.secondary());
+
+    final hasChildren = widget.children.isNotEmpty;
+    final trailing = hasChildren
+        ? Hidden(
+            hidden: !(data?.expanded ?? true),
+            direction: Axis.horizontal,
+            curve: Curves.easeInOut,
+            duration: kDefaultDuration,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Gap(densityGap),
+                AnimatedRotation(
+                  turns: _isExpanded ? 0.5 : 0.0,
+                  duration: kDefaultDuration,
+                  curve: Curves.easeInOut,
+                  child: IconTheme.merge(
+                    data: IconThemeData(size: 16 * scaling),
+                    child: widget.trailing ?? const Icon(Icons.expand_more),
+                  ),
+                ),
+              ],
+            ),
+          )
+        : null;
+
+    final parentExpanded = data?.expanded ?? true;
+    final groupData = Data.maybeOf<NavigationGroupControlData>(context);
+    final canSelectHeader = widget.selectable;
+    final headerIndex = canSelectHeader
+        ? (widget.index ??
+            ((widget.index == null && groupData != null)
+                ? groupData.baseIndex
+                : null))
+        : null;
+    final isSelected = canSelectHeader
+        ? (widget.selected ?? headerIndex == data?.selectedIndex)
+        : false;
+
+    Widget header = SelectedButton(
+      value: isSelected,
+      enabled: widget.enabled,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+        if (headerIndex != null) {
+          data?.onSelected?.call(headerIndex);
+        }
+        if (hasChildren && parentExpanded) {
+          _toggleExpanded();
+        }
+      },
+      style: style,
+      selectedStyle: selectedStyle,
+      alignment: widget.alignment ??
+          (data?.containerType == NavigationContainerType.sidebar &&
+                  data?.labelDirection == Axis.horizontal
+              ? (data?.parentLabelPosition == NavigationLabelPosition.start
+                  ? AlignmentDirectional.centerEnd
+                  : AlignmentDirectional.centerStart)
+              : null),
+      child: Row(
+        children: [
+          Expanded(child: content),
+          if (trailing != null) trailing,
+        ],
+      ),
+    );
+
+    if (labelType == NavigationLabelType.tooltip) {
+      AlignmentGeometry alignment = Alignment.topCenter;
+      AlignmentGeometry anchorAlignment = Alignment.bottomCenter;
+      if (direction == Axis.vertical) {
+        alignment = AlignmentDirectional.centerStart;
+        anchorAlignment = AlignmentDirectional.centerEnd;
+      }
+      header = Tooltip(
+        waitDuration: !isMobile(theme.platform)
+            ? Duration.zero
+            : const Duration(milliseconds: 500),
+        alignment: alignment,
+        anchorAlignment: anchorAlignment,
+        tooltip: TooltipContainer(child: widget.label).call,
+        child: header,
+      );
+    }
+
+    return NavigationPadding(child: header);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final data = Data.maybeOf<NavigationControlData>(context);
+    final groupData = Data.maybeOf<NavigationGroupControlData>(context);
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final direction = data?.direction ?? Axis.vertical;
+    final baseIndex = groupData?.baseIndex ?? 0;
+    final headerOffset = (widget.selectable && widget.index == null) ? 1 : 0;
+    final wrappedChildren = wrapChildren(
+      context,
+      widget.children,
+      baseIndex: baseIndex + headerOffset,
+    );
+    final childControlData = data == null
+        ? null
+        : NavigationControlData(
+            containerType: data.containerType,
+            parentLabelType: data.parentLabelType,
+            parentLabelPosition: data.parentLabelPosition,
+            parentLabelSize: data.parentLabelSize,
+            parentPadding: data.parentPadding,
+            direction: Axis.vertical,
+            selectedIndex: data.selectedIndex,
+            onSelected: data.onSelected,
+            expanded: data.expanded,
+            childCount: wrappedChildren.length,
+            spacing: data.spacing,
+            keepCrossAxisSize: data.keepCrossAxisSize,
+            keepMainAxisSize: data.keepMainAxisSize,
+          );
+
+    final indent = widget.childIndent ?? densityGap;
+    final indentPadding = _indentForDirection(indent, direction);
+
+    final parentExpanded = data?.expanded ?? true;
+    if (data?.containerType == NavigationContainerType.sidebar) {
+      final decoratedChildren = <Widget>[];
+      for (var i = 0; i < wrappedChildren.length; i++) {
+        decoratedChildren.add(
+          _wrapGroupChild(
+            context,
+            wrappedChildren[i],
+            i,
+            wrappedChildren.length,
+            direction,
+          ),
+        );
+      }
+      final slivers = <Widget>[
+        SliverToBoxAdapter(child: _buildHeader(context, data)),
+        if (parentExpanded && _isExpanded && decoratedChildren.isNotEmpty)
+          ...decoratedChildren.map(
+            (child) => SliverPadding(
+              padding: indentPadding,
+              sliver: Data.inherit(
+                data: childControlData,
+                child: child,
+              ),
+            ),
+          ),
+      ];
+      return SliverMainAxisGroup(slivers: slivers);
+    }
+
+    final decoratedChildren = <Widget>[];
+    for (var i = 0; i < wrappedChildren.length; i++) {
+      decoratedChildren.add(
+        _wrapGroupChild(
+          context,
+          wrappedChildren[i],
+          i,
+          wrappedChildren.length,
+          direction,
+        ),
+      );
+    }
+    final childList = Data.inherit(
+      data: childControlData,
+      child: Padding(
+        padding: indentPadding,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: decoratedChildren,
+        ),
+      ),
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildHeader(context, data),
+        ClipRect(
+          child: Hidden(
+            hidden: !_isExpanded || !parentExpanded,
+            direction: Axis.vertical,
+            curve: Curves.easeInOut,
+            duration: kDefaultDuration,
+            child: childList,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -1806,14 +2535,13 @@ abstract class _AbstractNavigationButtonState<
     NavigationControlData? data,
     NavigationChildControlData? childData,
   ) {
-    if (childData == null) {
-      return buildBox(context, data, null);
-    } else {
-      return RepaintBoundary.wrap(
-        buildBox(context, data, childData),
-        childData.actualIndex,
-      );
-    }
+    final box = childData == null
+        ? buildBox(context, data, null)
+        : RepaintBoundary.wrap(
+            buildBox(context, data, childData),
+            childData.actualIndex,
+          );
+    return box;
   }
 
   Widget buildBox(
@@ -1855,6 +2583,8 @@ class _NavigationLabeled extends StatelessWidget {
     var animatedSize = Hidden(
       hidden: !showLabel,
       direction: direction,
+      curve: Curves.easeInOut,
+      duration: kDefaultDuration,
       reverse: position == NavigationLabelPosition.start ||
           position == NavigationLabelPosition.top,
       keepCrossAxisSize:
@@ -1862,31 +2592,40 @@ class _NavigationLabeled extends StatelessWidget {
       keepMainAxisSize:
           (this.direction != direction ? keepMainAxisSize : keepCrossAxisSize),
       child: Padding(
-        padding: EdgeInsetsDirectional.only(
+        padding: EdgeInsets.only(
           top: position == NavigationLabelPosition.bottom ? spacing : 0,
           bottom: position == NavigationLabelPosition.top ? spacing : 0,
-          start: position == NavigationLabelPosition.end ? spacing : 0,
-          end: position == NavigationLabelPosition.start ? spacing : 0,
+          left: position == NavigationLabelPosition.end ? spacing : 0,
+          right: position == NavigationLabelPosition.start ? spacing : 0,
         ),
         child: label,
       ),
     );
-    return IntrinsicHeight(
-      child: IntrinsicWidth(
-        child: Flex(
-          direction: direction,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (position == NavigationLabelPosition.start ||
-                position == NavigationLabelPosition.top)
-              Flexible(child: animatedSize),
-            child,
-            if (position == NavigationLabelPosition.end ||
-                position == NavigationLabelPosition.bottom)
-              Flexible(child: animatedSize),
-          ],
-        ),
-      ),
+    final content = Flex(
+      direction: direction,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (position == NavigationLabelPosition.start ||
+            position == NavigationLabelPosition.top)
+          animatedSize,
+        child,
+        if (position == NavigationLabelPosition.end ||
+            position == NavigationLabelPosition.bottom)
+          animatedSize,
+      ],
+    );
+    return AnimatedAlign(
+      duration: kDefaultDuration,
+      curve: Curves.easeInOut,
+      alignment: showLabel
+          ? switch (position) {
+              NavigationLabelPosition.start => AlignmentDirectional.centerEnd,
+              NavigationLabelPosition.end => AlignmentDirectional.centerStart,
+              NavigationLabelPosition.top => Alignment.topCenter,
+              NavigationLabelPosition.bottom => Alignment.bottomCenter,
+            }
+          : Alignment.center,
+      child: content,
     );
   }
 }
@@ -1995,7 +2734,7 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
   });
 
   @override
-  bool get selectable => false;
+  int get selectableCount => 0;
 
   @override
   Widget build(BuildContext context) {
@@ -2021,6 +2760,8 @@ class NavigationLabel extends StatelessWidget implements NavigationBarItem {
     return Hidden(
       hidden: !expanded,
       direction: data?.direction ?? Axis.vertical,
+      curve: Curves.easeInOut,
+      duration: kDefaultDuration,
       child: NavigationPadding(
         child: DefaultTextStyle.merge(
           textAlign: TextAlign.center,
@@ -2282,9 +3023,7 @@ class NavigationWidget extends StatelessWidget implements NavigationBarItem {
   }) : child = null;
 
   @override
-  bool get selectable {
-    return index == null;
-  }
+  int get selectableCount => index == null ? 1 : 0;
 
   @override
   Widget build(BuildContext context) {
@@ -2293,5 +3032,151 @@ class NavigationWidget extends StatelessWidget implements NavigationBarItem {
     var index = childData?.index ?? this.index;
     var isSelected = index == data?.selectedIndex;
     return child ?? builder!(context, isSelected);
+  }
+}
+
+/// A navigation header/footer item with configurable content.
+///
+/// Designed for navigation header and footer sections. The layout adapts to
+/// the navigation expansion state and keeps a compact density when collapsed.
+class NavigationSlotItem extends StatelessWidget {
+  /// Leading widget (usually an icon or avatar).
+  final Widget leading;
+
+  /// Primary title widget.
+  final Widget title;
+
+  /// Optional subtitle widget shown under the title.
+  final Widget? subtitle;
+
+  /// Optional trailing widget (often a chevron or action icon).
+  final Widget? trailing;
+
+  /// Gap multiplier between the text block and trailing widget.
+  final double? trailingGap;
+
+  /// Callback for press interactions.
+  final VoidCallback? onPressed;
+
+  /// Alignment for the button content.
+  final AlignmentGeometry? alignment;
+
+  /// Creates a [NavigationSlotItem].
+  const NavigationSlotItem({
+    super.key,
+    required this.leading,
+    required this.title,
+    this.subtitle,
+    this.trailing,
+    this.trailingGap,
+    this.onPressed,
+    this.alignment,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final data = Data.maybeOf<NavigationControlData>(context);
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final densityGap = theme.density.baseGap * scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
+    final defaultPadding = EdgeInsets.symmetric(
+      vertical: densityGap,
+      horizontal: densityContentPadding * 0.75,
+    );
+    final expanded = data?.expanded ?? true;
+    final style = const ButtonStyle.ghost(
+      density: ButtonDensity.icon,
+    );
+    final navPadding = data?.parentPadding ?? defaultPadding;
+    final buttonPadding = style
+        .padding(context, const <WidgetState>{}).optionallyResolve(context);
+    final slotPadding = EdgeInsets.only(
+      left: math.max(0, navPadding.left - buttonPadding.left),
+      top: math.max(0, navPadding.top - buttonPadding.top),
+      right: math.max(0, navPadding.right - buttonPadding.right),
+      bottom: math.max(0, navPadding.bottom - buttonPadding.bottom),
+    );
+    final titleColumn = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        title,
+        if (subtitle != null) subtitle!,
+      ],
+    );
+
+    final showLabel = data == null ||
+        data.parentLabelType == NavigationLabelType.all ||
+        (data.parentLabelType == NavigationLabelType.expanded && expanded);
+
+    Widget content = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        leading,
+        Flexible(
+          child: Hidden(
+            hidden: !showLabel,
+            duration: kDefaultDuration,
+            curve: Curves.easeInOut,
+            direction: Axis.horizontal,
+            child: DefaultTextStyle.merge(
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+              child: Row(
+                children: [
+                  Gap(densityGap),
+                  Expanded(child: titleColumn),
+                  if (trailing != null) ...[
+                    Gap(densityGap),
+                    trailing!,
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+
+    Widget button = Button(
+      onPressed: onPressed,
+      style: style,
+      alignment: alignment ??
+          (data?.containerType == NavigationContainerType.sidebar &&
+                  data?.labelDirection == Axis.horizontal &&
+                  expanded
+              ? (data?.parentLabelPosition == NavigationLabelPosition.start
+                  ? AlignmentDirectional.centerEnd
+                  : AlignmentDirectional.centerStart)
+              : Alignment.center),
+      child: content,
+    );
+
+    if (data?.parentLabelType == NavigationLabelType.tooltip) {
+      if (title is! SizedBox) {
+        AlignmentGeometry alignment = Alignment.topCenter;
+        AlignmentGeometry anchorAlignment = Alignment.bottomCenter;
+        if (data?.direction == Axis.vertical) {
+          alignment = AlignmentDirectional.centerStart;
+          anchorAlignment = AlignmentDirectional.centerEnd;
+        }
+        button = Tooltip(
+          waitDuration: !isMobile(theme.platform)
+              ? Duration.zero
+              : const Duration(milliseconds: 500),
+          alignment: alignment,
+          anchorAlignment: anchorAlignment,
+          tooltip: TooltipContainer(child: title).call,
+          child: button,
+        );
+      }
+    }
+
+    return Padding(
+      padding: slotPadding,
+      child: NavigationPadding(
+        child: button,
+      ),
+    );
   }
 }
