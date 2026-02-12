@@ -1,6 +1,6 @@
 ---
 title: "Class: StepContainer"
-description: "Container widget for step content with optional action buttons."
+description: "Container widget for step content with optional action buttons.   Provides consistent padding and layout for step content, with optional  action buttons displayed below the main content. Actions are arranged  horizontally with appropriate spacing.   Typically used within step content builders to provide a consistent  layout for form content, descriptions, and navigation buttons.   Example:  ```dart  StepContainer(    child: Column(      children: [        TextFormField(decoration: InputDecoration(labelText: 'Name')),        TextFormField(decoration: InputDecoration(labelText: 'Email')),      ],    ),    actions: [      Button(        onPressed: controller.previousStep,        child: Text('Back'),      ),      Button(        onPressed: controller.nextStep,        child: Text('Next'),      ),    ],  );  ```"
 ---
 
 ```dart

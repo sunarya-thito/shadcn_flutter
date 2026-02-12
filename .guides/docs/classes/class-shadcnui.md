@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnUI"
-description: "A widget that provides text and icon styling for shadcn UI components."
+description: "A widget that provides text and icon styling for shadcn UI components.   Applies consistent text styles and icon themes to its descendants."
 ---
 
 ```dart

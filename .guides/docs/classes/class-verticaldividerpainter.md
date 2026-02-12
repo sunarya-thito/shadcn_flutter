@@ -1,6 +1,6 @@
 ---
 title: "Class: VerticalDividerPainter"
-description: "Custom painter for drawing vertical divider lines."
+description: "Custom painter for drawing vertical divider lines.   Renders a vertical line with specified color, thickness, and indents."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: FutureOrBuilder"
-description: "A widget that builds itself based on a [FutureOr] value."
+description: "A widget that builds itself based on a [FutureOr] value.   This widget handles both immediate values and futures uniformly, building  the appropriate widget based on whether the value is synchronous or asynchronous.   ## Type Parameters   * [T] - The type of value being awaited.   ## Overview   Use [FutureOrBuilder] when you have a value that might be either synchronous  (already available) or asynchronous (requires waiting). If the value is  synchronous, the widget is built immediately. If it's a [Future], the widget  uses [FutureBuilder] internally.   ## Example   ```dart  FutureOrBuilder<String>(    future: getData(), // Returns FutureOr<String>    builder: (context, snapshot) {      if (snapshot.hasError) {        return Text('Error: ${snapshot.error}');      }      if (!snapshot.hasData) {        return CircularProgressIndicator();      }      return Text(snapshot.data!);    },  )  ```   See also:   * [FutureBuilder] for handling only futures."
 ---
 
 ```dart

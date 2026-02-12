@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnRectArcTween"
-description: "A custom tween for animating rectangles along an arc."
+description: "A custom tween for animating rectangles along an arc.   This tween creates more natural-looking animations for rectangles  by moving them along an arc path rather than a straight line."
 ---
 
 ```dart

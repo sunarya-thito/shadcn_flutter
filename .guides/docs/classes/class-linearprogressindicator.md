@@ -1,6 +1,6 @@
 ---
 title: "Class: LinearProgressIndicator"
-description: "A sophisticated linear progress indicator with advanced visual effects."
+description: "A sophisticated linear progress indicator with advanced visual effects.   The LinearProgressIndicator provides both determinate and indeterminate progress  visualization with enhanced features including optional spark effects, smooth  animations, and comprehensive theming support. Built with custom painting for  precise control over visual presentation and performance.   For determinate progress, displays completion as a horizontal bar that fills  from left to right. For indeterminate progress (when value is null), shows  a continuous animation with two overlapping progress segments that move across  the track in a coordinated pattern.   Key features:  - Determinate and indeterminate progress modes  - Optional spark effects with radial gradient animation  - Smooth animated transitions with disable option  - RTL (right-to-left) text direction support  - Custom painting for optimal rendering performance  - Comprehensive theming via [LinearProgressIndicatorTheme]  - Responsive sizing with theme scaling integration   The indeterminate animation uses precisely timed curves to create a natural,  material design compliant motion pattern that communicates ongoing activity  without specific completion timing.   Example:  ```dart  LinearProgressIndicator(    value: 0.7,    showSparks: true,    color: Colors.blue,    minHeight: 6.0,  );  ```"
 ---
 
 ```dart

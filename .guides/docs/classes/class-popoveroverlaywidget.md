@@ -1,6 +1,6 @@
 ---
 title: "Class: PopoverOverlayWidget"
-description: "Internal widget for rendering popover overlays."
+description: "Internal widget for rendering popover overlays.   Manages positioning, constraints, and lifecycle of popover content  relative to an anchor widget."
 ---
 
 ```dart

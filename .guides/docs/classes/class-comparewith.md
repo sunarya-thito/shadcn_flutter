@@ -1,6 +1,6 @@
 ---
 title: "Class: CompareWith"
-description: "A validator that compares a field's value with another form field's value."
+description: "A validator that compares a field's value with another form field's value.   [CompareWith] validates by comparing the current field's value against  another field identified by a [FormKey]. Supports various comparison types  including equality, greater than, less than, etc.   Example:  ```dart  CompareWith.greaterOrEqual(    FormKey<int>('minAge'),    message: 'Must be at least the minimum age',  )  ```"
 ---
 
 ```dart

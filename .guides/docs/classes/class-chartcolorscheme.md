@@ -1,6 +1,6 @@
 ---
 title: "Class: ChartColorScheme"
-description: "A color scheme for charts with 5 distinct colors."
+description: "A color scheme for charts with 5 distinct colors.   Provides colors for up to 5 different data series in charts."
 ---
 
 ```dart

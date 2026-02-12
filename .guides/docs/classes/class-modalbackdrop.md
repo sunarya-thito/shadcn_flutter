@@ -1,6 +1,6 @@
 ---
 title: "Class: ModalBackdrop"
-description: "A visual backdrop widget that creates modal-style overlays."
+description: "A visual backdrop widget that creates modal-style overlays.   Creates a semi-transparent barrier behind modal content with support for  custom colors, clipping, and animation. The backdrop can be configured  to prevent interaction with content below when modal behavior is enabled.   Features:  - Customizable barrier color and opacity  - Surface clipping for visual effects  - Animation support with fade transitions  - Configurable modal behavior  - Theme integration   Example:  ```dart  ModalBackdrop(    barrierColor: Colors.black54,    borderRadius: BorderRadius.circular(12),    modal: true,    child: MyDialogContent(),  )  ```"
 ---
 
 ```dart

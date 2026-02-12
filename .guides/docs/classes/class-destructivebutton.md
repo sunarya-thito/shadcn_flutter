@@ -1,6 +1,6 @@
 ---
 title: "Class: DestructiveButton"
-description: "Convenience widget for creating a destructive button."
+description: "Convenience widget for creating a destructive button.   A simplified wrapper around [Button.destructive] with the same properties  as [PrimaryButton] but using destructive button styling for dangerous actions."
 ---
 
 ```dart

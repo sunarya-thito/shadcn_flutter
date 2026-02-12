@@ -1,6 +1,6 @@
 ---
 title: "Class: TableParentData"
-description: "Parent data for table cell layout information."
+description: "Parent data for table cell layout information.   Stores layout parameters for cells in a table including position,  span, and frozen state. Used internally by the table rendering system."
 ---
 
 ```dart

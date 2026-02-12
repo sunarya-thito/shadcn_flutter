@@ -1,6 +1,6 @@
 ---
 title: "Class: RadioItem"
-description: "A radio button item with optional leading and trailing widgets."
+description: "A radio button item with optional leading and trailing widgets.   Used within a [RadioGroup] to create selectable radio button options."
 ---
 
 ```dart

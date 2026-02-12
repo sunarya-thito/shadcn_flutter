@@ -1,6 +1,6 @@
 ---
 title: "Class: Flexible"
-description: "A widget that controls how a child of a [Row], [Column], or [Flex] flexes."
+description: "A widget that controls how a child of a [Row], [Column], or [Flex] flexes.   Using a [Flexible] widget gives a child of a [Row], [Column], or [Flex]  the flexibility to expand to fill the available space in the main axis  (e.g., horizontally for a [Row] or vertically for a [Column]), but, unlike  [Expanded], [Flexible] does not require the child to fill the available  space.   A [Flexible] widget must be a descendant of a [Row], [Column], or [Flex],  and the path from the [Flexible] widget to its enclosing [Row], [Column], or  [Flex] must contain only [StatelessWidget]s or [StatefulWidget]s (not other  kinds of widgets, like [RenderObjectWidget]s).   This patched version also supports [paintOrder] to control the painting  order of children.   See also:    * [Expanded], which forces the child to expand to fill the available space.   * [PaintOrder], to control paint order without affecting flex behavior."
 ---
 
 ```dart

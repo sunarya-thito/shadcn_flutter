@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationControlData"
-description: "Data class containing navigation control configuration and state."
+description: "Data class containing navigation control configuration and state.   Manages layout, styling, and interaction settings for navigation  containers and their children. Used internally to coordinate  behavior across navigation items."
 ---
 
 ```dart
@@ -22,12 +22,12 @@ class NavigationControlData {
   final EdgeInsets parentPadding;
   /// Layout direction (horizontal or vertical).
   final Axis direction;
-  /// Currently selected item index (null if none selected).
-  final int? selectedIndex;
+  /// Currently selected item key (null if none selected).
+  final Key? selectedKey;
   /// Total number of child items.
   final int childCount;
   /// Callback when an item is selected.
-  final ValueChanged<int> onSelected;
+  final ValueChanged<Key?>? onSelected;
   /// Whether the navigation is expanded to fill available space.
   final bool expanded;
   /// Spacing between navigation items.
@@ -49,14 +49,14 @@ class NavigationControlData {
   /// - [parentLabelSize] (NavigationLabelSize, required): Label size variant
   /// - [parentPadding] (EdgeInsets, required): Container padding
   /// - [direction] (Axis, required): Layout direction
-  /// - [selectedIndex] (int?): Selected item index
-  /// - [onSelected] (`ValueChanged<int>`, required): Selection callback
+  /// - [selectedKey] (Key?): Selected item key
+  /// - [onSelected] (`ValueChanged<Key>`, required): Selection callback
   /// - [expanded] (bool, required): Whether expanded
   /// - [childCount] (int, required): Number of children
   /// - [spacing] (double, required): Item spacing
   /// - [keepCrossAxisSize] (bool, required): Maintain cross-axis size
   /// - [keepMainAxisSize] (bool, required): Maintain main-axis size
-  NavigationControlData({required this.containerType, required this.parentLabelType, required this.parentLabelPosition, required this.parentLabelSize, required this.parentPadding, required this.direction, required this.selectedIndex, required this.onSelected, required this.expanded, required this.childCount, required this.spacing, required this.keepCrossAxisSize, required this.keepMainAxisSize});
+  NavigationControlData({required this.containerType, required this.parentLabelType, required this.parentLabelPosition, required this.parentLabelSize, required this.parentPadding, required this.direction, this.selectedKey, this.onSelected, required this.expanded, required this.childCount, required this.spacing, required this.keepCrossAxisSize, required this.keepMainAxisSize});
   bool operator ==(Object other);
   int get hashCode;
 }

@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableLayer"
-description: "A layer widget that manages drag-and-drop sessions for sortable widgets."
+description: "A layer widget that manages drag-and-drop sessions for sortable widgets.   SortableLayer is a required wrapper that coordinates drag-and-drop operations  between multiple sortable widgets. It provides the infrastructure for managing  drag sessions, rendering ghost elements during dragging, and handling drop  animations.   The layer maintains the drag state and provides a rendering context for ghost  widgets that follow the cursor during drag operations. It also manages drop  animations and cleanup when drag operations complete.   Features:  - Centralized drag session management across multiple sortable widgets  - Ghost widget rendering with cursor following during drag operations  - Configurable drop animations with custom duration and curves  - Boundary locking to constrain drag operations within the layer bounds  - Automatic cleanup and state management for drag sessions   All sortable widgets must be descendants of a SortableLayer to function properly.  The layer should be placed at a level that encompasses all related sortable widgets.   Example:  ```dart  SortableLayer(    lock: true, // Constrain dragging within bounds    dropDuration: Duration(milliseconds: 300),    dropCurve: Curves.easeOut,    child: Column(      children: [        Sortable(...),        Sortable(...),        Sortable(...),      ],    ),  )  ```"
 ---
 
 ```dart

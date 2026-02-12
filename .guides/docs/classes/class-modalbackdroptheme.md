@@ -1,6 +1,6 @@
 ---
 title: "Class: ModalBackdropTheme"
-description: "Theme configuration for modal backdrop appearance and behavior."
+description: "Theme configuration for modal backdrop appearance and behavior.   Defines the visual and behavioral properties of the backdrop that appears  behind modal dialogs, including border radius, padding, barrier color,  and modal interaction settings.   Example:  ```dart  ComponentThemeData(    data: {      ModalBackdropTheme: ModalBackdropTheme(        barrierColor: Colors.black54,        borderRadius: BorderRadius.circular(12),        modal: true,      ),    },    child: MyApp(),  )  ```"
 ---
 
 ```dart

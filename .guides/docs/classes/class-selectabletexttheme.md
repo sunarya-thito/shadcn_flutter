@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectableTextTheme"
-description: "{@template selectable_text_theme}  Theme data for [SelectableText] to customize cursor and selection behavior."
+description: "{@template selectable_text_theme}  Theme data for [SelectableText] to customize cursor and selection behavior.  {@endtemplate}"
 ---
 
 ```dart

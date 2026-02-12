@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedValue"
-description: "Represents a complete formatted value composed of multiple parts."
+description: "Represents a complete formatted value composed of multiple parts.   A [FormattedValue] holds a list of [FormattedValuePart] instances, where  each part represents either static text or editable fields. It provides  methods to access value parts (excluding static parts) and retrieve  individual parts by index.   Example:  ```dart  final value = FormattedValue([    FormattedValuePart(DigitPart(), '1'),    FormattedValuePart(StaticPart('/'), null),    FormattedValuePart(DigitPart(), '2'),  ]);  print(value.values.length); // 2 (only value parts)  ```"
 ---
 
 ```dart

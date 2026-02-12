@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnAnimatedTheme"
-description: "An animated theme widget for shadcn_flutter."
+description: "An animated theme widget for shadcn_flutter.   Animates theme changes over time with smooth transitions."
 ---
 
 ```dart

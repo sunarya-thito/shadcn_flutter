@@ -1,6 +1,6 @@
 ---
 title: "Class: SheetOverlayHandler"
-description: "Overlay handler specialized for sheet-style overlays."
+description: "Overlay handler specialized for sheet-style overlays.   Provides a simplified API for showing sheet overlays (bottom sheets,  side sheets, etc.) with standard positioning and barrier behavior."
 ---
 
 ```dart

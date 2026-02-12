@@ -1,6 +1,6 @@
 ---
 title: "Class: BranchLine"
-description: "Abstract base class for defining tree branch line styles."
+description: "Abstract base class for defining tree branch line styles.   BranchLine defines how visual connections are drawn between parent and child  nodes in tree views. Different implementations provide various visual styles  from no lines to complex path-based connections.   The class provides static instances for common branch line styles:  - [BranchLine.none] - No visual connections  - [BranchLine.line] - Simple vertical lines  - [BranchLine.path] - Connected path lines showing hierarchy   Custom implementations can be created by extending this class and implementing  the [build] method to return appropriate connection widgets.   Example:  ```dart  // Using built-in styles  TreeView(    branchLine: BranchLine.path, // Connected paths    // ... other properties  );   // Custom branch line implementation  class CustomBranchLine extends BranchLine {    @override    Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {      return CustomPaint(painter: MyCustomLinePainter());    }  }  ```"
 ---
 
 ```dart

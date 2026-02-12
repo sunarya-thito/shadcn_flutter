@@ -1,6 +1,6 @@
 ---
 title: "Class: TimePicker"
-description: "A time picker widget for selecting time values."
+description: "A time picker widget for selecting time values.   Provides time selection interface with hours, minutes, and optional  seconds in either popover or dialog mode."
 ---
 
 ```dart

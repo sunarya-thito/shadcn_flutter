@@ -1,6 +1,6 @@
 ---
 title: "Class: RadixIcons"
-description: "A collection of Radix Icons for Flutter applications."
+description: "A collection of Radix Icons for Flutter applications.   This class provides access to all icons from the Radix Icons library.  All icons are defined as static constants of type [IconData]."
 ---
 
 ```dart

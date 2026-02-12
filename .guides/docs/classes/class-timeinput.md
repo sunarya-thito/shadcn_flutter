@@ -1,6 +1,6 @@
 ---
 title: "Class: TimeInput"
-description: "Reactive time input field with formatted text editing and validation."
+description: "Reactive time input field with formatted text editing and validation.   A high-level time input widget that provides structured time entry through  formatted text fields. Supports hours, minutes, and optional seconds with  automatic state management through the controlled component pattern.   ## Features   - **Structured time entry**: Separate fields for hours, minutes, and seconds  - **Format validation**: Automatic validation and formatting of time components  - **Flexible display**: Optional seconds display and customizable separators  - **Form integration**: Automatic validation and form field registration  - **Keyboard navigation**: Tab navigation between time components  - **Accessibility**: Full screen reader support and keyboard input   ## Usage Patterns   **Controller-based (recommended for complex state):**  ```dart  final controller = ComponentController<TimeOfDay?>(TimeOfDay.now());   TimeInput(    controller: controller,    showSeconds: true,    placeholder: Text('Enter time'),  )  ```   **Callback-based (simple state management):**  ```dart  TimeOfDay? selectedTime;   TimeInput(    initialValue: selectedTime,    onChanged: (time) => setState(() => selectedTime = time),    showSeconds: false,    separator: InputPart.text(':'),  )  ```"
 ---
 
 ```dart

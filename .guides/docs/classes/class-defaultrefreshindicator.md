@@ -1,6 +1,6 @@
 ---
 title: "Class: DefaultRefreshIndicator"
-description: "Default refresh indicator widget with platform-appropriate styling."
+description: "Default refresh indicator widget with platform-appropriate styling.   Displays a circular progress indicator that responds to pull gestures  and animates during the refresh lifecycle stages."
 ---
 
 ```dart

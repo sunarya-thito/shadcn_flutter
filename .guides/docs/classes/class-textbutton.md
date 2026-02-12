@@ -1,6 +1,6 @@
 ---
 title: "Class: TextButton"
-description: "Convenience widget for creating a text button."
+description: "Convenience widget for creating a text button.   A simplified wrapper around [Button.text] with the same properties  as [PrimaryButton] but using text button styling with minimal styling."
 ---
 
 ```dart

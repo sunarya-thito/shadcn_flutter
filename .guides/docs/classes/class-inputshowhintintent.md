@@ -1,6 +1,6 @@
 ---
 title: "Class: InputShowHintIntent"
-description: "Intent to show an input hint popover."
+description: "Intent to show an input hint popover.   Used in keyboard shortcut actions to trigger the hint display."
 ---
 
 ```dart

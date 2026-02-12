@@ -1,6 +1,6 @@
 ---
 title: "Class: IconButton"
-description: "Icon-only button widget with support for multiple visual styles."
+description: "Icon-only button widget with support for multiple visual styles.   [IconButton] is optimized for displaying buttons with icon content,  using icon-specific density and sizing by default. Supports various  button styles through named constructors or the [variance] parameter."
 ---
 
 ```dart

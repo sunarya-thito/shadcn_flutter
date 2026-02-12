@@ -1,6 +1,6 @@
 ---
 title: "Class: RenderFlex"
-description: "A patched version of [rendering."
+description: "A patched version of [rendering.RenderFlex] that supports custom paint ordering."
 ---
 
 ```dart

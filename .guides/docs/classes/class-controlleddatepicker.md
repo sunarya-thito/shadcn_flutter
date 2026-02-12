@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledDatePicker"
-description: "A controlled date picker widget with comprehensive date selection features."
+description: "A controlled date picker widget with comprehensive date selection features.   [ControlledDatePicker] provides a complete date selection interface with  customizable presentation modes (popover or modal), calendar views, and  flexible positioning. It integrates with [DatePickerController] for  programmatic control.   Features:  - Multiple presentation modes (popover, modal)  - Various calendar views (month, year, decade)  - Custom date state builders  - Flexible positioning  - Optional placeholder when no date is selected   Example:  ```dart  ControlledDatePicker(    initialValue: DateTime.now(),    onChanged: (date) {      print('Selected: $date');    },    placeholder: Text('Select a date'),  )  ```"
 ---
 
 ```dart

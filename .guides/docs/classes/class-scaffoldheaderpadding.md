@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldHeaderPadding"
-description: "Widget that applies header-aware padding to its child."
+description: "Widget that applies header-aware padding to its child.   Automatically adjusts padding based on scaffold header height."
 ---
 
 ```dart

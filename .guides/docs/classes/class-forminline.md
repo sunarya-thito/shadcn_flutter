@@ -1,6 +1,6 @@
 ---
 title: "Class: FormInline"
-description: "An inline form field widget with label next to the input."
+description: "An inline form field widget with label next to the input.   Provides a compact horizontal layout for form inputs with labels  and validation."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: PhoneNumber"
-description: "Represents a phone number with country code information."
+description: "Represents a phone number with country code information.   [PhoneNumber] combines a country (with dial code) and a phone number  string to create a complete international phone number.   Example:  ```dart  final phone = PhoneNumber(    Country(dialCode: '+1', code: 'US'),    '5551234567',  );  print(phone.fullNumber); // +15551234567  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ResizablePane"
-description: "A resizable panel that can be part of a [ResizablePanel] layout."
+description: "A resizable panel that can be part of a [ResizablePanel] layout.   Represents a single pane in a resizable layout that can be resized by  dragging handles between panes. Supports absolute sizing, flex-based sizing,  and external controller management.   Three constructor variants:  - Default: Fixed absolute size in pixels  - [ResizablePane.flex]: Proportional flex-based sizing  - [ResizablePane.controlled]: Externally controlled via [ResizablePaneController]   Example:  ```dart  ResizablePanel(    children: [      ResizablePane(        initialSize: 200,        minSize: 100,        child: Container(color: Colors.blue),      ),      ResizablePane.flex(        initialFlex: 2,        child: Container(color: Colors.red),      ),    ],  )  ```"
 ---
 
 ```dart

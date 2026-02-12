@@ -1,6 +1,6 @@
 ---
 title: "Class: ChipInputTheme"
-description: "Theme configuration for [ChipInput] widget styling and behavior."
+description: "Theme configuration for [ChipInput] widget styling and behavior.   Defines visual properties and default behaviors for chip input components  including popover constraints and chip rendering preferences. Applied globally  through [ComponentTheme] or per-instance for customization."
 ---
 
 ```dart

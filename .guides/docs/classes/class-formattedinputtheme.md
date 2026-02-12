@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedInputTheme"
-description: "Theme configuration for [FormattedInput] widget styling."
+description: "Theme configuration for [FormattedInput] widget styling.   Defines visual properties for formatted input components including  height and padding. Applied globally through [ComponentTheme] or per-instance."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DurationInput"
-description: "Reactive duration input field with formatted text editing and validation."
+description: "Reactive duration input field with formatted text editing and validation.   A high-level duration input widget that provides structured duration entry through  formatted text fields. Supports hours, minutes, and optional seconds with  automatic state management through the controlled component pattern.   ## Features   - **Structured duration entry**: Separate fields for hours, minutes, and seconds  - **Format validation**: Automatic validation and formatting of duration components  - **Flexible display**: Optional seconds display and customizable separators  - **Large value support**: Handle durations spanning multiple hours or days  - **Form integration**: Automatic validation and form field registration  - **Keyboard navigation**: Tab navigation between duration components  - **Accessibility**: Full screen reader support and keyboard input   ## Usage Patterns   **Controller-based (recommended for complex state):**  ```dart  final controller = ComponentController<Duration?>(Duration(hours: 1, minutes: 30));   DurationInput(    controller: controller,    showSeconds: true,    placeholder: Text('Enter duration'),  )  ```   **Callback-based (simple state management):**  ```dart  Duration? selectedDuration;   DurationInput(    initialValue: selectedDuration,    onChanged: (duration) => setState(() => selectedDuration = duration),    showSeconds: false,    separator: InputPart.text(':'),  )  ```"
 ---
 
 ```dart

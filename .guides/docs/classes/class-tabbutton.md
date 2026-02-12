@@ -1,6 +1,6 @@
 ---
 title: "Class: TabButton"
-description: "Convenience widget for creating a tab button."
+description: "Convenience widget for creating a tab button.   A simplified wrapper around [Button] with the same properties  as [PrimaryButton] but using tab button styling for tabbed navigation."
 ---
 
 ```dart

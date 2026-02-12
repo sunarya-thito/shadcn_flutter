@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldBoxConstraints"
-description: "Box constraints with additional header and footer height information."
+description: "Box constraints with additional header and footer height information.   Extends [BoxConstraints] to include scaffold-specific layout measurements."
 ---
 
 ```dart

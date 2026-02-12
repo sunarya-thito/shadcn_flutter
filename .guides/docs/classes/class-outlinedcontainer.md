@@ -1,6 +1,6 @@
 ---
 title: "Class: OutlinedContainer"
-description: "A container widget with customizable border and surface effects."
+description: "A container widget with customizable border and surface effects.   Provides a styled container with border, background, shadows, padding,  and optional surface blur effects. Supports theming and animations.   Example:  ```dart  OutlinedContainer(    borderRadius: BorderRadius.circular(12),    borderColor: Colors.blue,    backgroundColor: Colors.white,    padding: EdgeInsets.all(16),    child: Text('Outlined content'),  )  ```"
 ---
 
 ```dart

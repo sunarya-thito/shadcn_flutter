@@ -1,6 +1,6 @@
 ---
 title: "Class: ConstantBreakpoint"
-description: "A breakpoint that uses constant step increments."
+description: "A breakpoint that uses constant step increments.   Divides width into uniform steps based on [breakpoint] value. For example,  with breakpoint=100, widths 0-99 map to 0, 100-199 map to 100, etc."
 ---
 
 ```dart

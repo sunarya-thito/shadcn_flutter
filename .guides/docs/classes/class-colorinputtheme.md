@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorInputTheme"
-description: "Theme configuration for [ColorInput] widget styling and behavior."
+description: "Theme configuration for [ColorInput] widget styling and behavior.   Defines the visual properties and default behaviors for color input components  including popover presentation, picker modes, and interaction features. Applied  globally through [ComponentTheme] or per-instance for customization.   Supports comprehensive customization of color picker appearance, positioning,  and functionality to match application design requirements."
 ---
 
 ```dart

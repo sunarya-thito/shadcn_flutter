@@ -1,6 +1,6 @@
 ---
 title: "Class: KeyedTabItem"
-description: "A keyed tab item widget."
+description: "A keyed tab item widget.   Similar to [TabItem] but includes a unique key for identification."
 ---
 
 ```dart

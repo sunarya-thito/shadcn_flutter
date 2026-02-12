@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectItem"
-description: "Represents a selectable item in a dropdown menu."
+description: "Represents a selectable item in a dropdown menu.   Used within select popups to define individual selectable options.  Automatically applies selected state styling when the item matches  the current selection.   Example:  ```dart  SelectItem(    value: 'option1',    builder: (context) => Text('Option 1'),  )  ```"
 ---
 
 ```dart

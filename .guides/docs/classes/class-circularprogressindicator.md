@@ -1,6 +1,6 @@
 ---
 title: "Class: CircularProgressIndicator"
-description: "A circular progress indicator that displays task completion as a rotating arc."
+description: "A circular progress indicator that displays task completion as a rotating arc.   The CircularProgressIndicator provides both determinate and indeterminate  progress visualization in a compact circular format. When a specific progress  value is provided, it shows completion as a filled arc. When value is null,  it displays a continuous spinning animation.   Built as a wrapper around Flutter's native CircularProgressIndicator with  enhanced theming capabilities and integration with the shadcn design system.  Automatically adapts sizing based on the current [IconTheme] context while  providing manual size override options.   Key features:  - Determinate and indeterminate progress modes  - Automatic sizing based on icon context with manual overrides  - Smooth value animations with configurable duration  - Surface mode for display on colored backgrounds  - Comprehensive theming via [CircularProgressIndicatorTheme]  - Performance-optimized rendering with [RepaintBoundary]   The component intelligently calculates default colors and sizing based on  the current theme and icon context, ensuring consistent visual integration.   Example:  ```dart  CircularProgressIndicator(    value: 0.75,    size: 32.0,    color: Colors.blue,  );  ```"
 ---
 
 ```dart

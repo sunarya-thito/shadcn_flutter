@@ -1,6 +1,6 @@
 ---
 title: "Class: ListChanges"
-description: "Represents a collection of list modifications."
+description: "Represents a collection of list modifications.   Encapsulates multiple [ListChange] objects that can be applied to a list  in sequence. Useful for batch operations or undo/redo functionality."
 ---
 
 ```dart

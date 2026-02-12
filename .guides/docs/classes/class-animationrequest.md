@@ -1,6 +1,6 @@
 ---
 title: "Class: AnimationRequest"
-description: "Represents a request to animate to a specific target value."
+description: "Represents a request to animate to a specific target value.   This class encapsulates the parameters needed for a single animation step,  including the target value, duration, and easing curve.   ## Overview   Use [AnimationRequest] with [AnimationQueueController] to queue multiple  animation steps that will be executed sequentially or as replacements.   ## Example   ```dart  final request = AnimationRequest(    1.0,    Duration(milliseconds: 300),    Curves.easeOut,  );  controller.push(request);  ```"
 ---
 
 ```dart

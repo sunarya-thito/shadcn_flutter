@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonGroup"
-description: "A widget that groups multiple buttons together with connected borders."
+description: "A widget that groups multiple buttons together with connected borders.   [ButtonGroup] visually connects a series of related buttons by removing  the borders between adjacent buttons and maintaining consistent styling.  This creates a segmented appearance where the buttons appear as a single  cohesive unit.   The group can be oriented horizontally or vertically, and automatically  handles border radius adjustments so that only the first and last buttons  in the group have rounded corners on their outer edges.   Commonly used for:  - Toggle button groups (like text formatting options)  - Related action sets (like alignment controls)  - Pagination controls  - View switchers   Example:  ```dart  ButtonGroup(    direction: Axis.horizontal,    children: [      Button.secondary(        onPressed: () => align('left'),        child: Icon(Icons.format_align_left),      ),      Button.secondary(        onPressed: () => align('center'),        child: Icon(Icons.format_align_center),      ),      Button.secondary(        onPressed: () => align('right'),        child: Icon(Icons.format_align_right),      ),    ],  );  ```"
 ---
 
 ```dart

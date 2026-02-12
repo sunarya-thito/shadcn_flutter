@@ -1,6 +1,6 @@
 ---
 title: "Class: RadioGroupData"
-description: "Data class holding radio group state information."
+description: "Data class holding radio group state information.   Contains the selected item and enabled state for a radio group."
 ---
 
 ```dart

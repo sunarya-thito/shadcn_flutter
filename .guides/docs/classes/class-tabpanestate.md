@@ -1,6 +1,6 @@
 ---
 title: "Class: TabPaneState"
-description: "State class for [TabPane] widget."
+description: "State class for [TabPane] widget.   Manages the scrolling and rendering of tab pane content."
 ---
 
 ```dart

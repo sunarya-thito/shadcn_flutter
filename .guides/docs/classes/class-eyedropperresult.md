@@ -1,6 +1,6 @@
 ---
 title: "Class: EyeDropperResult"
-description: "Represents the result of an eye dropper color picking operation."
+description: "Represents the result of an eye dropper color picking operation.   [EyeDropperResult] contains the picked color along with all colors  captured in the sampling area. This allows for accessing individual  pixels from the captured region."
 ---
 
 ```dart

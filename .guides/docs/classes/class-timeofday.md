@@ -1,6 +1,6 @@
 ---
 title: "Class: TimeOfDay"
-description: "Represents a time of day with hour, minute, and second."
+description: "Represents a time of day with hour, minute, and second.   Provides constructors for various time representations including  AM/PM notation, DateTime conversion, and Duration conversion."
 ---
 
 ```dart

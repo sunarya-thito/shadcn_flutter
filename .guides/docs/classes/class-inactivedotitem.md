@@ -1,6 +1,6 @@
 ---
 title: "Class: InactiveDotItem"
-description: "An inactive dot item widget representing non-current positions."
+description: "An inactive dot item widget representing non-current positions.   Styled to indicate inactive items in a dot indicator with  optional border styling."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: CalendarGridData"
-description: "Data structure representing a complete calendar month grid."
+description: "Data structure representing a complete calendar month grid.   Contains all the information needed to render a calendar grid including  dates from the current month and overflow dates from adjacent months  to fill complete weeks."
 ---
 
 ```dart

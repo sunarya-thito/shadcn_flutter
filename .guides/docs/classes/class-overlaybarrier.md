@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayBarrier"
-description: "Configuration for overlay modal barriers."
+description: "Configuration for overlay modal barriers.   Defines the visual appearance and spacing of the barrier displayed  behind modal overlays."
 ---
 
 ```dart

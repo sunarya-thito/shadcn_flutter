@@ -1,6 +1,6 @@
 ---
 title: "Class: TextFieldAppendTextIntent"
-description: "Intent to append text to the current text field content."
+description: "Intent to append text to the current text field content.   Used with Flutter's Actions/Shortcuts system to programmatically  append text to a text field."
 ---
 
 ```dart

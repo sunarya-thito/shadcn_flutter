@@ -1,6 +1,6 @@
 ---
 title: "Class: TableLayoutResult"
-description: "Result of table layout calculations."
+description: "Result of table layout calculations.   Contains computed column widths, row heights, and remaining space  information after layout. Used internally by the table rendering system."
 ---
 
 ```dart

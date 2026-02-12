@@ -1,6 +1,6 @@
 ---
 title: "Class: TableCell"
-description: "Represents a single cell in a table."
+description: "Represents a single cell in a table.   Defines cell content, spanning behavior, and styling. Cells can span  multiple columns or rows, respond to hover interactions, and have  custom themes and background colors.   Example:  ```dart  TableCell(    columnSpan: 2,    rowSpan: 1,    child: Text('Spanning cell'),    rowHover: true,    backgroundColor: Colors.blue.shade50,  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: StepperController"
-description: "Controller for managing stepper state and navigation."
+description: "Controller for managing stepper state and navigation.   Extends [ValueNotifier] to provide reactive state updates when  the current step changes or step states are modified. Includes  methods for navigation (next/previous), direct step jumping,  and setting individual step states.   The controller should be disposed when no longer needed to prevent  memory leaks.   Example:  ```dart  final controller = StepperController(currentStep: 0);   // Navigate to next step  controller.nextStep();   // Mark step as failed  controller.setStatus(1, StepState.failed);   // Jump to specific step  controller.jumpToStep(3);   // Don't forget to dispose  controller.dispose();  ```"
 ---
 
 ```dart

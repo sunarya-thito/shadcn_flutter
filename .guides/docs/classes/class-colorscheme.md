@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorScheme"
-description: "The color scheme for shadcn_flutter applications."
+description: "The color scheme for shadcn_flutter applications.   Defines all the semantic colors used throughout the app including  background, foreground, primary, secondary, destructive colors, etc.  Also includes chart colors."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerEntryWidget"
-description: "Widget representing a single drawer entry in the overlay stack."
+description: "Widget representing a single drawer entry in the overlay stack.   Manages the lifecycle and rendering of an individual drawer overlay,  including its backdrop, barrier, and animated transitions."
 ---
 
 ```dart

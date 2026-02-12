@@ -1,6 +1,6 @@
 ---
 title: "Class: InputOTPChild"
-description: "Abstract base class for OTP input child elements."
+description: "Abstract base class for OTP input child elements.   Defines the interface for children that can be placed within an [InputOTP]  widget, including actual input fields, separators, and spacers.  Subclasses implement the [build] method to render their content.   Common factories:  - [separator]: Creates a visual separator between OTP groups.  - [space]: Creates spacing between OTP input fields.  - [empty]: Creates an empty placeholder.  - [InputOTPChild.input]: Creates a configurable character input.  - [InputOTPChild.character]: Creates a character input with preset filters.   Example:  ```dart  InputOTP(    children: [      InputOTPChild.input(predicate: (cp) => cp >= 48 && cp <= 57),      InputOTPChild.space,      InputOTPChild.input(),    ],  )  ```"
 ---
 
 ```dart

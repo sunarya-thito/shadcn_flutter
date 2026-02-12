@@ -1,6 +1,6 @@
 ---
 title: "Class: FocusOutlineTheme"
-description: "Theme configuration for focus outline appearance."
+description: "Theme configuration for focus outline appearance.   Defines styling properties for focus outlines that indicate which element  has keyboard focus. Used by [FocusOutline] to apply consistent focus  visualization across the application."
 ---
 
 ```dart

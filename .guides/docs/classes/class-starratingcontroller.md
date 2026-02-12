@@ -1,6 +1,6 @@
 ---
 title: "Class: StarRatingController"
-description: "A controller for managing [StarRating] widget values programmatically."
+description: "A controller for managing [StarRating] widget values programmatically.   This controller extends [ValueNotifier] and implements [ComponentController]  to provide a standardized way to control star rating values externally.  It allows programmatic manipulation of the rating value and provides  change notification capabilities.   The controller maintains a double value representing the current rating,  which is typically in the range of 0.0 to the maximum rating value.   Example:  ```dart  final controller = StarRatingController(3.5);   // Listen to changes  controller.addListener(() {    print('Rating changed to: ${controller.value}');  });   // Update the rating  controller.value = 4.0;  ```"
 ---
 
 ```dart

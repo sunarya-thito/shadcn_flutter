@@ -1,6 +1,6 @@
 ---
 title: "Class: AutoComplete"
-description: "Intelligent autocomplete functionality with customizable suggestion handling."
+description: "Intelligent autocomplete functionality with customizable suggestion handling.   Provides real-time autocomplete suggestions in a popover overlay when used  with text input widgets. Supports multiple text replacement modes, keyboard  navigation, and theming customization. The widget wraps a child (typically  a text field) and displays filtered suggestions based on user input.   ## Features   - **Multiple completion modes**: append, replace word, or replace all text  - **Keyboard navigation**: arrow keys to navigate, tab/enter to accept  - **Customizable presentation**: popover positioning, sizing, and constraints  - **Smart suggestion filtering**: automatically manages suggestion visibility  - **Accessibility support**: proper focus management and keyboard shortcuts   The autocomplete behavior is controlled by the [mode] property and can be  customized per-instance or globally through [AutoCompleteTheme].   Example:  ```dart  AutoComplete(    suggestions: ['apple', 'apricot', 'banana', 'cherry'],    mode: AutoCompleteMode.replaceWord,    child: TextField(      decoration: InputDecoration(        hintText: 'Type to search fruits...',      ),    ),  )  ```"
 ---
 
 ```dart

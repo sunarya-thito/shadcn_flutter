@@ -1,6 +1,6 @@
 ---
 title: "Class: RawSortableList"
-description: "A low-level sortable list widget with customizable rendering."
+description: "A low-level sortable list widget with customizable rendering.   Provides the foundation for building sortable lists with custom item  rendering and change tracking. Use this when you need fine-grained control  over the sortable list behavior."
 ---
 
 ```dart

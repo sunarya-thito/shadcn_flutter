@@ -1,6 +1,6 @@
 ---
 title: "Class: ActiveDotItem"
-description: "An active dot item widget representing the current position."
+description: "An active dot item widget representing the current position.   Styled to highlight the currently active item in a dot indicator."
 ---
 
 ```dart

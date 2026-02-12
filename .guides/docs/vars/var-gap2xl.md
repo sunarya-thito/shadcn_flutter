@@ -1,6 +1,6 @@
 ---
 title: "Variable: gap2xl"
-description: "2x extra large gap multiplier (3."
+description: "2x extra large gap multiplier (3.0)."
 ---
 
 Signature

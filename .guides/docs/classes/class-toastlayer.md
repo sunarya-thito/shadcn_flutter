@@ -1,6 +1,6 @@
 ---
 title: "Class: ToastLayer"
-description: "A sophisticated layer widget that provides toast notification infrastructure."
+description: "A sophisticated layer widget that provides toast notification infrastructure.   ToastLayer serves as the foundation for the toast notification system,  managing the display, positioning, animation, and lifecycle of multiple  toast notifications. It wraps application content and provides the necessary  context for [showToast] functions to work properly.   The layer handles complex features including toast stacking, expansion modes,  hover/tap interactions, automatic dismissal timing, gesture-based dismissal,  and smooth animations between states. It ensures proper theme integration  and responsive behavior across different screen sizes.   Key features:  - Multi-location toast support with six standard positions  - Intelligent toast stacking with configurable maximum entries  - Interactive expansion modes (hover, tap, always, disabled)  - Gesture-based dismissal with swipe recognition  - Automatic timeout handling with pause on hover  - Smooth animations for entry, exit, and state transitions  - Safe area and padding handling for various screen layouts  - Theme integration with comprehensive customization options   This is typically placed high in the widget tree, often wrapping the main  application content or individual screens that need toast functionality.   Example:  ```dart  ToastLayer(    maxStackedEntries: 4,    expandMode: ExpandMode.expandOnHover,    child: MyAppContent(),  );  ```"
 ---
 
 ```dart

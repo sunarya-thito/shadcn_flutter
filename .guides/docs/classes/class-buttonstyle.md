@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonStyle"
-description: "Configurable button style combining variance, size, density, and shape."
+description: "Configurable button style combining variance, size, density, and shape.   [ButtonStyle] implements [AbstractButtonStyle] and provides a composable way  to create button styles by combining a base variance (primary, secondary, outline,  etc.) with size, density, and shape modifiers. This allows for flexible button  customization while maintaining consistency.   The class provides named constructors for common button variants (primary,  secondary, outline, etc.) and can be further customized with size and density options.   Example:  ```dart  // Create a large primary button  const ButtonStyle.primary(    size: ButtonSize.large,    density: ButtonDensity.comfortable,  )   // Create a small outline button with circular shape  const ButtonStyle.outline(    size: ButtonSize.small,    shape: ButtonShape.circle,  )  ```"
 ---
 
 ```dart

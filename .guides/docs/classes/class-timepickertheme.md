@@ -1,6 +1,6 @@
 ---
 title: "Class: TimePickerTheme"
-description: "Theme configuration for [TimePicker] widget appearance and behavior."
+description: "Theme configuration for [TimePicker] widget appearance and behavior.   Defines default settings for time picker components including display  format, popover positioning, and dialog customization."
 ---
 
 ```dart

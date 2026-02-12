@@ -29,9 +29,9 @@ class _NumberInputExample2State extends State<NumberInputExample2> {
                 this.value = double.tryParse(value) ?? 0;
               });
             },
-            features: [
-              InputFeature.incrementButton(),
-              InputFeature.decrementButton(),
+            features: const [
+              InputFeature.incrementButton(max: 10),
+              InputFeature.decrementButton(min: -10),
             ],
             submitFormatters: [
               // Allow math expressions (e.g., 1+2*3) that resolve on submit.

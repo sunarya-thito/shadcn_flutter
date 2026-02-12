@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayManager"
-description: "Abstract manager for overlay operations."
+description: "Abstract manager for overlay operations.   Extends [OverlayHandler] with additional methods for showing specialized  overlay types like tooltips and menus. Provides centralized overlay  management for an application."
 ---
 
 ```dart

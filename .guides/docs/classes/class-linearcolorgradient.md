@@ -1,6 +1,6 @@
 ---
 title: "Class: LinearColorGradient"
-description: "A linear gradient implementation of [ColorGradient]."
+description: "A linear gradient implementation of [ColorGradient].   [LinearColorGradient] represents a gradient that transitions linearly between  colors along a specified angle. It supports multiple color stops and different  tile modes for how the gradient repeats beyond its bounds.   Example:  ```dart  final gradient = LinearColorGradient(    colors: [      ColorStop(color: ColorDerivative.fromColor(Colors.red), position: 0.0),      ColorStop(color: ColorDerivative.fromColor(Colors.blue), position: 1.0),    ],    angle: const GradientAngle(0.0),  );  ```"
 ---
 
 ```dart

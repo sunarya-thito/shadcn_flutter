@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonVariance"
-description: "Implementation of [AbstractButtonStyle] providing concrete button style variants."
+description: "Implementation of [AbstractButtonStyle] providing concrete button style variants.   [ButtonVariance] implements [AbstractButtonStyle] with state property functions  and provides static constants for all standard button variants (primary, secondary,  outline, etc.). Each variant is wrapped in a [ComponentThemeButtonStyle] to enable  theme-level customization.   The static variance constants serve as the base styles used by [ButtonStyle]'s  named constructors and can be used directly when creating custom button styles.   Example:  ```dart  // Use a variant directly  Button(    style: ButtonVariance.primary,    child: Text('Click Me'),  )  ```"
 ---
 
 ```dart

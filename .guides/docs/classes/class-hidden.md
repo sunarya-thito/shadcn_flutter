@@ -1,6 +1,6 @@
 ---
 title: "Class: Hidden"
-description: "A widget that conditionally hides its child with optional animation."
+description: "A widget that conditionally hides its child with optional animation.   Provides a simple way to show/hide widgets with smooth animations. When  hidden, the widget can maintain its size in either axis or collapse  completely. Supports slide animations in any direction.   Example:  ```dart  Hidden(    hidden: !isVisible,    direction: Axis.vertical,    duration: Duration(milliseconds: 300),    child: Container(      height: 100,      child: Text('Toggle visibility'),    ),  )  ```"
 ---
 
 ```dart

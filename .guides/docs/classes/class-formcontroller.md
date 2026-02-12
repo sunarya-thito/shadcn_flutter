@@ -1,6 +1,6 @@
 ---
 title: "Class: FormController"
-description: "Controller for managing form state, validation, and submission."
+description: "Controller for managing form state, validation, and submission.   The FormController coordinates all form field interactions, maintaining  a centralized registry of field values and validation states. It provides  programmatic access to form data collection, validation triggering, and  submission handling.   The controller automatically manages the lifecycle of form fields as they  register and unregister, tracking their values and validation results.  It supports both synchronous and asynchronous validation, cross-field  validation dependencies, and comprehensive error state management.   Example:  ```dart  final controller = FormController();   // Listen to form state changes  controller.addListener(() {    print('Form validity: ${controller.isValid}');    print('Form values: ${controller.values}');  });   // Submit the form  await controller.submit();   // Access specific field values  final emailValue = controller.getValue(emailKey);  ```"
 ---
 
 ```dart

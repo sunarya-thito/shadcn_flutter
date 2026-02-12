@@ -1,6 +1,6 @@
 ---
 title: "Class: RegexValidator"
-description: "A validator that checks if a string matches a regular expression pattern."
+description: "A validator that checks if a string matches a regular expression pattern.   [RegexValidator] provides flexible pattern-based validation using regular  expressions. Useful for validating formats like phone numbers, postal codes, etc.   Example:  ```dart  RegexValidator(    RegExp(r'^\\d{3}-\\d{3}-\\d{4}$'),    message: 'Must be in format: XXX-XXX-XXXX',  )  ```"
 ---
 
 ```dart

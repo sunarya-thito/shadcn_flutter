@@ -1,6 +1,6 @@
 ---
 title: "Class: TableSize"
-description: "Base class for table sizing strategies."
+description: "Base class for table sizing strategies.   Abstract class that defines how table columns and rows should be sized.  Implementations include fixed, flexible, and intrinsic sizing modes."
 ---
 
 ```dart

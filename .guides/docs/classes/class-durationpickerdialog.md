@@ -1,6 +1,6 @@
 ---
 title: "Class: DurationPickerDialog"
-description: "Dialog widget for interactive duration selection."
+description: "Dialog widget for interactive duration selection.   Displays input fields for days, hours, minutes, and seconds  for selecting durations."
 ---
 
 ```dart

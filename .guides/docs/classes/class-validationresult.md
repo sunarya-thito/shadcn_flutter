@@ -1,6 +1,6 @@
 ---
 title: "Class: ValidationResult"
-description: "Abstract base class representing the result of a validation operation."
+description: "Abstract base class representing the result of a validation operation.   [ValidationResult] encapsulates the outcome of validating a form field value.  Subclasses include [InvalidResult] for validation failures and [ValidResult]  for successful validation."
 ---
 
 ```dart

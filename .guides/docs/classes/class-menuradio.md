@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuRadio"
-description: "Individual radio button item within a [MenuRadioGroup]."
+description: "Individual radio button item within a [MenuRadioGroup].   Displays a radio button indicator when selected and integrates with  the parent radio group for selection management."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: InputRevalidateFeature"
-description: "Adds a revalidate button to the input field."
+description: "Adds a revalidate button to the input field.   Provides a button that triggers form validation when pressed.  Useful for manually triggering validation after user input.   Example:  ```dart  TextField(    features: [      InputRevalidateFeature(),    ],  )  ```"
 ---
 
 ```dart

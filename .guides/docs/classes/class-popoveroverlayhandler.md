@@ -1,6 +1,6 @@
 ---
 title: "Class: PopoverOverlayHandler"
-description: "Handles overlay presentation for popover components."
+description: "Handles overlay presentation for popover components.   Manages the display, positioning, and lifecycle of popover overlays  with support for alignment, constraints, and modal behavior."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: FormEntryInterceptor"
-description: "A widget that intercepts form value reports."
+description: "A widget that intercepts form value reports.   Wraps a form field to observe value changes before they reach the parent form.  Useful for implementing side effects like logging, analytics, or derived state  updates when form field values change.   Example:  ```dart  FormEntryInterceptor<String>(    onValueReported: (value) => print('Email changed: $value'),    child: TextFormField(),  )  ```"
 ---
 
 ```dart

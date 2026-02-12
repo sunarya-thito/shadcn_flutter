@@ -15,22 +15,30 @@ class NavigationRailExample1 extends StatefulWidget {
 }
 
 class _NavigationRailExample1State extends State<NavigationRailExample1> {
-  int selected = 0;
-
   NavigationRailAlignment alignment = NavigationRailAlignment.start;
   NavigationLabelType labelType = NavigationLabelType.none;
   NavigationLabelPosition labelPosition = NavigationLabelPosition.bottom;
   bool customButtonStyle = false;
   bool expanded = true;
 
+  String selected = 'Home';
+
   NavigationItem buildButton(String label, IconData icon) {
     return NavigationItem(
+      selected: selected == label,
       style: customButtonStyle
           ? const ButtonStyle.muted(density: ButtonDensity.icon)
           : null,
       selectedStyle: customButtonStyle
           ? const ButtonStyle.fixed(density: ButtonDensity.icon)
           : null,
+      onChanged: (selected) {
+        if (selected) {
+          setState(() {
+            this.selected = label;
+          });
+        }
+      },
       label: Text(label),
       child: Icon(icon),
     );
@@ -45,24 +53,16 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
           NavigationRail(
             alignment: alignment,
             labelType: labelType,
-            index: selected,
             labelPosition: labelPosition,
             expanded: expanded,
-            onSelected: (index) {
-              setState(() {
-                selected = index;
-              });
-            },
             children: [
               buildButton('Home', BootstrapIcons.house),
               buildButton('Explore', BootstrapIcons.compass),
               buildButton('Library', BootstrapIcons.musicNoteList),
               const NavigationDivider(),
-              const NavigationLabel(child: Text('Settings')),
-              buildButton('Profile', BootstrapIcons.person),
-              buildButton('App', BootstrapIcons.appIndicator),
-              const NavigationDivider(),
-              const NavigationGap(12),
-              const NavigationWidget(
-                child: FlutterLogo(),
+              NavigationGroup(
+                label: const Text('Settings'),
+                children: [
+                  buildButton('Profile', BootstrapIcons.person),
+                  buildButton('App', BootstrapIcons.appIndicator),
 ```

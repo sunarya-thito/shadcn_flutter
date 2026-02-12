@@ -1,6 +1,6 @@
 ---
 title: "Class: Keyframe"
-description: "An abstract interface for keyframes in timeline animations."
+description: "An abstract interface for keyframes in timeline animations.   A keyframe defines how to compute a value at a specific point in a  timeline animation. Different implementations provide different interpolation  strategies (absolute, relative, or static).   ## Type Parameters   * [T] - The type of value this keyframe produces.   ## Overview   Use [Keyframe] implementations like [AbsoluteKeyframe], [RelativeKeyframe],  or [StillKeyframe] to build complex timeline animations with  [TimelineAnimation].   See also:   * [AbsoluteKeyframe] - Animates between explicit start and end values.  * [RelativeKeyframe] - Animates from the previous keyframe's end value.  * [StillKeyframe] - Holds a value without animating."
 ---
 
 ```dart

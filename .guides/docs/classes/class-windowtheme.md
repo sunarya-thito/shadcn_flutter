@@ -1,6 +1,6 @@
 ---
 title: "Class: WindowTheme"
-description: "Theme configuration for window components."
+description: "Theme configuration for window components.   Provides styling options for window elements including title bar height  and resize border thickness. Used to customize the visual appearance  of window components within the application.   Example:  ```dart  WindowTheme(    titleBarHeight: 32.0,    resizeThickness: 4.0,  )  ```"
 ---
 
 ```dart

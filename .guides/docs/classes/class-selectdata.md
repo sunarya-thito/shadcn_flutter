@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectData"
-description: "Data class holding select dropdown state and configuration."
+description: "Data class holding select dropdown state and configuration.   Contains selection state, callbacks, and display options for select popups."
 ---
 
 ```dart

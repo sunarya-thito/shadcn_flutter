@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableChildListDelegate"
-description: "A delegate that provides items from an explicit list."
+description: "A delegate that provides items from an explicit list.   Wraps a fixed [List] of items for use in a sortable list."
 ---
 
 ```dart

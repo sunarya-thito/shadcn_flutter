@@ -1,6 +1,6 @@
 ---
 title: "Class: NumberTicker"
-description: "A widget that smoothly animates between numeric values with customizable display."
+description: "A widget that smoothly animates between numeric values with customizable display.   [NumberTicker] provides animated transitions when numeric values change,  making it ideal for displaying counters, statistics, prices, or any numeric  data that changes over time. It offers two construction modes:   - Default constructor: Uses a formatter function to display numbers as text  - [NumberTicker.builder]: Provides a custom builder for complete control   The animation automatically starts when the [number] value changes, smoothly  interpolating between the previous and new values. If [initialNumber] is  provided, the widget will animate from that value on first display.   Supports theming via [NumberTickerTheme] for consistent styling across  multiple instances while allowing per-widget customization.   Example:  ```dart  NumberTicker(    number: _counter,    formatter: (num value) => '\\$${value.toStringAsFixed(2)}',    duration: Duration(milliseconds: 600),    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),  );  ```"
 ---
 
 ```dart

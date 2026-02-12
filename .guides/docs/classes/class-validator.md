@@ -1,6 +1,6 @@
 ---
 title: "Class: Validator"
-description: "Abstract base class for implementing form field validation logic."
+description: "Abstract base class for implementing form field validation logic.   Validators are responsible for checking the validity of form field values  and returning appropriate validation results. They support both synchronous  and asynchronous validation through the [FutureOr] return type.   Validators can be combined using logical operators:  - `&` or `+`: Combines validators (all must pass)  - `|`: Creates OR logic (at least one must pass)  - `~` or unary `-`: Negates the validator result   The generic type [T] represents the type of value being validated.   Example:  ```dart  final validator = RequiredValidator<String>() &                    MinLengthValidator(3) &                    EmailValidator();  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: GroupParentData"
-description: "Parent data for children of [GroupWidget]."
+description: "Parent data for children of [GroupWidget].   Stores positioning and sizing information for each child widget within  a [GroupWidget]. These values are set by [GroupPositioned]."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: StarRatingTheme"
-description: "Theme data for customizing [StarRating] widget appearance."
+description: "Theme data for customizing [StarRating] widget appearance.   This class defines the visual properties that can be applied to  [StarRating] widgets, including colors for filled and unfilled stars,  star sizing, and spacing between stars. These properties can be set  at the theme level to provide consistent styling across the application."
 ---
 
 ```dart

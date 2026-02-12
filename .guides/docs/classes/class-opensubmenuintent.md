@@ -1,6 +1,6 @@
 ---
 title: "Class: OpenSubMenuIntent"
-description: "Intent for opening a submenu via keyboard action."
+description: "Intent for opening a submenu via keyboard action.   Triggers submenu expansion when navigating with keyboard."
 ---
 
 ```dart

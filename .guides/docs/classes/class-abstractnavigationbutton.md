@@ -1,6 +1,6 @@
 ---
 title: "Class: AbstractNavigationButton"
-description: "Abstract base class for navigation button widgets."
+description: "Abstract base class for navigation button widgets.   Provides common properties and behavior for navigation items and buttons.  Subclasses include [NavigationItem] and [NavigationButton].   Handles layout, labels, styling, and integration with navigation containers."
 ---
 
 ```dart
@@ -10,7 +10,7 @@ description: "Abstract base class for navigation button widgets."
 /// Subclasses include [NavigationItem] and [NavigationButton].
 ///
 /// Handles layout, labels, styling, and integration with navigation containers.
-abstract class AbstractNavigationButton extends StatefulWidget implements NavigationBarItem {
+abstract class AbstractNavigationButton extends StatefulWidget {
   /// Main content widget (typically an icon).
   final Widget child;
   /// Optional label text widget.

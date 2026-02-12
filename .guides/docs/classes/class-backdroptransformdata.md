@@ -1,6 +1,6 @@
 ---
 title: "Class: BackdropTransformData"
-description: "Data class containing backdrop transformation information."
+description: "Data class containing backdrop transformation information.   Holds the size difference needed to scale and position backdrop  content when overlays are displayed."
 ---
 
 ```dart

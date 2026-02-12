@@ -1,6 +1,6 @@
 ---
 title: "Class: CardButtonTheme"
-description: "Theme configuration for card button styling."
+description: "Theme configuration for card button styling.   Provides theme-level customization for card buttons. Card buttons feature  subtle shadows and borders creating an elevated, card-like appearance."
 ---
 
 ```dart

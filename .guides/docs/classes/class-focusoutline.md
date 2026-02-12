@@ -1,6 +1,6 @@
 ---
 title: "Class: FocusOutline"
-description: "A widget that displays a visual outline when focused."
+description: "A widget that displays a visual outline when focused.   Wraps a child widget with a customizable border that appears when the  [focused] property is true. Commonly used to indicate keyboard focus state  for interactive elements.   Example:  ```dart  FocusOutline(    focused: hasFocus,    borderRadius: BorderRadius.circular(8),    child: TextButton(      onPressed: () {},      child: Text('Focused Button'),    ),  )  ```"
 ---
 
 ```dart

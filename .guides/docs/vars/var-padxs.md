@@ -1,6 +1,6 @@
 ---
 title: "Variable: padXs"
-description: "Extra small padding multiplier (0."
+description: "Extra small padding multiplier (0.5)."
 ---
 
 Signature

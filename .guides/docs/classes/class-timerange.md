@@ -1,6 +1,6 @@
 ---
 title: "Class: TimeRange"
-description: "Represents a range of time with a start and end time."
+description: "Represents a range of time with a start and end time.   Used to define time intervals or periods. Both [start] and [end]  are represented as [TimeOfDay] values.   Example:  ```dart  final workHours = TimeRange(    start: TimeOfDay(hour: 9, minute: 0),    end: TimeOfDay(hour: 17, minute: 0),  );  ```"
 ---
 
 ```dart

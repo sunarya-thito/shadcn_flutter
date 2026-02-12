@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuButton"
-description: "Clickable button menu item with optional submenu support."
+description: "Clickable button menu item with optional submenu support.   Primary menu item type that responds to user interaction. Can display  leading icons, trailing widgets (shortcuts), and nested submenus.   Example:  ```dart  MenuButton(    leading: Icon(Icons.cut),    trailing: Text('Ctrl+X').textSmall().muted(),    onPressed: (context) => _handleCut(),    child: Text('Cut'),  )  ```"
 ---
 
 ```dart

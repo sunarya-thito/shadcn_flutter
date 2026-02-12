@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayManagerAsTooltipOverlayHandler"
-description: "Overlay handler that delegates tooltip display to an [OverlayManager]."
+description: "Overlay handler that delegates tooltip display to an [OverlayManager].   This handler integrates tooltips with the overlay management system,  allowing tooltips to be displayed through the overlay manager's  tooltip-specific display logic. This ensures proper layering and  lifecycle management within the overlay system."
 ---
 
 ```dart

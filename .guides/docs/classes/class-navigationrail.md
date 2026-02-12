@@ -1,131 +1,86 @@
 ---
 title: "Class: NavigationRail"
-description: "A vertical or horizontal navigation rail component for sidebar navigation."
+description: "A standard navigation rail component for sidebar-style navigation.   Provides a compact vertical navigation bar (rail) typically used on the side  of a screen. It can be configured with or without labels, support multiple  alignment modes, and manage its own selection state. Navigation items  are defined through the [children] and [footer] properties.   Features:  - Supports both vertical and horizontal orientations  - Configurable alignment (start, center, end)  - Flexible label display modes (always, never, selected)  - Optional header and footer sections  - Built-in expansion and collapse animations  - Customizable background, surface effects, and constraints   Example:  ```dart  NavigationRail(    selectedKey: ValueKey('home'),    onSelected: (key) => setState(() => selectedKey = key),    children: [      NavigationItem(        key: ValueKey('home'),        icon: Icon(Icons.home),        label: Text('Home'),      ),      NavigationItem(        key: ValueKey('search'),        icon: Icon(Icons.search),        label: Text('Search'),      ),    ],  )  ```"
 ---
 
 ```dart
-/// A vertical or horizontal navigation rail component for sidebar navigation.
+/// A standard navigation rail component for sidebar-style navigation.
 ///
-/// Provides a compact navigation interface typically used in sidebar layouts
-/// or as a secondary navigation element. The rail displays navigation items
-/// in a linear arrangement with configurable alignment, spacing, and label
-/// presentation. Items can show icons, labels, or both based on configuration.
+/// Provides a compact vertical navigation bar (rail) typically used on the side
+/// of a screen. It can be configured with or without labels, support multiple
+/// alignment modes, and manage its own selection state. Navigation items
+/// are defined through the [children] and [footer] properties.
 ///
-/// The rail supports both vertical and horizontal orientations, making it
-/// suitable for various layout contexts including left/right sidebars,
-/// top/bottom navigation bars, or embedded navigation within content areas.
-/// Label presentation can be customized to show always, on selection, or never.
-///
-/// Integrates with the navigation theming system and supports background
-/// customization, surface effects, and responsive sizing based on content
-/// and constraints.
+/// Features:
+/// - Supports both vertical and horizontal orientations
+/// - Configurable alignment (start, center, end)
+/// - Flexible label display modes (always, never, selected)
+/// - Optional header and footer sections
+/// - Built-in expansion and collapse animations
+/// - Customizable background, surface effects, and constraints
 ///
 /// Example:
 /// ```dart
 /// NavigationRail(
-///   direction: Axis.vertical,
-///   alignment: NavigationRailAlignment.start,
-///   labelType: NavigationLabelType.all,
-///   index: selectedIndex,
-///   onSelected: (index) => setState(() => selectedIndex = index),
+///   selectedKey: ValueKey('home'),
+///   onSelected: (key) => setState(() => selectedKey = key),
 ///   children: [
-///     NavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-///     NavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-///     NavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+///     NavigationItem(
+///       key: ValueKey('home'),
+///       icon: Icon(Icons.home),
+///       label: Text('Home'),
+///     ),
+///     NavigationItem(
+///       key: ValueKey('search'),
+///       icon: Icon(Icons.search),
+///       label: Text('Search'),
+///     ),
 ///   ],
 /// )
 /// ```
 class NavigationRail extends StatefulWidget {
-  /// Background color for the navigation rail surface.
-  ///
-  /// When null, uses the theme's default surface color. The background
-  /// provides visual separation from surrounding content and establishes
-  /// the rail as a distinct navigation area.
+  /// Background color of the navigation rail.
   final Color? backgroundColor;
-  /// List of navigation items to display in the rail.
-  ///
-  /// Each item should be a [NavigationBarItem] that defines the icon,
-  /// label, and optional badge for a navigation destination. Items are
-  /// arranged according to the specified direction and alignment.
-  final List<NavigationBarItem> children;
-  /// Alignment of items within the rail's main axis.
-  ///
-  /// Controls how navigation items are distributed along the rail's
-  /// primary direction (vertical or horizontal). Options include
-  /// start, center, and end alignment.
+  /// Alignment of navigation items along the main axis.
   final NavigationRailAlignment alignment;
-  /// Primary layout direction for the navigation rail.
-  ///
-  /// Determines whether items are arranged vertically (sidebar style)
-  /// or horizontally (toolbar style). Affects item spacing and label positioning.
+  /// Layout direction (horizontal or vertical).
   final Axis direction;
   /// Spacing between navigation items.
-  ///
-  /// Controls the gap between adjacent navigation items. When null,
-  /// uses theme-appropriate default spacing based on direction and size.
   final double? spacing;
-  /// Label display behavior for navigation items.
-  ///
-  /// Controls when and how labels are shown: always visible, only for
-  /// selected items, or never displayed. Affects the rail's width and
-  /// visual density.
+  /// Type of label display behavior.
   final NavigationLabelType labelType;
   /// Position of labels relative to icons.
-  ///
-  /// Determines whether labels appear below, above, or beside icons.
-  /// The positioning adapts based on the rail's direction and available space.
   final NavigationLabelPosition labelPosition;
-  /// Size variant for label text and overall item dimensions.
-  ///
-  /// Controls the scale of text and spacing within navigation items.
-  /// Smaller sizes create more compact navigation, while larger sizes
-  /// improve accessibility and visual prominence.
+  /// Size variant for labels.
   final NavigationLabelSize labelSize;
-  /// Internal padding applied within the navigation rail.
-  ///
-  /// Provides space around the navigation items, creating visual breathing
-  /// room and preventing items from touching the rail's edges.
+  /// Internal padding of the navigation rail.
   final EdgeInsetsGeometry? padding;
-  /// Size constraints for the navigation rail container.
-  ///
-  /// Defines minimum and maximum width/height bounds for the rail.
-  /// Useful for responsive layouts and ensuring consistent sizing.
+  /// Constraints for the navigation rail container.
   final BoxConstraints? constraints;
-  /// Index of the currently selected navigation item.
-  ///
-  /// Highlights the corresponding item and affects label display based
-  /// on the [labelType] setting. When null, no item is selected.
-  final int? index;
-  /// Callback invoked when a navigation item is selected.
-  ///
-  /// Called with the index of the tapped item. Use this to update
-  /// the selected index and navigate to the corresponding destination.
-  final ValueChanged<int>? onSelected;
-  /// Opacity level for surface background effects.
-  ///
-  /// Controls transparency of background blur and overlay effects.
-  /// Values range from 0.0 (transparent) to 1.0 (opaque).
+  /// Cross-axis size when the rail is expanded.
+  final double? expandedSize;
+  /// Cross-axis size when the rail is collapsed.
+  final double? collapsedSize;
+  /// Surface opacity effect for the background.
   final double? surfaceOpacity;
-  /// Blur intensity for surface background effects.
-  ///
-  /// Controls the backdrop blur effect behind the navigation rail.
-  /// Higher values create more pronounced blur effects.
+  /// Surface blur effect for the background.
   final double? surfaceBlur;
-  /// Whether the rail should expand to fill available space.
-  ///
-  /// When true, the rail attempts to use all available space in its
-  /// cross-axis direction. When false, the rail sizes itself to content.
+  /// Whether the rail is in its expanded state.
   final bool expanded;
   /// Whether to maintain intrinsic size along the main axis.
-  ///
-  /// Controls how the rail handles sizing when its main axis dimension
-  /// is unconstrained. Affects layout behavior in flexible containers.
   final bool keepMainAxisSize;
   /// Whether to maintain intrinsic size along the cross axis.
-  ///
-  /// Controls how the rail handles sizing when its cross axis dimension
-  /// is unconstrained. Useful for preventing unwanted expansion.
   final bool keepCrossAxisSize;
+  /// Optional header widget displayed at the start of the rail.
+  final List<Widget>? header;
+  /// Optional footer widget displayed at the end of the rail.
+  final List<Widget>? footer;
+  /// List of navigation items to display.
+  final List<Widget> children;
+  /// Currently selected item key.
+  final Key? selectedKey;
+  /// Callback when an item is selected.
+  final ValueChanged<Key?>? onSelected;
   /// Creates a [NavigationRail] with the specified configuration and items.
   ///
   /// The [children] parameter is required and should contain [NavigationBarItem]
@@ -137,25 +92,14 @@ class NavigationRail extends StatefulWidget {
   /// to specific layout requirements and design systems.
   ///
   /// Parameters:
-  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
+  /// - [children] (`List<Widget>`, required): Navigation destinations
   /// - [alignment] (NavigationRailAlignment, default: center): Item alignment along main axis
   /// - [direction] (Axis, default: vertical): Layout orientation of the rail
   /// - [labelType] (NavigationLabelType, default: selected): When to show labels
   /// - [labelPosition] (NavigationLabelPosition, default: bottom): Label positioning
-  /// - [index] (int?, optional): Currently selected item index
-  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
-  ///
-  /// Example:
-  /// ```dart
-  /// NavigationRail(
-  ///   alignment: NavigationRailAlignment.start,
-  ///   labelType: NavigationLabelType.all,
-  ///   index: currentIndex,
-  ///   onSelected: (index) => _navigate(index),
-  ///   children: navigationItems,
-  /// )
-  /// ```
-  const NavigationRail({super.key, this.backgroundColor, this.alignment = NavigationRailAlignment.center, this.direction = Axis.vertical, this.spacing, this.labelType = NavigationLabelType.selected, this.labelPosition = NavigationLabelPosition.bottom, this.labelSize = NavigationLabelSize.small, this.padding, this.constraints, this.index, this.onSelected, this.surfaceOpacity, this.surfaceBlur, this.expanded = true, this.keepMainAxisSize = false, this.keepCrossAxisSize = false, required this.children});
+  /// - [selectedKey] (Key?, optional): Currently selected item key
+  /// - [onSelected] (`ValueChanged<Key?>?`, optional): Selection change callback
+  const NavigationRail({super.key, this.backgroundColor, this.alignment = NavigationRailAlignment.center, this.direction = Axis.vertical, this.spacing, this.labelType = NavigationLabelType.selected, this.labelPosition = NavigationLabelPosition.bottom, this.labelSize = NavigationLabelSize.small, this.padding, this.constraints, this.expandedSize, this.collapsedSize, this.surfaceOpacity, this.surfaceBlur, this.expanded = true, this.keepMainAxisSize = false, this.keepCrossAxisSize = false, this.header, this.footer, this.selectedKey, this.onSelected, required this.children});
   State<NavigationRail> createState();
 }
 ```

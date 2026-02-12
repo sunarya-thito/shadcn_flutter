@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledMultipleAnswer"
-description: "A controlled widget for managing multiple item selections with external state management."
+description: "A controlled widget for managing multiple item selections with external state management.   This widget provides a container for multiple selection interfaces where users  can select multiple items from a set of choices. It integrates with the controlled  component system to provide external state management, form integration, and  programmatic control of selections.   The component maintains a collection of selected items and provides callbacks  for selection changes. Child widgets can use the [Choice.choose] method to  register item selections and [Choice.getValue] to access current selections.   Example:  ```dart  ControlledMultipleAnswer<String>(    initialValue: ['apple', 'banana'],    onChanged: (selections) {      print('Selected: ${selections?.join(', ')}');    },    child: Column(      children: [        ChoiceItem(value: 'apple', child: Text('Apple')),        ChoiceItem(value: 'banana', child: Text('Banana')),        ChoiceItem(value: 'orange', child: Text('Orange')),      ],    ),  );  ```"
 ---
 
 ```dart

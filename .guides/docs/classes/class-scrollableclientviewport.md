@@ -1,6 +1,6 @@
 ---
 title: "Class: ScrollableClientViewport"
-description: "Viewport widget for [ScrollableClient] with two-dimensional scrolling."
+description: "Viewport widget for [ScrollableClient] with two-dimensional scrolling.   Handles rendering and layout of scrollable content with both horizontal  and vertical scroll axes."
 ---
 
 ```dart

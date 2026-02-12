@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuPopup"
-description: "A styled container widget for displaying popup menus."
+description: "A styled container widget for displaying popup menus.   Provides a consistent visual container for menu items with customizable  appearance including background, borders, padding, and surface effects.  Automatically adapts its layout based on context (sheet overlay, dialog, etc.).   Features:  - **Surface Effects**: Configurable opacity and blur for backdrop  - **Styled Border**: Custom border color and radius  - **Flexible Layout**: Automatically adjusts for vertical/horizontal menus  - **Scrollable**: Content scrolls when it exceeds available space  - **Themeable**: Integrates with component theming system   Typically used as a container for menu items within dropdown menus,  context menus, or other popup menu components.   Example:  ```dart  MenuPopup(    padding: EdgeInsets.all(8),    fillColor: Colors.white,    borderRadius: BorderRadius.circular(8),    children: [      MenuItem(title: Text('Option 1')),      MenuItem(title: Text('Option 2')),      MenuItem(title: Text('Option 3')),    ],  )  ```   See also:  - [MenuPopupTheme] for theming options  - [MenuItem] for individual menu items  - [DropdownMenu] for complete dropdown menu implementation"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: TableCellTheme"
-description: "Theme configuration for individual table cells."
+description: "Theme configuration for individual table cells.   [TableCellTheme] provides state-aware styling options for table cells  using [WidgetStateProperty] to handle different interactive states like  hover, selected, disabled, etc. This enables rich visual feedback for  table interactions.   ## State-Aware Properties  All properties use [WidgetStateProperty] to support different visual  states:  - [WidgetState.hovered]: Mouse hover state  - [WidgetState.selected]: Cell/row selection state  - [WidgetState.disabled]: Disabled interaction state  - [WidgetState.pressed]: Active press state   Example:  ```dart  TableCellTheme(    backgroundColor: WidgetStateProperty.resolveWith((states) {      if (states.contains(WidgetState.hovered)) {        return Colors.blue.shade50;      }      return null;    }),    textStyle: WidgetStateProperty.all(      TextStyle(fontWeight: FontWeight.w500),    ),  );  ```"
 ---
 
 ```dart

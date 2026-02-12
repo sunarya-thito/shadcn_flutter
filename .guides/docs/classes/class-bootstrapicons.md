@@ -1,6 +1,6 @@
 ---
 title: "Class: BootstrapIcons"
-description: "A collection of Bootstrap Icons as Flutter IconData."
+description: "A collection of Bootstrap Icons as Flutter IconData.   Provides access to the complete Bootstrap Icons font family.  Each icon is defined as a static constant [IconData] that can be  used directly with Flutter's [Icon] widget.   Example:  ```dart  Icon(BootstrapIcons.alarm)  ```"
 ---
 
 ```dart

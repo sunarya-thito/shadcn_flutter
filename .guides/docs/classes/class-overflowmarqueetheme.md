@@ -1,6 +1,6 @@
 ---
 title: "Class: OverflowMarqueeTheme"
-description: "Theme configuration for [OverflowMarquee] scrolling text displays."
+description: "Theme configuration for [OverflowMarquee] scrolling text displays.   Provides comprehensive styling and behavior options for marquee animations  including scroll direction, timing, fade effects, and animation curves.  All properties are optional and will fall back to default values when not specified.   Animation Properties:  - [direction]: Horizontal or vertical scrolling axis  - [duration]: Complete cycle time for one full scroll  - [delayDuration]: Pause time before restarting animation  - [curve]: Easing function for smooth animation transitions   Visual Properties:  - [step]: Pixel step size for scroll speed calculation  - [fadePortion]: Edge fade effect intensity (0.0 to 1.0)   Example:  ```dart  OverflowMarqueeTheme(    direction: Axis.horizontal,    duration: Duration(seconds: 5),    delayDuration: Duration(seconds: 1),    fadePortion: 0.1,    curve: Curves.easeInOut,  )  ```"
 ---
 
 ```dart

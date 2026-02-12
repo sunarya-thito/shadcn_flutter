@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuItemState"
-description: "State class for [NavigationMenuItem] widget."
+description: "State class for [NavigationMenuItem] widget.   Manages the lifecycle and interaction of a single navigation menu item."
 ---
 
 ```dart

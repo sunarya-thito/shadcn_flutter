@@ -1,6 +1,6 @@
 ---
 title: "Class: SheetWrapper"
-description: "Wrapper widget for sheet overlays."
+description: "Wrapper widget for sheet overlays.   Extends [DrawerWrapper] with sheet-specific defaults (no drag, no expansion).  Sheets are simplified drawers without backdrop transformation."
 ---
 
 ```dart

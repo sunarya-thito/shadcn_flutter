@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityEdgeInsetsGeometry"
-description: "Interface for edge insets that can be resolved using density settings."
+description: "Interface for edge insets that can be resolved using density settings.   Implement this interface to create custom density-aware edge insets.  Use [DirectionalEdgeInsetsDensity] for RTL-aware insets or  [EdgeInsetsDensity] for fixed left/right insets."
 ---
 
 ```dart

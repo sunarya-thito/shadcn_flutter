@@ -1,6 +1,6 @@
 ---
 title: "Class: DirectionalGradientAngle"
-description: "A directional gradient angle that is aware of text direction."
+description: "A directional gradient angle that is aware of text direction.   [DirectionalGradientAngle] uses [AlignmentDirectional] for its alignments,  making it responsive to the text direction (LTR or RTL). The angle is specified  in radians and determines the direction of the gradient.   Example:  ```dart  const angle = DirectionalGradientAngle(0.0); // 0 radians (horizontal)  final begin = angle.begin; // Start alignment  final end = angle.end;     // End alignment  ```"
 ---
 
 ```dart

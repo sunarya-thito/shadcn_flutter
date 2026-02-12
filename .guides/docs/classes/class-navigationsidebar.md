@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationSidebar"
-description: "A full-width navigation sidebar component for comprehensive navigation."
+description: "A full-width navigation sidebar component for comprehensive navigation.   Provides an expanded navigation interface designed for sidebar layouts  with full-width items and extensive labeling support. Unlike [NavigationRail],  the sidebar is optimized for detailed navigation with prominent labels,  descriptions, and expanded interactive areas.   The sidebar always displays labels and typically occupies a dedicated  sidebar area in layouts. Items are arranged vertically with generous  spacing and padding to create a comfortable navigation experience.  Supports badges, icons, and detailed labeling for complex navigation hierarchies.   Integrates with responsive layout systems and can be combined with  collapsible containers or drawer systems for adaptive navigation  experiences across different screen sizes and device types.   Example:  ```dart  NavigationSidebar(    backgroundColor: Colors.grey.shade50,    labelType: NavigationLabelType.all,    selectedKey: ValueKey('dashboard'),    onSelected: (key) => _navigateToPage(key),    children: [      NavigationItem(        key: ValueKey('dashboard'),        icon: Icon(Icons.dashboard),        label: Text('Dashboard'),        badge: Badge(child: Text('New')),      ),      NavigationItem(        key: ValueKey('analytics'),        icon: Icon(Icons.analytics),        label: Text('Analytics'),      ),      NavigationItem(        key: ValueKey('settings'),        icon: Icon(Icons.settings),        label: Text('Settings'),      ),    ],  )  ```"
 ---
 
 ```dart
@@ -25,21 +25,24 @@ description: "A full-width navigation sidebar component for comprehensive naviga
 /// NavigationSidebar(
 ///   backgroundColor: Colors.grey.shade50,
 ///   labelType: NavigationLabelType.all,
-///   index: currentPageIndex,
-///   onSelected: (index) => _navigateToPage(index),
+///   selectedKey: ValueKey('dashboard'),
+///   onSelected: (key) => _navigateToPage(key),
 ///   children: [
-///     NavigationBarItem(
+///     NavigationItem(
+///       key: ValueKey('dashboard'),
 ///       icon: Icon(Icons.dashboard),
-///       label: 'Dashboard',
+///       label: Text('Dashboard'),
 ///       badge: Badge(child: Text('New')),
 ///     ),
-///     NavigationBarItem(
+///     NavigationItem(
+///       key: ValueKey('analytics'),
 ///       icon: Icon(Icons.analytics),
-///       label: 'Analytics',
+///       label: Text('Analytics'),
 ///     ),
-///     NavigationBarItem(
+///     NavigationItem(
+///       key: ValueKey('settings'),
 ///       icon: Icon(Icons.settings),
-///       label: 'Settings',
+///       label: Text('Settings'),
 ///     ),
 ///   ],
 /// )
@@ -52,10 +55,13 @@ class NavigationSidebar extends StatefulWidget {
   final Color? backgroundColor;
   /// List of navigation items to display in the sidebar.
   ///
-  /// Each item should be a [NavigationBarItem] that defines the navigation
-  /// destination with icon, label, and optional badge. Items are arranged
-  /// vertically with full-width presentation.
-  final List<NavigationBarItem> children;
+  /// Each item should be a widget that defines the navigation
+  /// destination. Items are arranged vertically with full-width presentation.
+  final List<Widget> children;
+  /// Optional fixed header items displayed before the scrollable content.
+  final List<Widget>? header;
+  /// Optional fixed footer items displayed after the scrollable content.
+  final List<Widget>? footer;
   /// Spacing between navigation items.
   ///
   /// Controls the vertical gap between adjacent navigation items.
@@ -86,16 +92,16 @@ class NavigationSidebar extends StatefulWidget {
   /// Defines width and height bounds for the sidebar. Useful for
   /// responsive layouts and consistent sidebar sizing.
   final BoxConstraints? constraints;
-  /// Index of the currently selected navigation item.
+  /// Key of the currently selected navigation item.
   ///
   /// Highlights the corresponding item with selected styling.
   /// When null, no item appears selected.
-  final int? index;
+  final Key? selectedKey;
   /// Callback invoked when a navigation item is selected.
   ///
-  /// Called with the index of the selected item. Use this to update
+  /// Called with the key of the selected item. Use this to update
   /// the selection state and handle navigation actions.
-  final ValueChanged<int>? onSelected;
+  final ValueChanged<Key?>? onSelected;
   /// Opacity level for surface background effects.
   ///
   /// Controls transparency of background overlays and blur effects.
@@ -123,33 +129,15 @@ class NavigationSidebar extends StatefulWidget {
   final bool keepMainAxisSize;
   /// Creates a [NavigationSidebar] with the specified configuration and items.
   ///
-  /// The [children] parameter is required and should contain [NavigationBarItem]
-  /// widgets that define the navigation destinations. Default values are
-  /// optimized for sidebar presentation with expanded labels and large sizing.
-  ///
-  /// The sidebar defaults to expanded label presentation with large sizing
-  /// and end-positioned labels, creating a comprehensive navigation experience
-  /// suitable for desktop and tablet interfaces.
-  ///
   /// Parameters:
-  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
+  /// - [children] (`List<Widget>`, required): Navigation destinations
   /// - [labelType] (NavigationLabelType, default: expanded): Label display behavior
   /// - [labelPosition] (NavigationLabelPosition, default: end): Label positioning
   /// - [labelSize] (NavigationLabelSize, default: large): Size variant for items
-  /// - [index] (int?, optional): Currently selected item index
-  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
+  /// - [selectedKey] (Key?, optional): Currently selected item key
+  /// - [onSelected] (`ValueChanged<Key?>?`, optional): Selection change callback
   /// - [expanded] (bool, default: true): Whether to fill available width
-  ///
-  /// Example:
-  /// ```dart
-  /// NavigationSidebar(
-  ///   backgroundColor: Theme.of(context).colorScheme.surface,
-  ///   index: selectedIndex,
-  ///   onSelected: (index) => _handleNavigation(index),
-  ///   children: sidebarItems,
-  /// )
-  /// ```
-  const NavigationSidebar({super.key, this.backgroundColor, this.spacing, this.labelType = NavigationLabelType.expanded, this.labelPosition = NavigationLabelPosition.end, this.labelSize = NavigationLabelSize.large, this.padding, this.constraints, this.index, this.onSelected, this.surfaceOpacity, this.surfaceBlur, this.expanded = true, this.keepCrossAxisSize = false, this.keepMainAxisSize = false, required this.children});
+  const NavigationSidebar({super.key, this.backgroundColor, this.spacing, this.labelType = NavigationLabelType.expanded, this.labelPosition = NavigationLabelPosition.end, this.labelSize = NavigationLabelSize.large, this.padding, this.constraints, this.selectedKey, this.onSelected, this.surfaceOpacity, this.surfaceBlur, this.expanded = true, this.keepCrossAxisSize = false, this.keepMainAxisSize = false, this.header, this.footer, required this.children});
   State<NavigationSidebar> createState();
 }
 ```

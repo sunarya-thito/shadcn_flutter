@@ -1,6 +1,6 @@
 ---
 title: "Class: FormTableLayout"
-description: "A table-based layout for multiple form fields."
+description: "A table-based layout for multiple form fields.   Arranges form fields in a table layout for structured data entry."
 ---
 
 ```dart

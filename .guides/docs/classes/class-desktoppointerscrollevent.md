@@ -1,6 +1,6 @@
 ---
 title: "Class: DesktopPointerScrollEvent"
-description: "A custom pointer scroll event for desktop platforms."
+description: "A custom pointer scroll event for desktop platforms.   Extends [PointerScrollEvent] with desktop-specific scroll event handling."
 ---
 
 ```dart

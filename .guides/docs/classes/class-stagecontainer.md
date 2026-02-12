@@ -1,6 +1,6 @@
 ---
 title: "Class: StageContainer"
-description: "A responsive container that adapts to screen size using breakpoints."
+description: "A responsive container that adapts to screen size using breakpoints.   Constrains child width based on breakpoint strategy and adds padding.  Useful for creating centered, responsive layouts that adapt smoothly  across different screen sizes.   Example:  ```dart  StageContainer(    breakpoint: StageBreakpoint.defaultBreakpoints,    padding: EdgeInsets.symmetric(horizontal: 24),    builder: (context, padding) {      return Container(        padding: padding,        child: Text('Responsive content'),      );    },  )  ```"
 ---
 
 ```dart

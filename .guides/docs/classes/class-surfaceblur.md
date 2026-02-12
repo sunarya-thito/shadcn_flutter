@@ -1,6 +1,6 @@
 ---
 title: "Class: SurfaceBlur"
-description: "A widget that applies a blur effect to its background."
+description: "A widget that applies a blur effect to its background.   Creates a frosted glass or translucent blur effect behind the child widget  using a backdrop filter. The blur amount is controlled by [surfaceBlur].   Example:  ```dart  SurfaceBlur(    surfaceBlur: 10,    borderRadius: BorderRadius.circular(8),    child: Container(      color: Colors.white.withOpacity(0.5),      child: Text('Blurred background'),    ),  )  ```"
 ---
 
 ```dart

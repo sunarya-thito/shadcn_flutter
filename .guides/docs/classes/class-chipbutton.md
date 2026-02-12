@@ -1,6 +1,6 @@
 ---
 title: "Class: ChipButton"
-description: "Specialized button component designed for use within chips."
+description: "Specialized button component designed for use within chips.   A compact button widget optimized for use as leading or trailing elements  within [Chip] widgets. Provides consistent styling and behavior for  interactive chip elements like close buttons or action triggers.   Example:  ```dart  ChipButton(    onPressed: () => removeItem(item),    child: Icon(Icons.close, size: 14),  );  ```"
 ---
 
 ```dart

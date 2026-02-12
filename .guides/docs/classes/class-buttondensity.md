@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonDensity"
-description: "Defines the padding density for button components."
+description: "Defines the padding density for button components.   [ButtonDensity] controls how much internal padding buttons have, affecting  their overall size and touch target area. Different density levels are  appropriate for different use cases and layout constraints.   Example:  ```dart  Button.primary(    style: ButtonStyle.primary().copyWith(density: ButtonDensity.compact),    child: Text('Compact Button'),  );  ```"
 ---
 
 ```dart

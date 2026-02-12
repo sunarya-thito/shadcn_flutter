@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledToggle"
-description: "A controlled version of [Toggle] that integrates with form state management."
+description: "A controlled version of [Toggle] that integrates with form state management.   [ControlledToggle] implements the [ControlledComponent] mixin to provide  automatic form integration, validation, and state management. It serves as  a bridge between external state management (via [ToggleController] or  [onChanged] callbacks) and the underlying [Toggle] widget.   This widget is ideal for use in forms where the toggle state needs to be  managed externally, validated, or persisted. It automatically handles the  conversion between controlled and uncontrolled modes based on the provided  parameters.   Example:  ```dart  final controller = ToggleController(false);   ControlledToggle(    controller: controller,    child: Row(      children: [        Icon(Icons.notifications),        Text('Enable notifications'),      ],    ),  );  ```"
 ---
 
 ```dart

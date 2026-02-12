@@ -1,6 +1,6 @@
 ---
 title: "Class: CodeSnippetTheme"
-description: "Theme configuration for [CodeSnippet] components."
+description: "Theme configuration for [CodeSnippet] components.   [CodeSnippetTheme] provides styling options for code snippet containers  including background colors, borders, padding, and visual appearance.  It integrates with the shadcn_flutter theming system to ensure consistent  styling across code display components.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<CodeSnippetTheme>(    data: CodeSnippetTheme(      backgroundColor: Colors.grey.shade900,      borderColor: Colors.grey.shade700,      borderWidth: 1.0,      borderRadius: BorderRadius.circular(8.0),      padding: EdgeInsets.all(16.0),    ),    child: MyCodeSnippetWidget(),  );  ```"
 ---
 
 ```dart

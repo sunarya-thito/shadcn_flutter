@@ -1,6 +1,6 @@
 ---
 title: "Class: DashedContainer"
-description: "A container with a dashed border outline."
+description: "A container with a dashed border outline.   Renders a container with a customizable dashed border that can have rounded  corners. Animates border property changes smoothly.   Example:  ```dart  DashedContainer(    strokeWidth: 10,    gap: 5,    thickness: 2,    borderRadius: BorderRadius.circular(8),    child: Padding(      padding: EdgeInsets.all(16),      child: Text('Dashed border'),    ),  )  ```"
 ---
 
 ```dart

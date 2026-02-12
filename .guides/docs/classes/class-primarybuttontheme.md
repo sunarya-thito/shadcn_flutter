@@ -1,6 +1,6 @@
 ---
 title: "Class: PrimaryButtonTheme"
-description: "Theme configuration for primary button styling."
+description: "Theme configuration for primary button styling.   [PrimaryButtonTheme] extends [ButtonTheme] to provide theme-level customization  for primary buttons. It can be registered in the component theme system to  override default primary button styles throughout the application.   Example:  ```dart  PrimaryButtonTheme(    decoration: (context, states, defaultValue) {      // Customize primary button decoration      return customDecoration;    },  )  ```"
 ---
 
 ```dart

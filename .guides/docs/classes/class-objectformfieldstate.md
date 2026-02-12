@@ -1,6 +1,6 @@
 ---
 title: "Class: ObjectFormFieldState"
-description: "State class for [ObjectFormField] managing form value and user interactions."
+description: "State class for [ObjectFormField] managing form value and user interactions.   Handles value updates, popover/dialog display, and integrates with the  form validation system. This state also determines whether the field is  enabled based on the presence of an `onChanged` callback."
 ---
 
 ```dart

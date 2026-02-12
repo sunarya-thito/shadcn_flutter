@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemList"
-description: "A delegate that wraps a fixed list of items."
+description: "A delegate that wraps a fixed list of items.   Provides items from a pre-defined `List<T>`.   Example:  ```dart  ItemList<String>(['Apple', 'Banana', 'Cherry'])  ```"
 ---
 
 ```dart

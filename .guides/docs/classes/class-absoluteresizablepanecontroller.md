@@ -1,6 +1,6 @@
 ---
 title: "Class: AbsoluteResizablePaneController"
-description: "Controller for resizable panes with absolute (fixed) sizing."
+description: "Controller for resizable panes with absolute (fixed) sizing.   Manages a panel with a specific pixel size that can be adjusted through  dragging or programmatic control. Size is maintained as an absolute value.   Example:  ```dart  final controller = AbsoluteResizablePaneController(200);   ResizablePane(    controller: controller,    child: Container(color: Colors.blue),  )  ```"
 ---
 
 ```dart

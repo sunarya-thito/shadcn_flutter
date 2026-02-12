@@ -1,6 +1,6 @@
 ---
 title: "Class: StageBreakpoint"
-description: "Abstract base class for defining stage-based layout breakpoints."
+description: "Abstract base class for defining stage-based layout breakpoints.   Provides strategies for determining minimum and maximum widths based on  container size. Used by [StageContainer] to create responsive layouts  that adapt to screen size in discrete steps."
 ---
 
 ```dart

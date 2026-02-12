@@ -1,6 +1,6 @@
 ---
 title: "Class: CardImageTheme"
-description: "Theme configuration for [CardImage] components."
+description: "Theme configuration for [CardImage] components.   Defines visual properties like scale animations, background colors,  border styling, and layout direction. Applied through the widget tree  using [ComponentTheme] to provide consistent theming across card images.   Example:  ```dart  ComponentTheme(    data: CardImageTheme(      hoverScale: 1.1,      backgroundColor: Colors.grey.shade100,      direction: Axis.horizontal,    ),    child: MyApp(),  );  ```"
 ---
 
 ```dart

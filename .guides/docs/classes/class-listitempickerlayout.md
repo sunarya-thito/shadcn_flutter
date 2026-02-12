@@ -1,6 +1,6 @@
 ---
 title: "Class: ListItemPickerLayout"
-description: "A list-based layout for item pickers."
+description: "A list-based layout for item pickers.   Displays items in a vertical scrolling list using [ListView.builder].   Example:  ```dart  const ListItemPickerLayout()  ```"
 ---
 
 ```dart

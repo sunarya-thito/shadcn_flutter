@@ -1,6 +1,6 @@
 ---
 title: "Class: Checkbox"
-description: "Core checkbox widget with comprehensive theming and interaction support."
+description: "Core checkbox widget with comprehensive theming and interaction support.   A low-level checkbox implementation that provides direct state control  and extensive customization options. Supports all three checkbox states,  smooth animations, accessibility features, and form integration.   ## Features   - **Tri-state support**: checked, unchecked, and indeterminate states  - **Smooth animations**: animated checkmark drawing and state transitions  - **Comprehensive theming**: colors, sizing, spacing, and border customization  - **Accessibility**: proper semantics, focus management, and keyboard support  - **Form integration**: automatic form field registration and validation support  - **Layout flexibility**: leading/trailing widgets with automatic styling   For most use cases, consider [ControlledCheckbox] which provides higher-level  state management. Use this widget directly when you need fine-grained control  over the checkbox behavior and lifecycle.   Example:  ```dart  Checkbox(    state: CheckboxState.checked,    onChanged: (newState) {      setState(() => currentState = newState);    },    tristate: true,    leading: Icon(Icons.security),    trailing: Text('Enable security features'),  )  ```"
 ---
 
 ```dart

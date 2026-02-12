@@ -1,6 +1,6 @@
 ---
 title: "Class: SweepColorGradient"
-description: "A sweep (angular/conical) gradient for color values."
+description: "A sweep (angular/conical) gradient for color values.   Creates a gradient that sweeps around a center point."
 ---
 
 ```dart

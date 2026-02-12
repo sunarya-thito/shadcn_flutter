@@ -1,6 +1,6 @@
 ---
 title: "Class: TrackerData"
-description: "A data container for individual tracker segments."
+description: "A data container for individual tracker segments.   [TrackerData] encapsulates the information needed to display a single  segment within a [Tracker] widget. Each segment represents a data point  with an associated status level and contextual information.   ## Components  - **Tooltip**: Interactive content displayed on hover for additional context  - **Level**: Status level determining the visual appearance and meaning   ## Usage  Tracker data is typically created from application data models and  transformed into visual representations for status monitoring dashboards,  progress indicators, or health monitoring interfaces.   Example:  ```dart  TrackerData(    level: TrackerLevel.warning,    tooltip: Column(      mainAxisSize: MainAxisSize.min,      children: [        Text('Server Load'),        Text('75% - Warning Level'),        Text('Last Updated: 2 min ago'),      ],    ),  );  ```"
 ---
 
 ```dart

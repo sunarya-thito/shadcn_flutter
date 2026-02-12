@@ -1,6 +1,6 @@
 ---
 title: "Class: ScrollViewInterceptor"
-description: "Widget that intercepts scroll events to simulate middle-button drag scrolling."
+description: "Widget that intercepts scroll events to simulate middle-button drag scrolling.   Helps simulate middle-hold scroll on web and desktop platforms by intercepting  pointer events and converting drag gestures into scroll events."
 ---
 
 ```dart

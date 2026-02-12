@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemPickerData"
-description: "Data provided by [ItemPickerDialog] to its descendants."
+description: "Data provided by [ItemPickerDialog] to its descendants.   Contains the current selection value, change callback, and layout strategy.  Used internally for coordinating state across the item picker tree."
 ---
 
 ```dart

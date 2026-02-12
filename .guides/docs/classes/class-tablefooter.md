@@ -1,6 +1,6 @@
 ---
 title: "Class: TableFooter"
-description: "Specialized row for table footers."
+description: "Specialized row for table footers.   Extends [TableRow] with default styling appropriate for footer rows,  including muted background colors and custom hover effects.   Example:  ```dart  TableFooter(    cells: [      TableCell(child: Text('Total: \\$100')),      TableCell(child: Text('Paid')),    ],  )  ```"
 ---
 
 ```dart

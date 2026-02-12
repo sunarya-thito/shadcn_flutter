@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityColumn"
-description: "A column widget with density-aware spacing between children."
+description: "A column widget with density-aware spacing between children.   Use instead of [Column] when you want the spacing to adapt to density.  The [spacing] value is a multiplier applied to [Density.baseGap].   Example:  ```dart  DensityColumn(    spacing: padMd,    children: [      Text('Title'),      Text('Subtitle'),    ],  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: AdaptiveScaling"
-description: "Defines scaling behavior for adaptive layouts."
+description: "Defines scaling behavior for adaptive layouts.   Provides different scaling strategies for text and icons."
 ---
 
 ```dart

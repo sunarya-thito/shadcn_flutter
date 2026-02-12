@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuRadioGroup"
-description: "Radio button group container for menu items."
+description: "Radio button group container for menu items.   Groups multiple [MenuRadio] items together with shared selection state.  Only one radio button in the group can be selected at a time.   Example:  ```dart  MenuRadioGroup<String>(    value: selectedOption,    onChanged: (context, value) => setState(() => selectedOption = value),    children: [      MenuRadio(value: 'option1', child: Text('Option 1')),      MenuRadio(value: 'option2', child: Text('Option 2')),    ],  )  ```"
 ---
 
 ```dart

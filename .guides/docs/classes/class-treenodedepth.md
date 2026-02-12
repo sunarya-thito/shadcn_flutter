@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeNodeDepth"
-description: "Represents depth information for a tree node."
+description: "Represents depth information for a tree node.   Contains index and count information used for rendering  indent guides and branch lines."
 ---
 
 ```dart

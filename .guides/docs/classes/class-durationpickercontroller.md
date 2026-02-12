@@ -1,6 +1,6 @@
 ---
 title: "Class: DurationPickerController"
-description: "Controller for managing [DurationPicker] values programmatically."
+description: "Controller for managing [DurationPicker] values programmatically.   Extends `ValueNotifier<Duration?>` to provide reactive state management  for duration picker components. Integrates with the controlled component  system for external control and change notifications.   Example:  ```dart  final controller = DurationPickerController(Duration(hours: 2, minutes: 30));  controller.addListener(() {    print('Selected duration: ${controller.value}');  });  ```"
 ---
 
 ```dart

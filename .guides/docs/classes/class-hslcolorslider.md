@@ -1,6 +1,6 @@
 ---
 title: "Class: HSLColorSlider"
-description: "A slider widget for adjusting HSL color components."
+description: "A slider widget for adjusting HSL color components.   [HSLColorSlider] provides an interactive slider for modifying different  aspects of an HSL color (hue, saturation, lightness, and combinations).  The slider displays a gradient representing the selected color channel(s)  and allows users to drag to adjust values.   Example:  ```dart  HSLColorSlider(    color: HSLColor.fromColor(Colors.blue),    sliderType: HSLColorSliderType.hue,    onChanged: (newColor) {      print('New hue: ${newColor.hue}');    },  )  ```"
 ---
 
 ```dart

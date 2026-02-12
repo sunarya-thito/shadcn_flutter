@@ -1,6 +1,6 @@
 ---
 title: "Class: TextFieldClearIntent"
-description: "Intent to clear all text from the text field."
+description: "Intent to clear all text from the text field.   Used with Flutter's Actions/Shortcuts system to programmatically  clear text field content."
 ---
 
 ```dart

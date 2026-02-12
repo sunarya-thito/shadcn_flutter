@@ -1,6 +1,6 @@
 ---
 title: "Class: AxisInsetsDirectional"
-description: "Directional insets along an axis."
+description: "Directional insets along an axis.   These insets are defined as start and end, and resolve to left/right or  right/left based on the [TextDirection]."
 ---
 
 ```dart

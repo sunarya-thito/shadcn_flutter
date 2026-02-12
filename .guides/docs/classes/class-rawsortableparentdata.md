@@ -1,6 +1,6 @@
 ---
 title: "Class: RawSortableParentData"
-description: "Parent data for sortable items within a [RawSortableStack]."
+description: "Parent data for sortable items within a [RawSortableStack].   Extends [ContainerBoxParentData] to include positioning information  for items in a sortable layout."
 ---
 
 ```dart

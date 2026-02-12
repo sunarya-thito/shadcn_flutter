@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerOverlayState"
-description: "State class for [DrawerOverlay] managing drawer entry lifecycle."
+description: "State class for [DrawerOverlay] managing drawer entry lifecycle.   Manages the stack of active drawer overlays, handling their addition,  removal, and size computation. Maintains a backdrop key for managing  backdrop transformations."
 ---
 
 ```dart

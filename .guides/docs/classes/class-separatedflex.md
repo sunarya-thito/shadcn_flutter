@@ -1,6 +1,6 @@
 ---
 title: "Class: SeparatedFlex"
-description: "A flex widget that adds separators between children."
+description: "A flex widget that adds separators between children.   Used internally by [ColumnExtension] and [RowExtension] to insert  separators between flex children while maintaining flex properties."
 ---
 
 ```dart

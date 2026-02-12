@@ -1,6 +1,6 @@
 ---
 title: "Class: PopoverLayoutRender"
-description: "Custom render object for popover layout positioning."
+description: "Custom render object for popover layout positioning.   Handles the low-level layout calculations for positioning popover content  relative to an anchor with automatic constraint adjustments and inversion  when the popover would overflow the viewport."
 ---
 
 ```dart

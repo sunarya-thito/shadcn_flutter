@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeNodeData"
-description: "Data container for rendering a tree node."
+description: "Data container for rendering a tree node.   Holds all information needed to display a single tree node including  its position, expansion state, and visual styling."
 ---
 
 ```dart

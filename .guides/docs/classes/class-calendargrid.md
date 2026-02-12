@@ -1,6 +1,6 @@
 ---
 title: "Class: CalendarGrid"
-description: "Widget that renders a calendar grid using provided data."
+description: "Widget that renders a calendar grid using provided data.   Takes calendar grid data and an item builder to render the visual grid  of calendar dates. Handles layout and arrangement of dates in a weekly grid."
 ---
 
 ```dart

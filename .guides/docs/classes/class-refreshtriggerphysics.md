@@ -1,6 +1,6 @@
 ---
 title: "Class: RefreshTriggerPhysics"
-description: "Custom scroll physics for refresh trigger behavior."
+description: "Custom scroll physics for refresh trigger behavior.   Enables over-scroll to allow pulling beyond content bounds for refresh.  Applied automatically by [RefreshTrigger] to its child scrollable."
 ---
 
 ```dart

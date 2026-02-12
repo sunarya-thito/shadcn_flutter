@@ -1,6 +1,6 @@
 ---
 title: "Class: CachedValueWidget"
-description: "A widget that caches a computed value."
+description: "A widget that caches a computed value.   Caches the result of [builder] and only rebuilds when [value] changes.  If [value] implements [CachedValue], uses custom rebuild logic."
 ---
 
 ```dart

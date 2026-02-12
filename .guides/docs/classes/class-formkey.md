@@ -1,6 +1,6 @@
 ---
 title: "Class: FormKey"
-description: "A key that uniquely identifies a form field and its type."
+description: "A key that uniquely identifies a form field and its type.   [FormKey] extends [LocalKey] and is used throughout the form system to  reference specific form fields. It includes type information to ensure  type-safe access to form values.   Example:  ```dart  const emailKey = FormKey<String>('email');  const ageKey = FormKey<int>('age');  ```"
 ---
 
 ```dart

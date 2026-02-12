@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonGroupData"
-description: "Data class defining border radius multipliers for grouped buttons."
+description: "Data class defining border radius multipliers for grouped buttons.   [ButtonGroupData] specifies which corners of a button should have reduced  border radius when part of a [ButtonGroup]. Values of 0.0 remove the radius  entirely (for internal buttons), while 1.0 preserves the full radius (for  end buttons).   This class uses directional values (start/end) to support RTL layouts properly.  The static constants provide common configurations for different positions  within a button group.   Example:  ```dart  // First button in horizontal group - preserve left radius, remove right  ButtonGroupData.horizontal(end: 0.0)   // Middle button - remove all radius  ButtonGroupData.zero   // Last button in horizontal group - remove left radius, preserve right  ButtonGroupData.horizontal(start: 0.0)  ```"
 ---
 
 ```dart

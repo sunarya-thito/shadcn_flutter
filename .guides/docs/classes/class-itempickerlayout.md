@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemPickerLayout"
-description: "Abstract base class for item picker layout strategies."
+description: "Abstract base class for item picker layout strategies.   Defines how items are displayed in an item picker, such as in a list  or grid. Provides factory constants for common layouts.   See also:  - [ListItemPickerLayout], which displays items in a vertical list.  - [GridItemPickerLayout], which displays items in a grid."
 ---
 
 ```dart

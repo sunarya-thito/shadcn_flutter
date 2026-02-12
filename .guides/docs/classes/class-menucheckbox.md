@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuCheckbox"
-description: "Checkbox menu item with checked/unchecked state."
+description: "Checkbox menu item with checked/unchecked state.   Displays a checkmark when selected. Used for togglable menu options.   Example:  ```dart  MenuCheckbox(    value: showToolbar,    onChanged: (context, value) => setState(() => showToolbar = value),    child: Text('Show Toolbar'),  )  ```"
 ---
 
 ```dart

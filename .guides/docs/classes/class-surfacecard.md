@@ -1,6 +1,6 @@
 ---
 title: "Class: SurfaceCard"
-description: "A card variant with surface blur and opacity effects."
+description: "A card variant with surface blur and opacity effects.   Similar to [Card] but with enhanced visual effects including frosted glass  or translucent surface appearances. Useful for overlays or layered UI designs.   Example:  ```dart  SurfaceCard(    surfaceBlur: 10,    surfaceOpacity: 0.8,    child: Text('Overlay content'),  )  ```"
 ---
 
 ```dart

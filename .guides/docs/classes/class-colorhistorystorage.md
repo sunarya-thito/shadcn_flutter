@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorHistoryStorage"
-description: "An abstract interface for storing and managing color history."
+description: "An abstract interface for storing and managing color history.   [ColorHistoryStorage] defines the contract for color history management,  including adding new colors, clearing history, and accessing recent colors.  Implementations should provide storage mechanisms (in-memory, persistent, etc.)."
 ---
 
 ```dart

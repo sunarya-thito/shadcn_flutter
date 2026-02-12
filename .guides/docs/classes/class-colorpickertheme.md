@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorPickerTheme"
-description: "Theme configuration for [ColorPicker] widget styling and layout."
+description: "Theme configuration for [ColorPicker] widget styling and layout.   Defines visual and layout properties for color picker components including  spacing, orientation, and feature availability. Applied globally through  [ComponentTheme] or per-instance."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DateInput"
-description: "Reactive date input field with integrated date picker and text editing."
+description: "Reactive date input field with integrated date picker and text editing.   A high-level date input widget that combines text field functionality with  date picker integration. Provides automatic state management through the  controlled component pattern with support for both dialog and popover modes.   ## Features   - **Dual input modes**: Text field editing with date picker integration  - **Multiple presentation modes**: Dialog or popover-based date selection  - **Flexible date formatting**: Customizable date part ordering and separators  - **Calendar integration**: Rich calendar interface with multiple view types  - **Form integration**: Automatic validation and form field registration  - **Accessibility**: Full screen reader and keyboard navigation support   ## Usage Patterns   **Controller-based (recommended for complex state):**  ```dart  final controller = DatePickerController(DateTime.now());   DateInput(    controller: controller,    mode: PromptMode.popover,    placeholder: Text('Select date'),  )  ```   **Callback-based (simple state management):**  ```dart  DateTime? selectedDate;   DateInput(    initialValue: selectedDate,    onChanged: (date) => setState(() => selectedDate = date),    mode: PromptMode.dialog,    dialogTitle: Text('Choose Date'),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: EyeDropperLayerScope"
-description: "Provides access to eye dropper functionality in the widget tree."
+description: "Provides access to eye dropper functionality in the widget tree.   [EyeDropperLayerScope] is an abstract interface that allows widgets to  request color picking functionality from an ancestor [EyeDropperLayer].  Use the static methods to find the scope in the widget tree."
 ---
 
 ```dart

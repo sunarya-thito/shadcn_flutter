@@ -1,6 +1,6 @@
 ---
 title: "Class: FlexTableSize"
-description: "Table size mode that distributes available space using flex factors."
+description: "Table size mode that distributes available space using flex factors.   Similar to Flutter's [Flexible] widget, allocates space proportionally  based on the flex value. Used for responsive column/row sizing.   Example:  ```dart  FlexTableSize(flex: 2.0, fit: FlexFit.tight)  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: Positioned"
-description: "A widget that controls where a child of a [Stack] is positioned."
+description: "A widget that controls where a child of a [Stack] is positioned.   A [Positioned] widget must be a descendant of a [Stack], and the path from  the [Positioned] widget to its enclosing [Stack] must contain only  [StatelessWidget]s or [StatefulWidget]s (not other kinds of widgets, like  [RenderObjectWidget]s).   If a widget is wrapped in a [Positioned], then it is a _positioned_ widget  in its [Stack]. If the [top] property is non-null, the top edge of this child  will be positioned [top] layout units from the top of the stack widget. The  [right], [bottom], and [left] properties work analogously.   If both the [top] and [bottom] properties are non-null, then the child will  be forced to have exactly the height required to satisfy both constraints.  Similarly, setting the [right] and [left] properties to non-null values will  force the child to have a particular width.   This patched version also supports [paintOrder] to control the painting  order of children.   See also:    * [Stack], which uses positioned children."
 ---
 
 ```dart

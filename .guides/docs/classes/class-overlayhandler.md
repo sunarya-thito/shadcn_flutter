@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayHandler"
-description: "Abstract handler for managing overlay presentation and lifecycle."
+description: "Abstract handler for managing overlay presentation and lifecycle.   Provides common interface for different overlay types (popover, sheet, dialog)  with customizable display, positioning, and interaction behavior."
 ---
 
 ```dart

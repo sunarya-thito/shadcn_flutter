@@ -1,6 +1,6 @@
 ---
 title: "Class: OutlineBadge"
-description: "An outline-styled badge for displaying labels, counts, or status indicators."
+description: "An outline-styled badge for displaying labels, counts, or status indicators.   Uses outline styling with a visible border and no background fill,  suitable for less visually prominent badge elements."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: MonthCalendar"
-description: "A calendar widget that displays months in a year grid."
+description: "A calendar widget that displays months in a year grid.   Shows a 4x3 grid of months for year selection. Used as part of the calendar  navigation when users want to select a different month."
 ---
 
 ```dart

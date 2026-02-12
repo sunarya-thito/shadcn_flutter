@@ -1,6 +1,6 @@
 ---
 title: "Class: MenubarState"
-description: "State class for [Menubar] widget."
+description: "State class for [Menubar] widget.   Manages the rendering and theming of the menubar container."
 ---
 
 ```dart

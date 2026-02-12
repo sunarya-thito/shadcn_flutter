@@ -1,6 +1,6 @@
 ---
 title: "Class: DashedLineProperties"
-description: "Properties for defining a dashed line appearance."
+description: "Properties for defining a dashed line appearance.   Encapsulates the visual properties of a dashed line including dash width,  gap between dashes, thickness, and color. Supports interpolation for animations."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableDragHandle"
-description: "A dedicated drag handle for initiating sortable drag operations."
+description: "A dedicated drag handle for initiating sortable drag operations.   SortableDragHandle provides a specific area within a sortable widget that  can be used to initiate drag operations. This is useful when you want to  restrict drag initiation to a specific handle area rather than the entire  sortable widget.   The handle automatically detects its parent Sortable widget and delegates  drag operations to it. It provides visual feedback with appropriate mouse  cursors and can be enabled/disabled independently.   Features:  - Dedicated drag initiation area within sortable widgets  - Automatic mouse cursor management (grab/grabbing states)  - Independent enable/disable control  - Automatic cleanup and lifecycle management   Example:  ```dart  Sortable<String>(    data: SortableData('item'),    child: Row(      children: [        SortableDragHandle(          child: Icon(Icons.drag_handle),        ),        Expanded(child: Text('Drag me by the handle')),      ],    ),  )  ```"
 ---
 
 ```dart

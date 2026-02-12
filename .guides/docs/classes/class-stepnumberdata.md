@@ -1,6 +1,6 @@
 ---
 title: "Class: StepNumberData"
-description: "Data class providing step index context to descendant widgets."
+description: "Data class providing step index context to descendant widgets.   Used internally by the stepper to pass the current step index  to child widgets like [StepNumber]. Accessible via [Data.maybeOf].   Example:  ```dart  final stepData = Data.maybeOf<StepNumberData>(context);  final stepIndex = stepData?.stepIndex ?? 0;  ```"
 ---
 
 ```dart

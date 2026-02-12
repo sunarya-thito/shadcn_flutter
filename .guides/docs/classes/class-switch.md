@@ -1,6 +1,6 @@
 ---
 title: "Class: Switch"
-description: "A Material Design switch for toggling boolean values."
+description: "A Material Design switch for toggling boolean values.   Provides a sliding toggle control for selecting between two states (on/off).  Supports customization of colors, leading/trailing widgets, and appearance  options. Unlike [ControlledSwitch], this widget requires explicit state  management.   Example:  ```dart  Switch(    value: isEnabled,    onChanged: (value) => setState(() => isEnabled = value),    activeColor: Colors.blue,    leading: Text('Enable feature'),  )  ```"
 ---
 
 ```dart

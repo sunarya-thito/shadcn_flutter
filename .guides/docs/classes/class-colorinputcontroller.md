@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorInputController"
-description: "Reactive controller for managing color input state with color operations."
+description: "Reactive controller for managing color input state with color operations.   Extends [ValueNotifier] to provide state management for color input widgets  using [ColorDerivative] values that support multiple color space representations.  Enables programmatic color changes while maintaining color space fidelity.   The controller manages [ColorDerivative] objects which preserve original  color space information (HSV, HSL, RGB) for accurate color manipulations  and prevents precision loss during color space conversions.   Example:  ```dart  final controller = ColorInputController(    ColorDerivative.fromColor(Colors.blue),  );   // React to changes  controller.addListener(() {    print('Color changed to: ${controller.value.color}');  });   // Programmatic control  controller.value = ColorDerivative.fromHSV(HSVColor.fromColor(Colors.red));  ```"
 ---
 
 ```dart

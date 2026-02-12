@@ -1,6 +1,6 @@
 ---
 title: "Class: ModalContainer"
-description: "A container widget that provides consistent styling for modal content."
+description: "A container widget that provides consistent styling for modal content.   Wraps modal content in a [SurfaceCard] with appropriate styling that  adapts to full-screen mode. Handles surface effects, borders, shadows,  and clipping behavior automatically based on the modal context.   Features:  - Automatic full-screen mode detection  - Surface styling with blur and opacity effects  - Configurable borders and shadows  - Clip behavior control  - Theme integration   Example:  ```dart  ModalContainer(    padding: EdgeInsets.all(16),    borderRadius: BorderRadius.circular(12),    filled: true,    child: Column(      children: [        Text('Dialog Title'),        Text('Dialog content here'),      ],    ),  )  ```"
 ---
 
 ```dart

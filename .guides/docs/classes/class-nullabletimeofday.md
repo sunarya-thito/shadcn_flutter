@@ -1,6 +1,6 @@
 ---
 title: "Class: NullableTimeOfDay"
-description: "Represents a time with nullable components (hour, minute, second)."
+description: "Represents a time with nullable components (hour, minute, second).   Useful for time input scenarios where individual time parts may be  missing or incomplete. Can convert to [TimeOfDay] when hour and minute are present.   Example:  ```dart  final time = NullableTimeOfDay(hour: 14, minute: 30, second: 0);  print(time.toTimeOfDay); // TimeOfDay(hour: 14, minute: 30)  ```"
 ---
 
 ```dart

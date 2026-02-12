@@ -1,6 +1,6 @@
 ---
 title: "Class: WaitingResult"
-description: "Validation result indicating a validation is in progress."
+description: "Validation result indicating a validation is in progress.   Used when asynchronous validation is being performed and the result  is not yet available."
 ---
 
 ```dart

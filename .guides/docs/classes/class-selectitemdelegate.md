@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectItemDelegate"
-description: "Abstract base class for building select item lists."
+description: "Abstract base class for building select item lists.   Provides interface for rendering select items with optional caching  and change detection."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: RefreshTriggerStage"
-description: "Immutable snapshot of refresh trigger state."
+description: "Immutable snapshot of refresh trigger state.   Provides information about the current refresh stage and pull extent  to indicator builders for rendering appropriate UI."
 ---
 
 ```dart

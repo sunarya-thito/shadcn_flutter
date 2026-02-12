@@ -62,9 +62,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
               ),
               const NavigationDivider(),
               const NavigationGap(12),
-              const NavigationWidget(
-                child: FlutterLogo(),
-              ),
+              const FlutterLogo(),
             ],
           ),
           const VerticalDivider(),

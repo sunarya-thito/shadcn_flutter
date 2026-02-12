@@ -1,6 +1,6 @@
 ---
 title: "Class: StatedWidget"
-description: "An abstract widget that provides state-aware visual variations."
+description: "An abstract widget that provides state-aware visual variations.   Enables widgets to display different appearances based on their current  interactive state (disabled, selected, pressed, hovered, focused, error).  The widget automatically selects the appropriate visual representation  from provided alternatives based on a configurable state priority order.   Three factory constructors provide different approaches to state handling:  - Default constructor: Explicit widgets for each state  - `.map()`: Map-based state-to-widget associations  - `.builder()`: Function-based dynamic state handling   The state resolution follows a priority order where earlier states in the  order take precedence over later ones. This ensures consistent behavior  when multiple states are active simultaneously.   Example:  ```dart  StatedWidget(    child: Text('Default'),    disabled: Text('Disabled State'),    hovered: Text('Hovered State'),    pressed: Text('Pressed State'),    selected: Text('Selected State'),  )  ```"
 ---
 
 ```dart

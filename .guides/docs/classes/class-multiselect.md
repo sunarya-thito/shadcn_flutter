@@ -1,6 +1,6 @@
 ---
 title: "Class: MultiSelect"
-description: "A customizable dropdown selection widget for multi-value selection."
+description: "A customizable dropdown selection widget for multi-value selection.   Extends the base select functionality to support selecting multiple items  simultaneously. Displays selected items as removable chips within the trigger.   Example:  ```dart  MultiSelect<String>(    value: selectedItems,    onChanged: (items) => setState(() => selectedItems = items),    popup: SelectPopup.menu(children: [...]),    multiItemBuilder: (context, item) => Text(item),  )  ```"
 ---
 
 ```dart

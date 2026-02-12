@@ -1,6 +1,6 @@
 ---
 title: "Class: InputOTPChildData"
-description: "Data passed to [InputOTPChild."
+description: "Data passed to [InputOTPChild.build] for rendering OTP input fields.   Contains information about focus nodes, index positions, current value,  and callbacks for changing values. Used internally by [InputOTP] to  coordinate input fields."
 ---
 
 ```dart

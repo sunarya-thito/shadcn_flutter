@@ -1,6 +1,6 @@
 ---
 title: "Class: IncreaseSliderValue"
-description: "Intent for increasing the slider value via keyboard shortcuts."
+description: "Intent for increasing the slider value via keyboard shortcuts.   Used with Flutter's shortcuts and actions system to handle keyboard  input for incrementing slider values. Typically bound to arrow keys."
 ---
 
 ```dart

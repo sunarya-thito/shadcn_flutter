@@ -1,6 +1,6 @@
 ---
 title: "Class: DatePickerTheme"
-description: "Theme configuration for [DatePicker] widget styling and behavior."
+description: "Theme configuration for [DatePicker] widget styling and behavior.   Defines the visual properties and default behaviors for date picker components  including presentation modes, calendar views, and popover positioning. Applied  globally through [ComponentTheme] or per-instance for customization.   Supports comprehensive customization of date picker appearance, initial views,  and interaction modes to match application design requirements."
 ---
 
 ```dart

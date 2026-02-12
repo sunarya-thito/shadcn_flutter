@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedValuePart"
-description: "Represents a part of a formatted value with its associated input part and value."
+description: "Represents a part of a formatted value with its associated input part and value.   A [FormattedValuePart] pairs an [InputPart] definition with an optional  string value, used to represent user input or parsed data within a  formatted input field.   Example:  ```dart  final part = FormattedValuePart(DigitPart(), '5');  final updated = part.withValue('7');  ```"
 ---
 
 ```dart

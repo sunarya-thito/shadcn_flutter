@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayPopoverEntry"
-description: "Implementation of [OverlayCompleter] for popover overlays."
+description: "Implementation of [OverlayCompleter] for popover overlays.   Manages the lifecycle of a popover overlay entry, tracking completion  state and handling overlay/barrier entry disposal."
 ---
 
 ```dart

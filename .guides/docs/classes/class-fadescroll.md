@@ -1,6 +1,6 @@
 ---
 title: "Class: FadeScroll"
-description: "A widget that applies fade effects at the edges of scrollable content."
+description: "A widget that applies fade effects at the edges of scrollable content.   Adds gradient fade overlays to the start and end of scrollable content,  creating a visual cue that there's more content to scroll."
 ---
 
 ```dart

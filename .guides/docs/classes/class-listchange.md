@@ -1,6 +1,6 @@
 ---
 title: "Class: ListChange"
-description: "Base class for list modification operations."
+description: "Base class for list modification operations.   Extend this class to create custom list change types. Each change  implements [apply] to modify a list in a specific way."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: StepperValue"
-description: "Immutable value representing the current state of a stepper."
+description: "Immutable value representing the current state of a stepper.   Contains the current active step index and a map of step states  for any steps that have special states (like failed). Used by  [StepperController] to track and notify about stepper state changes.   Example:  ```dart  final value = StepperValue(    currentStep: 2,    stepStates: {1: StepState.failed},  );  ```"
 ---
 
 ```dart

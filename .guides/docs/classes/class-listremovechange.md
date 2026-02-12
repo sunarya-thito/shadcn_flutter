@@ -1,6 +1,6 @@
 ---
 title: "Class: ListRemoveChange"
-description: "A list change that removes an item."
+description: "A list change that removes an item.   Removes the item at the specified [index] from the list."
 ---
 
 ```dart

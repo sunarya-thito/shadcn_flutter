@@ -1,6 +1,6 @@
 ---
 title: "Class: MinValidator"
-description: "A validator that checks if a numeric value meets a minimum threshold."
+description: "A validator that checks if a numeric value meets a minimum threshold.   [MinValidator] ensures that numeric values are greater than (or equal to)  a specified minimum value. Useful for enforcing minimum quantities, ages, etc.   Example:  ```dart  MinValidator<int>(    18,    inclusive: true,    message: 'Must be at least 18 years old',  )  ```"
 ---
 
 ```dart

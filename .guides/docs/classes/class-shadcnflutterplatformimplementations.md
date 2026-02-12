@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnFlutterPlatformImplementations"
-description: "Platform-specific implementations for shadcn_flutter."
+description: "Platform-specific implementations for shadcn_flutter.   This class provides a base interface for platform-specific functionality.  Platform-specific implementations should override these methods."
 ---
 
 ```dart

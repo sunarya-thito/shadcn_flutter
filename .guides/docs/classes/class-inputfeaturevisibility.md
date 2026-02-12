@@ -1,6 +1,6 @@
 ---
 title: "Class: InputFeatureVisibility"
-description: "Abstract base class for controlling input feature visibility."
+description: "Abstract base class for controlling input feature visibility.   Defines when UI elements like clear buttons, password toggles, or other  input features should be visible based on text field state. Supports  logical operations (AND, OR, NOT) to combine multiple visibility conditions.   Example:  ```dart  // Show clear button when text is not empty and field is focused  final visibility = InputFeatureVisibility.textNotEmpty &                    InputFeatureVisibility.focused;  ```"
 ---
 
 ```dart

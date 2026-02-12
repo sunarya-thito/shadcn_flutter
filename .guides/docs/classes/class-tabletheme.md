@@ -1,6 +1,6 @@
 ---
 title: "Class: TableTheme"
-description: "Theme configuration for [Table] components."
+description: "Theme configuration for [Table] components.   [TableTheme] provides comprehensive styling options for table components  including borders, background colors, corner radius, and cell theming.  It integrates with the shadcn_flutter theming system to ensure consistent  table styling throughout an application.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<TableTheme>(    data: TableTheme(      border: Border.all(color: Colors.grey.shade300),      borderRadius: BorderRadius.circular(8.0),      backgroundColor: Colors.grey.shade50,      cellTheme: TableCellTheme(        padding: EdgeInsets.all(12.0),      ),    ),    child: MyTableWidget(),  );  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: SharpCornerChatBubbleType"
-description: "A [ChatBubbleType] that makes one corner sharp instead of rounded."
+description: "A [ChatBubbleType] that makes one corner sharp instead of rounded.   This style modifies the border radius of one corner to create a pointed  corner effect, similar to a speech bubble tail."
 ---
 
 ```dart

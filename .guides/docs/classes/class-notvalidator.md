@@ -1,6 +1,6 @@
 ---
 title: "Class: NotValidator"
-description: "A validator that negates the result of another validator."
+description: "A validator that negates the result of another validator.   [NotValidator] inverts the validation logic - it passes when the wrapped  validator fails and fails when the wrapped validator passes. Useful for  creating exclusion rules.   Example:  ```dart  NotValidator(    EmailValidator(),    message: 'Must not be an email address',  )  ```"
 ---
 
 ```dart

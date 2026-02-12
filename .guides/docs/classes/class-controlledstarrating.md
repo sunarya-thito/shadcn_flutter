@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledStarRating"
-description: "Reactive star rating widget with automatic state management and controller support."
+description: "Reactive star rating widget with automatic state management and controller support.   A high-level star rating widget that provides automatic state management through  the controlled component pattern. Supports both controller-based and callback-based  state management with comprehensive customization options for star appearance,  interaction behavior, and rating precision.   ## Features   - **Fractional ratings**: Support for decimal values (e.g., 3.5 stars)  - **Step control**: Configurable rating increments for precision  - **Visual customization**: Comprehensive star shape and appearance options  - **Interactive feedback**: Touch and drag support for rating selection  - **Form integration**: Automatic validation and form field registration  - **Accessibility**: Full screen reader and keyboard navigation support   ## Usage Patterns   **Controller-based (recommended for complex state):**  ```dart  final controller = StarRatingController(3.5);   ControlledStarRating(    controller: controller,    max: 5.0,    step: 0.5,    activeColor: Colors.amber,  )  ```   **Callback-based (simple state management):**  ```dart  double currentRating = 0.0;   ControlledStarRating(    initialValue: currentRating,    onChanged: (rating) => setState(() => currentRating = rating),    max: 5.0,    step: 1.0,  )  ```"
 ---
 
 ```dart

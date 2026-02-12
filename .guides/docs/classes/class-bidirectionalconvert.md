@@ -1,6 +1,6 @@
 ---
 title: "Class: BiDirectionalConvert"
-description: "A bidirectional converter between types [A] and [B]."
+description: "A bidirectional converter between types [A] and [B].   Encapsulates conversion logic in both directions, allowing seamless  transformation between two types."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedInputController"
-description: "A controller for managing [FormattedInput] values programmatically."
+description: "A controller for managing [FormattedInput] values programmatically.   This controller extends `ValueNotifier<FormattedValue>` to provide reactive  state management for formatted input components. It implements [ComponentController]  to integrate with the controlled component system, allowing external control  and listening to formatted input changes.   Example:  ```dart  final controller = FormattedInputController(    FormattedValue([      FormattedValuePart.static('('),      FormattedValuePart.editable('', length: 3),      FormattedValuePart.static(') '),      FormattedValuePart.editable('', length: 3),      FormattedValuePart.static('-'),      FormattedValuePart.editable('', length: 4),    ])  );  ```"
 ---
 
 ```dart

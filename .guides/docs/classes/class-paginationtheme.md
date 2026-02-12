@@ -1,6 +1,6 @@
 ---
 title: "Class: PaginationTheme"
-description: "Theme data for customizing [Pagination] widget appearance."
+description: "Theme data for customizing [Pagination] widget appearance.   This class defines the visual and behavioral properties that can be applied to  [Pagination] widgets, including spacing between controls and label display  preferences. These properties can be set at the theme level to provide  consistent styling across the application."
 ---
 
 ```dart

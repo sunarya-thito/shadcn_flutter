@@ -1,6 +1,6 @@
 ---
 title: "Class: GradientAngleGeometry"
-description: "An abstract base class for representing gradient angles with alignment geometry."
+description: "An abstract base class for representing gradient angles with alignment geometry.   [GradientAngleGeometry] provides an interface for converting between angular  representation and alignment-based gradients. It supports both directional  (text-direction-aware) and non-directional gradient angles.   Subclasses should implement how to calculate begin and end alignments based  on the angle value."
 ---
 
 ```dart

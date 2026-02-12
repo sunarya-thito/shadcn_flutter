@@ -1,6 +1,6 @@
 ---
 title: "Class: SubmissionResult"
-description: "Result of a form submission containing values and validation errors."
+description: "Result of a form submission containing values and validation errors.   Returned when a form is submitted, containing all field values  and any validation errors that occurred."
 ---
 
 ```dart

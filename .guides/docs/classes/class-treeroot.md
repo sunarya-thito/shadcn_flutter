@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeRoot"
-description: "A special tree node that serves as an invisible root container."
+description: "A special tree node that serves as an invisible root container.   TreeRoot represents the invisible root of a tree structure that contains  other tree nodes but doesn't appear in the visual tree. It's always considered  expanded and never selected, serving purely as a container for organizing  multiple top-level tree items.   This is useful when you need to group multiple tree items under a common  parent without showing that parent in the tree view. All children of a  TreeRoot appear at the top level of the tree.   TreeRoot maintains immutability like other tree nodes, but state update  operations (expanded/selected) have no effect since these properties are  fixed by design.   Example:  ```dart  TreeRoot<String> root = TreeRoot(    children: [      TreeItem(data: 'First Section'),      TreeItem(data: 'Second Section'),      TreeItem(data: 'Third Section'),    ],  );   // Root is always expanded and never selected  print(root.expanded); // true  print(root.selected); // false  ```"
 ---
 
 ```dart

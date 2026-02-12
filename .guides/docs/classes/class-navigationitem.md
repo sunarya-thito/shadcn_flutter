@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationItem"
-description: "Selectable navigation item with selection state management."
+description: "Selectable navigation item with selection state management.   Represents a clickable navigation item that can be selected. Supports  custom styling for selected/unselected states, labels, and icons.   Example:  ```dart  NavigationItem(    key: ValueKey('home'),    label: Text('Home'),    child: Icon(Icons.home),    selected: selectedKey == ValueKey('home'),    onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),  )  )  ```"
 ---
 
 ```dart
@@ -12,11 +12,12 @@ description: "Selectable navigation item with selection state management."
 /// Example:
 /// ```dart
 /// NavigationItem(
-///   index: 0,
+///   key: ValueKey('home'),
 ///   label: Text('Home'),
 ///   child: Icon(Icons.home),
-///   selected: selectedIndex == 0,
-///   onChanged: (selected) => setState(() => selectedIndex = 0),
+///   selected: selectedKey == ValueKey('home'),
+///   onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),
+/// )
 /// )
 /// ```
 class NavigationItem extends AbstractNavigationButton {
@@ -26,8 +27,6 @@ class NavigationItem extends AbstractNavigationButton {
   final bool? selected;
   /// Callback when selection state changes.
   final ValueChanged<bool>? onChanged;
-  /// Optional index for selection management.
-  final int? index;
   /// Creates a navigation item.
   ///
   /// Parameters:
@@ -35,16 +34,14 @@ class NavigationItem extends AbstractNavigationButton {
   /// - [selectedStyle] (AbstractButtonStyle?): Style when selected
   /// - [selected] (bool?): Current selection state
   /// - [onChanged] (`ValueChanged<bool>?`): Selection change callback
-  /// - [index] (int?): Item index for selection
   /// - [label] (Widget?): Optional label text
   /// - [spacing] (double?): Space between icon and label
   /// - [style] (AbstractButtonStyle?): Default style
   /// - [alignment] (AlignmentGeometry?): Content alignment
   /// - [enabled] (bool?): Whether enabled for interaction
-  /// - [overflow] (TextOverflow?): Label overflow behavior
+  /// - [overflow] (NavigationOverflow): Overflow behavior
   /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
-  const NavigationItem({super.key, this.selectedStyle, this.selected, this.onChanged, super.label, super.spacing, super.style, super.alignment, this.index, super.enabled, super.overflow, super.marginAlignment, required super.child});
-  bool get selectable;
+  const NavigationItem({super.key, this.selectedStyle, this.selected, this.onChanged, super.label, super.spacing, super.style, super.alignment, super.enabled, super.overflow, super.marginAlignment, required super.child});
   State<AbstractNavigationButton> createState();
 }
 ```

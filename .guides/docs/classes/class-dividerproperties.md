@@ -1,6 +1,6 @@
 ---
 title: "Class: DividerProperties"
-description: "Immutable properties for divider appearance."
+description: "Immutable properties for divider appearance.   [DividerProperties] stores the visual characteristics of a divider,  including color, thickness, and indentation. This class is used for  theme interpolation and default value management.   All properties are required and non-nullable."
 ---
 
 ```dart

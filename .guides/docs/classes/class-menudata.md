@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuData"
-description: "Data container for individual menu item state."
+description: "Data container for individual menu item state.   Wraps a popover controller for each menu item, managing submenu  display and interaction state."
 ---
 
 ```dart

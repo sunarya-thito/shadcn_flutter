@@ -1,6 +1,6 @@
 ---
 title: "Class: ScrollableClient"
-description: "A customizable scrollable widget with two-axis scrolling support."
+description: "A customizable scrollable widget with two-axis scrolling support.   Provides fine-grained control over scrolling behavior for both vertical  and horizontal axes. Supports custom scroll physics, drag behaviors,  and viewport-aware content building.   Example:  ```dart  ScrollableClient(    mainAxis: Axis.vertical,    verticalDetails: ScrollableDetails.vertical(),    builder: (context, offset, viewportSize, child) {      return CustomPaint(        painter: MyPainter(offset),        child: child,      );    },    child: MyContent(),  )  ```"
 ---
 
 ```dart

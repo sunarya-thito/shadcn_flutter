@@ -1,6 +1,6 @@
 ---
 title: "Class: StagedBreakpoint"
-description: "A breakpoint that uses predefined stage values."
+description: "A breakpoint that uses predefined stage values.   Maps container widths to the nearest breakpoint value from a list.  Commonly used for responsive design with specific breakpoints like  mobile (576), tablet (768), desktop (992), etc."
 ---
 
 ```dart

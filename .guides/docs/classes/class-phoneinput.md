@@ -1,6 +1,6 @@
 ---
 title: "Class: PhoneInput"
-description: "A specialized input widget for entering international phone numbers."
+description: "A specialized input widget for entering international phone numbers.   This widget provides a comprehensive phone number input interface with  country selection, automatic formatting, and validation. It displays a  country flag, country code, and a text field for the phone number,  handling the complexities of international phone number formats.   The component automatically filters input to ensure only valid phone  number characters are entered, and provides a searchable country  selector popup for easy country selection. It integrates with the form  system to provide phone number validation and data collection.   Example:  ```dart  PhoneInput(    initialCountry: Country.unitedStates,    onChanged: (phoneNumber) {      print('Phone: ${phoneNumber.fullNumber}');      print('Country: ${phoneNumber.country.name}');    },    searchPlaceholder: Text('Search countries...'),  );  ```"
 ---
 
 ```dart

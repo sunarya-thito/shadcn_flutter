@@ -1,6 +1,6 @@
 ---
 title: "Class: FormEntry"
-description: "A form field entry that wraps a form widget with validation."
+description: "A form field entry that wraps a form widget with validation.   [FormEntry] associates a [FormKey] with a form field widget and optional  validator. It integrates with the form state management system to track  field values and validation states."
 ---
 
 ```dart

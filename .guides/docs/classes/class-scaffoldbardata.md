@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldBarData"
-description: "Data class for identifying scaffold bar (header/footer) positioning."
+description: "Data class for identifying scaffold bar (header/footer) positioning.   Provides context about a bar's position within the scaffold layout,  including whether it's a header or footer and its index among siblings."
 ---
 
 ```dart

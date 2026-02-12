@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuLabel"
-description: "Non-interactive label menu item."
+description: "Non-interactive label menu item.   Displays text or content without click handlers. Useful for section  headers or informational text within menus.   Example:  ```dart  MenuLabel(    leading: Icon(Icons.settings),    child: Text('Settings').semiBold(),  )  ```"
 ---
 
 ```dart

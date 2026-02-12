@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationBarTheme"
-description: "Theme data for customizing [NavigationBar] widget appearance."
+description: "Theme data for customizing [NavigationBar] widget appearance.   This class defines the visual and behavioral properties that can be applied to  [NavigationBar] widgets, including background colors, alignment, spacing,  label presentation, and padding. These properties can be set at the theme level  to provide consistent styling across the application."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: TimelineTheme"
-description: "Theme configuration for [Timeline] widgets."
+description: "Theme configuration for [Timeline] widgets.   Provides styling and layout defaults for timeline components including  column constraints, spacing, indicator appearance, and connector styling.  Used with [ComponentTheme] to apply consistent timeline styling across  an application while allowing per-instance customization.   Example:  ```dart  ComponentTheme<TimelineTheme>(    data: TimelineTheme(      timeConstraints: BoxConstraints(minWidth: 100, maxWidth: 150),      spacing: 20.0,      dotSize: 16.0,      color: Colors.blue,      rowGap: 24.0,    ),    child: MyTimelineWidget(),  );  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: SwitchController"
-description: "Controller for managing switch state."
+description: "Controller for managing switch state.   Extends [ValueNotifier] with [bool] values to provide state management  for switch widgets. Includes a convenience [toggle] method for flipping  the switch state.   Example:  ```dart  final controller = SwitchController(true);  controller.toggle(); // Now false  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldTheme"
-description: "Theme data for customizing [Scaffold] widget appearance."
+description: "Theme data for customizing [Scaffold] widget appearance.   This class defines the visual properties that can be applied to  [Scaffold] widgets, including background colors for different sections,  loading spark behavior, and keyboard avoidance settings. These properties  can be set at the theme level to provide consistent styling across the application."
 ---
 
 ```dart

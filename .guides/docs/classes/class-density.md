@@ -1,6 +1,6 @@
 ---
 title: "Class: Density"
-description: "Defines density settings for spacing throughout the UI."
+description: "Defines density settings for spacing throughout the UI.   [Density] provides base values that are multiplied by padding constants  (e.g., [padXs], [padSm], [padLg]) to produce final pixel values.  This allows consistent scaling of all spacing when switching density modes.   There are two types of padding:  - **Container padding**: Used for widgets that contain multiple children    (e.g., Card, AlertDialog, ListView panels)  - **Content padding**: Used for widgets that contain content    (e.g., Button, TextField, Chip)   Example:  ```dart  // Apply compact density to reduce spacing  Theme(    data: ThemeData(density: Density.compactDensity),    child: MyApp(),  )  ```"
 ---
 
 ```dart

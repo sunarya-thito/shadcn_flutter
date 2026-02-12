@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonStylePropertyAll"
-description: "A button state property delegate that always returns the same value."
+description: "A button state property delegate that always returns the same value.   [ButtonStylePropertyAll] implements a [ButtonStatePropertyDelegate] that  ignores the context, states, and default value parameters, always returning  its stored [value]. This is useful for creating static style properties that  don't change based on button state.   Example:  ```dart  final alwaysRedDecoration = ButtonStylePropertyAll<Decoration>(    BoxDecoration(color: Colors.red),  );  ```"
 ---
 
 ```dart

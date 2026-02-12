@@ -1,6 +1,6 @@
 ---
 title: "Class: StepVariant"
-description: "Abstract base class for step visual presentation variants."
+description: "Abstract base class for step visual presentation variants.   Defines how steps are rendered and connected to each other. Three built-in  variants are provided: circle (default), circleAlt (alternative layout),  and line (minimal design). Custom variants can be created by extending  this class.   Example:  ```dart  Stepper(    variant: StepVariant.circle,    steps: mySteps,    controller: controller,  );  ```"
 ---
 
 ```dart

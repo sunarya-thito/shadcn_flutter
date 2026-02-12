@@ -1,6 +1,6 @@
 ---
 title: "Class: KeyedTabChildWidget"
-description: "A keyed tab child widget identified by a custom key value."
+description: "A keyed tab child widget identified by a custom key value.   Extends [TabChildWidget] with [KeyedTabChild] to support tab identification  via custom keys rather than positional indices. The key value determines  tab selection and tracking.   Type parameter [T] is the type of the key value."
 ---
 
 ```dart

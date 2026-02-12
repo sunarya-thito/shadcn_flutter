@@ -1,6 +1,6 @@
 ---
 title: "Class: DashedContainerProperties"
-description: "Properties for defining a dashed container border appearance."
+description: "Properties for defining a dashed container border appearance.   Encapsulates the visual properties of a dashed container border including  dash width, gap, thickness, color, and border radius. Supports interpolation."
 ---
 
 ```dart

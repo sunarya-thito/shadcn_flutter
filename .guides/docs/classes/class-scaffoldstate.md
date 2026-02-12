@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldState"
-description: "State class for [Scaffold] widget."
+description: "State class for [Scaffold] widget.   Manages the scaffold's layout state and provides methods for building  header, footer, and body sections with proper theming and constraints."
 ---
 
 ```dart

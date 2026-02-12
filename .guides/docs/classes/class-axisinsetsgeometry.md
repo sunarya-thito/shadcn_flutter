@@ -1,6 +1,6 @@
 ---
 title: "Class: AxisInsetsGeometry"
-description: "Base class for axis-based insets."
+description: "Base class for axis-based insets.   This allows defining insets along a single axis (start/end) which can be  resolved to concrete values based on [TextDirection]."
 ---
 
 ```dart

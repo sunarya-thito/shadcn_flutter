@@ -1,6 +1,6 @@
 ---
 title: "Class: SpinnerElement"
-description: "Base interface for spinner visual elements."
+description: "Base interface for spinner visual elements.   Implementations define how to paint individual spinner components like  dots, lines, or arcs onto the canvas."
 ---
 
 ```dart

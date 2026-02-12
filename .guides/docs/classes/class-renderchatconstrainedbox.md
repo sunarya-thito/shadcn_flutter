@@ -1,6 +1,6 @@
 ---
 title: "Class: RenderChatConstrainedBox"
-description: "A render object that constrains the width of its child and aligns it."
+description: "A render object that constrains the width of its child and aligns it.   This render object implements the layout logic for [ChatConstrainedBox]."
 ---
 
 ```dart

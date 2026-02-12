@@ -1,6 +1,6 @@
 ---
 title: "Variable: pad3xl"
-description: "3x extra large padding multiplier (3."
+description: "3x extra large padding multiplier (3.5)."
 ---
 
 Signature

@@ -1,6 +1,6 @@
 ---
 title: "Class: FormEntryErrorBuilder"
-description: "Widget builder for displaying form entry validation errors."
+description: "Widget builder for displaying form entry validation errors.   Conditionally renders error messages based on validation state and modes."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DesktopEditableTextContextMenu"
-description: "Context menu for editable text fields on desktop platforms."
+description: "Context menu for editable text fields on desktop platforms.   Provides standard text editing actions like cut, copy, paste, select all,  and undo/redo. Automatically integrates with EditableText state.   Typically used internally by text input widgets."
 ---
 
 ```dart

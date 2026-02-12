@@ -1,6 +1,6 @@
 ---
 title: "Class: ToggleState"
-description: "State class for [Toggle] that manages the toggle behavior and form integration."
+description: "State class for [Toggle] that manages the toggle behavior and form integration.   This state class handles:  - Maintaining widget states (selected, pressed, hovered, etc.)  - Form value integration via [FormValueSupplier]  - Updating the selected state based on the toggle value"
 ---
 
 ```dart

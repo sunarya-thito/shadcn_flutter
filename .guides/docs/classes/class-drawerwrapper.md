@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerWrapper"
-description: "Internal wrapper widget for drawer/sheet rendering."
+description: "Internal wrapper widget for drawer/sheet rendering.   Manages the visual presentation and interaction behavior of drawer overlays.  Handles sizing, positioning, drag interactions, and animations."
 ---
 
 ```dart

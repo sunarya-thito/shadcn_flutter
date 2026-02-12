@@ -1,6 +1,6 @@
 ---
 title: "Class: CommandEmpty"
-description: "A default widget displayed when command search returns no results."
+description: "A default widget displayed when command search returns no results.   Displays a localized \"No results\" message with standard styling."
 ---
 
 ```dart

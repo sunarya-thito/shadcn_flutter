@@ -1,6 +1,6 @@
 ---
 title: "Class: InputOTPTheme"
-description: "Theme data for customizing [InputOTP] widget appearance."
+description: "Theme data for customizing [InputOTP] widget appearance.   This class defines the visual properties that can be applied to  [InputOTP] widgets, including spacing between OTP input fields  and the height of the input containers. These properties can be  set at the theme level to provide consistent styling across the application."
 ---
 
 ```dart

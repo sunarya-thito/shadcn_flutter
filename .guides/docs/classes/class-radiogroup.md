@@ -1,6 +1,6 @@
 ---
 title: "Class: RadioGroup"
-description: "A group of radio buttons for single-selection input."
+description: "A group of radio buttons for single-selection input.   Manages the selection state and provides context for child radio items."
 ---
 
 ```dart

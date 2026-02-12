@@ -1,6 +1,6 @@
 ---
 title: "Class: UnorderedListData"
-description: "Data class for tracking unordered list nesting depth."
+description: "Data class for tracking unordered list nesting depth.   Used internally by the list item modifier to handle bullet points  and indentation for nested lists."
 ---
 
 ```dart

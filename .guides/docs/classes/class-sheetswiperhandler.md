@@ -1,6 +1,6 @@
 ---
 title: "Class: SheetSwiperHandler"
-description: "Sheet-style swiper handler with minimal styling."
+description: "Sheet-style swiper handler with minimal styling.   Creates swipers that behave like sheets with edge-to-edge content,  minimal decoration, and optional drag interaction.   Example:  ```dart  Swiper(    handler: SwiperHandler.sheet,    position: OverlayPosition.bottom,    builder: (context) => BottomSheetContent(),    child: ActionButton(),  )  ```"
 ---
 
 ```dart

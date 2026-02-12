@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonStyleOverrideData"
-description: "Data class holding button style override delegates."
+description: "Data class holding button style override delegates.   [ButtonStyleOverrideData] is used internally by [ButtonStyleOverride] to pass  style override delegates through the widget tree via the [Data] inherited widget  system. It stores optional delegates for each button style property.   This class is typically not used directly by application code; instead, use  [ButtonStyleOverride] widget to apply style overrides."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: HoverTheme"
-description: "Theme configuration for hover-related widgets and behaviors."
+description: "Theme configuration for hover-related widgets and behaviors.   [HoverTheme] provides configurable durations and behaviors for hover  interactions throughout the application. It can be registered in the  component theme system to customize hover behavior globally.   Example:  ```dart  HoverTheme(    debounceDuration: Duration(milliseconds: 100),    hitTestBehavior: HitTestBehavior.opaque,  )  ```"
 ---
 
 ```dart

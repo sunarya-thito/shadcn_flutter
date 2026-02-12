@@ -1,6 +1,6 @@
 ---
 title: "Class: DatePickerDialog"
-description: "A date picker dialog that provides comprehensive date selection capabilities."
+description: "A date picker dialog that provides comprehensive date selection capabilities.   Displays a modal dialog containing a calendar interface with support for  different view types (date, month, year), selection modes (single, range, multi),  and customizable date states. Includes navigation controls and responsive layouts.   Features:  - Multiple view types: date grid, month grid, year grid  - Various selection modes: single date, date range, multiple dates  - Navigation arrows with keyboard support  - Customizable date state validation  - Dual-calendar layout for range selection  - Theme integration and localization support   Example:  ```dart  DatePickerDialog(    initialViewType: CalendarViewType.date,    selectionMode: CalendarSelectionMode.single,    initialValue: CalendarValue.single(DateTime.now()),    onChanged: (value) => print('Selected: $value'),  )  ```"
 ---
 
 ```dart

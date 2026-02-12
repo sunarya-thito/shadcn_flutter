@@ -1,6 +1,6 @@
 ---
 title: "Class: TextInputFormatters"
-description: "Provides factory methods for common text input formatters."
+description: "Provides factory methods for common text input formatters.   [TextInputFormatters] is a utility class that creates various pre-configured  [TextInputFormatter] instances for common formatting needs like uppercase/lowercase  conversion, numeric input, time formatting, and more.   Example:  ```dart  TextField(    inputFormatters: [      TextInputFormatters.toUpperCase,      TextInputFormatters.integerOnly(min: 0, max: 100),    ],  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: IncreaseStarIntent"
-description: "Intent for increasing the star rating value via keyboard shortcuts."
+description: "Intent for increasing the star rating value via keyboard shortcuts.   Used with Flutter's shortcuts and actions system to handle keyboard  input for incrementing the rating. Typically bound to right arrow key."
 ---
 
 ```dart

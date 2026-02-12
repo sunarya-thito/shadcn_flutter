@@ -1,6 +1,6 @@
 ---
 title: "Class: RadioGroupState"
-description: "State class for [RadioGroup] with form integration."
+description: "State class for [RadioGroup] with form integration.   Manages selection state and integrates with the form validation system."
 ---
 
 ```dart

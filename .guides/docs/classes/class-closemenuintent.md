@@ -1,6 +1,6 @@
 ---
 title: "Class: CloseMenuIntent"
-description: "Intent for closing the current menu via keyboard action."
+description: "Intent for closing the current menu via keyboard action.   Used with keyboard shortcuts to dismiss open menus."
 ---
 
 ```dart

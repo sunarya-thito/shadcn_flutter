@@ -1,6 +1,6 @@
 ---
 title: "Class: SpinnerTransform"
-description: "Base interface for spinner transformations."
+description: "Base interface for spinner transformations.   Implementations define how spinner elements are transformed during animation."
 ---
 
 ```dart

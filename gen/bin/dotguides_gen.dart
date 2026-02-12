@@ -324,6 +324,18 @@ bool _isIconDataInit(String? typeSrc, String? initSrc) {
 }
 
 List<_Topic> _collectApiTopics() {
+  // Use only the first sentence for the YAML description (short summary)
+  final firstParagraph = (String text) {
+    final t = text.trim();
+    if (t.isEmpty) return '';
+    final lines = t.split(RegExp(r'\r?\n'));
+    final buffer = <String>[];
+    for (final line in lines) {
+      if (line.trim().isEmpty) break;
+      buffer.add(line.trim());
+    }
+    return buffer.join(' ');
+  };
   final topics = <_Topic>[];
   final libDir = Directory('lib');
   if (!libDir.existsSync()) return topics;
@@ -339,7 +351,16 @@ List<_Topic> _collectApiTopics() {
         final docs =
             decl.documentationComment?.tokens.map((t) => t.lexeme).join('\n') ??
             '';
-        final desc = _firstSentence(docs.replaceAll('///', '').trim());
+        // Extract only the main summary (before Parameters:/Returns:/Example:/Notes:/See also:)
+        final cleaned = docs.replaceAll('///', '').trim();
+        final splitPattern = RegExp(
+          r'^(Parameters:|Returns:|Example:|Notes:|See also:)',
+          multiLine: true,
+        );
+        final match = splitPattern.firstMatch(cleaned);
+        final desc = match != null
+            ? cleaned.substring(0, match.start).trim()
+            : cleaned;
         final body = StringBuffer()..writeln(_renderClassTopic(decl));
         topics.add(
           _Topic(
@@ -355,7 +376,8 @@ List<_Topic> _collectApiTopics() {
         final docs =
             decl.documentationComment?.tokens.map((t) => t.lexeme).join('\n') ??
             '';
-        final desc = _firstSentence(docs.replaceAll('///', '').trim());
+        final cleaned = docs.replaceAll('///', '').trim();
+        final desc = firstParagraph(cleaned);
         final body = StringBuffer()..writeln(_renderMixinTopic(decl));
         topics.add(
           _Topic(
@@ -371,7 +393,8 @@ List<_Topic> _collectApiTopics() {
         final docs =
             decl.documentationComment?.tokens.map((t) => t.lexeme).join('\n') ??
             '';
-        final desc = _firstSentence(docs.replaceAll('///', '').trim());
+        final cleaned = docs.replaceAll('///', '').trim();
+        final desc = firstParagraph(cleaned);
         final body = StringBuffer()..writeln(_renderExtensionTopic(decl));
         topics.add(
           _Topic(
@@ -388,7 +411,8 @@ List<_Topic> _collectApiTopics() {
         final docs =
             decl.documentationComment?.tokens.map((t) => t.lexeme).join('\n') ??
             '';
-        final desc = _firstSentence(docs.replaceAll('///', '').trim());
+        final cleaned = docs.replaceAll('///', '').trim();
+        final desc = firstParagraph(cleaned);
         final body = StringBuffer()..writeln(_renderEnumTopic(decl));
         topics.add(
           _Topic(
@@ -403,7 +427,8 @@ List<_Topic> _collectApiTopics() {
         final docs =
             decl.documentationComment?.tokens.map((t) => t.lexeme).join('\n') ??
             '';
-        final desc = _firstSentence(docs.replaceAll('///', '').trim());
+        final cleaned = docs.replaceAll('///', '').trim();
+        final desc = firstParagraph(cleaned);
         final isConst = list.isConst;
         final isFinal = list.isFinal;
         final type = list.type?.toSource();
@@ -441,7 +466,8 @@ List<_Topic> _collectApiTopics() {
         final docs =
             decl.documentationComment?.tokens.map((t) => t.lexeme).join('\n') ??
             '';
-        final desc = _firstSentence(docs.replaceAll('///', '').trim());
+        final cleaned = docs.replaceAll('///', '').trim();
+        final desc = firstParagraph(cleaned);
         final rt = decl.returnType?.toSource() ?? 'void';
         final typeParams =
             decl.functionExpression.typeParameters?.toSource() ?? '';

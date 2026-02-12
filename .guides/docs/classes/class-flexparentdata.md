@@ -1,6 +1,6 @@
 ---
 title: "Class: FlexParentData"
-description: "Parent data for use with [RenderFlex]."
+description: "Parent data for use with [RenderFlex].   Extends the base [rendering.FlexParentData] to add paint order support."
 ---
 
 ```dart

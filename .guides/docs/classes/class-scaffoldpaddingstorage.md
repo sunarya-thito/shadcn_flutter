@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldPaddingStorage"
-description: "Storage for scaffold padding values."
+description: "Storage for scaffold padding values.   Holds padding values for all four sides of the scaffold content area."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: NullableDate"
-description: "Represents a date with nullable components (year, month, day)."
+description: "Represents a date with nullable components (year, month, day).   Useful for date input scenarios where individual date parts may be  missing or incomplete. Can convert to [DateTime] when all parts are present.   Example:  ```dart  final date = NullableDate(year: 2024, month: 1, day: 15);  print(date.nullableDate); // DateTime(2024, 1, 15)  ```"
 ---
 
 ```dart

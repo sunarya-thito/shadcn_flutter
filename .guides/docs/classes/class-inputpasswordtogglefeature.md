@@ -1,6 +1,6 @@
 ---
 title: "Class: InputPasswordToggleFeature"
-description: "Adds a password visibility toggle feature to the input field."
+description: "Adds a password visibility toggle feature to the input field.   Provides a button that allows users to toggle between showing and hiding  password text. Supports both hold-to-reveal and toggle modes.   Example:  ```dart  TextField(    obscureText: true,    features: [      InputPasswordToggleFeature(        mode: PasswordPeekMode.toggle,      ),    ],  )  ```"
 ---
 
 ```dart

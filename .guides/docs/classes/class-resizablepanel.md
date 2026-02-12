@@ -1,6 +1,6 @@
 ---
 title: "Class: ResizablePanel"
-description: "A container widget that creates resizable panels separated by interactive dividers."
+description: "A container widget that creates resizable panels separated by interactive dividers.   This widget provides a flexible layout system where multiple child panes  can be resized by the user through draggable dividers. It supports both  horizontal and vertical orientations, allowing users to adjust the relative  sizes of the contained panels by dragging the separators between them.   Each [ResizablePane] child can have its own sizing constraints, minimum and  maximum sizes, and collapse behavior. The panel automatically manages the  distribution of available space and handles user interactions for resizing.   Example:  ```dart  ResizablePanel.horizontal(    children: [      ResizablePane(        child: Container(color: Colors.red),        minSize: 100,        defaultSize: 200,      ),      ResizablePane(        child: Container(color: Colors.blue),        flex: 1,      ),      ResizablePane(        child: Container(color: Colors.green),        defaultSize: 150,        maxSize: 300,      ),    ],  );  ```"
 ---
 
 ```dart

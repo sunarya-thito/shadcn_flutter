@@ -1,6 +1,6 @@
 ---
 title: "Class: DashedLine"
-description: "A widget that displays a horizontal dashed line."
+description: "A widget that displays a horizontal dashed line.   Renders a customizable dashed line with configurable dash width, gap,  thickness, and color. Animates changes to properties smoothly.   Example:  ```dart  DashedLine(    width: 10,    gap: 5,    thickness: 2,    color: Colors.grey,  )  ```"
 ---
 
 ```dart

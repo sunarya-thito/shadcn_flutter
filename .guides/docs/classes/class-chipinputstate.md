@@ -1,6 +1,6 @@
 ---
 title: "Class: ChipInputState"
-description: "State class for [ChipInput]."
+description: "State class for [ChipInput].   Manages the chip input's internal state and chip rendering."
 ---
 
 ```dart

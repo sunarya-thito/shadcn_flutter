@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledCheckbox"
-description: "Reactive checkbox with automatic state management and controller support."
+description: "Reactive checkbox with automatic state management and controller support.   A higher-level checkbox widget that provides automatic state management  through the controlled component pattern. Can be used with an external  [CheckboxController] for programmatic control or with callback-based  state management.   Supports all checkbox features including tri-state behavior, leading/trailing  widgets, and comprehensive theming. The widget automatically handles focus,  enabled states, and form integration.   ## Usage Patterns   **Controller-based (recommended for complex state management):**  ```dart  final controller = CheckboxController(CheckboxState.unchecked);   ControlledCheckbox(    controller: controller,    tristate: true,    leading: Text('Accept terms'),  )  ```   **Callback-based (simple state management):**  ```dart  bool checked = false;   ControlledCheckbox(    initialValue: checked ? CheckboxState.checked : CheckboxState.unchecked,    onChanged: (state) => setState(() {      checked = state == CheckboxState.checked;    }),    trailing: Text('Newsletter subscription'),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuGroupData"
-description: "Data class containing menu group state and configuration."
+description: "Data class containing menu group state and configuration.   Manages the hierarchical structure of menu groups, tracking parent-child  relationships, popover state, and layout properties. Used internally by  the menu system to coordinate behavior across nested menus."
 ---
 
 ```dart

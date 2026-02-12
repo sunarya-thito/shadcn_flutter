@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemPickerOption"
-description: "A selectable option within an item picker."
+description: "A selectable option within an item picker.   Wraps an item with selection behavior, applying different styles based on  whether it's currently selected. Commonly used inside [ItemPickerDialog]  to create selectable items.   Example:  ```dart  ItemPickerOption<Color>(    value: Colors.red,    child: Container(color: Colors.red, width: 50, height: 50),  )  ```"
 ---
 
 ```dart

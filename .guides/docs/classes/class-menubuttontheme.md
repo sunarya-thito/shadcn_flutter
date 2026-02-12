@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuButtonTheme"
-description: "Theme configuration for menu button styling."
+description: "Theme configuration for menu button styling.   Provides theme-level customization for menu buttons. Menu buttons are designed  for triggering dropdown menus with appropriate spacing and styling."
 ---
 
 ```dart

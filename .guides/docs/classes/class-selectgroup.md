@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectGroup"
-description: "A container for grouping related select items with optional headers and footers."
+description: "A container for grouping related select items with optional headers and footers.   Organizes select menu items into logical sections with optional header  and footer widgets."
 ---
 
 ```dart

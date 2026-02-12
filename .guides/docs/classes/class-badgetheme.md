@@ -1,6 +1,6 @@
 ---
 title: "Class: BadgeTheme"
-description: "Theme data for customizing badge widget appearance across different styles."
+description: "Theme data for customizing badge widget appearance across different styles.   This class defines the visual properties that can be applied to various  badge types including [PrimaryBadge], [SecondaryBadge], [OutlineBadge],  and [DestructiveBadge]. Each badge style can have its own button styling  configuration to provide consistent appearance across the application."
 ---
 
 ```dart

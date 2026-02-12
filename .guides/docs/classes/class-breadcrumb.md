@@ -1,6 +1,6 @@
 ---
 title: "Class: Breadcrumb"
-description: "Navigation breadcrumb trail showing hierarchical path with customizable separators."
+description: "Navigation breadcrumb trail showing hierarchical path with customizable separators.   A horizontal navigation widget that displays a series of linked items  representing the current location within a hierarchical structure.  Automatically adds separators between items and supports horizontal scrolling  for overflow handling.   ## Features   - **Hierarchical navigation**: Clear visual representation of path structure  - **Customizable separators**: Built-in arrow and slash separators or custom widgets  - **Overflow handling**: Horizontal scrolling when content exceeds available width  - **Touch-optimized**: Mobile-friendly scrolling behavior  - **Theming support**: Consistent styling through theme system  - **Responsive**: Automatically adapts to different screen sizes   The breadcrumb automatically handles the last item differently, showing it  as the current location without making it interactive.   Example:  ```dart  Breadcrumb(    separator: Breadcrumb.slashSeparator,    children: [      GestureDetector(        onTap: () => Navigator.pop(context),        child: Text('Home'),      ),      GestureDetector(        onTap: () => Navigator.pop(context),        child: Text('Products'),      ),      Text('Electronics'), // Current page    ],  );  ```"
 ---
 
 ```dart

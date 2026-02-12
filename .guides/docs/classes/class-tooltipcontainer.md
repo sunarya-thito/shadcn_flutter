@@ -1,6 +1,6 @@
 ---
 title: "Class: TooltipContainer"
-description: "A styled container widget for tooltip content."
+description: "A styled container widget for tooltip content.   Provides consistent visual styling for tooltip popups with customizable  background, opacity, blur, padding, and border radius. Integrates with  the tooltip theme system while allowing per-instance overrides."
 ---
 
 ```dart

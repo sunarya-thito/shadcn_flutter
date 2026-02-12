@@ -1,6 +1,6 @@
 ---
 title: "Class: MutedButtonTheme"
-description: "Theme configuration for muted button styling."
+description: "Theme configuration for muted button styling.   Provides theme-level customization for muted buttons. Muted buttons use  low-contrast colors for minimal visual impact while remaining functional."
 ---
 
 ```dart

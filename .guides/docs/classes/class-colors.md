@@ -1,6 +1,6 @@
 ---
 title: "Class: Colors"
-description: "A collection of color constants and shades for shadcn_flutter."
+description: "A collection of color constants and shades for shadcn_flutter.   This class provides predefined colors and color shades that can be used  throughout the application. All colors follow the shadcn design system."
 ---
 
 ```dart

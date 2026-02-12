@@ -1,6 +1,6 @@
 ---
 title: "Class: LegacyColorSchemes"
-description: "Legacy color schemes using HSL color definitions."
+description: "Legacy color schemes using HSL color definitions.   These color schemes use HSL (Hue, Saturation, Lightness) for color definition  and are provided for backward compatibility. New code should prefer  using the RGB-based [ColorSchemes] class."
 ---
 
 ```dart

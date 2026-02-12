@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedObjectInput"
-description: "A formatted input widget that works with complex objects."
+description: "A formatted input widget that works with complex objects.   [FormattedObjectInput] extends formatted input functionality to handle  objects of type [T], converting between the object and its formatted  string representation. It can optionally display a popup for advanced editing.   Example:  ```dart  FormattedObjectInput<DateTime>(    converter: dateConverter,    parts: [      InputPart.editable(length: 2, width: 30), // Month      InputPart.static('/'),      InputPart.editable(length: 2, width: 30), // Day    ],    popupBuilder: (context, controller) => CalendarWidget(),  )  ```"
 ---
 
 ```dart

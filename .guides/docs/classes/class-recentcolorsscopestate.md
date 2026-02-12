@@ -1,6 +1,6 @@
 ---
 title: "Class: RecentColorsScopeState"
-description: "State class for [RecentColorsScope] implementing color history storage."
+description: "State class for [RecentColorsScope] implementing color history storage.   Manages the list of recently used colors and provides storage functionality  for color history tracking."
 ---
 
 ```dart

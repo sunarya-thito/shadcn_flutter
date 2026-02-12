@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnPointArcTween"
-description: "A custom tween for animating points along an arc."
+description: "A custom tween for animating points along an arc.   This tween creates curved motion between two points, useful for  creating natural-looking animations."
 ---
 
 ```dart

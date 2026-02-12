@@ -1,6 +1,6 @@
 ---
 title: "Class: SecondaryButton"
-description: "Convenience widget for creating a secondary button."
+description: "Convenience widget for creating a secondary button.   A simplified wrapper around [Button.secondary] with the same properties  as [PrimaryButton] but using secondary button styling for supporting actions."
 ---
 
 ```dart

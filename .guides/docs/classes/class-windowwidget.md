@@ -1,6 +1,6 @@
 ---
 title: "Class: WindowWidget"
-description: "A resizable, draggable window widget with title bar and content area."
+description: "A resizable, draggable window widget with title bar and content area.   Provides a desktop-style window experience with full control over sizing,  positioning, and window controls (minimize, maximize, close). Supports both  controlled and uncontrolled modes for flexible state management.   Key Features:  - **Resizable**: Drag edges/corners to resize (when enabled)  - **Draggable**: Drag title bar to move window (when enabled)  - **Maximizable**: Fill screen or custom bounds  - **Minimizable**: Collapse to taskbar or hidden state  - **Snapping**: Auto-snap to screen edges when dragging near them  - **Customizable**: Title, actions, content, and theme settings   Usage Patterns:   **Uncontrolled Mode** (direct state props):  ```dart  WindowWidget(    title: Text('My Window'),    content: Text('Window content here'),    bounds: Rect.fromLTWH(100, 100, 800, 600),    resizable: true,    draggable: true,  )  ```   **Controlled Mode** (via controller):  ```dart  final controller = WindowController(    bounds: Rect.fromLTWH(100, 100, 800, 600),  );   WindowWidget.controlled(    controller: controller,    title: Text('Controlled Window'),    content: Text('Content'),  )  ```   See also:  - [WindowController] for programmatic window control  - [WindowTheme] for styling options  - [WindowState] for state configuration details"
 ---
 
 ```dart

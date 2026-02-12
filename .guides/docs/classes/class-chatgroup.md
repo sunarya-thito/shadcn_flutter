@@ -1,6 +1,6 @@
 ---
 title: "Class: ChatGroup"
-description: "A widget that groups multiple [ChatBubble]s together."
+description: "A widget that groups multiple [ChatBubble]s together.   This widget handles the layout and styling of a group of chat bubbles,  including avatar positioning and spacing.   Example:  ```dart  ChatGroup(    avatarPrefix: Avatar(child: Text('A')),    children: [      ChatBubble(child: Text('Hello')),      ChatBubble(child: Text('How are you?')),    ],  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: TextFieldState"
-description: "State class for [TextField] widget."
+description: "State class for [TextField] widget.   Manages the text field's state including text editing, selection,  input features, form integration, and restoration."
 ---
 
 ```dart

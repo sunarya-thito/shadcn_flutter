@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledSwitch"
-description: "A controlled switch widget with automatic state management."
+description: "A controlled switch widget with automatic state management.   Manages its state either through an external [controller] or internal  state with [initialValue]. Provides a toggle interface for boolean values  with customizable appearance including colors, icons, and layout options.   Example:  ```dart  ControlledSwitch(    initialValue: true,    onChanged: (value) => print('Switched to: $value'),    leading: Icon(Icons.wifi),    activeColor: Colors.green,  )  ```"
 ---
 
 ```dart

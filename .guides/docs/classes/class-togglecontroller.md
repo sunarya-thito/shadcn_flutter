@@ -1,6 +1,6 @@
 ---
 title: "Class: ToggleController"
-description: "A controller for managing toggle state in toggle buttons and switches."
+description: "A controller for managing toggle state in toggle buttons and switches.   [ToggleController] extends [ValueNotifier] to provide reactive state management  for boolean toggle values. It implements [ComponentController] to integrate  with the shadcn_flutter form system and provides convenient methods for  programmatic state changes.   The controller maintains a boolean value representing the toggle state and  notifies listeners when the state changes, making it suitable for use with  toggle buttons, switches, and other binary state controls.   Example:  ```dart  final toggleController = ToggleController(false);   // Listen to changes  toggleController.addListener(() {    print('Toggle state: ${toggleController.value}');  });   // Toggle the state programmatically  toggleController.toggle();   // Set specific value  toggleController.value = true;  ```"
 ---
 
 ```dart

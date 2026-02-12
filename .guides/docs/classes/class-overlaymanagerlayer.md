@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayManagerLayer"
-description: "Layer widget managing different overlay handlers for the application."
+description: "Layer widget managing different overlay handlers for the application.   Provides centralized overlay management for popovers, tooltips, and menus  with customizable handlers for each type."
 ---
 
 ```dart

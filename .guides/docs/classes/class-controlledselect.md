@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledSelect"
-description: "Reactive single-selection dropdown with automatic state management."
+description: "Reactive single-selection dropdown with automatic state management.   A high-level select widget that provides automatic state management through  the controlled component pattern. Supports both controller-based and callback-based  state management with comprehensive customization options for item presentation,  popup behavior, and interaction handling.   ## Features   - **Flexible item rendering**: Custom builders for complete visual control over items  - **Popup positioning**: Configurable alignment and constraints for the dropdown  - **Keyboard navigation**: Full keyboard support with arrow keys and Enter/Escape  - **Form integration**: Automatic validation and form field registration  - **Unselection support**: Optional ability to deselect the current selection   ## Usage Patterns   **Controller-based (recommended for complex state):**  ```dart  final controller = SelectController<String>('apple');   ControlledSelect<String>(    controller: controller,    items: ['apple', 'banana', 'cherry'],    itemBuilder: (context, item) => Text(item),    placeholder: Text('Choose fruit'),  )  ```   **Callback-based (simple state management):**  ```dart  String? selectedFruit;   ControlledSelect<String>(    initialValue: selectedFruit,    onChanged: (fruit) => setState(() => selectedFruit = fruit),    items: ['apple', 'banana', 'cherry'],    itemBuilder: (context, item) => Text(item),  )  ```"
 ---
 
 ```dart

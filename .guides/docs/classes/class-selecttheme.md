@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectTheme"
-description: "Theme data for customizing [Select] widget appearance and behavior."
+description: "Theme data for customizing [Select] widget appearance and behavior.   This class defines the visual and behavioral properties that can be applied to  [Select] widgets, including popup constraints, positioning, styling, and  interaction behaviors. These properties can be set at the theme level  to provide consistent behavior across the application."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonSize"
-description: "Defines the relative size scaling for button components."
+description: "Defines the relative size scaling for button components.   [ButtonSize] controls the overall scale of buttons, affecting text size,  icon size, and proportional padding. The scaling factor is applied to  all dimensional properties to maintain visual consistency.   Example:  ```dart  Button.primary(    style: ButtonStyle.primary().copyWith(size: ButtonSize.large),    child: Text('Large Button'),  );  ```"
 ---
 
 ```dart

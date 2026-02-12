@@ -1,6 +1,6 @@
 ---
 title: "Class: TimelineAnimation"
-description: "A timeline-based animation built from multiple keyframes."
+description: "A timeline-based animation built from multiple keyframes.   This class extends [Animatable]`<T>` and orchestrates complex animations by  sequencing multiple [Keyframe]s. Each keyframe defines a segment of the  animation with its own duration and interpolation strategy.   ## Type Parameters   * [T] - The type of value being animated.   ## Overview   Use [TimelineAnimation] to create sophisticated multi-stage animations.  Keyframes can be absolute, relative, or still, allowing for diverse  animation patterns. The timeline automatically calculates total duration  from all keyframes.   ## Example   ```dart  final timeline = TimelineAnimation<double>(    lerp: Transformers.typeDouble,    keyframes: [      AbsoluteKeyframe(Duration(milliseconds: 100), 0.0, 1.0),      StillKeyframe(Duration(milliseconds: 50)),      RelativeKeyframe(Duration(milliseconds: 100), 0.5),    ],  );  ```"
 ---
 
 ```dart

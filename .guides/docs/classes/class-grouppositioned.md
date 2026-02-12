@@ -1,6 +1,6 @@
 ---
 title: "Class: GroupPositioned"
-description: "Positions a child widget within a [GroupWidget]."
+description: "Positions a child widget within a [GroupWidget].   Controls the position and optionally the size of a child using absolute  coordinates. At least one positioning parameter should be provided.   Example:  ```dart  GroupPositioned(    top: 20,    left: 20,    width: 100,    height: 50,    child: Container(color: Colors.blue),  )  ```"
 ---
 
 ```dart

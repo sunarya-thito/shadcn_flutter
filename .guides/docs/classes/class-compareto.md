@@ -1,6 +1,6 @@
 ---
 title: "Class: CompareTo"
-description: "A validator that compares a value against a static comparison value."
+description: "A validator that compares a value against a static comparison value.   [CompareTo] validates by comparing the field value against a fixed value  (unlike [CompareWith] which compares against another field). Supports  various comparison types.   Example:  ```dart  CompareTo.greaterOrEqual(    18,    message: 'Must be at least 18',  )  ```"
 ---
 
 ```dart

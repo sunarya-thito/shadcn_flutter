@@ -1,6 +1,6 @@
 ---
 title: "Class: MultiCalendarValue"
-description: "Calendar value representing multiple selected dates."
+description: "Calendar value representing multiple selected dates.   Encapsulates a list of individually selected dates. Provides lookup  functionality to determine if a date is among the selected dates.  Used with [CalendarSelectionMode.multi]."
 ---
 
 ```dart

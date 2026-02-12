@@ -1,6 +1,6 @@
 ---
 title: "Class: RecentColorsScope"
-description: "Provides color history storage in the widget tree."
+description: "Provides color history storage in the widget tree.   [RecentColorsScope] manages a list of recently used colors and makes it  available to descendant widgets through [ColorHistoryStorage]. It supports  a configurable maximum capacity and notifies listeners of changes.   Example:  ```dart  RecentColorsScope(    maxRecentColors: 20,    onRecentColorsChanged: (colors) {      // Save colors to persistent storage    },    child: MyColorPicker(),  )  ```"
 ---
 
 ```dart

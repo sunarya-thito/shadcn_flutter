@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuItem"
-description: "An individual menu item within a [NavigationMenu]."
+description: "An individual menu item within a [NavigationMenu].   Represents a single interactive element in a navigation menu structure.  Each item can function as either a standalone action button or a trigger  for displaying additional content in a popover. When content is provided,  the item shows a chevron indicator and triggers the popover on interaction.   The item automatically integrates with its parent [NavigationMenu] to  manage popover state, hover interactions, and visual feedback. Items  with content become active when hovered or clicked, displaying their  associated content in the navigation menu's popover.   Example:  ```dart  NavigationMenuItem(    onPressed: () => print('Item pressed'),    content: NavigationMenuContent(      title: Text('Products'),      content: Text('Browse our product catalog'),    ),    child: Text('Products'),  )  ```"
 ---
 
 ```dart

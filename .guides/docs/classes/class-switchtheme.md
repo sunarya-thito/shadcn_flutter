@@ -1,6 +1,6 @@
 ---
 title: "Class: SwitchTheme"
-description: "Theme configuration for [Switch] widget styling and visual appearance."
+description: "Theme configuration for [Switch] widget styling and visual appearance.   Defines the visual properties used by switch components including colors,  spacing, and border styling for different switch states. All properties are  optional and fall back to framework defaults when not specified.   Supports comprehensive customization of switch appearance including track  colors, thumb colors, and layout properties to match application design."
 ---
 
 ```dart

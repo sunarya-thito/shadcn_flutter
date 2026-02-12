@@ -1,6 +1,6 @@
 ---
 title: "Class: RawSortableStack"
-description: "RawSortableStack prevents the stacking children from going outside the bounds of this widget."
+description: "RawSortableStack prevents the stacking children from going outside the bounds of this widget.  A raw sortable stack widget for managing layered sortable items.   Provides basic stacking functionality for sortable components without  additional layout or styling. Clamps child positions to widget bounds."
 ---
 
 ```dart

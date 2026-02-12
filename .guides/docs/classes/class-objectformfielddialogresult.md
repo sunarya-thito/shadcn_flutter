@@ -1,6 +1,6 @@
 ---
 title: "Class: ObjectFormFieldDialogResult"
-description: "Holds the result value from an object form field dialog."
+description: "Holds the result value from an object form field dialog.   Used to pass the selected or edited value back from a dialog prompt.   Example:  ```dart  final result = ObjectFormFieldDialogResult<DateTime>(DateTime.now());  Navigator.of(context).pop(result);  ```"
 ---
 
 ```dart

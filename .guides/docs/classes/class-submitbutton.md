@@ -1,6 +1,6 @@
 ---
 title: "Class: SubmitButton"
-description: "A button that automatically handles form submission states."
+description: "A button that automatically handles form submission states.   Renders different content based on form validation state:  - Default: Shows [child] with optional leading/trailing widgets  - Loading: Shows [loading] during async validation  - Error: Shows [error] when validation fails   Automatically disables during validation and enables when form is valid.   Example:  ```dart  SubmitButton(    child: Text('Submit'),    loading: Text('Validating...'),    error: Text('Fix errors'),  )  ```"
 ---
 
 ```dart

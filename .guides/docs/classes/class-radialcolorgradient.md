@@ -1,6 +1,6 @@
 ---
 title: "Class: RadialColorGradient"
-description: "A radial gradient for color values."
+description: "A radial gradient for color values.   Creates a circular gradient radiating from a center point."
 ---
 
 ```dart

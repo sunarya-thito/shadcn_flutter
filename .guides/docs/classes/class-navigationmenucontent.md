@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuContent"
-description: "A content item displayed within a navigation menu popover."
+description: "A content item displayed within a navigation menu popover.   Provides a structured layout for navigation menu content with support  for titles, descriptions, leading/trailing widgets, and interactive behavior.  This widget is designed to be used within [NavigationMenuItem] content  to create rich, informative menu options.   The content displays as a button with optional leading icon, title text,  descriptive content, and trailing elements. When pressed, it can trigger  custom actions while maintaining the navigation menu's visual consistency.   Example:  ```dart  NavigationMenuContent(    leading: Icon(Icons.dashboard),    title: Text('Dashboard'),    content: Text('View project analytics and metrics'),    onPressed: () => Navigator.pushNamed(context, '/dashboard'),  )  ```"
 ---
 
 ```dart

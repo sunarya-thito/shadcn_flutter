@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableData"
-description: "Immutable data wrapper for sortable items in drag-and-drop operations."
+description: "Immutable data wrapper for sortable items in drag-and-drop operations.   SortableData wraps the actual data being sorted and provides identity for  drag-and-drop operations. Each sortable item must have associated data that  uniquely identifies it within the sorting context.   The class is immutable and uses reference equality for comparison, ensuring  that each sortable item maintains its identity throughout drag operations.  This is crucial for proper drop validation and handling.   Type parameter [T] represents the type of data being sorted, which can be  any type including primitive types, custom objects, or complex data structures.   Example:  ```dart  // Simple string data  SortableData<String>('item_1')   // Complex object data  SortableData<TodoItem>(TodoItem(id: 1, title: 'Task 1'))   // Map data  SortableData<Map<String, dynamic>>({'id': 1, 'name': 'Item'})  ```"
 ---
 
 ```dart

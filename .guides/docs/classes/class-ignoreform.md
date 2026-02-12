@@ -1,6 +1,6 @@
 ---
 title: "Class: IgnoreForm"
-description: "A widget that prevents form components from submitting their values to form controllers."
+description: "A widget that prevents form components from submitting their values to form controllers.   This widget creates a boundary that blocks form-related data propagation,  effectively isolating child components from parent form controllers. When  [ignoring] is true, any form components within the child widget tree will  not participate in form validation or data collection.   This is useful for creating UI components that look like form fields but  should not be included in form submission or validation, such as search  fields, filters, or decorative input elements.   Example:  ```dart  Form(    child: Column(      children: [        TextInput(label: 'Name'), // Participates in form        IgnoreForm(          child: TextInput(label: 'Search'), // Ignored by form        ),      ],    ),  );  ```"
 ---
 
 ```dart

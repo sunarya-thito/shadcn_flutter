@@ -1,6 +1,6 @@
 ---
 title: "Class: AxisAlignmentGeometry"
-description: "Base class for axis-based alignment."
+description: "Base class for axis-based alignment.   This allows defining alignment along a single axis which can be  resolved to concrete values based on [TextDirection]."
 ---
 
 ```dart

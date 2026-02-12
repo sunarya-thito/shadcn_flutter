@@ -1,6 +1,6 @@
 ---
 title: "Class: AccordionItem"
-description: "An individual item within an [Accordion] that can be expanded or collapsed."
+description: "An individual item within an [Accordion] that can be expanded or collapsed.   [AccordionItem] represents a single section within an accordion, containing  both a trigger (the clickable header) and the collapsible content area. It  manages its own animation state and coordinates with the parent [Accordion]  to implement the mutual exclusion behavior.   ## Key Features  - **Smooth Animation**: Configurable size transition animations  - **State Coordination**: Automatic integration with parent accordion state  - **Flexible Content**: Supports any widget as trigger or content  - **Initial State**: Can start expanded or collapsed   The item automatically handles expansion/collapse animations and coordinates  with its parent accordion to ensure only one item can be expanded at a time.   Example:  ```dart  AccordionItem(    expanded: true, // Start expanded    trigger: AccordionTrigger(      child: Row(        children: [          Icon(Icons.help_outline),          SizedBox(width: 8),          Text('Frequently Asked Question'),        ],      ),    ),    content: Padding(      padding: EdgeInsets.all(16),      child: Text('This is the detailed answer to the question...'),    ),  );  ```"
 ---
 
 ```dart

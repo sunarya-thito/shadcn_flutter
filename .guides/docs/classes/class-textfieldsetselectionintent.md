@@ -1,6 +1,6 @@
 ---
 title: "Class: TextFieldSetSelectionIntent"
-description: "Intent to set the text selection in the text field."
+description: "Intent to set the text selection in the text field.   Used with Flutter's Actions/Shortcuts system to programmatically  control cursor position and text selection."
 ---
 
 ```dart

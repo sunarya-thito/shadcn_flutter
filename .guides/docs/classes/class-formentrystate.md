@@ -1,6 +1,6 @@
 ---
 title: "Class: FormEntryState"
-description: "State class for [FormEntry] widgets."
+description: "State class for [FormEntry] widgets.   Manages form field lifecycle and integrates with parent [FormController]  for validation and value reporting."
 ---
 
 ```dart

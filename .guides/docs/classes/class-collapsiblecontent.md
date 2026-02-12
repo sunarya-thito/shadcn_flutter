@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapsibleContent"
-description: "A content widget that shows or hides based on the parent [Collapsible] state."
+description: "A content widget that shows or hides based on the parent [Collapsible] state.   [CollapsibleContent] automatically manages its visibility based on the  expansion state of its parent [Collapsible]. It uses [Offstage] to  completely remove the content from the layout when collapsed, providing  efficient performance.   ## Key Features  - **Automatic Visibility**: Shows/hides based on parent expansion state  - **Layout Efficiency**: Uses [Offstage] for true layout removal when collapsed  - **Optional Control**: Can be configured to ignore collapsible state  - **Flexible Content**: Supports any widget as child content   Example:  ```dart  CollapsibleContent(    child: Container(      padding: EdgeInsets.all(16),      decoration: BoxDecoration(        border: Border.all(color: Colors.grey.shade300),        borderRadius: BorderRadius.circular(8),      ),      child: Column(        crossAxisAlignment: CrossAxisAlignment.start,        children: [          Text('Additional Details'),          SizedBox(height: 8),          Text('This content is only visible when expanded.'),        ],      ),    ),  );  ```"
 ---
 
 ```dart

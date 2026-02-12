@@ -1,6 +1,6 @@
 ---
 title: "Class: TimePickerController"
-description: "A controller for managing [ControlledTimePicker] values programmatically."
+description: "A controller for managing [ControlledTimePicker] values programmatically.   This controller extends `ValueNotifier<TimeOfDay?>` to provide reactive  state management for time picker components. It implements [ComponentController]  to integrate with the controlled component system, allowing external control  and listening to time selection changes.   Example:  ```dart  final controller = TimePickerController(TimeOfDay(hour: 12, minute: 30));  controller.addListener(() {    print('Selected time: ${controller.value}');  });  ```"
 ---
 
 ```dart

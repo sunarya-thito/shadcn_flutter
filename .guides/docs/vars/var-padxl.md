@@ -1,6 +1,6 @@
 ---
 title: "Variable: padXl"
-description: "Extra large padding multiplier (2."
+description: "Extra large padding multiplier (2.5)."
 ---
 
 Signature

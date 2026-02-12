@@ -1,6 +1,6 @@
 ---
 title: "Class: FormField"
-description: "A standard form field widget with label, validation, and error display."
+description: "A standard form field widget with label, validation, and error display.   Provides a consistent layout for form inputs with labels, hints,  validation, and error messaging."
 ---
 
 ```dart

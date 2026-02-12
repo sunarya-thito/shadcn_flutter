@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectItemBuilder"
-description: "A select item delegate that uses a builder function."
+description: "A select item delegate that uses a builder function.   Provides items through a builder function with optional child count."
 ---
 
 ```dart

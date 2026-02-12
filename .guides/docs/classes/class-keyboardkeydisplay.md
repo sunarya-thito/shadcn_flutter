@@ -1,6 +1,6 @@
 ---
 title: "Class: KeyboardKeyDisplay"
-description: "A widget that displays a single keyboard key in a styled format."
+description: "A widget that displays a single keyboard key in a styled format.   Renders an individual keyboard key as a styled representation that  resembles a physical keyboard key. Used internally by [KeyboardDisplay]  but can also be used standalone for displaying individual keys.   The key display automatically formats the key label based on the  [LogicalKeyboardKey] and applies appropriate styling including  padding, shadows, and theme-consistent appearance.   Example:  ```dart  KeyboardKeyDisplay(    keyboardKey: LogicalKeyboardKey.controlLeft,    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuOverlayHandler"
-description: "Overlay handler specialized for menu popover display."
+description: "Overlay handler specialized for menu popover display.   Delegates to an [OverlayManager] to show menu popovers with  appropriate positioning, transitions, and dismissal behavior."
 ---
 
 ```dart

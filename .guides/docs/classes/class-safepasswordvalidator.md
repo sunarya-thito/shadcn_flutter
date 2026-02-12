@@ -1,6 +1,6 @@
 ---
 title: "Class: SafePasswordValidator"
-description: "A validator for ensuring password strength and security requirements."
+description: "A validator for ensuring password strength and security requirements.   [SafePasswordValidator] checks passwords against common security criteria:  digits, lowercase letters, uppercase letters, and special characters.  Each requirement can be individually enabled or disabled.   Example:  ```dart  SafePasswordValidator(    requireDigit: true,    requireLowercase: true,    requireUppercase: true,    requireSpecialChar: true,    message: 'Password must meet security requirements',  )  ```"
 ---
 
 ```dart

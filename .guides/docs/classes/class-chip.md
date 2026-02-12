@@ -1,6 +1,6 @@
 ---
 title: "Class: Chip"
-description: "Compact interactive element for tags, labels, and selections."
+description: "Compact interactive element for tags, labels, and selections.   A versatile chip widget that combines button functionality with a compact  form factor. Ideal for representing tags, categories, filters, or selected  items in a space-efficient manner with optional interactive elements.   ## Features   - **Compact design**: Space-efficient layout perfect for tags and labels  - **Interactive elements**: Optional leading and trailing widgets (icons, buttons)  - **Customizable styling**: Flexible button styling with theme integration  - **Touch feedback**: Optional press handling with visual feedback  - **Accessibility**: Full screen reader support and keyboard navigation  - **Consistent theming**: Integrated with the component theme system   The chip renders as a rounded button with optional leading and trailing  elements, making it perfect for filter tags, contact chips, or selection  indicators.   Example:  ```dart  Chip(    leading: Icon(Icons.star),    child: Text('Favorites'),    trailing: ChipButton(      onPressed: () => removeFilter('favorites'),      child: Icon(Icons.close),    ),    onPressed: () => toggleFilter('favorites'),    style: ButtonStyle.secondary(),  );  ```"
 ---
 
 ```dart

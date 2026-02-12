@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledComponentAdapter"
-description: "A widget adapter that bridges controlled component logic with custom UI implementations."
+description: "A widget adapter that bridges controlled component logic with custom UI implementations.   This adapter provides a standardized way to implement controlled components  by handling the common logic for value management, controller integration,  and state synchronization. It implements the [ControlledComponent] mixin  and manages the lifecycle of value updates between controllers and UI.   The adapter supports both controlled mode (with a [controller]) and  uncontrolled mode (with an [initialValue]). When a controller is provided,  it becomes the source of truth for the component's value. When no controller  is provided, the component maintains its own internal state.   The generic type [T] represents the type of value this adapter manages.   Example:  ```dart  ControlledComponentAdapter<String>(    initialValue: 'Hello',    onChanged: (value) => print('Value changed: $value'),    builder: (context, data) {      return GestureDetector(        onTap: () => data.onChanged('${data.value}!'),        child: Text(data.value),      );    },  );  ```"
 ---
 
 ```dart

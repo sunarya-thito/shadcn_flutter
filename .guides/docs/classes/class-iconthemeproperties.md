@@ -1,6 +1,6 @@
 ---
 title: "Class: IconThemeProperties"
-description: "Properties for icon theming."
+description: "Properties for icon theming.   Defines size and color for different icon sizes across the theme."
 ---
 
 ```dart

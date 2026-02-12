@@ -1,6 +1,6 @@
 ---
 title: "Class: DirectionalMenuFocusIntent"
-description: "Intent for directional focus traversal within menus."
+description: "Intent for directional focus traversal within menus.   Used for arrow key navigation (up, down, left, right) within menu structures."
 ---
 
 ```dart

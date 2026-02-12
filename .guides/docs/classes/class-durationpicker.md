@@ -1,6 +1,6 @@
 ---
 title: "Class: DurationPicker"
-description: "Widget for picking duration values with day, hour, minute, and second components."
+description: "Widget for picking duration values with day, hour, minute, and second components.   Provides an input interface for selecting time durations. Can be controlled  externally via [DurationPickerController] or used with callbacks.   Example:  ```dart  DurationPicker(    value: Duration(hours: 1, minutes: 30),    onChanged: (duration) {      print('Selected: $duration');    },  )  ```"
 ---
 
 ```dart

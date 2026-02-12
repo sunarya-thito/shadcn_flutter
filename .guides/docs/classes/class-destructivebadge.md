@@ -1,6 +1,6 @@
 ---
 title: "Class: DestructiveBadge"
-description: "A destructive-styled badge for displaying warnings or dangerous actions."
+description: "A destructive-styled badge for displaying warnings or dangerous actions.   Uses destructive (typically red) styling to indicate dangerous, destructive,  or critical information that requires user attention."
 ---
 
 ```dart

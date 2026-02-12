@@ -1,6 +1,6 @@
 ---
 title: "Class: AvatarWidget"
-description: "Abstract base class for avatar-related widgets."
+description: "Abstract base class for avatar-related widgets.   [AvatarWidget] provides a common interface for avatar components, ensuring  they expose size and border radius properties that can be used by container  components like [AvatarGroup] for proper layout and clipping."
 ---
 
 ```dart

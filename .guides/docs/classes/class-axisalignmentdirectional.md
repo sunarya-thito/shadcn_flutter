@@ -1,6 +1,6 @@
 ---
 title: "Class: AxisAlignmentDirectional"
-description: "Directional alignment along an axis."
+description: "Directional alignment along an axis.   Values range from -1.0 (start) to 1.0 (end)."
 ---
 
 ```dart

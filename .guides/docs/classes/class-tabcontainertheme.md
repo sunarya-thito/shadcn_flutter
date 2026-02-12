@@ -1,6 +1,6 @@
 ---
 title: "Class: TabContainerTheme"
-description: "{@template tab_container_theme}  Theme data for [TabContainer] providing default builders."
+description: "{@template tab_container_theme}  Theme data for [TabContainer] providing default builders.  {@endtemplate}"
 ---
 
 ```dart

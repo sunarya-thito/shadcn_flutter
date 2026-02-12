@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityRow"
-description: "A row widget with density-aware spacing between children."
+description: "A row widget with density-aware spacing between children.   Use instead of [Row] when you want the spacing to adapt to density settings.  The [spacing] value is a multiplier applied to [Density.baseGap].   Example:  ```dart  DensityRow(    spacing: padLg,    children: [      Icon(Icons.star),      Text('Rating'),    ],  )  ```"
 ---
 
 ```dart

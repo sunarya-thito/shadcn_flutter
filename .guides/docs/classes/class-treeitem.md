@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeItem"
-description: "A concrete tree node implementation that holds data and state."
+description: "A concrete tree node implementation that holds data and state.   TreeItem represents a data-bearing node in the tree structure with support  for hierarchical organization, expansion/collapse state, and selection state.  It implements the immutable pattern where state changes return new instances.   Each TreeItem contains user data of type [T], a list of child nodes, and  boolean flags for expansion and selection state. The class provides equality  comparison based on all properties and implements proper hash codes.   TreeItem supports deep hierarchies through its children list, which can  contain other TreeItem instances or TreeRoot containers. The expansion state  controls visibility of children in tree views.   Example:  ```dart  // Create a simple item  TreeItem<String> item = TreeItem(    data: 'Document',    expanded: true,    selected: false,    children: [      TreeItem(data: 'Chapter 1'),      TreeItem(data: 'Chapter 2'),    ],  );   // Update its state  TreeItem<String> selected = item.updateState(selected: true);  ```"
 ---
 
 ```dart

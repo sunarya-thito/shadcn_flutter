@@ -1,6 +1,6 @@
 ---
 title: "Class: RangeValidator"
-description: "A validator that checks if a numeric value falls within a specified range."
+description: "A validator that checks if a numeric value falls within a specified range.   [RangeValidator] ensures values are between minimum and maximum bounds.  Both bounds can be inclusive or exclusive depending on configuration.   Example:  ```dart  RangeValidator<double>(    0.0,    100.0,    inclusive: true,    message: 'Must be between 0 and 100',  )  ```"
 ---
 
 ```dart

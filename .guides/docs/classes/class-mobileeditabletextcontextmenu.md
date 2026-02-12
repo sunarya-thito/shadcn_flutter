@@ -1,6 +1,6 @@
 ---
 title: "Class: MobileEditableTextContextMenu"
-description: "Context menu for editable text fields on mobile platforms."
+description: "Context menu for editable text fields on mobile platforms.   Similar to [DesktopEditableTextContextMenu] but optimized for mobile  with horizontal layout and no keyboard shortcuts displayed.   Typically used internally by text input widgets on mobile platforms."
 ---
 
 ```dart

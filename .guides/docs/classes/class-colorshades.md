@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorShades"
-description: "A collection of color shades from light to dark."
+description: "A collection of color shades from light to dark.   Implements both [Color] and [ColorSwatch] to provide a primary color  and access to different shade values (50, 100, 200, ..., 950)."
 ---
 
 ```dart

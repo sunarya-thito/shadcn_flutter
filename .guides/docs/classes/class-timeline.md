@@ -1,6 +1,6 @@
 ---
 title: "Class: Timeline"
-description: "A vertical timeline widget for displaying chronological data."
+description: "A vertical timeline widget for displaying chronological data.   [Timeline] creates a structured vertical layout showing a sequence of events  or data points with time information, titles, optional content, and visual  indicators. Each entry is represented by a [TimelineData] object and displayed  with a consistent three-column layout:   1. Left column: Time/timestamp information (right-aligned)  2. Center column: Visual indicator dot and connecting lines  3. Right column: Title and optional content   The timeline automatically handles:  - Proper spacing and alignment between columns  - Visual indicators with customizable colors per entry  - Connecting lines between entries (except for the last entry)  - Responsive sizing based on theme scaling  - Text styling consistent with the design system   Supports theming via [TimelineTheme] for consistent styling and can be  customized per instance with the [timeConstraints] parameter.   Example:  ```dart  Timeline(    data: [      TimelineData(        time: Text('9:00 AM'),        title: Text('Morning Standup'),        content: Text('Daily team sync to discuss progress and blockers.'),        color: Colors.green,      ),      TimelineData(        time: Text('2:00 PM'),        title: Text('Code Review'),        content: Text('Review pull requests and provide feedback.'),      ),    ],  );  ```"
 ---
 
 ```dart

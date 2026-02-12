@@ -1,6 +1,6 @@
 ---
 title: "Class: VerticalDivider"
-description: "A vertical line used to separate content in a layout."
+description: "A vertical line used to separate content in a layout.   Similar to [Divider] but renders vertically, useful for separating  content in horizontal layouts like rows or navigation panels."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: PopoverOverlayWidgetState"
-description: "State class for [PopoverOverlayWidget] managing popover positioning and lifecycle."
+description: "State class for [PopoverOverlayWidget] managing popover positioning and lifecycle.   Handles dynamic positioning, anchor tracking, size constraints, and  animation for popover overlays. Implements [OverlayHandlerStateMixin]  for standard overlay lifecycle management."
 ---
 
 ```dart

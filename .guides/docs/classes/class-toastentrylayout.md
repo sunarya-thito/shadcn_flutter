@@ -1,6 +1,6 @@
 ---
 title: "Class: ToastEntryLayout"
-description: "Internal widget for managing toast entry layout and animations."
+description: "Internal widget for managing toast entry layout and animations.   Handles the positioning, transitions, and lifecycle of individual toast  notifications. Manages expansion/collapse animations, entry/exit transitions,  and stacking behavior for multiple toasts.   This is an internal implementation class used by the toast system and  should not be used directly in application code."
 ---
 
 ```dart

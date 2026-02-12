@@ -1,6 +1,6 @@
 ---
 title: "Class: TextInputStatefulWidget"
-description: "Abstract base class for stateful text input widgets."
+description: "Abstract base class for stateful text input widgets.   Combines [StatefulWidget] with [TextInput] mixin to provide a base  for implementing text input components with state."
 ---
 
 ```dart

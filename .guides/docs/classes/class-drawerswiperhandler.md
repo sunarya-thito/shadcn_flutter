@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerSwiperHandler"
-description: "Drawer-style swiper handler with backdrop transformation."
+description: "Drawer-style swiper handler with backdrop transformation.   Creates swipers that behave like drawers with backdrop scaling,  drag handles, and full interaction support.   Example:  ```dart  Swiper(    handler: SwiperHandler.drawer,    position: OverlayPosition.left,    builder: (context) => DrawerContent(),    child: MenuButton(),  )  ```"
 ---
 
 ```dart

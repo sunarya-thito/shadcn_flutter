@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableDropFallback"
-description: "A fallback drop zone for sortable items when dropped outside specific sortable widgets."
+description: "A fallback drop zone for sortable items when dropped outside specific sortable widgets.   SortableDropFallback provides a catch-all drop zone that can accept sortable  items when they're dropped outside of any specific sortable widget drop zones.  This is useful for implementing deletion zones, creation areas, or general  drop handling areas.   The widget wraps its child with an invisible hit test layer that can detect  and accept dropped sortable items based on configurable acceptance criteria.   Example:  ```dart  SortableDropFallback<String>(    canAccept: (data) => data.data.startsWith('temp_'),    onAccept: (data) => deleteItem(data.data),    child: Container(      height: 100,      child: Center(child: Text('Drop here to delete')),    ),  )  ```"
 ---
 
 ```dart

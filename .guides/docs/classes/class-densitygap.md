@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityGap"
-description: "A gap widget that resolves spacing using density settings."
+description: "A gap widget that resolves spacing using density settings.   Use this instead of [Gap] when you want spacing to adapt to density.  The [gap] value is a multiplier applied to [Density.baseGap].   Example:  ```dart  Column(    children: [      Text('First'),      DensityGap(gap: gapLg),  // Gap adapts to density      Text('Second'),    ],  )  ```"
 ---
 
 ```dart

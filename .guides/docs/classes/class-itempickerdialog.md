@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemPickerDialog"
-description: "A dialog widget for picking an item from a list or grid."
+description: "A dialog widget for picking an item from a list or grid.   Internally used by [showItemPicker] and [showItemPickerDialog] to display  items and handle selection. Manages the selected value state and notifies  listeners when the selection changes.   Example:  ```dart  ItemPickerDialog<Color>(    items: ItemList([Colors.red, Colors.green]),    builder: (context, color) => ColorTile(color),    layout: ItemPickerLayout.grid,    onChanged: (color) => print(color),  )  ```"
 ---
 
 ```dart

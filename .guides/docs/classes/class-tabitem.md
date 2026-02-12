@@ -1,6 +1,6 @@
 ---
 title: "Class: TabItem"
-description: "A basic tab item widget."
+description: "A basic tab item widget.   Represents a single tab item with content that can be displayed  in a [TabContainer]."
 ---
 
 ```dart

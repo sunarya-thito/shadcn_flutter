@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapsibleTheme"
-description: "Theme configuration for [Collapsible], [CollapsibleTrigger], and [CollapsibleContent] widgets."
+description: "Theme configuration for [Collapsible], [CollapsibleTrigger], and [CollapsibleContent] widgets.   [CollapsibleTheme] provides styling options for collapsible components including  padding, iconography, and layout alignment. It enables consistent collapsible  styling across an application while allowing per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<CollapsibleTheme>(    data: CollapsibleTheme(      padding: 12.0,      iconExpanded: Icons.keyboard_arrow_up,      iconCollapsed: Icons.keyboard_arrow_down,      iconGap: 8.0,      crossAxisAlignment: CrossAxisAlignment.start,    ),    child: MyCollapsibleWidget(),  );  ```"
 ---
 
 ```dart

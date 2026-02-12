@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectLabel"
-description: "A label widget for grouping items in a select popup."
+description: "A label widget for grouping items in a select popup.   Displays a non-selectable label to organize dropdown items into categories.   Example:  ```dart  SelectLabel(    child: Text('Category Name'),  )  ```"
 ---
 
 ```dart

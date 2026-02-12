@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerLayerData"
-description: "Data class representing a drawer overlay layer in the hierarchy."
+description: "Data class representing a drawer overlay layer in the hierarchy.   Tracks the drawer overlay state and its parent layer, enabling nested  drawer management and size computation across the layer stack."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ObjectFormHandler"
-description: "Abstract interface for controlling an object form field's state."
+description: "Abstract interface for controlling an object form field's state.   [ObjectFormHandler] provides methods to interact with an object form field,  including getting/setting values and controlling the editor visibility."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: RenderStack"
-description: "A patched version of [rendering."
+description: "A patched version of [rendering.RenderStack] that supports custom paint ordering."
 ---
 
 ```dart

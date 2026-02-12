@@ -1,6 +1,6 @@
 ---
 title: "Class: AlertDialog"
-description: "A modal dialog component for displaying important alerts and confirmations."
+description: "A modal dialog component for displaying important alerts and confirmations.   AlertDialog provides a focused overlay interface for critical user interactions  that require immediate attention or confirmation. Built on top of [ModalBackdrop]  and [ModalContainer], it ensures proper accessibility and visual hierarchy.   The dialog features a flexible layout system supporting optional leading/trailing  icons, title text, descriptive content, and customizable action buttons. All  elements automatically adapt to the current theme's color scheme and scaling.   Key features:  - Modal presentation with backdrop blur and overlay  - Flexible content layout with optional elements  - Automatic theme integration and responsive scaling  - Customizable surface effects (blur, opacity)  - Action button layout with proper spacing  - Safe area handling for various screen sizes   The component is a StatefulWidget to manage internal modal state and  ensure proper lifecycle management during show/hide transitions.   Example:  ```dart  AlertDialog(    leading: Icon(Icons.warning),    title: Text('Delete Item'),    content: Text('Are you sure you want to delete this item?'),    actions: [      Button.ghost(onPressed: () => Navigator.pop(context), child: Text('Cancel')),      Button.destructive(onPressed: _deleteItem, child: Text('Delete')),    ],  );  ```"
 ---
 
 ```dart

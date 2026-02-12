@@ -1,6 +1,6 @@
 ---
 title: "Class: DialogRoute"
-description: "Custom route implementation for shadcn_flutter dialogs."
+description: "Custom route implementation for shadcn_flutter dialogs.   Extends [RawDialogRoute] to provide consistent dialog behavior with  proper theme inheritance, data capture, and transition animations.  Handles both standard and full-screen dialog presentations.   Features:  - Theme and data inheritance across navigation boundaries  - Configurable alignment and positioning  - Full-screen mode support  - Custom transition animations  - Safe area integration   This class is typically not used directly - use [showDialog] instead."
 ---
 
 ```dart

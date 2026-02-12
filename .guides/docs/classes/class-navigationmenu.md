@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenu"
-description: "A horizontal navigation menu with dropdown content support."
+description: "A horizontal navigation menu with dropdown content support.   Provides a sophisticated navigation component that displays menu items  in a horizontal layout with support for dropdown content. When menu items  have associated content, hovering or clicking reveals a popover with  additional navigation options or information.   The navigation menu manages popover state, hover interactions, and smooth  transitions between different content sections. It supports both simple  action items and complex content-rich dropdown menus with animated  transitions and responsive behavior.   The menu uses a popover overlay to display content, which automatically  positions itself relative to the trigger and handles edge cases for  viewport constraints and user interactions.   Example:  ```dart  NavigationMenu(    surfaceOpacity: 0.95,    surfaceBlur: 8.0,    children: [      NavigationMenuItem(        child: Text('Products'),        content: NavigationMenuContentList(          children: [            NavigationMenuContent(title: Text('Web Apps')),            NavigationMenuContent(title: Text('Mobile Apps')),          ],        ),      ),      NavigationMenuItem(        child: Text('About'),        onPressed: () => Navigator.pushNamed(context, '/about'),      ),    ],  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: CheckboxController"
-description: "Reactive controller for managing checkbox state with convenient methods."
+description: "Reactive controller for managing checkbox state with convenient methods.   Extends [ValueNotifier] to provide state management for checkbox widgets  with built-in methods for common state transitions. Supports all three  checkbox states: checked, unchecked, and indeterminate.   The controller can be used with [ControlledCheckbox] for reactive state  management or manually to coordinate checkbox behavior across widgets.   Example:  ```dart  final controller = CheckboxController(CheckboxState.unchecked);   // React to changes  controller.addListener(() {    print('Checkbox is now: ${controller.value}');  });   // Programmatic control  controller.toggle(); // unchecked -> checked  controller.indeterminate(); // -> indeterminate  ```"
 ---
 
 ```dart

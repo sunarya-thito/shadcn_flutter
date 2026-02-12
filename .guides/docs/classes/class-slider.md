@@ -1,6 +1,6 @@
 ---
 title: "Class: Slider"
-description: "A Material Design slider widget for selecting values or ranges."
+description: "A Material Design slider widget for selecting values or ranges.   A highly customizable slider supporting both single-value and range  selection modes. Provides keyboard navigation, discrete divisions,  hint values, and comprehensive theming options.   Unlike [ControlledSlider], this widget is uncontrolled and requires  explicit value management through [onChanged]. For a controlled  alternative with automatic state management, use [ControlledSlider].   Example:  ```dart  Slider(    value: SliderValue.single(0.5),    min: 0.0,    max: 1.0,    divisions: 10,    onChanged: (newValue) {      setState(() => value = newValue);    },  )  ```"
 ---
 
 ```dart

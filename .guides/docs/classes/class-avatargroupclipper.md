@@ -1,6 +1,6 @@
 ---
 title: "Class: AvatarGroupClipper"
-description: "Custom clipper for creating overlapping avatar group effects."
+description: "Custom clipper for creating overlapping avatar group effects.   Clips avatars to create a stacked appearance where each avatar partially  overlaps the previous one, accounting for border radius and alignment."
 ---
 
 ```dart

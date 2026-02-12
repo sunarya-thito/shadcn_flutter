@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuItem"
-description: "Abstract base class for menu item widgets."
+description: "Abstract base class for menu item widgets.   All menu items (buttons, checkboxes, radio buttons, dividers, etc.) must  implement this interface. Menu items can be placed within menu groups and  support features like leading icons and popover controllers.   See also:  - [MenuButton], clickable menu item  - [MenuCheckbox], checkbox menu item  - [MenuRadio], radio button menu item  - [MenuDivider], divider between menu items"
 ---
 
 ```dart

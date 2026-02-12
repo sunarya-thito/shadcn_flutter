@@ -1,6 +1,6 @@
 ---
 title: "Class: MoreDots"
-description: "A widget that displays multiple dots, commonly used for loading indicators or menus."
+description: "A widget that displays multiple dots, commonly used for loading indicators or menus.   Creates a customizable row or column of circular dots that can be used as a  \"more\" indicator, loading animation, or menu icon. The number, size, color,  and spacing of dots can be configured.   Example:  ```dart  // Horizontal three-dot menu icon  MoreDots(    count: 3,    direction: Axis.horizontal,    spacing: 4,  )   // Vertical loading indicator  MoreDots(    count: 5,    direction: Axis.vertical,    color: Colors.blue,  )  ```"
 ---
 
 ```dart

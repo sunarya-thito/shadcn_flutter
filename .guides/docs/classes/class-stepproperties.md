@@ -1,6 +1,6 @@
 ---
 title: "Class: StepProperties"
-description: "Contains properties and state information for stepper rendering."
+description: "Contains properties and state information for stepper rendering.   Used internally by [StepVariant] implementations to build the  appropriate stepper layout. Provides access to step data, current  state, sizing configuration, and layout direction.   Also includes utility methods like [hasFailure] to check for failed  steps and array-style access to individual steps."
 ---
 
 ```dart

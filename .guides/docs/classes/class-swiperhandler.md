@@ -1,6 +1,6 @@
 ---
 title: "Class: SwiperHandler"
-description: "Abstract handler interface for swiper overlay implementations."
+description: "Abstract handler interface for swiper overlay implementations.   Defines the contract for creating different types of swiper overlays,  with built-in implementations for drawer-style and sheet-style swipers.   Features:  - Pluggable swiper behavior patterns  - Built-in drawer and sheet implementations  - Consistent API across swiper types  - Configurable overlay properties   Example:  ```dart  // Use built-in handlers  const SwiperHandler.drawer  const SwiperHandler.sheet  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnSkeletonizerConfigLayer"
-description: "A configuration layer that provides Skeletonizer setup with theme integration."
+description: "A configuration layer that provides Skeletonizer setup with theme integration.   ShadcnSkeletonizerConfigLayer acts as a bridge between the shadcn theme system  and the underlying Skeletonizer package, ensuring skeleton loading effects  are consistent with the overall design system. This widget wraps content  with properly configured skeleton animation settings.   The component automatically resolves theme values from [SkeletonTheme] and  applies appropriate defaults based on the current theme's color scheme and  scaling factors. It creates a [SkeletonizerConfig] with [PulseEffect] for  smooth, accessible loading animations.   This is typically used internally by skeleton extension methods and should  rarely be instantiated directly by application code.   Example:  ```dart  ShadcnSkeletonizerConfigLayer(    theme: Theme.of(context),    child: YourContentWidget(),  );  ```"
 ---
 
 ```dart

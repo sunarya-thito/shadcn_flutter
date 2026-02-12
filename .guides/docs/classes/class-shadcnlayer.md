@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnLayer"
-description: "A layer widget that provides shadcn theme and infrastructure."
+description: "A layer widget that provides shadcn theme and infrastructure.   This widget sets up the theming, overlay handlers, scroll behavior,  and other infrastructure needed for shadcn_flutter widgets to work correctly."
 ---
 
 ```dart

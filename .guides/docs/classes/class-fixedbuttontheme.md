@@ -1,6 +1,6 @@
 ---
 title: "Class: FixedButtonTheme"
-description: "Theme configuration for fixed button styling."
+description: "Theme configuration for fixed button styling.   Provides theme-level customization for fixed buttons. Fixed buttons maintain  consistent dimensions regardless of content."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: OutlineButtonTheme"
-description: "Theme configuration for outline button styling."
+description: "Theme configuration for outline button styling.   Provides theme-level customization for outline buttons through the component  theme system. Outline buttons feature borders with transparent backgrounds."
 ---
 
 ```dart

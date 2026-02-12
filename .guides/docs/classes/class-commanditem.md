@@ -1,6 +1,6 @@
 ---
 title: "Class: CommandItem"
-description: "An individual selectable item in a command palette."
+description: "An individual selectable item in a command palette.   Represents a single command or option that can be selected via click or  keyboard navigation. Supports optional leading and trailing widgets for  icons, shortcuts, or other decorations.   ## Example   ```dart  CommandItem(    leading: Icon(Icons.save),    title: Text('Save File'),    trailing: Text('Ctrl+S'),    onTap: () => saveFile(),  )  ```"
 ---
 
 ```dart

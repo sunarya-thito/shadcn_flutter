@@ -1,6 +1,6 @@
 ---
 title: "Class: SliderController"
-description: "Reactive controller for managing slider state with value operations."
+description: "Reactive controller for managing slider state with value operations.   Extends [ValueNotifier] to provide state management for slider widgets  using [SliderValue] objects that support both single and range slider  configurations. Enables programmatic slider value changes and provides  convenient methods for common slider operations.   The controller manages [SliderValue] objects which can represent either  single values or dual-thumb range values, providing unified state management  for different slider types.   Example:  ```dart  final controller = SliderController(SliderValue.single(0.5));   // React to changes  controller.addListener(() {    print('Slider value: ${controller.value}');  });   // Programmatic control  controller.setValue(0.75);  controller.setRange(0.2, 0.8);  ```"
 ---
 
 ```dart

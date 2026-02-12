@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorControls"
-description: "Widget providing color input controls with multiple color space modes."
+description: "Widget providing color input controls with multiple color space modes.   Displays inputs for editing colors in RGB, HSL, HSV, or HEX formats  with optional alpha channel and eye dropper tool support."
 ---
 
 ```dart

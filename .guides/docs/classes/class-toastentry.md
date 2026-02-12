@@ -1,6 +1,6 @@
 ---
 title: "Class: ToastEntry"
-description: "Configuration for a single toast notification."
+description: "Configuration for a single toast notification.   Encapsulates all properties needed to display and manage a toast,  including builder, location, timing, and dismissal behavior."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: RadioGroupController"
-description: "Controller for managing [ControlledRadioGroup] state programmatically."
+description: "Controller for managing [ControlledRadioGroup] state programmatically.   Extends [ValueNotifier] to provide reactive state management for radio group  components. Can be used to programmatically change selection, listen to  state changes, and integrate with forms and other reactive systems.   Example:  ```dart  final controller = RadioGroupController<String>('option1');   // Listen to changes  controller.addListener(() {    print('Selection changed to: ${controller.value}');  });   // Update selection  controller.value = 'option2';  ```"
 ---
 
 ```dart

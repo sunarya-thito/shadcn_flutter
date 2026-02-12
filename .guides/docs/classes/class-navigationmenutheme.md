@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuTheme"
-description: "Theme configuration for [NavigationMenu] components."
+description: "Theme configuration for [NavigationMenu] components.   Defines visual properties for navigation menu popovers including  surface appearance, positioning, and spacing. This theme controls  how navigation menu content is displayed when triggered.   The theme can be applied through [ComponentTheme] or passed directly  to individual [NavigationMenu] widgets for customization."
 ---
 
 ```dart

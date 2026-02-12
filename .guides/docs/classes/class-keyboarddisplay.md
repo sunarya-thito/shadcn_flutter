@@ -1,6 +1,6 @@
 ---
 title: "Class: KeyboardDisplay"
-description: "A widget that displays keyboard shortcuts in a visually appealing format."
+description: "A widget that displays keyboard shortcuts in a visually appealing format.   Renders keyboard key combinations as styled keyboard key representations,  typically used in tooltips, help text, or UI elements that need to  communicate keyboard shortcuts to users. The display automatically  formats keys with appropriate spacing and visual styling.   Supports both direct key specification through a list of [LogicalKeyboardKey]  objects and automatic conversion from [ShortcutActivator] instances.  Keys are displayed as individual key representations with configurable  spacing between them.   The component integrates with the keyboard shortcut theming system  and adapts its appearance based on the current theme and scaling settings.  Visual styling matches platform conventions for keyboard key representations.   Example:  ```dart  KeyboardDisplay(    keys: [      LogicalKeyboardKey.controlLeft,      LogicalKeyboardKey.keyS,    ],    spacing: 4.0,  )  ```"
 ---
 
 ```dart

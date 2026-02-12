@@ -1,6 +1,6 @@
 ---
 title: "Class: TabContainer"
-description: "Container widget for managing multiple tabs."
+description: "Container widget for managing multiple tabs.   Provides tab selection and content display with customizable builders."
 ---
 
 ```dart

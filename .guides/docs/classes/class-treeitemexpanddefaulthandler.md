@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeItemExpandDefaultHandler"
-description: "Default handler for tree item expand/collapse operations."
+description: "Default handler for tree item expand/collapse operations.   Manages the expansion state of tree nodes when users interact  with expand/collapse controls.   Example:  ```dart  final handler = TreeItemExpandDefaultHandler(nodes, targetNode, (updated) {    setState(() => nodes = updated);  });  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: InputSpinnerFeature"
-description: "Adds spinner controls (increment/decrement) to numeric input fields."
+description: "Adds spinner controls (increment/decrement) to numeric input fields.   Provides up/down buttons to adjust numeric values in fixed steps.  Optionally supports gesture-based adjustments (e.g., drag to change value).   Example:  ```dart  TextField(    keyboardType: TextInputType.number,    features: [      InputSpinnerFeature(        step: 5.0,        enableGesture: true,      ),    ],  )  ```"
 ---
 
 ```dart

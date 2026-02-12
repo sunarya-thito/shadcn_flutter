@@ -1,6 +1,6 @@
 ---
 title: "Class: AnimatedProperty"
-description: "A property that can be animated between values of type [T]."
+description: "A property that can be animated between values of type [T].   This class manages an animation controller and interpolates between values  using a custom lerp function. It automatically triggers widget rebuilds when  the animation progresses.   ## Type Parameters   * [T] - The type of value being animated.   ## Overview   [AnimatedProperty] is typically created via [AnimatedMixin] factory methods  like [createAnimatedDouble] or [createAnimatedColor]. When you set a new  [value], it smoothly animates from the current value to the target.   ## Example   ```dart  // Created via AnimatedMixin  final opacity = createAnimatedDouble(1.0);   // Setting value triggers animation  opacity.value = 0.0;   // Access current value during animation  final current = opacity.value;  ```"
 ---
 
 ```dart

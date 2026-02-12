@@ -1,6 +1,6 @@
 ---
 title: "Class: AvatarGroup"
-description: "A widget that arranges multiple [AvatarWidget]s in an overlapping layout."
+description: "A widget that arranges multiple [AvatarWidget]s in an overlapping layout.   [AvatarGroup] creates visually appealing overlapping arrangements of avatars,  commonly used to display multiple users or participants in a compact space.  It automatically handles clipping and positioning to create smooth overlapping  effects with configurable gaps and alignment directions.   ## Features  - **Overlapping Layout**: Automatic positioning with smooth overlapping  - **Directional Alignment**: Support for all 8 directional alignments  - **Smart Clipping**: Intelligent path clipping preserves rounded corners  - **Gap Control**: Configurable spacing between overlapping avatars  - **Size Adaptation**: Automatically adapts to different avatar sizes   ## Layout Behavior  The first avatar is positioned normally, while subsequent avatars are  positioned and clipped to create the overlapping effect. The [alignment]  parameter controls the direction of overlap, and [gap] controls the  spacing between avatars.   ## Factory Constructors  Convenient factory methods are provided for common alignment patterns:  - [toLeft], [toRight]: Horizontal overlapping  - [toStart], [toEnd]: Locale-aware horizontal overlapping  - [toTop], [toBottom]: Vertical overlapping   Example:  ```dart  AvatarGroup.toRight(    children: [      Avatar(initials: 'AB'),      Avatar(initials: 'CD'),      Avatar(initials: 'EF'),    ],    gap: 8.0,  );  ```"
 ---
 
 ```dart

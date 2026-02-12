@@ -1,6 +1,6 @@
 ---
 title: "Class: TabChildWidget"
-description: "A simple tab child widget wrapping arbitrary content."
+description: "A simple tab child widget wrapping arbitrary content.   Implements [TabChild] to make any widget usable within a tab container.  The wrapped child is rendered directly without additional decoration."
 ---
 
 ```dart

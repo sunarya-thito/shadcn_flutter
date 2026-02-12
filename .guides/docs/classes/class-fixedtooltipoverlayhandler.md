@@ -1,6 +1,6 @@
 ---
 title: "Class: FixedTooltipOverlayHandler"
-description: "A fixed overlay handler for tooltips using direct overlay entries."
+description: "A fixed overlay handler for tooltips using direct overlay entries.   This handler creates tooltips using Flutter's built-in overlay system  without delegating to an overlay manager. Tooltips are positioned  directly in the overlay and use fixed positioning relative to their  anchor widget.   Use this handler when you need direct control over tooltip overlay  entries or when not using an overlay manager."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: Scrollbar"
-description: "A customizable scrollbar widget for shadcn_flutter."
+description: "A customizable scrollbar widget for shadcn_flutter.   [Scrollbar] provides a themeable scrollbar that can be attached to any  scrollable widget. It supports both vertical and horizontal orientations,  configurable appearance, and interactive dragging.   Example:  ```dart  Scrollbar(    controller: scrollController,    thumbVisibility: true,    thickness: 8,    child: ListView.builder(      controller: scrollController,      itemCount: 100,      itemBuilder: (context, index) => ListTile(title: Text('Item $index')),    ),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapsibleState"
-description: "State class for [Collapsible] widget."
+description: "State class for [Collapsible] widget.   Manages the expansion/collapse animation state and handles transitions  between expanded and collapsed states."
 ---
 
 ```dart

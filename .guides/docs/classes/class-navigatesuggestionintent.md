@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigateSuggestionIntent"
-description: "Intent for navigating through autocomplete suggestions via keyboard."
+description: "Intent for navigating through autocomplete suggestions via keyboard.   Used internally by [AutoComplete] to handle arrow key navigation within  the suggestion list. The [direction] indicates movement direction where  positive values move down and negative values move up."
 ---
 
 ```dart

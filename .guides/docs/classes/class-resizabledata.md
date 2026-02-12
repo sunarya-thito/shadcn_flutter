@@ -1,6 +1,6 @@
 ---
 title: "Class: ResizableData"
-description: "Data class providing information about a resizable panel's orientation."
+description: "Data class providing information about a resizable panel's orientation.   Used internally to pass layout direction information through the widget tree."
 ---
 
 ```dart

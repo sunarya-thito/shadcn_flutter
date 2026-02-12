@@ -1,6 +1,6 @@
 ---
 title: "Class: DividerPainter"
-description: "Custom painter for drawing horizontal divider lines."
+description: "Custom painter for drawing horizontal divider lines.   Renders a horizontal line with specified color, thickness, and indents."
 ---
 
 ```dart

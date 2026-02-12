@@ -1,6 +1,6 @@
 ---
 title: "Class: NotEmptyValidator"
-description: "A validator that ensures a string is not null or empty."
+description: "A validator that ensures a string is not null or empty.   [NotEmptyValidator] extends [NonNullValidator] to also check for empty strings.  Commonly used for text field validation.   Example:  ```dart  NotEmptyValidator(    message: 'Please enter a value',  )  ```"
 ---
 
 ```dart

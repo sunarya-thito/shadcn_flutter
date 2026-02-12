@@ -1,6 +1,6 @@
 ---
 title: "Class: ConstrainedTableSize"
-description: "Defines size constraints for table columns or rows."
+description: "Defines size constraints for table columns or rows.   Specifies minimum and maximum size limits that can be applied  to table dimensions. Used with [ResizableTable] to control  resize boundaries.   Example:  ```dart  ConstrainedTableSize(    min: 50.0,  // Minimum 50 pixels    max: 300.0, // Maximum 300 pixels  )  ```"
 ---
 
 ```dart

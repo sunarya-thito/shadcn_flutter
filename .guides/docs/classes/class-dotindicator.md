@@ -1,6 +1,6 @@
 ---
 title: "Class: DotIndicator"
-description: "Navigation indicator with customizable dots showing current position in a sequence."
+description: "Navigation indicator with customizable dots showing current position in a sequence.   A visual indicator widget that displays a series of dots representing items  in a sequence, with one dot highlighted to show the current position.  Commonly used with carousels, page views, and stepper interfaces.   ## Features   - **Position indication**: Clear visual representation of current position  - **Interactive navigation**: Optional tap-to-navigate functionality  - **Flexible orientation**: Horizontal or vertical dot arrangement  - **Custom dot builders**: Complete control over dot appearance and behavior  - **Responsive spacing**: Automatic scaling with theme configuration  - **Accessibility support**: Screen reader friendly with semantic information   The indicator automatically highlights the dot at the current index and  can optionally respond to taps to change the active position.   Example:  ```dart  DotIndicator(    index: currentPage,    length: totalPages,    onChanged: (newIndex) => pageController.animateToPage(newIndex),    direction: Axis.horizontal,    spacing: 12.0,  );  ```"
 ---
 
 ```dart

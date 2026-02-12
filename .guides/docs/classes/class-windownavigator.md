@@ -1,6 +1,6 @@
 ---
 title: "Class: WindowNavigator"
-description: "A widget that manages multiple floating windows."
+description: "A widget that manages multiple floating windows.   Provides a desktop-style window management system where multiple windows  can be displayed, dragged, resized, minimized, and maximized.   Example:  ```dart  WindowNavigator(    initialWindows: [      Window(        controller: WindowController(bounds: Rect.fromLTWH(100, 100, 400, 300)),        child: Text('Window Content'),      ),    ],  )  ```"
 ---
 
 ```dart

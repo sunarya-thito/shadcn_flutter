@@ -1,6 +1,6 @@
 ---
 title: "Class: FormValueState"
-description: "Holds the current value and validator for a form field."
+description: "Holds the current value and validator for a form field.   Immutable snapshot of a form field's state used internally by form controllers  to track field values and their associated validation rules."
 ---
 
 ```dart

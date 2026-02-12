@@ -1,6 +1,6 @@
 ---
 title: "Class: AutoCompleteTheme"
-description: "Theme configuration for [AutoComplete] widget styling and behavior."
+description: "Theme configuration for [AutoComplete] widget styling and behavior.   Defines the visual appearance and positioning of the autocomplete popover  that displays suggestions. All properties are optional and will fall back  to sensible defaults when not specified.   This theme can be applied globally through [ComponentTheme] or passed  directly to individual [AutoComplete] widgets for per-instance customization."
 ---
 
 ```dart

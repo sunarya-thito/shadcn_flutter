@@ -1,6 +1,6 @@
 ---
 title: "Class: ListInsertChange"
-description: "A list change that inserts an item."
+description: "A list change that inserts an item.   Inserts [item] at the specified [index] in the list."
 ---
 
 ```dart

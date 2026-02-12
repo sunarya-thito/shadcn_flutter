@@ -1,6 +1,6 @@
 ---
 title: "Class: ThemeData"
-description: "The theme data for shadcn_flutter."
+description: "The theme data for shadcn_flutter.   Contains all theming information including colors, typography,  scaling, and platform-specific settings."
 ---
 
 ```dart
@@ -23,6 +23,9 @@ class ThemeData {
   final double? surfaceOpacity;
   /// Default blur radius for surface effects.
   final double? surfaceBlur;
+  /// Default setting for feedback on mobile platforms (e.g., iOS, Android, Fuchsia).
+  final bool? enableFeedback;
+  /// Density settings that scale spacing and padding.
   final Density density;
   /// Creates a [ThemeData] with light color scheme.
   ///
@@ -35,7 +38,7 @@ class ThemeData {
   /// - [platform] (`TargetPlatform?`, optional): Target platform override.
   /// - [surfaceOpacity] (`double?`, optional): Surface overlay opacity.
   /// - [surfaceBlur] (`double?`, optional): Surface blur radius.
-  const ThemeData({this.colorScheme = ColorSchemes.lightSlate, this.radius = 0.5, this.scaling = 1, this.typography = const Typography.geist(), this.iconTheme = const IconThemeProperties(), TargetPlatform? platform, this.surfaceOpacity, this.surfaceBlur, this.density = Density.defaultDensity});
+  const ThemeData({this.colorScheme = ColorSchemes.lightSlate, this.radius = 0.5, this.scaling = 1, this.typography = const Typography.geist(), this.iconTheme = const IconThemeProperties(), TargetPlatform? platform, this.surfaceOpacity, this.enableFeedback, this.surfaceBlur, this.density = Density.defaultDensity});
   /// Creates a [ThemeData] with dark color scheme.
   ///
   /// Parameters:
@@ -47,7 +50,7 @@ class ThemeData {
   /// - [platform] (`TargetPlatform?`, optional): Target platform override.
   /// - [surfaceOpacity] (`double?`, optional): Surface overlay opacity.
   /// - [surfaceBlur] (`double?`, optional): Surface blur radius.
-  const ThemeData.dark({this.colorScheme = ColorSchemes.darkSlate, this.radius = 0.5, this.scaling = 1, this.typography = const Typography.geist(), this.iconTheme = const IconThemeProperties(), TargetPlatform? platform, this.surfaceOpacity, this.surfaceBlur, this.density = Density.defaultDensity});
+  const ThemeData.dark({this.colorScheme = ColorSchemes.darkSlate, this.radius = 0.5, this.scaling = 1, this.typography = const Typography.geist(), this.iconTheme = const IconThemeProperties(), TargetPlatform? platform, this.surfaceOpacity, this.surfaceBlur, this.density = Density.defaultDensity, this.enableFeedback});
   /// The current platform.
   TargetPlatform get platform;
   /// The specified platform, or null if not overridden.
@@ -95,7 +98,7 @@ class ThemeData {
   /// All parameters are optional getters that provide new values when present.
   ///
   /// Returns: `ThemeData` — a new theme with updated values.
-  ThemeData copyWith({ValueGetter<ColorScheme>? colorScheme, ValueGetter<double>? radius, ValueGetter<Typography>? typography, ValueGetter<TargetPlatform>? platform, ValueGetter<double>? scaling, ValueGetter<IconThemeProperties>? iconTheme, ValueGetter<double>? surfaceOpacity, ValueGetter<double>? surfaceBlur, ValueGetter<Density>? density});
+  ThemeData copyWith({ValueGetter<ColorScheme>? colorScheme, ValueGetter<double>? radius, ValueGetter<Typography>? typography, ValueGetter<TargetPlatform>? platform, ValueGetter<double>? scaling, ValueGetter<IconThemeProperties>? iconTheme, ValueGetter<double>? surfaceOpacity, ValueGetter<double>? surfaceBlur, ValueGetter<bool?>? enableFeedback, ValueGetter<Density>? density});
   /// Linearly interpolates between two theme datas.
   ///
   /// Parameters:

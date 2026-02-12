@@ -1,6 +1,6 @@
 ---
 title: "Class: Spinner"
-description: "Abstract base class for all spinner widgets."
+description: "Abstract base class for all spinner widgets.   [Spinner] provides common functionality for loading indicators including  color and size resolution from theme. Concrete implementations include  [CircularSpinner], [DotsSpinner], and others."
 ---
 
 ```dart

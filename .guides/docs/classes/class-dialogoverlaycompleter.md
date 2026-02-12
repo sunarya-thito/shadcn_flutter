@@ -1,6 +1,6 @@
 ---
 title: "Class: DialogOverlayCompleter"
-description: "Completer that manages the lifecycle of a dialog overlay."
+description: "Completer that manages the lifecycle of a dialog overlay.   Provides control over dialog animations, completion status, and disposal.  Wraps a [DialogRoute] to offer a consistent interface for managing  dialog lifecycles through the overlay system.   Features:  - Animation state monitoring  - Future-based completion handling  - Proper resource disposal  - Route management integration   Example:  ```dart  final completer = DialogOverlayCompleter(dialogRoute);  await completer.future; // Wait for dialog completion  completer.remove(); // Programmatically close dialog  ```"
 ---
 
 ```dart

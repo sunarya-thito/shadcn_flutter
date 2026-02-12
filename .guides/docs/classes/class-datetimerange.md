@@ -1,6 +1,6 @@
 ---
 title: "Class: DateTimeRange"
-description: "Represents a range of dates with a start and end time."
+description: "Represents a range of dates with a start and end time.   Immutable value type for representing a continuous period between two dates.  Commonly used with date range pickers to specify selected date intervals.   Example:  ```dart  final range = DateTimeRange(    DateTime(2024, 1, 1),    DateTime(2024, 1, 31),  );  ```"
 ---
 
 ```dart

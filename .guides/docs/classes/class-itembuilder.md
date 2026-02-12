@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemBuilder"
-description: "A delegate that builds items on demand using a builder function."
+description: "A delegate that builds items on demand using a builder function.   Allows lazy generation of items, useful for large or infinite lists.   Example:  ```dart  ItemBuilder<int>(    itemCount: 100,    itemBuilder: (index) => index * 2,  )  ```"
 ---
 
 ```dart

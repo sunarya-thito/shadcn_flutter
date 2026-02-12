@@ -1,6 +1,6 @@
 ---
 title: "Class: Wrapper"
-description: "A widget that conditionally wraps its child with a builder function."
+description: "A widget that conditionally wraps its child with a builder function.   [Wrapper] provides flexible control over whether and how to wrap a child widget.  It can optionally apply a custom builder function and maintain the widget  structure across rebuilds using a keyed subtree.   Key features:  - Conditional wrapping with [wrap] flag  - Optional structure preservation with [maintainStructure]  - Custom builder function support via [WrapperBuilder]   Example:  ```dart  Wrapper(    wrap: true,    builder: (context, child) => Container(      padding: EdgeInsets.all(8),      child: child,    ),    child: Text('Hello'),  )  ```"
 ---
 
 ```dart

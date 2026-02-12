@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledComponentData"
-description: "Immutable data container for controlled component state."
+description: "Immutable data container for controlled component state.   This class encapsulates the three essential pieces of state that  controlled components need: the current value, a change callback,  and the enabled status. It provides a convenient way to pass  this state to widget builders.   The generic type [T] represents the type of value being managed."
 ---
 
 ```dart

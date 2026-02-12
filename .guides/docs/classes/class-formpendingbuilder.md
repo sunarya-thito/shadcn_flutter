@@ -1,6 +1,6 @@
 ---
 title: "Class: FormPendingBuilder"
-description: "Widget builder for displaying pending form validations."
+description: "Widget builder for displaying pending form validations.   Shows feedback while asynchronous validations are in progress."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerOverlayEntry"
-description: "Data class representing a drawer overlay entry in the stack."
+description: "Data class representing a drawer overlay entry in the stack.   Encapsulates all configuration and state needed to render a single  drawer overlay, including builders, animation, theming, and positioning."
 ---
 
 ```dart

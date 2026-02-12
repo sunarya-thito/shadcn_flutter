@@ -1,6 +1,6 @@
 ---
 title: "Class: Step"
-description: "Represents a single step in a stepper component."
+description: "Represents a single step in a stepper component.   Contains the step's title, optional content builder for step details,  and an optional custom icon. The content builder is called when  the step becomes active to show step-specific content.   Example:  ```dart  Step(    title: Text('Personal Info'),    icon: Icon(Icons.person),    contentBuilder: (context) => PersonalInfoForm(),  );  ```"
 ---
 
 ```dart

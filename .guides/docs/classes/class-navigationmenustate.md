@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuState"
-description: "State class for [NavigationMenu] managing menu interactions and timing."
+description: "State class for [NavigationMenu] managing menu interactions and timing.   Handles hover debouncing, popover control, active menu item tracking,  and content builder management for navigation menu items."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorStop"
-description: "Represents a color stop in a gradient with a specific color and position."
+description: "Represents a color stop in a gradient with a specific color and position.   A color stop defines where a particular color appears along a gradient.  The position is typically a value between 0.0 (start) and 1.0 (end).   Example:  ```dart  const stop = ColorStop(    color: ColorDerivative.fromColor(Colors.blue),    position: 0.5, // Middle of the gradient  );  ```"
 ---
 
 ```dart

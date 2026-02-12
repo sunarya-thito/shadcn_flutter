@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuTheme"
-description: "{@template menu_theme}  Styling options for menu widgets such as [MenuGroup] and [MenuButton]."
+description: "{@template menu_theme}  Styling options for menu widgets such as [MenuGroup] and [MenuButton].  {@endtemplate}"
 ---
 
 ```dart

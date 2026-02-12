@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectedButtonState"
-description: "State class for [SelectedButton] managing selection and interaction states."
+description: "State class for [SelectedButton] managing selection and interaction states.   Handles widget state controller lifecycle and synchronizes the selected state  with the button's value."
 ---
 
 ```dart

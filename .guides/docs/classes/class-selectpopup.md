@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectPopup"
-description: "A popup widget for displaying selectable items in a dropdown."
+description: "A popup widget for displaying selectable items in a dropdown.   Provides a searchable, scrollable list of items with various display modes."
 ---
 
 ```dart

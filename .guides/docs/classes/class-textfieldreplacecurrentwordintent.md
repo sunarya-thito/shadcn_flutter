@@ -1,6 +1,6 @@
 ---
 title: "Class: TextFieldReplaceCurrentWordIntent"
-description: "Intent to replace the current word in the text field."
+description: "Intent to replace the current word in the text field.   Replaces the word at the current cursor position with new text.  Used with Flutter's Actions/Shortcuts system."
 ---
 
 ```dart

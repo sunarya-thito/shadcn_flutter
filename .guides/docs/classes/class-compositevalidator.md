@@ -1,6 +1,6 @@
 ---
 title: "Class: CompositeValidator"
-description: "A validator that combines multiple validators with AND logic."
+description: "A validator that combines multiple validators with AND logic.   [CompositeValidator] runs multiple validators sequentially and only passes  if all validators pass. If any validator fails, validation stops and returns  that error. Created automatically when using the `&` operator between validators.   Example:  ```dart  CompositeValidator([    NonNullValidator(),    MinLengthValidator(3),    EmailValidator(),  ])  ```"
 ---
 
 ```dart

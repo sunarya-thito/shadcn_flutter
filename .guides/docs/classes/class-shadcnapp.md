@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnApp"
-description: "The main application widget for shadcn_flutter."
+description: "The main application widget for shadcn_flutter.   ShadcnApp provides a Material-style app structure with shadcn theming.  It wraps the Flutter [WidgetsApp] and provides theme management,  navigation, and other app-level configurations."
 ---
 
 ```dart

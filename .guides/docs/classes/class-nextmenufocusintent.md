@@ -1,6 +1,6 @@
 ---
 title: "Class: NextMenuFocusIntent"
-description: "Intent for moving focus to next/previous menu item."
+description: "Intent for moving focus to next/previous menu item.   Used for keyboard navigation within menus (Tab/Shift+Tab)."
 ---
 
 ```dart

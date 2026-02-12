@@ -1,6 +1,6 @@
 ---
 title: "Class: Command"
-description: "Interactive command palette with search functionality and dynamic results."
+description: "Interactive command palette with search functionality and dynamic results.   A powerful search and command interface that provides real-time filtering  of commands or items based on user input. Features debounced search,  keyboard navigation, and customizable result presentation.   ## Features   - **Real-time search**: Dynamic filtering with configurable debounce timing  - **Keyboard navigation**: Full arrow key and Enter/Escape support  - **Async data loading**: Stream-based results with loading and error states  - **Customizable states**: Custom builders for empty, loading, and error states  - **Auto-focus**: Optional automatic focus on the search input  - **Accessibility**: Screen reader friendly with proper focus management   The command palette is commonly used for:  - Quick action selection (Cmd+K style interfaces)  - Searchable option lists  - Dynamic content filtering  - Command-driven workflows   Example:  ```dart  Command(    autofocus: true,    debounceDuration: Duration(milliseconds: 300),    builder: (context, query) async* {      final results = await searchService.search(query);      yield results.map((item) => CommandItem(        onTap: () => handleCommand(item),        title: Text(item.title),      )).toList();    },    emptyBuilder: (context) => Text('No results found'),  );  ```"
 ---
 
 ```dart

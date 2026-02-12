@@ -1,6 +1,6 @@
 ---
 title: "Class: ListSwapChange"
-description: "A list change that swaps two items."
+description: "A list change that swaps two items.   Exchanges the items at positions [from] and [to] in the list."
 ---
 
 ```dart

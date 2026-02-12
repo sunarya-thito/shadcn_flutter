@@ -1,6 +1,6 @@
 ---
 title: "Class: ContextMenu"
-description: "A widget that shows a context menu when right-clicked or long-pressed."
+description: "A widget that shows a context menu when right-clicked or long-pressed.   Wraps a child widget and displays a customizable menu on context menu triggers.   Example:  ```dart  ContextMenu(    items: [      MenuButton(onPressed: (_) => print('Edit'), child: Text('Edit')),      MenuButton(onPressed: (_) => print('Delete'), child: Text('Delete')),    ],    child: Container(child: Text('Right-click me')),  )  ```"
 ---
 
 ```dart

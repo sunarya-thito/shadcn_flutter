@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledAnimation"
-description: "A controlled animation that wraps an [AnimationController] and provides  smooth transitions between values using curves."
+description: "A controlled animation that wraps an [AnimationController] and provides  smooth transitions between values using curves.   This class extends [Animation]`<double>` and allows programmatic control  of animations with custom start and end values, as well as curve adjustments.   ## Overview   Use [ControlledAnimation] when you need fine-grained control over animation  values and want to smoothly transition from any current value to a target  value with a specified curve.   ## Example   ```dart  final controller = AnimationController(    vsync: this,    duration: const Duration(milliseconds: 300),  );  final animation = ControlledAnimation(controller);   // Animate to 0.8 with ease-in curve  animation.forward(0.8, Curves.easeIn);  ```"
 ---
 
 ```dart

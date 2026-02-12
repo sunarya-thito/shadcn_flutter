@@ -1,6 +1,6 @@
 ---
 title: "Class: FileIconProviderData"
-description: "Internal data class for [FileIconProvider]."
+description: "Internal data class for [FileIconProvider].   Stores the configuration for file icon provision and provides  a method to build icons based on file extensions."
 ---
 
 ```dart

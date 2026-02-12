@@ -1,6 +1,6 @@
 ---
 title: "Class: ChatBubbleType"
-description: "Defines the type of a [ChatBubble]."
+description: "Defines the type of a [ChatBubble].   This abstract class allows for different visual styles of chat bubbles,  such as plain bubbles or bubbles with tails."
 ---
 
 ```dart

@@ -8,6 +8,11 @@
   empty
 - Fixed NavigationSidebar not working correctly after recent breaking changes
 
+### Changed
+
+- NavigationWidget is now a builder-only widget that requires a builder function
+  to be provided.
+
 ## [0.0.50]
 
 ### Added

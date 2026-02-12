@@ -1,6 +1,6 @@
 ---
 title: "Class: RawCell"
-description: "Low-level widget for positioning cells in table layouts."
+description: "Low-level widget for positioning cells in table layouts.   Sets parent data for a table cell widget. Used internally by  table implementations to manage cell positioning and spanning.   Example:  ```dart  RawCell(    column: 0,    row: 1,    columnSpan: 2,    child: Container(...),  )  ```"
 ---
 
 ```dart

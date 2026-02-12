@@ -1,6 +1,6 @@
 ---
 title: "Class: EmailValidator"
-description: "A validator that checks if a string is a valid email address."
+description: "A validator that checks if a string is a valid email address.   [EmailValidator] uses the email_validator package to validate email  addresses according to standard email format rules.   Example:  ```dart  EmailValidator(    message: 'Please enter a valid email address',  )  ```"
 ---
 
 ```dart

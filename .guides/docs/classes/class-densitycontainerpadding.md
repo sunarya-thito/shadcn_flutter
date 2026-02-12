@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityContainerPadding"
-description: "A padding widget that resolves density insets using container padding base."
+description: "A padding widget that resolves density insets using container padding base.   Use this for widgets that contain multiple children (cards, dialogs, panels).  The padding is resolved using [Density.baseContainerPadding].   Example:  ```dart  DensityContainerPadding(    padding: const DirectionalEdgeInsetsDensity.all(padLg),    child: Column(children: [...]),  )  ```"
 ---
 
 ```dart

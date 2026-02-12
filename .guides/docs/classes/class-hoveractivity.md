@@ -1,6 +1,6 @@
 ---
 title: "Class: HoverActivity"
-description: "A widget that tracks mouse hover state and triggers callbacks."
+description: "A widget that tracks mouse hover state and triggers callbacks.   [HoverActivity] monitors when the mouse cursor enters, hovers over, and exits  its child widget, calling appropriate callbacks. The [onHover] callback can be  called repeatedly while hovering if [debounceDuration] is set.   Example:  ```dart  HoverActivity(    debounceDuration: Duration(milliseconds: 500),    onEnter: () => print('Mouse entered'),    onHover: () => print('Still hovering'),    onExit: () => print('Mouse exited'),    child: Container(      width: 100,      height: 100,      color: Colors.blue,    ),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: Radio"
-description: "A radio button widget that displays a circular selection indicator."
+description: "A radio button widget that displays a circular selection indicator.   [Radio] provides a visual representation of a selectable option within  a radio group. It displays as a circular button with an inner dot when  selected and an empty circle when unselected. The widget supports focus  indication and customizable colors and sizing.   The radio button animates smoothly between selected and unselected states,  providing visual feedback to user interactions. It integrates with the  focus system to provide accessibility support and keyboard navigation.   Typically used within [RadioItem] or [RadioGroup] components rather than  standalone, as it only provides the visual representation without the  interaction logic.   Example:  ```dart  Radio(    value: isSelected,    focusing: hasFocus,    size: 20,    activeColor: Colors.blue,  );  ```"
 ---
 
 ```dart

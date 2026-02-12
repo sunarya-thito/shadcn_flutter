@@ -1,6 +1,6 @@
 ---
 title: "Class: ContextMenuPopup"
-description: "Internal widget for rendering a context menu popup."
+description: "Internal widget for rendering a context menu popup.   Displays the actual menu content in an overlay with positioning and theming.  Typically used internally by [ContextMenu]."
 ---
 
 ```dart

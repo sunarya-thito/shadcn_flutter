@@ -1,6 +1,6 @@
 ---
 title: "Class: TrackerLevel"
-description: "An abstract class that defines values for different Tracker levels."
+description: "An abstract class that defines values for different Tracker levels.   [TrackerLevel] provides a standardized way to represent different status  or priority levels in tracker components. Each level defines both a visual  color and descriptive name for consistent representation across the UI.   ## Predefined Levels  The class includes several predefined levels for common use cases:  - [fine]: Green color, typically for healthy/good states  - [warning]: Orange color, for cautionary states requiring attention  - [critical]: Red color, for urgent states requiring immediate action  - [unknown]: Gray color, for undefined or unavailable states   ## Custom Levels  Custom tracker levels can be implemented by extending this abstract class  and providing [color] and [name] implementations.   Example:  ```dart  // Using predefined levels  TrackerData(    level: TrackerLevel.critical,    tooltip: Text('System Alert'),  );   // Creating custom level  class CustomLevel implements TrackerLevel {    @override    Color get color => Colors.purple;     @override    String get name => 'Custom';  }  ```"
 ---
 
 ```dart

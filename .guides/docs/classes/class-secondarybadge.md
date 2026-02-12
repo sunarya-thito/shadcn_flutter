@@ -1,6 +1,6 @@
 ---
 title: "Class: SecondaryBadge"
-description: "A secondary-styled badge for displaying labels, counts, or status indicators."
+description: "A secondary-styled badge for displaying labels, counts, or status indicators.   Similar to [PrimaryBadge] but with secondary (muted) styling suitable for  less prominent information."
 ---
 
 ```dart

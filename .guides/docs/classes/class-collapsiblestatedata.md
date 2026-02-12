@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapsibleStateData"
-description: "Internal data structure for sharing collapsible state between child widgets."
+description: "Internal data structure for sharing collapsible state between child widgets.   [CollapsibleStateData] provides a communication mechanism between the  [Collapsible] parent and its child widgets like [CollapsibleTrigger] and  [CollapsibleContent]. It exposes the current expansion state and a  callback for triggering state changes."
 ---
 
 ```dart

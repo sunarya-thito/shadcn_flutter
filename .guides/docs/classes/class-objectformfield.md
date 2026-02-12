@@ -1,6 +1,6 @@
 ---
 title: "Class: ObjectFormField"
-description: "A form field widget for complex object values."
+description: "A form field widget for complex object values.   [ObjectFormField] provides a button-like trigger that opens an editor  (in a dialog or popover) for selecting/editing complex values. The field  displays the selected value using a custom builder.   Useful for date pickers, color pickers, file selectors, and other  complex input scenarios where a simple text field isn't sufficient.   Example:  ```dart  ObjectFormField<DateTime>(    value: selectedDate,    placeholder: Text('Select date'),    builder: (context, date) => Text(formatDate(date)),    editorBuilder: (context, handler) => CalendarWidget(),    mode: PromptMode.dialog,  )  ```"
 ---
 
 ```dart

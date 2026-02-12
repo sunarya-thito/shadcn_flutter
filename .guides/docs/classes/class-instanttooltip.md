@@ -1,6 +1,6 @@
 ---
 title: "Class: InstantTooltip"
-description: "A tooltip that shows immediately on hover without delay."
+description: "A tooltip that shows immediately on hover without delay.   Unlike [Tooltip], this widget displays the tooltip instantly when the  mouse enters the child widget area. It's useful for situations where  immediate feedback is desired, such as toolbar buttons or icon-only  controls where labels need to be visible right away.   The tooltip automatically closes when the mouse leaves the widget."
 ---
 
 ```dart

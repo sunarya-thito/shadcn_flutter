@@ -1,6 +1,6 @@
 ---
 title: "Class: OutlinedContainerTheme"
-description: "Theme configuration for [OutlinedContainer] appearance."
+description: "Theme configuration for [OutlinedContainer] appearance.   Defines styling properties including background color, border styles,  shadows, padding, and surface effects for outlined containers."
 ---
 
 ```dart

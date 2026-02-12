@@ -1,6 +1,6 @@
 ---
 title: "Class: FullScreenDialogOverlayHandler"
-description: "Full-screen variant of the dialog overlay handler."
+description: "Full-screen variant of the dialog overlay handler.   Similar to [DialogOverlayHandler] but specifically designed for full-screen  modal presentations. Removes padding and adjusts styling to fill the entire  screen while maintaining proper overlay management and animation behavior.   Features:  - Full-screen modal presentation  - Edge-to-edge content display  - Maintained overlay architecture  - Proper animation handling  - Theme inheritance   Example:  ```dart  const FullScreenDialogOverlayHandler().show<bool>(    context: context,    alignment: Alignment.center,    builder: (context) => FullScreenForm(),  );  ```"
 ---
 
 ```dart

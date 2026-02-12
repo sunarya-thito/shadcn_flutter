@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityContentPadding"
-description: "A padding widget that resolves density insets using content padding base."
+description: "A padding widget that resolves density insets using content padding base.   Use this for widgets that contain content (buttons, text fields, chips).  The padding is resolved using [Density.baseContentPadding].   Example:  ```dart  DensityContentPadding(    padding: const DirectionalEdgeInsetsDensity.symmetric(      horizontal: padLg,      vertical: padSm,    ),    child: Text('Button content'),  )  ```"
 ---
 
 ```dart

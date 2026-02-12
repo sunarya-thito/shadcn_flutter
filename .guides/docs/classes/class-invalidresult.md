@@ -1,6 +1,6 @@
 ---
 title: "Class: InvalidResult"
-description: "A validation result indicating that validation failed."
+description: "A validation result indicating that validation failed.   [InvalidResult] contains an error message describing why validation failed.  This is the most common validation result type returned by validators when  a value doesn't meet the validation criteria."
 ---
 
 ```dart

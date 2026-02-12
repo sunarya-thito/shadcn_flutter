@@ -1,6 +1,6 @@
 ---
 title: "Class: ConvertedController"
-description: "A controller that converts between types [F] and [T]."
+description: "A controller that converts between types [F] and [T].   Maintains bidirectional synchronization between two value notifiers  with different types using a [BiDirectionalConvert]."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: LucideIcons"
-description: "A collection of Lucide icons as Flutter IconData constants."
+description: "A collection of Lucide icons as Flutter IconData constants.   Lucide is an open-source icon library that provides a wide range of  carefully crafted icons for use in Flutter applications.   Each icon is available as a static constant `IconData` that can be used  directly with Flutter's `Icon` widget.   Example:  ```dart  Icon(    LucideIcons.heart,    size: 24,    color: Colors.red,  )  ```"
 ---
 
 ```dart

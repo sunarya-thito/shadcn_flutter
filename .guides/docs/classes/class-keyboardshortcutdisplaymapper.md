@@ -1,6 +1,6 @@
 ---
 title: "Class: KeyboardShortcutDisplayMapper"
-description: "Widget that provides keyboard shortcut display customization."
+description: "Widget that provides keyboard shortcut display customization.   Allows customization of how keyboard shortcuts are displayed  throughout the widget tree using a builder function."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: WrappedText"
-description: "A widget that wraps text with customizable styling and layout."
+description: "A widget that wraps text with customizable styling and layout.   [WrappedText] provides a declarative way to apply text styles and  transformations using builder functions. It implements [TextModifier]  and is the foundation for the fluent text styling API.   All style properties are computed dynamically using builder functions  that receive the current [BuildContext] and [ThemeData], enabling  theme-aware and responsive text styling."
 ---
 
 ```dart

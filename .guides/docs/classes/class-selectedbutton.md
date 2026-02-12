@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectedButton"
-description: "A button that changes style based on its selected state."
+description: "A button that changes style based on its selected state.   [SelectedButton] provides a stateful button that displays different styles  when selected versus unselected. It supports all standard button gestures  including tap, long press, and hover interactions.   ## Overview   Use [SelectedButton] when you need a button that visually indicates selection  state, such as in tab bars, segmented controls, or toggle groups. The button  automatically switches between [style] (unselected) and [selectedStyle] (selected)  based on the [value] parameter.   ## Example   ```dart  SelectedButton(    value: isSelected,    onChanged: (selected) => setState(() => isSelected = selected),    style: const ButtonStyle.ghost(),    selectedStyle: const ButtonStyle.secondary(),    child: Text('Option A'),  )  ```"
 ---
 
 ```dart

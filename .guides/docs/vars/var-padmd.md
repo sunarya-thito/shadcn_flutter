@@ -1,6 +1,6 @@
 ---
 title: "Variable: padMd"
-description: "Medium padding multiplier (1."
+description: "Medium padding multiplier (1.5)."
 ---
 
 Signature

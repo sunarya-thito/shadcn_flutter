@@ -1,6 +1,6 @@
 ---
 title: "Class: Form"
-description: "A widget that provides form management capabilities for collecting and validating user input."
+description: "A widget that provides form management capabilities for collecting and validating user input.   The Form widget creates a container that manages multiple form fields, providing  centralized validation, data collection, and submission handling. It maintains  form state through a [FormController] and coordinates validation across all  participating form fields.   Form components within the widget tree automatically register themselves with  the nearest Form ancestor, allowing centralized management of field values,  validation states, and error handling. The Form provides validation lifecycle  management and supports both synchronous and asynchronous validation.   Example:  ```dart  final controller = FormController();   Form(    controller: controller,    onSubmit: (values) async {      print('Form submitted with values: $values');    },    child: Column(      children: [        TextInput(          key: FormKey<String>('name'),          label: 'Name',          validator: RequiredValidator(),        ),        Button(          onPressed: () => controller.submit(),          child: Text('Submit'),        ),      ],    ),  );  ```"
 ---
 
 ```dart

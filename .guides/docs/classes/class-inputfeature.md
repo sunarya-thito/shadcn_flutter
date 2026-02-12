@@ -1,6 +1,6 @@
 ---
 title: "Class: InputFeature"
-description: "Abstract factory for creating input field feature components."
+description: "Abstract factory for creating input field feature components.   Provides factory constructors for common text field features like password  toggles, clear buttons, hints, autocomplete, and spinners. Features can be  conditionally shown based on field state using [InputFeatureVisibility].   Example:  ```dart  TextField(    leading: [      InputFeature.hint(        popupBuilder: (context) => Text('Enter email'),      ),    ],    trailing: [      InputFeature.clear(),      InputFeature.passwordToggle(),    ],  )  ```"
 ---
 
 ```dart
@@ -94,19 +94,23 @@ abstract class InputFeature {
   /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
   /// - [step] (`double`, default: 1): Increment step size.
   /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [icon] (`Widget?`, optional): Custom icon widget.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
-  factory InputFeature.incrementButton({InputFeatureVisibility visibility, InputFeaturePosition position, double step, double? invalidValue, Widget? icon, bool skipFocusTraversal});
+  factory InputFeature.incrementButton({InputFeatureVisibility visibility, InputFeaturePosition position, double step, double? invalidValue, double? min, double? max, Widget? icon, bool skipFocusTraversal});
   /// Creates a decrement button feature for numeric inputs.
   ///
   /// Parameters:
   /// - [visibility] (`InputFeatureVisibility`, default: always): When to show button.
   /// - [position] (`InputFeaturePosition`, default: trailing): Where to place button.
-  /// - [step] (`double`, default: 1): Decrement step size.
+  /// - [step] (`double`, default: -1): Decrement step size.
   /// - [invalidValue] (`double?`, optional): Value to use when input is invalid.
+  /// - [min] (`double?`, optional): Minimum allowed value.
+  /// - [max] (`double?`, optional): Maximum allowed value.
   /// - [icon] (`Widget?`, optional): Custom icon widget.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
-  factory InputFeature.decrementButton({InputFeatureVisibility visibility, InputFeaturePosition position, double step, double? invalidValue, Widget? icon, bool skipFocusTraversal});
+  factory InputFeature.decrementButton({InputFeatureVisibility visibility, InputFeaturePosition position, double step, double? invalidValue, double? min, double? max, Widget? icon, bool skipFocusTraversal});
   /// Creates a copy to clipboard button feature.
   ///
   /// Parameters:

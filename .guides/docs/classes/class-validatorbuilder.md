@@ -1,6 +1,6 @@
 ---
 title: "Class: ValidatorBuilder"
-description: "A validator that uses a custom builder function for validation logic."
+description: "A validator that uses a custom builder function for validation logic.   [ValidatorBuilder] provides a flexible way to create validators using  inline functions or custom validation logic without extending the Validator class.   Example:  ```dart  ValidatorBuilder<String>(    (value) {      if (value != null && value.contains('@')) {        return null; // Valid      }      return InvalidResult('Must contain @');    },  )  ```"
 ---
 
 ```dart

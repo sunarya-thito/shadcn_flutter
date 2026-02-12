@@ -1,6 +1,6 @@
 ---
 title: "Class: ChipEditingController"
-description: "A text editing controller that supports inline chip widgets."
+description: "A text editing controller that supports inline chip widgets.   Extends [TextEditingController] to manage text with embedded chip objects  represented by special Unicode codepoints from the Private Use Area (U+E000-U+F8FF).  Each chip is mapped to a unique codepoint allowing up to 6400 chips per controller.   Use this when you need to display removable tags or tokens within a text field,  such as email recipients, keywords, or selected items.   Example:  ```dart  final controller = ChipEditingController<String>(    initialChips: ['tag1', 'tag2'],  );  ```"
 ---
 
 ```dart

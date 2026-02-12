@@ -1,6 +1,6 @@
 ---
 title: "Class: ReplaceResult"
-description: "A validation result that indicates a value should be replaced."
+description: "A validation result that indicates a value should be replaced.   [ReplaceResult] is used when validation determines that the submitted  value should be transformed or replaced with a different value. For example,  trimming whitespace or formatting input."
 ---
 
 ```dart

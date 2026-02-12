@@ -1,6 +1,6 @@
 ---
 title: "Class: GhostButtonTheme"
-description: "Theme configuration for ghost button styling."
+description: "Theme configuration for ghost button styling.   Provides theme-level customization for ghost buttons. Ghost buttons have minimal  visual presence with no background or border by default."
 ---
 
 ```dart

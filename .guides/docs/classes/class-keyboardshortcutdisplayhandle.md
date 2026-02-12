@@ -1,6 +1,6 @@
 ---
 title: "Class: KeyboardShortcutDisplayHandle"
-description: "Handle for accessing keyboard shortcut display builders."
+description: "Handle for accessing keyboard shortcut display builders.   Wraps a keyboard shortcut display builder function to provide  a consistent API for building key displays."
 ---
 
 ```dart

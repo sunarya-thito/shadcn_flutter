@@ -1,6 +1,6 @@
 ---
 title: "Class: InputHintFeature"
-description: "Adds a hint/info button to the input field with a popover."
+description: "Adds a hint/info button to the input field with a popover.   Displays an icon button that shows a popover with additional information  when clicked. Optionally supports keyboard shortcuts (F1) to open the hint.   Example:  ```dart  TextField(    features: [      InputHintFeature(        popupBuilder: (context) => const Text('Enter your email'),        icon: Icon(Icons.help),      ),    ],  )  ```"
 ---
 
 ```dart

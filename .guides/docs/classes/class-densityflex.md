@@ -1,6 +1,6 @@
 ---
 title: "Class: DensityFlex"
-description: "A flex widget with density-aware spacing between children."
+description: "A flex widget with density-aware spacing between children.   Use instead of [Flex] when you want the spacing to adapt to density.  The [spacing] value is a multiplier applied to [Density.baseGap].   Example:  ```dart  DensityFlex(    direction: Axis.horizontal,    spacing: padSm,    children: [      Chip(label: Text('Tag 1')),      Chip(label: Text('Tag 2')),    ],  )  ```"
 ---
 
 ```dart

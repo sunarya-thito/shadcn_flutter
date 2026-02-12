@@ -1,6 +1,6 @@
 ---
 title: "Class: PopoverLayout"
-description: "Custom layout widget for positioning popover content."
+description: "Custom layout widget for positioning popover content.   Handles popover positioning with alignment, sizing constraints, and  automatic inversion when content would overflow screen bounds."
 ---
 
 ```dart

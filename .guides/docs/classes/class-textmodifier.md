@@ -1,6 +1,6 @@
 ---
 title: "Class: TextModifier"
-description: "Abstract base class for text modifier widgets."
+description: "Abstract base class for text modifier widgets.   Text modifiers provide a fluent API for applying text styles and  transformations. They extend [Widget] and can be called as functions  to apply additional style properties.   Use the [TextExtension] methods to create and chain text modifiers."
 ---
 
 ```dart

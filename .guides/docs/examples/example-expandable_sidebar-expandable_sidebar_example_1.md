@@ -24,27 +24,33 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
   // an icon-only sidebar.
   bool expanded = false;
 
-  // Currently selected navigation index. This feeds NavigationRail.index and is
-  // set via onSelected below.
-  int selected = 0;
+  String selected = 'Home';
 
   NavigationItem buildButton(String text, IconData icon) {
     // Convenience factory for a selectable navigation item with left alignment
     // and a primary icon style when selected.
     return NavigationItem(
       label: Text(text),
-      alignment: Alignment.centerLeft,
+      // alignment: Alignment.centerLeft,
       selectedStyle: const ButtonStyle.primaryIcon(),
+      selected: selected == text,
+      onChanged: (selected) {
+        if (selected) {
+          setState(() {
+            this.selected = text;
+          });
+        }
+      },
       child: Icon(icon),
     );
   }
 
-  NavigationLabel buildLabel(String label) {
+  NavigationGroup buildLabel(String label, List<Widget> children) {
     // Section header used to group related navigation items.
-    return NavigationLabel(
-      alignment: Alignment.centerLeft,
-      child: Text(label).semiBold().muted(),
-      // padding: EdgeInsets.zero,
+    return NavigationGroup(
+      labelAlignment: Alignment.centerLeft,
+      label: Text(label).semiBold.muted.xSmall,
+      children: children,
     );
   }
 
@@ -59,10 +65,4 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           NavigationRail(
-            backgroundColor: theme.colorScheme.card,
-            // Expand/collapse behavior is handled by the `expanded` boolean.
-            // With labelType.expanded, labels are hidden when collapsed.
-            labelType: NavigationLabelType.expanded,
-            labelPosition: NavigationLabelPosition.end,
-            alignment: NavigationRailAlignment.start,
 ```

@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectTreeNodeIntent"
-description: "Intent to select a tree node."
+description: "Intent to select a tree node.   Used with Flutter's Actions/Shortcuts system to programmatically  select the currently focused tree node."
 ---
 
 ```dart

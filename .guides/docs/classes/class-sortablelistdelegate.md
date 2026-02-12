@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableListDelegate"
-description: "Abstract base for providing items to a sortable list."
+description: "Abstract base for providing items to a sortable list.   Implement this class to create custom item sources for sortable lists.  Provides item count and item retrieval methods."
 ---
 
 ```dart

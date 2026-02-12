@@ -1,6 +1,6 @@
 ---
 title: "Class: PrimaryButton"
-description: "Convenience widget for creating a primary button."
+description: "Convenience widget for creating a primary button.   [PrimaryButton] is a simplified wrapper around [Button] that automatically  applies the primary button style. It provides a cleaner API for the common  case of creating primary buttons without manually specifying the style.   This widget exposes all the same properties as [Button] but defaults to  [ButtonStyle.primary] for consistent styling.   Example:  ```dart  PrimaryButton(    onPressed: () => submitForm(),    leading: Icon(Icons.check),    child: Text('Submit'),  )  ```"
 ---
 
 ```dart

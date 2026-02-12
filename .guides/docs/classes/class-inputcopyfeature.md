@@ -1,6 +1,6 @@
 ---
 title: "Class: InputCopyFeature"
-description: "Adds a copy button to the input field."
+description: "Adds a copy button to the input field.   Provides a button that copies the current input text to the clipboard.  Useful for allowing users to easily copy generated or displayed content.   Example:  ```dart  TextField(    controller: TextEditingController(text: 'Copy me!'),    features: [      InputCopyFeature(),    ],  )  ```"
 ---
 
 ```dart

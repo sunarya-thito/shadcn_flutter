@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorDerivative"
-description: "An abstract base class representing a color that can be transformed between different color spaces."
+description: "An abstract base class representing a color that can be transformed between different color spaces.   [ColorDerivative] provides a unified interface for working with colors in various color spaces  (HSV, HSL, RGB) while maintaining transformation capabilities. This is particularly useful  in color picker implementations where users may want to work with different color models.   The class supports:  - Conversion between HSV, HSL, and RGB color spaces  - Individual channel manipulation (hue, saturation, value/lightness, red, green, blue, opacity)  - Preserving the internal color representation when transforming   Example:  ```dart  // Create from a Flutter Color  final derivative = ColorDerivative.fromColor(Colors.blue);   // Modify saturation  final desaturated = derivative.changeToHSVSaturation(0.5);   // Convert back to Color  final newColor = desaturated.toColor();  ```"
 ---
 
 ```dart

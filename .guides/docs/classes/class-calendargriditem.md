@@ -1,6 +1,6 @@
 ---
 title: "Class: CalendarGridItem"
-description: "Individual item within a calendar grid representing a single date cell."
+description: "Individual item within a calendar grid representing a single date cell.   Contains metadata about a date's position and state within the calendar grid."
 ---
 
 ```dart

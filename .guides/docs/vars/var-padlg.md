@@ -1,6 +1,6 @@
 ---
 title: "Variable: padLg"
-description: "Standard/large padding multiplier (2."
+description: "Standard/large padding multiplier (2.0)."
 ---
 
 Signature

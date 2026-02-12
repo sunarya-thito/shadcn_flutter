@@ -1,6 +1,6 @@
 ---
 title: "Class: StepTitle"
-description: "Clickable step title widget with optional subtitle."
+description: "Clickable step title widget with optional subtitle.   Displays the step title and optional subtitle in a clickable container.  Used within stepper layouts to provide interactive step navigation.  Supports customizable cross-axis alignment for text positioning.   Example:  ```dart  StepTitle(    title: Text('Account Setup'),    subtitle: Text('Enter your personal details'),    onPressed: () => jumpToThisStep(),  );  ```"
 ---
 
 ```dart

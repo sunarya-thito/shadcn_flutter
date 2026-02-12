@@ -1,6 +1,6 @@
 ---
 title: "Class: Swiper"
-description: "A gesture-responsive widget that triggers overlay content through swiping."
+description: "A gesture-responsive widget that triggers overlay content through swiping.   Detects swipe gestures on the child widget and displays overlay content  using the configured handler (drawer or sheet style). Supports both  programmatic and gesture-based triggering with comprehensive customization.   Features:  - Gesture-based overlay triggering  - Multiple handler implementations (drawer/sheet)  - Configurable swipe sensitivity and behavior  - Theme integration and visual customization  - Programmatic control and dismissal  - Position-aware gesture detection   The swiper responds to swipe gestures in the direction that would reveal  the overlay (e.g., swiping right reveals a left-positioned overlay).   Example:  ```dart  Swiper(    handler: SwiperHandler.drawer,    position: OverlayPosition.left,    builder: (context) => NavigationDrawer(),    child: AppBar(      leading: Icon(Icons.menu),      title: Text('My App'),    ),  )  ```"
 ---
 
 ```dart

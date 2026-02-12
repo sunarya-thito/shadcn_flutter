@@ -1,6 +1,6 @@
 ---
 title: "Class: SliderValue"
-description: "Represents a slider value, supporting both single and range configurations."
+description: "Represents a slider value, supporting both single and range configurations.   A [SliderValue] can represent either a single point value or a dual-thumb  range with start and end values. Use [SliderValue.single] for single-thumb  sliders and [SliderValue.ranged] for range sliders.   This class provides value interpolation, division rounding, and comparison  operations needed for slider animations and discrete value snapping.   Example:  ```dart  // Single value slider  final single = SliderValue.single(0.5);  print(single.value); // 0.5   // Range slider  final range = SliderValue.ranged(0.2, 0.8);  print(range.start); // 0.2  print(range.end);   // 0.8  ```"
 ---
 
 ```dart

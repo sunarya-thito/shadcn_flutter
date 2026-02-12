@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemPicker"
-description: "A widget for selecting items from a collection using various presentation modes."
+description: "A widget for selecting items from a collection using various presentation modes.   This widget provides a flexible item selection interface that can display  items in different layouts (grid, list) and presentation modes (dialog, popover).  It's suitable for scenarios where users need to pick from a predefined set  of items like colors, icons, templates, or any custom objects.   The ItemPicker uses a delegate pattern to provide items, allowing for both  static lists and dynamic item generation. Items are displayed using a  custom builder function that determines how each item appears in the picker.   Example:  ```dart  ItemPicker<Color>(    items: ItemList([Colors.red, Colors.green, Colors.blue]),    value: Colors.red,    builder: (context, color, isSelected) {      return Container(        width: 40,        height: 40,        decoration: BoxDecoration(          color: color,          shape: BoxShape.circle,          border: isSelected ? Border.all(width: 2) : null,        ),      );    },    onChanged: (color) => print('Selected color: $color'),  );  ```"
 ---
 
 ```dart

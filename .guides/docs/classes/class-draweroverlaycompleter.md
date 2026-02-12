@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerOverlayCompleter"
-description: "Completer for drawer overlay operations."
+description: "Completer for drawer overlay operations.   Wraps a [DrawerOverlayEntry] to provide overlay lifecycle management,  including animation tracking and dismissal handling."
 ---
 
 ```dart

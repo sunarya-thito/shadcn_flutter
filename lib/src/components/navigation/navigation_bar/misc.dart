@@ -610,14 +610,7 @@ typedef NavigationWidgetBuilder = Widget Function(
 ///
 /// Example:
 /// ```dart
-/// // Static widget
 /// NavigationWidget(
-///   key: ValueKey('custom'),
-///   child: CustomNavigationItem(),
-/// )
-///
-/// // Builder with selection state
-/// NavigationWidget.builder(
 ///   key: ValueKey('custom_builder'),
 ///   builder: (context, selected) => CustomItem(
 ///     highlighted: selected,
@@ -625,34 +618,24 @@ typedef NavigationWidgetBuilder = Widget Function(
 /// )
 /// ```
 class NavigationWidget extends StatelessWidget {
-  /// Static child widget.
-  final Widget? child;
-
   /// Builder function that receives selection state.
-  final NavigationWidgetBuilder? builder;
-
-  /// Creates a navigation widget with a static child.
-  ///
-  /// Parameters:
-  /// - [child] (Widget, required): Static child widget
-  const NavigationWidget({super.key, required Widget this.child})
-      : builder = null;
+  final NavigationWidgetBuilder builder;
 
   /// Creates a navigation widget with a selection-aware builder.
   ///
   /// Parameters:
   /// - [builder] (NavigationWidgetBuilder, required): Builder receiving selection state
-  const NavigationWidget.builder({
+  const NavigationWidget({
     super.key,
-    required NavigationWidgetBuilder this.builder,
-  }) : child = null;
+    required this.builder,
+  });
 
   @override
   Widget build(BuildContext context) {
     var data = Data.maybeOf<NavigationControlData>(context);
     var key = this.key;
     var isSelected = key != null && key == data?.selectedKey;
-    return child ?? builder!(context, isSelected);
+    return builder(context, isSelected);
   }
 }
 

@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnMultiPreview"
-description: "A [MultiPreview] that generates multiple [ShadcnPreview]s with different configurations."
+description: "A [MultiPreview] that generates multiple [ShadcnPreview]s with different configurations.   This is useful for testing shadcn widgets in different themes and brightness modes.   Example:  ```dart  @ShadcnMultiPreview()  class MyWidgetPreview extends StatelessWidget {    @override    Widget build(BuildContext context) {      return MyWidget();    }  }  ```"
 ---
 
 ```dart

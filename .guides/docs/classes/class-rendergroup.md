@@ -1,6 +1,6 @@
 ---
 title: "Class: RenderGroup"
-description: "Render object for [GroupWidget] that handles absolute positioning of children."
+description: "Render object for [GroupWidget] that handles absolute positioning of children.   Manages layout and painting of children positioned using [GroupParentData]."
 ---
 
 ```dart

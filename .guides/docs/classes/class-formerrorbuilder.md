@@ -1,6 +1,6 @@
 ---
 title: "Class: FormErrorBuilder"
-description: "Widget builder for displaying form-wide validation errors."
+description: "Widget builder for displaying form-wide validation errors.   Provides access to all form validation errors for rendering error summaries."
 ---
 
 ```dart

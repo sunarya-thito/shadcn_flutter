@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuContentList"
-description: "A grid layout container for organizing navigation menu content items."
+description: "A grid layout container for organizing navigation menu content items.   Provides flexible grid-based layout for multiple [NavigationMenuContent]  items within a navigation menu popover. The layout arranges items in  columns and rows with customizable spacing and supports responsive  organization of navigation options.   The grid layout adapts to the number of items and specified column count,  creating a structured presentation for complex navigation menus with  multiple categories or sections of content.   Example:  ```dart  NavigationMenuContentList(    crossAxisCount: 2,    spacing: 16.0,    runSpacing: 12.0,    children: [      NavigationMenuContent(title: Text('Dashboard'), onPressed: _openDashboard),      NavigationMenuContent(title: Text('Analytics'), onPressed: _openAnalytics),      NavigationMenuContent(title: Text('Settings'), onPressed: _openSettings),    ],  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ConditionalValidator"
-description: "A validator that applies conditional validation based on form state."
+description: "A validator that applies conditional validation based on form state.   [ConditionalValidator] only executes validation when a predicate condition  is met. This allows validation rules to depend on other form field values  or dynamic conditions.   Example:  ```dart  ConditionalValidator<String>(    (context, value, getFieldValue) async {      final country = await getFieldValue('country');      return country == 'US';    },    message: 'ZIP code required for US addresses',    dependencies: ['country'],  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: RenderScrollableClientViewport"
-description: "Render object for [ScrollableClientViewport]."
+description: "Render object for [ScrollableClientViewport].   Manages the two-dimensional viewport rendering with overscroll support."
 ---
 
 ```dart

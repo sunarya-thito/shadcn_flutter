@@ -1,6 +1,6 @@
 ---
 title: "Class: WrappedIcon"
-description: "A widget that wraps an icon with custom theme data."
+description: "A widget that wraps an icon with custom theme data.   Applies icon theme styling to a child icon widget using a builder  function that can access the current context and theme. Useful for  applying dynamic icon styles based on theme values.   Example:  ```dart  WrappedIcon(    data: (context, theme) => IconThemeData(      size: 24,      color: theme.colorScheme.primary,    ),    child: Icon(Icons.star),  )  ```"
 ---
 
 ```dart

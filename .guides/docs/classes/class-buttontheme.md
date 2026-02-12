@@ -1,6 +1,6 @@
 ---
 title: "Class: ButtonTheme"
-description: "Abstract base class for button theme customization."
+description: "Abstract base class for button theme customization.   [ButtonTheme] provides optional style property delegates that can override  or modify the default button styling. Subclasses implement specific button  variants (primary, secondary, outline, etc.) allowing theme-level customization  of button appearances throughout an application.   Each property is a [ButtonStatePropertyDelegate] that receives the context,  current states, and the default value, allowing for context-aware and  state-dependent style modifications.   Implementations include [PrimaryButtonTheme], [SecondaryButtonTheme],  [OutlineButtonTheme], and others for each button variant."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: CardButton"
-description: "A button styled as a card with elevated appearance and extensive gesture support."
+description: "A button styled as a card with elevated appearance and extensive gesture support.   Provides an alternative button presentation that resembles a card with  elevated styling, typically used for prominent actions or content sections  that need to stand out from the background. The card styling provides  visual depth and emphasis compared to standard button variants.   Supports the full range of button features including leading/trailing widgets,  focus management, gesture handling, and accessibility features. The card  appearance is defined by [ButtonStyle.card] with customizable size,  density, and shape properties.   The component handles complex gesture interactions including primary,  secondary, and tertiary taps, long presses, hover states, and focus  management, making it suitable for rich interactive experiences.   Example:  ```dart  CardButton(    leading: Icon(Icons.dashboard),    trailing: Icon(Icons.arrow_forward),    size: ButtonSize.large,    onPressed: () => Navigator.pushNamed(context, '/dashboard'),    child: Column(      children: [        Text('Dashboard', style: TextStyle(fontWeight: FontWeight.bold)),        Text('View analytics and reports'),      ],    ),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: InputClearFeature"
-description: "Adds a clear button to the input field."
+description: "Adds a clear button to the input field.   Provides a button that clears all text from the input when pressed.  Commonly used to improve user experience by offering quick text removal.   Example:  ```dart  TextField(    features: [      InputClearFeature(        position: InputFeaturePosition.trailing,      ),    ],  )  ```"
 ---
 
 ```dart

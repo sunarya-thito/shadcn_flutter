@@ -1,6 +1,6 @@
 ---
 title: "Class: AccordionTheme"
-description: "Theme configuration for [Accordion], [AccordionItem], and [AccordionTrigger] widgets."
+description: "Theme configuration for [Accordion], [AccordionItem], and [AccordionTrigger] widgets.   [AccordionTheme] provides comprehensive styling options for all accordion-related  widgets, including animation timing, spacing, colors, and iconography. It allows  for consistent accordion styling across an application while still permitting  per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<AccordionTheme>(    data: AccordionTheme(      duration: Duration(milliseconds: 300),      curve: Curves.easeInOut,      padding: 20.0,      arrowIcon: Icons.expand_more,      arrowIconColor: Colors.blue,    ),    child: MyAccordionWidget(),  );  ```"
 ---
 
 ```dart

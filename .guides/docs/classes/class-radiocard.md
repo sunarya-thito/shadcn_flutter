@@ -1,6 +1,6 @@
 ---
 title: "Class: RadioCard"
-description: "A card-style radio button with custom content."
+description: "A card-style radio button with custom content.   Provides a larger, card-like selection area within a [RadioGroup]."
 ---
 
 ```dart

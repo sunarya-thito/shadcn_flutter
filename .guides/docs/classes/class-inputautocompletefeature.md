@@ -1,6 +1,6 @@
 ---
 title: "Class: InputAutoCompleteFeature"
-description: "Adds autocomplete functionality to the input field."
+description: "Adds autocomplete functionality to the input field.   Displays a popover with suggestions as the user types. Suggestions are  provided by the [querySuggestions] callback and can be selected to fill  the input.   Example:  ```dart  TextField(    features: [      InputAutoCompleteFeature(        querySuggestions: (query) async {          return ['apple', 'apricot', 'avocado']              .where((s) => s.startsWith(query));        },        child: const Text('Fruits'),      ),    ],  )  ```"
 ---
 
 ```dart

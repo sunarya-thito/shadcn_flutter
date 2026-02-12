@@ -1,6 +1,6 @@
 ---
 title: "Class: GhostButton"
-description: "Convenience widget for creating a ghost button."
+description: "Convenience widget for creating a ghost button.   A simplified wrapper around [Button.ghost] with the same properties  as [PrimaryButton] but using ghost button styling with minimal visual presence."
 ---
 
 ```dart

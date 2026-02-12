@@ -1,6 +1,6 @@
 ---
 title: "Class: FlexibleResizablePaneController"
-description: "Controller for resizable panes with flexible (proportional) sizing."
+description: "Controller for resizable panes with flexible (proportional) sizing.   Manages a panel whose size is specified as a flex factor relative to  the total available space. Similar to Flutter's [Flexible] widget concept.   Example:  ```dart  final controller = FlexibleResizablePaneController(1.0);   ResizablePane(    controller: controller,    child: Container(color: Colors.red),  )  ```"
 ---
 
 ```dart

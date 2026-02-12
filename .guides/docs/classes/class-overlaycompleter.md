@@ -1,6 +1,6 @@
 ---
 title: "Class: OverlayCompleter"
-description: "Abstract interface for overlay operation completion tracking."
+description: "Abstract interface for overlay operation completion tracking.   Provides lifecycle management and status tracking for overlay operations,  including completion state, animation state, and dismissal."
 ---
 
 ```dart

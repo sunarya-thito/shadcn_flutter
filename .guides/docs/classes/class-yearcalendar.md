@@ -1,6 +1,6 @@
 ---
 title: "Class: YearCalendar"
-description: "A calendar widget that displays years in a grid."
+description: "A calendar widget that displays years in a grid.   Shows a 4x4 grid of years for year selection. Used as part of the calendar  navigation when users want to select a different year."
 ---
 
 ```dart

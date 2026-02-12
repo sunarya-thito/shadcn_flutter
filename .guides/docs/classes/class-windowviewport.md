@@ -1,6 +1,6 @@
 ---
 title: "Class: WindowViewport"
-description: "Data class containing viewport information for a window."
+description: "Data class containing viewport information for a window.   WindowViewport provides contextual information about a window's current  state within the window navigator. This data is made available to child  widgets through the Data inheritance mechanism.   The viewport information includes:  - Size of the visible area  - Reference to the navigator managing the window  - Focus and display state flags  - Interaction state (pointer events, minimization)   This class is typically used internally by the window system to pass  state information to window content and decoration widgets."
 ---
 
 ```dart

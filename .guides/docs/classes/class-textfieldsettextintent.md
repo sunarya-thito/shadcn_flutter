@@ -1,6 +1,6 @@
 ---
 title: "Class: TextFieldSetTextIntent"
-description: "Intent to set the entire text field content to a specific value."
+description: "Intent to set the entire text field content to a specific value.   Replaces all existing text with the provided text.  Used with Flutter's Actions/Shortcuts system."
 ---
 
 ```dart

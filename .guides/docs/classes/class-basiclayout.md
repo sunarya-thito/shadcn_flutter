@@ -1,6 +1,6 @@
 ---
 title: "Class: BasicLayout"
-description: "Same as [Basic], but without forcing text styles."
+description: "Same as [Basic], but without forcing text styles.   Provides the same layout structure as [Basic] but doesn't apply default  text styling to title and subtitle elements. Use this when you need full  control over text appearance.   Example:  ```dart  BasicLayout(    leading: Icon(Icons.star),    title: Text('Custom styled title', style: myStyle),    subtitle: Text('Custom styled subtitle', style: myStyle),  )  ```"
 ---
 
 ```dart

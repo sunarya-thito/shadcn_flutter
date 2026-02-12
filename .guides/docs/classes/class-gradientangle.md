@@ -1,6 +1,6 @@
 ---
 title: "Class: GradientAngle"
-description: "A non-directional gradient angle that uses standard [Alignment]."
+description: "A non-directional gradient angle that uses standard [Alignment].   Unlike [DirectionalGradientAngle], this class uses non-directional [Alignment]  and is not affected by text direction. The angle is specified in radians.   Example:  ```dart  const angle = GradientAngle(pi / 4); // 45 degrees  final begin = angle.begin;  final end = angle.end;  ```"
 ---
 
 ```dart

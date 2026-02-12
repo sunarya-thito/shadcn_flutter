@@ -1,6 +1,6 @@
 ---
 title: "Class: LinkButtonTheme"
-description: "Theme configuration for link button styling."
+description: "Theme configuration for link button styling.   Provides theme-level customization for link buttons. Link buttons appear as  inline hyperlinks with underline decoration."
 ---
 
 ```dart

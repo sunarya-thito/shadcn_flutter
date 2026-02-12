@@ -1,6 +1,6 @@
 ---
 title: "Class: SurfaceBarrierPainter"
-description: "Custom painter that creates a barrier effect with an optional cutout."
+description: "Custom painter that creates a barrier effect with an optional cutout.   Paints a large colored rectangle that covers the entire screen, with  an optional rounded rectangle cutout to create a \"spotlight\" effect  around modal content. Uses path clipping to create the cutout area.   Features:  - Full-screen barrier painting  - Rounded rectangle cutouts  - Configurable colors and padding  - Efficient repainting optimization   Example:  ```dart  CustomPaint(    painter: SurfaceBarrierPainter(      clip: true,      borderRadius: BorderRadius.circular(8),      barrierColor: Colors.black54,      padding: EdgeInsets.all(16),    ),  )  ```"
 ---
 
 ```dart

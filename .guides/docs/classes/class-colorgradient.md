@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorGradient"
-description: "An abstract base class representing a color gradient with multiple color stops."
+description: "An abstract base class representing a color gradient with multiple color stops.   [ColorGradient] provides a common interface for working with gradients that can  have colors added, modified, or removed at specific positions. This is useful  for creating custom gradient pickers and editors.   Implementations should handle the gradient type (linear, radial, sweep, etc.)  and provide methods to manipulate color stops and their positions."
 ---
 
 ```dart

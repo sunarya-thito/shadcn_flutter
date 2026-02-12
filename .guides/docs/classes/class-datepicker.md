@@ -1,6 +1,6 @@
 ---
 title: "Class: DatePicker"
-description: "A date picker widget for selecting dates."
+description: "A date picker widget for selecting dates.   Provides a date selection interface with calendar view in either  popover or dialog mode."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: SortableChildBuilderDelegate"
-description: "A delegate that builds items on demand."
+description: "A delegate that builds items on demand.   Creates items using a builder function rather than from a fixed list.  Useful for large or lazily-generated item sets."
 ---
 
 ```dart

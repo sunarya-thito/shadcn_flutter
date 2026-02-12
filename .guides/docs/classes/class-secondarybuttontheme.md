@@ -1,6 +1,6 @@
 ---
 title: "Class: SecondaryButtonTheme"
-description: "Theme configuration for secondary button styling."
+description: "Theme configuration for secondary button styling.   Provides theme-level customization for secondary buttons through the component  theme system. Secondary buttons have muted styling suitable for supporting actions."
 ---
 
 ```dart

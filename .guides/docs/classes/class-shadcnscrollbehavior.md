@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnScrollBehavior"
-description: "Default scroll behavior for shadcn_flutter applications."
+description: "Default scroll behavior for shadcn_flutter applications.   Provides bouncing physics and platform-appropriate scrollbars."
 ---
 
 ```dart

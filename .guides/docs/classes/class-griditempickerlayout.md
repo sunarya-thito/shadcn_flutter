@@ -1,6 +1,6 @@
 ---
 title: "Class: GridItemPickerLayout"
-description: "A grid-based layout for item pickers."
+description: "A grid-based layout for item pickers.   Displays items in a scrollable grid using [GridView.builder]. The number  of columns can be configured via [crossAxisCount].   Example:  ```dart  GridItemPickerLayout(crossAxisCount: 3)  ```"
 ---
 
 ```dart

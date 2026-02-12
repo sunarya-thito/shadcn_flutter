@@ -1,6 +1,6 @@
 ---
 title: "Class: ChatBubble"
-description: "A widget that displays a single chat message or content."
+description: "A widget that displays a single chat message or content.   This widget renders a chat bubble with customizable styling, including  background color, alignment, and tail behavior.   Example:  ```dart  ChatBubble(    child: Text('Hello World'),    alignment: AxisAlignment.right,    color: Colors.blue,  )  ```"
 ---
 
 ```dart

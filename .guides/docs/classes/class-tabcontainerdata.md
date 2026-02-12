@@ -1,6 +1,6 @@
 ---
 title: "Class: TabContainerData"
-description: "Internal data class holding tab container state and callbacks."
+description: "Internal data class holding tab container state and callbacks.   Provides context information to child tabs including the current  selection state, tab index, and selection callback. Used internally  by the tab system to coordinate between container and children.   Accessed via [TabContainerData.of] from within tab child widgets."
 ---
 
 ```dart

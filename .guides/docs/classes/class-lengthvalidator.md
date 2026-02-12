@@ -1,6 +1,6 @@
 ---
 title: "Class: LengthValidator"
-description: "A validator that checks if a string's length is within specified bounds."
+description: "A validator that checks if a string's length is within specified bounds.   [LengthValidator] validates that a string's length falls within the minimum  and/or maximum bounds. Either bound can be null to check only one direction.   Example:  ```dart  LengthValidator(    min: 3,    max: 20,    message: 'Must be between 3 and 20 characters',  )  ```"
 ---
 
 ```dart

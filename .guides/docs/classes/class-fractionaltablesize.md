@@ -1,6 +1,6 @@
 ---
 title: "Class: FractionalTableSize"
-description: "Table size mode that uses a fractional value of the table's size."
+description: "Table size mode that uses a fractional value of the table's size.   Sizes the column/row based on a fractional value of the table's size.   Example:  ```dart  FractionalTableSize(0.5) // 50% of table size  ```"
 ---
 
 ```dart

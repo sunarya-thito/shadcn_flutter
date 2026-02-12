@@ -1,6 +1,6 @@
 ---
 title: "Class: Avatar"
-description: "A circular or rounded rectangular widget for displaying user profile images or initials."
+description: "A circular or rounded rectangular widget for displaying user profile images or initials.   [Avatar] provides a versatile component for representing users in UI interfaces.  It can display either an image (from network or other sources) or user initials,  with automatic fallback to initials when image loading fails. The avatar supports  optional badges for status indicators and integrates seamlessly with [AvatarGroup]  for overlapping avatar layouts.   ## Key Features  - **Flexible Content**: Supports both images and text initials  - **Automatic Fallback**: Falls back to initials when images fail to load  - **Badge Support**: Optional badge overlay for status or notification indicators  - **Network Images**: Built-in support for network images with caching  - **Theming**: Comprehensive theming via [AvatarTheme]  - **Group Integration**: Works with [AvatarGroup] for overlapping layouts   ## Initials Generation  The avatar includes intelligent initials generation via [getInitials]:  - For single words: First two characters (e.g., \"John\" → \"JO\")  - For multiple words: First character of first two words (e.g., \"John Doe\" → \"JD\")  - Proper capitalization and fallback handling   Example:  ```dart  Avatar(    initials: 'JD',    size: 48,    backgroundColor: Colors.blue.shade100,    badge: AvatarBadge(      color: Colors.green,      size: 12,    ),  );  ```"
 ---
 
 ```dart

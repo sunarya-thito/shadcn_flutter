@@ -1,6 +1,6 @@
 ---
 title: "Class: CheckboxTheme"
-description: "Theme configuration for [Checkbox] widget styling and visual appearance."
+description: "Theme configuration for [Checkbox] widget styling and visual appearance.   Defines the visual properties used by checkbox components including colors,  dimensions, spacing, and border styling. All properties are optional and  fall back to framework defaults when not specified.   Can be applied globally through [ComponentTheme] or used to override  specific checkbox instances with custom styling."
 ---
 
 ```dart

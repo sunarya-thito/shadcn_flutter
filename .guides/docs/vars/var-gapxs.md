@@ -1,6 +1,6 @@
 ---
 title: "Variable: gapXs"
-description: "Extra small gap multiplier (0."
+description: "Extra small gap multiplier (0.5)."
 ---
 
 Signature

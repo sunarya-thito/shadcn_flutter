@@ -1,6 +1,6 @@
 ---
 title: "Class: AvatarTheme"
-description: "Theme configuration for [Avatar] and related avatar components."
+description: "Theme configuration for [Avatar] and related avatar components.   [AvatarTheme] provides styling options for avatar components including size,  border radius, colors, and badge positioning. It enables consistent avatar  styling across an application while allowing per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<AvatarTheme>(    data: AvatarTheme(      size: 48.0,      borderRadius: 8.0,      backgroundColor: Colors.grey.shade200,      badgeAlignment: Alignment.topRight,      textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),    ),    child: MyAvatarWidget(),  );  ```"
 ---
 
 ```dart

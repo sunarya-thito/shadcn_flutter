@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectItemButton"
-description: "A button widget representing a selectable item in a dropdown menu."
+description: "A button widget representing a selectable item in a dropdown menu.   Used within select dropdowns to create clickable option items."
 ---
 
 ```dart

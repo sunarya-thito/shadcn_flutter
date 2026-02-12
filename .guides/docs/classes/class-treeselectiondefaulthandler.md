@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeSelectionDefaultHandler"
-description: "Default handler for tree node selection changes."
+description: "Default handler for tree node selection changes.   Manages selection state updates by toggling, adding, or setting  selected nodes based on selection mode.   Example:  ```dart  final handler = TreeSelectionDefaultHandler(nodes, (updated) {    setState(() => nodes = updated);  });  ```"
 ---
 
 ```dart

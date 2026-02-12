@@ -1,6 +1,6 @@
 ---
 title: "Class: DotItem"
-description: "A basic dot item widget with customizable appearance."
+description: "A basic dot item widget with customizable appearance.   Used as a base component for creating custom dot indicators."
 ---
 
 ```dart

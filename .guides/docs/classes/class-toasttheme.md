@@ -1,6 +1,6 @@
 ---
 title: "Class: ToastTheme"
-description: "Theme configuration for toast notification system."
+description: "Theme configuration for toast notification system.   Provides comprehensive styling properties for toast notifications including  layout, positioning, animation behavior, and visual effects. These properties  integrate with the design system and can be overridden at the widget level.   The theme supports advanced features like stacking behavior, expansion modes,  and sophisticated animation timing for professional toast experiences."
 ---
 
 ```dart

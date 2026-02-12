@@ -1,6 +1,6 @@
 ---
 title: "Class: DashedLinePainter"
-description: "A custom painter that draws a dashed horizontal line."
+description: "A custom painter that draws a dashed horizontal line.   Paints a line with alternating dashes and gaps."
 ---
 
 ```dart

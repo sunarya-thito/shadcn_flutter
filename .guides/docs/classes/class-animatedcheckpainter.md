@@ -1,6 +1,6 @@
 ---
 title: "Class: AnimatedCheckPainter"
-description: "Custom painter for drawing animated checkmarks in checkboxes."
+description: "Custom painter for drawing animated checkmarks in checkboxes.   Renders a smooth checkmark animation that draws progressively from left to right  in two stroke segments. The animation provides visual feedback when transitioning  to the checked state, creating a satisfying user experience.   The checkmark is drawn as two connected line segments: a shorter diagonal line  from bottom-left toward center, and a longer diagonal line from center to top-right.  The [progress] parameter controls how much of the checkmark is visible.   Used internally by [Checkbox] - not typically instantiated directly by consumers."
 ---
 
 ```dart

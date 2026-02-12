@@ -1,6 +1,6 @@
 ---
 title: "Class: ColorPicker"
-description: "A comprehensive color picker widget with multiple color mode support."
+description: "A comprehensive color picker widget with multiple color mode support.   [ColorPicker] provides an interactive interface for selecting colors using  various color representation models (RGB, HSL, HSV, HEX). It supports alpha  channel control, eye dropper functionality, and customizable layout.   Features:  - Multiple color modes (RGB, HSL, HSV, HEX)  - Optional alpha/opacity control  - Screen color sampling with eye dropper  - Flexible layout orientation  - Real-time color updates  - Mode switching during use   Example:  ```dart  ColorPicker(    value: ColorDerivative.fromColor(Colors.blue),    onChanged: (color) {      print('Selected: ${color.toColor()}');    },    showAlpha: true,    initialMode: ColorPickerMode.hsv,    enableEyeDropper: true,  )  ```"
 ---
 
 ```dart

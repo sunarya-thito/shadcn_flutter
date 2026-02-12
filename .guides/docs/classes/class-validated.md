@@ -1,6 +1,6 @@
 ---
 title: "Class: Validated"
-description: "A widget that displays validation feedback for form entries."
+description: "A widget that displays validation feedback for form entries.   Wraps a form entry with a custom builder that receives validation results,  allowing you to customize the visual presentation of validation errors and  success states.   Example:  ```dart  Validated<String>(    validator: (value) => value.isEmpty ? ValidationResult.error('Required') : null,    builder: (context, error, child) {      return Column(        children: [          child!,          if (error != null) Text(error.message, style: TextStyle(color: Colors.red)),        ],      );    },    child: TextField(),  )  ```"
 ---
 
 ```dart

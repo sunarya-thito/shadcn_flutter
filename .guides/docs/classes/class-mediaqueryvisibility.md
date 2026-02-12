@@ -1,6 +1,6 @@
 ---
 title: "Class: MediaQueryVisibility"
-description: "A widget that conditionally displays children based on media query constraints."
+description: "A widget that conditionally displays children based on media query constraints.   Shows [child] when the current screen width falls within the specified range  defined by [minWidth] and [maxWidth]. Optionally displays [alternateChild]  when the width is outside the range. Useful for responsive layouts.   Example:  ```dart  MediaQueryVisibility(    minWidth: 600,    maxWidth: 1200,    child: TabletLayout(),    alternateChild: MobileLayout(),  )  ```"
 ---
 
 ```dart

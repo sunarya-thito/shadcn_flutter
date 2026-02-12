@@ -1,6 +1,6 @@
 ---
 title: "Class: TimelineAnimatable"
-description: "An [Animatable] wrapper for [TimelineAnimation] with explicit duration."
+description: "An [Animatable] wrapper for [TimelineAnimation] with explicit duration.   This class adapts a [TimelineAnimation] to work with a specific total duration,  scaling the animation to fit within that time frame.   ## Type Parameters   * [T] - The type of value being animated.   ## Overview   [TimelineAnimatable] is typically created via [TimelineAnimation.drive] or  [TimelineAnimation.withTotalDuration] to bind a timeline to a controller.   ## Example   ```dart  final controller = AnimationController(    vsync: this,    duration: Duration(seconds: 2),  );  final animatable = timeline.drive(controller);  ```"
 ---
 
 ```dart

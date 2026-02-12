@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerEntryWidgetState"
-description: "State class for [DrawerEntryWidget] managing drawer animations and lifecycle."
+description: "State class for [DrawerEntryWidget] managing drawer animations and lifecycle.   Handles animation control, focus management, and drawer dismissal.  Manages both internal and external animation controllers."
 ---
 
 ```dart

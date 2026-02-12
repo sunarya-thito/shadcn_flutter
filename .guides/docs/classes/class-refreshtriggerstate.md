@@ -1,6 +1,6 @@
 ---
 title: "Class: RefreshTriggerState"
-description: "State for the refresh trigger widget."
+description: "State for the refresh trigger widget.   Manages the refresh lifecycle, gesture detection, and animation coordination  for pull-to-refresh functionality."
 ---
 
 ```dart

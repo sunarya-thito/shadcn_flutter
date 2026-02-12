@@ -1,6 +1,6 @@
 ---
 title: "Class: HoverCard"
-description: "A widget that displays a popover when hovered or long-pressed."
+description: "A widget that displays a popover when hovered or long-pressed.   Shows contextual information or actions when the user hovers over the  child widget or performs a long press. Includes intelligent timing  controls to prevent flickering and provides smooth user interactions.   Features:  - Hover-based popover display with timing controls  - Long-press support for touch devices  - Configurable positioning and alignment  - Debounce timing to prevent flicker  - Custom overlay handlers support  - Theme integration   The hover card automatically manages show/hide timing based on mouse  enter/exit events, with configurable delays to provide a smooth UX.   Example:  ```dart  HoverCard(    hoverBuilder: (context) => Card(      child: Padding(        padding: EdgeInsets.all(12),        child: Text('Additional info appears on hover'),      ),    ),    child: Icon(Icons.help_outline),  )  ```"
 ---
 
 ```dart

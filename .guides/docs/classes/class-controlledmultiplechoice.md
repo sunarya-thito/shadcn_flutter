@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledMultipleChoice"
-description: "A controlled widget for managing single item selection with external state management."
+description: "A controlled widget for managing single item selection with external state management.   This widget provides a container for single-choice selection interfaces where  users can select one item from a set of choices. It integrates with the controlled  component system to provide external state management, form integration, and  programmatic control of the selection.   The component maintains a single selected item and provides callbacks for  selection changes. Child widgets can use the [Choice.choose] method to  register item selections and [Choice.getValue] to access the current selection.   Example:  ```dart  ControlledMultipleChoice<String>(    initialValue: 'medium',    onChanged: (selection) {      print('Selected size: $selection');    },    child: Column(      children: [        ChoiceItem(value: 'small', child: Text('Small')),        ChoiceItem(value: 'medium', child: Text('Medium')),        ChoiceItem(value: 'large', child: Text('Large')),      ],    ),  );  ```"
 ---
 
 ```dart

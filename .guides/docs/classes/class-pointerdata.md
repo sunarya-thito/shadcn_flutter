@@ -1,6 +1,6 @@
 ---
 title: "Class: PointerData"
-description: "Data about the current pointer position."
+description: "Data about the current pointer position.   Used to track mouse/pointer location in the app."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: TextButtonTheme"
-description: "Theme configuration for text button styling."
+description: "Theme configuration for text button styling.   Provides theme-level customization for text buttons. Text buttons display only  their text content without background or border decoration."
 ---
 
 ```dart

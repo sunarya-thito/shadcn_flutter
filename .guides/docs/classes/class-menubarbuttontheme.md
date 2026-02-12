@@ -1,6 +1,6 @@
 ---
 title: "Class: MenubarButtonTheme"
-description: "Theme configuration for menubar button styling."
+description: "Theme configuration for menubar button styling.   Provides theme-level customization for menubar buttons. Menubar buttons are  optimized for horizontal menu bars with appropriate padding and hover effects."
 ---
 
 ```dart

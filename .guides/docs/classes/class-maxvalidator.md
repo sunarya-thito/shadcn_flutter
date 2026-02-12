@@ -1,6 +1,6 @@
 ---
 title: "Class: MaxValidator"
-description: "A validator that checks if a numeric value does not exceed a maximum threshold."
+description: "A validator that checks if a numeric value does not exceed a maximum threshold.   [MaxValidator] ensures that numeric values are less than (or equal to)  a specified maximum value. Useful for enforcing maximum quantities, limits, etc.   Example:  ```dart  MaxValidator<int>(    100,    inclusive: true,    message: 'Must not exceed 100',  )  ```"
 ---
 
 ```dart

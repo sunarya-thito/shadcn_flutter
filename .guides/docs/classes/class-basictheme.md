@@ -1,6 +1,6 @@
 ---
 title: "Class: BasicTheme"
-description: "Theme configuration for [Basic] layout widgets."
+description: "Theme configuration for [Basic] layout widgets.   Defines default alignment, spacing, and padding properties for Basic  layout components. These properties control how leading, trailing, title,  subtitle, and content elements are positioned and spaced."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: AlphaPainter"
-description: "A custom painter that draws a checkboard pattern for alpha/transparency visualization."
+description: "A custom painter that draws a checkboard pattern for alpha/transparency visualization.   [AlphaPainter] renders a two-tone checkerboard pattern typically used behind  semi-transparent colors to make the transparency visible. This is a common  pattern in color pickers and image editors."
 ---
 
 ```dart

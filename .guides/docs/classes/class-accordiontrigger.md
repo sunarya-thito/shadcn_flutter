@@ -1,6 +1,6 @@
 ---
 title: "Class: AccordionTrigger"
-description: "A specialized trigger widget designed for use within [AccordionItem]."
+description: "A specialized trigger widget designed for use within [AccordionItem].   [AccordionTrigger] provides a consistent, accessible interface for accordion  headers. It automatically includes:  - Hover effects with text underlining  - Focus management with keyboard navigation  - Animated expand/collapse icon  - Proper click and keyboard activation  - Accessibility semantics   The trigger automatically coordinates with its parent [AccordionItem] to  control the expansion state and provides visual feedback for user interactions.   ## Accessibility Features  - Full keyboard navigation support (Enter and Space keys)  - Focus indicators with theme-appropriate styling  - Screen reader compatibility  - Proper semantic roles and states   Example:  ```dart  AccordionTrigger(    child: Row(      children: [        Icon(Icons.info_outline),        SizedBox(width: 12),        Expanded(          child: Column(            crossAxisAlignment: CrossAxisAlignment.start,            children: [              Text('Primary Title', style: TextStyle(fontWeight: FontWeight.bold)),              Text('Subtitle', style: TextStyle(fontSize: 12)),            ],          ),        ),      ],    ),  );  ```"
 ---
 
 ```dart

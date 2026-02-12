@@ -1,6 +1,6 @@
 ---
 title: "Class: RangeCalendarValue"
-description: "Calendar value representing a date range selection."
+description: "Calendar value representing a date range selection.   Encapsulates a date range with start and end dates. Provides lookup  functionality to determine if a date is the start, end, within the range,  or outside. Used with [CalendarSelectionMode.range].   The range is automatically normalized so start is always before or equal to end."
 ---
 
 ```dart

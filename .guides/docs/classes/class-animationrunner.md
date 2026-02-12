@@ -1,6 +1,6 @@
 ---
 title: "Class: AnimationRunner"
-description: "Manages the execution of a single animation step."
+description: "Manages the execution of a single animation step.   This class tracks the progress of an animation from a start value to an  end value over a specified duration using a curve.   ## Overview   [AnimationRunner] is used internally by [AnimationQueueController] to  execute individual animation steps. It tracks progress and computes  intermediate values.   ## Example   ```dart  final runner = AnimationRunner(    0.0, // from    1.0, // to    Duration(milliseconds: 200),    Curves.easeIn,  );  ```"
 ---
 
 ```dart

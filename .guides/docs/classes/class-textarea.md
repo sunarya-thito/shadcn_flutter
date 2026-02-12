@@ -1,6 +1,6 @@
 ---
 title: "Class: TextArea"
-description: "A multi-line text input widget with resizable dimensions and comprehensive styling."
+description: "A multi-line text input widget with resizable dimensions and comprehensive styling.   [TextArea] provides an enhanced text editing experience with support for  multi-line input, dynamic resizing capabilities, and extensive customization  options. It supports both expandable height and width modes, allowing users  to adjust the text area size by dragging resize handles.   Key features:  - Multi-line text editing with optional height/width expansion  - Configurable minimum and maximum dimensions  - Support for leading and trailing widgets  - Comprehensive text formatting and input validation  - Integration with Flutter's text editing ecosystem  - Customizable appearance through theming   The widget can operate in several resize modes:  - Fixed size: When both [expandableHeight] and [expandableWidth] are false  - Expandable height: When [expandableHeight] is true, allows vertical resizing  - Expandable width: When [expandableWidth] is true, allows horizontal resizing  - Fully expandable: When both expansion modes are enabled   Example:  ```dart  TextArea(    placeholder: Text('Enter your message...'),    expandableHeight: true,    minHeight: 100,    maxHeight: 300,    onChanged: (text) => print('Text: $text'),  );  ```"
 ---
 
 ```dart

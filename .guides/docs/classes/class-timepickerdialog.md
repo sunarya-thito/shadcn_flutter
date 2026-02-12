@@ -1,6 +1,6 @@
 ---
 title: "Class: TimePickerDialog"
-description: "Dialog widget for interactive time selection."
+description: "Dialog widget for interactive time selection.   Displays input fields for hours, minutes, and optional seconds  with AM/PM toggle for 12-hour format."
 ---
 
 ```dart

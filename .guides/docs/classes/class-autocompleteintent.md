@@ -1,6 +1,6 @@
 ---
 title: "Class: AutoCompleteIntent"
-description: "An intent representing an autocomplete suggestion selection."
+description: "An intent representing an autocomplete suggestion selection.   Used by the autocomplete system to handle suggestion selections  with different modes of completion."
 ---
 
 ```dart

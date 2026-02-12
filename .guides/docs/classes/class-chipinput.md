@@ -1,6 +1,6 @@
 ---
 title: "Class: ChipInput"
-description: "A text input widget that supports inline chip elements."
+description: "A text input widget that supports inline chip elements.   Allows users to create chip tokens within a text field, useful for  tags, email recipients, or any multi-item input scenario."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: InputTrailingFeature"
-description: "Adds a custom widget to the trailing (right) side of the input field."
+description: "Adds a custom widget to the trailing (right) side of the input field.   Allows you to place any widget after the input text, such as icons,  buttons, or other decorative elements.   Example:  ```dart  TextField(    features: [      InputTrailingFeature(        Icon(Icons.arrow_forward),      ),    ],  )  ```"
 ---
 
 ```dart

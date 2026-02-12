@@ -1,6 +1,6 @@
 ---
 title: "Class: WidgetStatesProvider"
-description: "A widget that provides widget state information to descendants via `Data`."
+description: "A widget that provides widget state information to descendants via `Data`.   [WidgetStatesProvider] manages and propagates widget states (like hovered,  pressed, disabled) down the widget tree using the Data inheritance mechanism.  It supports both static state sets and dynamic controller-based states.   ## Overview   Use [WidgetStatesProvider] to:  - Share widget states with descendant widgets  - Control states programmatically via [WidgetStatesController]  - Inherit states from ancestor providers  - Create state boundaries to isolate state contexts   ## Example   ```dart  WidgetStatesProvider(    states: {WidgetState.hovered},    child: StatedWidget(      child: Text('Normal'),      hovered: Text('Hovered'),    ),  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DateRangePicker"
-description: "A widget for selecting a date range."
+description: "A widget for selecting a date range.   Provides an interactive date range picker that allows users to select a start  and end date. Supports both dialog and popover presentation modes with  customizable calendar views and state management.   Example:  ```dart  DateRangePicker(    value: currentRange,    onChanged: (range) => setState(() => currentRange = range),    mode: PromptMode.dialog,  )  ```"
 ---
 
 ```dart

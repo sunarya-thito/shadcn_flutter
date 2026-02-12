@@ -1,6 +1,6 @@
 ---
 title: "Class: HoverCardTheme"
-description: "Theme configuration for hover card behavior and appearance."
+description: "Theme configuration for hover card behavior and appearance.   Defines timing, positioning, and interaction behavior for hover cards,  providing consistent styling across the application.   Example:  ```dart  ComponentThemeData(    data: {      HoverCardTheme: HoverCardTheme(        debounce: Duration(milliseconds: 300),        wait: Duration(milliseconds: 700),        popoverAlignment: Alignment.topCenter,      ),    },    child: MyApp(),  )  ```"
 ---
 
 ```dart

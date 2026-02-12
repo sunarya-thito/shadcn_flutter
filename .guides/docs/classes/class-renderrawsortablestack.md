@@ -1,6 +1,6 @@
 ---
 title: "Class: RenderRawSortableStack"
-description: "Render object for managing sortable item stacking and positioning."
+description: "Render object for managing sortable item stacking and positioning.   Handles layout, painting, and hit testing for sortable items arranged  in a stack. Clamps child positions to widget bounds to prevent items  from escaping during drag operations."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: DirectionalSelectTreeNodeIntent"
-description: "Intent to navigate and select tree nodes directionally."
+description: "Intent to navigate and select tree nodes directionally.   Used with Flutter's Actions/Shortcuts system to move focus  up or down the tree and optionally select nodes."
 ---
 
 ```dart

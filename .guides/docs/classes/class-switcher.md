@@ -1,6 +1,6 @@
 ---
 title: "Class: Switcher"
-description: "A swipeable container that transitions between multiple child widgets."
+description: "A swipeable container that transitions between multiple child widgets.   [Switcher] provides smooth animated transitions between different views  with gesture-based navigation. Users can swipe to change the active view,  and the component supports all four axis directions for transitions.   Features include:  - Gesture-based drag navigation between views  - Smooth animated transitions with configurable duration and curve  - Support for all axis directions (up, down, left, right)  - Automatic snapping to the nearest index after dragging  - Programmatic control via index changes   The component uses a custom render object to handle smooth interpolation  between child sizes and positions during transitions.   **Note: This component is experimental and may change in future versions.**   Example:  ```dart  Switcher(    index: currentIndex,    direction: AxisDirection.right,    onIndexChanged: (newIndex) => setState(() => currentIndex = newIndex),    children: [      Container(color: Colors.red, child: Center(child: Text('Page 1'))),      Container(color: Colors.blue, child: Center(child: Text('Page 2'))),      Container(color: Colors.green, child: Center(child: Text('Page 3'))),    ],  );  ```"
 ---
 
 ```dart

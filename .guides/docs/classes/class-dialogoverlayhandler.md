@@ -1,6 +1,6 @@
 ---
 title: "Class: DialogOverlayHandler"
-description: "Overlay handler that manages dialog display using the navigation stack."
+description: "Overlay handler that manages dialog display using the navigation stack.   Provides a standardized way to show dialogs through the overlay system  with proper theme inheritance, animation handling, and modal behavior.  Integrates with the shadcn_flutter overlay architecture for consistent  dialog management across the application.   Features:  - Navigation-based dialog management  - Theme and data inheritance  - Configurable modal barriers  - Animation integration  - Proper focus management   Example:  ```dart  const DialogOverlayHandler().show<String>(    context: context,    alignment: Alignment.center,    builder: (context) => MyCustomDialog(),  );  ```"
 ---
 
 ```dart

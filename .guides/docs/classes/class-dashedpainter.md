@@ -1,6 +1,6 @@
 ---
 title: "Class: DashedPainter"
-description: "A custom painter that draws a dashed border around a rectangle."
+description: "A custom painter that draws a dashed border around a rectangle.   Paints a dashed border with optional rounded corners."
 ---
 
 ```dart

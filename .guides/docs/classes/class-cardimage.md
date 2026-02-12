@@ -1,6 +1,6 @@
 ---
 title: "Class: CardImage"
-description: "Interactive card component with an image and optional text content."
+description: "Interactive card component with an image and optional text content.   Combines an image with title, subtitle, and optional leading/trailing  widgets in a clickable card layout. Features hover animations with  configurable scale effects and supports both vertical and horizontal  orientations.   The widget wraps the content in a [Button] for interaction handling  and uses [OutlinedContainer] for the image styling. Layout direction  can be configured to show content below (vertical) or beside  (horizontal) the image.   Example:  ```dart  CardImage(    image: Image.network('https://example.com/image.jpg'),    title: Text('Card Title'),    subtitle: Text('Subtitle text'),    onPressed: () => print('Card tapped'),  );  ```"
 ---
 
 ```dart

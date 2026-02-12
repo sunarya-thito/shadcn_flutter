@@ -1,6 +1,6 @@
 ---
 title: "Class: DropdownMenuData"
-description: "Internal data class for dropdown menu context."
+description: "Internal data class for dropdown menu context.   Holds shared data for dropdown menu implementation, including a unique  key for region grouping and overlay coordination.   This is typically used internally by the dropdown menu system and not  intended for direct use in application code."
 ---
 
 ```dart

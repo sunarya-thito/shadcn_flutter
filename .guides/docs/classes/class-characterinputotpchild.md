@@ -1,6 +1,6 @@
 ---
 title: "Class: CharacterInputOTPChild"
-description: "A character-based OTP input field with validation and transformation."
+description: "A character-based OTP input field with validation and transformation.   Supports filtering input based on codepoint predicates and transforming  input characters (e.g., converting to uppercase). Commonly used for  creating numeric or alphanumeric OTP fields.   Example:  ```dart  CharacterInputOTPChild(    predicate: CharacterInputOTPChild.isDigit,    keyboardType: TextInputType.number,  )  ```"
 ---
 
 ```dart

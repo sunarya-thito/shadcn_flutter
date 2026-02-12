@@ -1,6 +1,6 @@
 ---
 title: "Class: ClickDetector"
-description: "A widget that detects and reports click events with multi-click support."
+description: "A widget that detects and reports click events with multi-click support.   Wraps a child widget and detects tap gestures, tracking consecutive clicks  within a configurable threshold duration. Useful for implementing double-click,  triple-click, or other multi-click interactions.   Features:  - **Click Count Tracking**: Automatically counts consecutive clicks  - **Configurable Threshold**: Set maximum time between clicks  - **Flexible Behavior**: Customize hit test behavior  - **Simple Integration**: Wraps any widget with tap detection   The widget calls [onClick] with [ClickDetails] containing the click count  each time a tap is detected. The count resets to 1 if taps are spaced  beyond the [threshold] duration.   Example - Double Click Detection:  ```dart  ClickDetector(    onClick: (details) {      if (details.clickCount == 2) {        print('Double clicked!');      }    },    child: Text('Double click me'),  )  ```   Example - Custom Threshold:  ```dart  ClickDetector(    onClick: (details) {      print('Clicked ${details.clickCount} times');    },    threshold: Duration(milliseconds: 500),    child: Container(      padding: EdgeInsets.all(16),      child: Text('Click rapidly'),    ),  )  ```"
 ---
 
 ```dart

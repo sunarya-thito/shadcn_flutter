@@ -1,6 +1,6 @@
 ---
 title: "Class: ResizableItem"
-description: "Represents a resizable item in a resizable layout."
+description: "Represents a resizable item in a resizable layout.   Each item has a current size, minimum/maximum constraints, and can be  collapsed to a smaller size. Items can be marked as non-resizable."
 ---
 
 ```dart

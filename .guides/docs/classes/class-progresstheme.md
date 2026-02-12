@@ -1,6 +1,6 @@
 ---
 title: "Class: ProgressTheme"
-description: "Theme configuration for [Progress] components."
+description: "Theme configuration for [Progress] components.   Provides visual styling properties for progress indicators including colors,  border radius, and sizing constraints. These properties can be overridden  at the widget level or applied globally via [ComponentTheme].   The theme integrates seamlessly with the design system by leveraging  theme scaling factors and color schemes for consistent visual presentation."
 ---
 
 ```dart

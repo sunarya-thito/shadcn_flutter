@@ -1,6 +1,6 @@
 ---
 title: "Class: DrawerOverlay"
-description: "Widget that manages drawer overlay layers."
+description: "Widget that manages drawer overlay layers.   Provides a container for drawer overlays, managing their lifecycle and  hierarchical relationships. Supports nested drawers through layer data  propagation.   Example:  ```dart  DrawerOverlay(    child: MyAppContent(),  )  ```"
 ---
 
 ```dart

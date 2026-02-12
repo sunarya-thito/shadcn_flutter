@@ -1,6 +1,6 @@
 ---
 title: "Class: AnimationQueueController"
-description: "A controller that manages a queue of animation requests."
+description: "A controller that manages a queue of animation requests.   This class extends [ChangeNotifier] and provides a way to queue multiple  animations that execute sequentially or replace the current queue. It  handles timing via [tick] calls and notifies listeners of value changes.   ## Overview   Use [AnimationQueueController] when you need to chain multiple animations  or dynamically add/remove animation steps. Call [tick] regularly (e.g., in  a ticker or animation frame callback) to progress the animations.   ## Example   ```dart  final controller = AnimationQueueController(0.0);   // Queue animations  controller.push(AnimationRequest(0.5, Duration(milliseconds: 200), Curves.easeIn));  controller.push(AnimationRequest(1.0, Duration(milliseconds: 300), Curves.easeOut));   // In ticker  controller.tick(deltaTime);  ```"
 ---
 
 ```dart

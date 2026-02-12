@@ -1,6 +1,6 @@
 ---
 title: "Class: AccordionState"
-description: "State class for [Accordion] widget."
+description: "State class for [Accordion] widget.   Manages the expansion state of accordion items, ensuring only one  item can be expanded at a time in single-expansion mode."
 ---
 
 ```dart

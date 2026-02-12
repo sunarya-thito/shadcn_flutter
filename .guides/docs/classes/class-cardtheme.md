@@ -1,6 +1,6 @@
 ---
 title: "Class: CardTheme"
-description: "Theme data for customizing [Card] and [SurfaceCard] widget appearance."
+description: "Theme data for customizing [Card] and [SurfaceCard] widget appearance.   This class defines the visual properties that can be applied to card widgets,  including padding, fill behavior, colors, borders, shadows, and surface effects.  These properties can be set at the theme level to provide consistent styling  across the application.   The theme affects both regular cards and surface cards, with surface cards  supporting additional blur and opacity effects for glassmorphism styling."
 ---
 
 ```dart

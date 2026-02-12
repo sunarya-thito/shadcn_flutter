@@ -1,6 +1,6 @@
 ---
 title: "Class: DividerTheme"
-description: "Theme data for customizing [Divider] widget appearance."
+description: "Theme data for customizing [Divider] widget appearance.   This class defines the visual properties that can be applied to  [Divider] widgets, including line color, dimensions, spacing, and  child padding. These properties can be set at the theme level  to provide consistent styling across the application."
 ---
 
 ```dart

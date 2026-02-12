@@ -1,6 +1,6 @@
 ---
 title: "Class: ScrollableSortableLayer"
-description: "A sortable layer that provides automatic scrolling during drag operations."
+description: "A sortable layer that provides automatic scrolling during drag operations.   ScrollableSortableLayer extends the basic sortable functionality with automatic  scrolling when dragged items approach the edges of scrollable areas. This provides  a smooth user experience when dragging items in long lists or grids that extend  beyond the visible area.   The layer monitors drag positions and automatically scrolls the associated  scroll controller when the drag position comes within the configured threshold  of the scroll area edges. Scrolling speed is proportional to proximity to edges.   Features:  - Automatic scrolling when dragging near scroll area edges  - Configurable scroll threshold distance from edges  - Proportional scrolling speed based on proximity  - Optional overscroll support for scrolling beyond normal bounds  - Integrated with standard Flutter ScrollController   This layer should wrap scrollable widgets like ListView, GridView, or CustomScrollView  that contain sortable items. The scroll controller must be provided to enable  automatic scrolling functionality.   Example:  ```dart  ScrollController scrollController = ScrollController();   ScrollableSortableLayer(    controller: scrollController,    scrollThreshold: 80.0,    child: ListView.builder(      controller: scrollController,      itemBuilder: (context, index) => Sortable(...),    ),  )  ```"
 ---
 
 ```dart

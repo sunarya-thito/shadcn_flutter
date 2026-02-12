@@ -1,6 +1,6 @@
 ---
 title: "Class: InputAboveBelowFeature"
-description: "Adds a custom widget above or below the text input area."
+description: "Adds a custom widget above or below the text input area.   Use this feature to place helper content inside the input decoration,  directly above or below the editable text.   Example:  ```dart  TextField(    features: [      InputAboveBelowFeature(        child: Text('Billing email').small().muted(),        position: InputFeaturePosition.above,      ),    ],  )  ```"
 ---
 
 ```dart

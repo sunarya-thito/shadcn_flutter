@@ -1,6 +1,6 @@
 ---
 title: "Class: SizeUnitLocale"
-description: "Configuration for file size unit formatting."
+description: "Configuration for file size unit formatting.   Defines the base (1024 for binary) and unit labels for formatting  file sizes and data volumes."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: ComponentThemeButtonStyle"
-description: "Theme-aware button style that integrates with the component theme system."
+description: "Theme-aware button style that integrates with the component theme system.   [ComponentThemeButtonStyle] implements [AbstractButtonStyle] and provides  automatic theme integration by looking up theme overrides from the widget tree's  [ComponentTheme]. If a theme override is found, it's applied; otherwise, the  fallback style is used.   This enables global button style customization through the theme system while  maintaining type-safe access to specific button theme types.   Example:  ```dart  const ComponentThemeButtonStyle<PrimaryButtonTheme>(    fallback: ButtonVariance.primary,  )  ```"
 ---
 
 ```dart

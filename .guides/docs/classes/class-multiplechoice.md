@@ -1,6 +1,6 @@
 ---
 title: "Class: MultipleChoice"
-description: "A widget for single-selection choice scenarios."
+description: "A widget for single-selection choice scenarios.   [MultipleChoice] manages a single selected value from multiple options.  It prevents multiple selections and optionally allows deselecting the  current choice by clicking it again.   This widget is typically used with choice items like [ChoiceChip] or  [ChoiceButton] which integrate with the inherited [Choice] data.   Example:  ```dart  MultipleChoice<String>(    value: selectedOption,    onChanged: (value) => setState(() => selectedOption = value),    child: Wrap(      children: [        ChoiceChip(value: 'A', child: Text('Option A')),        ChoiceChip(value: 'B', child: Text('Option B')),      ],    ),  )  ```"
 ---
 
 ```dart

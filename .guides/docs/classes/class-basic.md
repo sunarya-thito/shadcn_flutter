@@ -1,6 +1,6 @@
 ---
 title: "Class: Basic"
-description: "A versatile layout widget for arranging leading, title, subtitle, content, and trailing elements."
+description: "A versatile layout widget for arranging leading, title, subtitle, content, and trailing elements.   Provides a flexible row-based layout commonly used for list items, cards, or  any UI requiring a structured arrangement of multiple content sections. Each  section can be independently aligned and spaced.   Example:  ```dart  Basic(    leading: Icon(Icons.person),    title: Text('John Doe'),    subtitle: Text('john@example.com'),    trailing: Icon(Icons.chevron_right),  )  ```"
 ---
 
 ```dart

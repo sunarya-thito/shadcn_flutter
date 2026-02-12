@@ -1,6 +1,6 @@
 ---
 title: "Class: URLValidator"
-description: "A validator that checks if a string is a valid URL."
+description: "A validator that checks if a string is a valid URL.   [URLValidator] validates URLs using Dart's Uri parsing capabilities  to ensure the string represents a valid web address.   Example:  ```dart  URLValidator(    message: 'Please enter a valid URL',  )  ```"
 ---
 
 ```dart

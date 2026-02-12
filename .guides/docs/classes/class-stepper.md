@@ -1,6 +1,6 @@
 ---
 title: "Class: Stepper"
-description: "A multi-step navigation component with visual progress indication."
+description: "A multi-step navigation component with visual progress indication.   Displays a sequence of steps with customizable visual styles, supporting  both horizontal and vertical layouts. Each step can have a title, optional  content, and custom icons. The component tracks current step progress and  can display failed states.   Uses a [StepperController] for state management and navigation. Steps are  defined using [Step] objects, and visual presentation is controlled by  [StepVariant] and [StepSize] configurations.   The stepper automatically handles step indicators, connecting lines or  progress bars, and animated content transitions between steps.   Example:  ```dart  final controller = StepperController();   Stepper(    controller: controller,    direction: Axis.vertical,    variant: StepVariant.circle,    size: StepSize.medium,    steps: [      Step(        title: Text('Personal Info'),        contentBuilder: (context) => PersonalInfoForm(),      ),      Step(        title: Text('Address'),        contentBuilder: (context) => AddressForm(),      ),      Step(        title: Text('Confirmation'),        contentBuilder: (context) => ConfirmationView(),      ),    ],  );  ```"
 ---
 
 ```dart

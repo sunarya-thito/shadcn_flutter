@@ -1,6 +1,6 @@
 ---
 title: "Class: LinkButton"
-description: "Convenience widget for creating a link button."
+description: "Convenience widget for creating a link button.   A simplified wrapper around [Button.link] with the same properties  as [PrimaryButton] but using link button styling that resembles a hyperlink."
 ---
 
 ```dart

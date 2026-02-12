@@ -1,6 +1,6 @@
 ---
 title: "Class: ItemChildDelegate"
-description: "Abstract delegate for providing items to an item picker."
+description: "Abstract delegate for providing items to an item picker.   Defines an interface for accessing items by index, used by [ItemPickerLayout]  to build the list or grid of items. Concrete implementations include  [ItemList] for fixed arrays and [ItemBuilder] for lazy generation.   See also:  - [ItemList], which wraps a fixed list of items.  - [ItemBuilder], which generates items on demand."
 ---
 
 ```dart

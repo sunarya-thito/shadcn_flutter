@@ -1,6 +1,6 @@
 ---
 title: "Class: LinearProgressIndicatorTheme"
-description: "Theme configuration for [LinearProgressIndicator] components."
+description: "Theme configuration for [LinearProgressIndicator] components.   Provides comprehensive visual styling properties for linear progress indicators  including colors, sizing, border radius, and visual effects. These properties  integrate with the design system and can be overridden at the widget level.   The theme supports advanced features like spark effects for enhanced visual  feedback and animation control for performance optimization scenarios."
 ---
 
 ```dart

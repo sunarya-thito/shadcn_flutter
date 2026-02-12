@@ -1,6 +1,6 @@
 ---
 title: "Class: OutlineButton"
-description: "Convenience widget for creating an outline button."
+description: "Convenience widget for creating an outline button.   A simplified wrapper around [Button.outline] with the same properties  as [PrimaryButton] but using outline button styling with a visible border."
 ---
 
 ```dart

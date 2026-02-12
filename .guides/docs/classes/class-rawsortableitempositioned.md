@@ -1,6 +1,6 @@
 ---
 title: "Class: RawSortableItemPositioned"
-description: "Widget that positions a sortable item at a specific offset."
+description: "Widget that positions a sortable item at a specific offset.   Used internally by sortable lists to position items during drag  operations. Wraps a child widget and updates its parent data with  the specified [offset]."
 ---
 
 ```dart

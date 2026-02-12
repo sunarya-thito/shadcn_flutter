@@ -1,6 +1,6 @@
 ---
 title: "Class: OrValidator"
-description: "A validator that combines multiple validators with OR logic."
+description: "A validator that combines multiple validators with OR logic.   [OrValidator] passes if at least one of the wrapped validators passes.  Only fails if all validators fail. Useful for accepting multiple valid formats.   Example:  ```dart  OrValidator([    EmailValidator(),    PhoneValidator(),  ])  ```"
 ---
 
 ```dart

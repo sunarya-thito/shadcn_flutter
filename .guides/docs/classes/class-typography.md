@@ -1,6 +1,6 @@
 ---
 title: "Class: Typography"
-description: "Typography definitions for shadcn_flutter."
+description: "Typography definitions for shadcn_flutter.   Provides predefined text styles for different purposes including  sizes, weights, and semantic styles like headings and paragraphs."
 ---
 
 ```dart

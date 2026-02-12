@@ -1,6 +1,6 @@
 ---
 title: "Class: HSVColorSlider"
-description: "A slider widget for adjusting HSV color components."
+description: "A slider widget for adjusting HSV color components.   [HSVColorSlider] provides an interactive slider for modifying different  aspects of an HSV color (hue, saturation, value, and combinations).  The slider displays a gradient representing the selected color channel(s)  and allows users to drag to adjust values.   Example:  ```dart  HSVColorSlider(    value: HSVColor.fromColor(Colors.blue),    sliderType: HSVColorSliderType.hue,    onChanged: (newColor) {      print('New hue: ${newColor.hue}');    },  )  ```"
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: WindowState"
-description: "Complete state configuration for a window instance."
+description: "Complete state configuration for a window instance.   Encapsulates all aspects of a window's current state including position, size,  visual state (minimized, maximized), capabilities (resizable, draggable), and  behavior settings (snapping, always on top).   Key Properties:  - **Position & Size**: [bounds] for current position, [maximized] for fullscreen state  - **Visual State**: [minimized] for taskbar state, [alwaysOnTop] for layering  - **Capabilities**: [resizable], [draggable], [closable], [maximizable], [minimizable]  - **Behavior**: [enableSnapping] for edge snapping, [constraints] for size limits   Used primarily with [WindowController] to manage window state programmatically  and provide reactive updates to window appearance and behavior.   Example:  ```dart  WindowState(    bounds: Rect.fromLTWH(100, 100, 800, 600),    resizable: true,    draggable: true,    enableSnapping: true,    constraints: BoxConstraints(minWidth: 400, minHeight: 300),  )  ```"
 ---
 
 ```dart

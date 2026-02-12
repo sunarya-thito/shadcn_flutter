@@ -1,6 +1,6 @@
 ---
 title: "Class: Hover"
-description: "A widget that manages hover state with configurable timing behavior."
+description: "A widget that manages hover state with configurable timing behavior.   [Hover] provides sophisticated hover detection with delays and minimum durations  to prevent flickering when the cursor quickly passes over the widget. It calls  [onHover] with `true` when hover activates and `false` when it deactivates.   Unlike [HoverActivity], this widget implements smart timing:  - [waitDuration]: Delay before activating hover  - [minDuration]: Minimum time to keep hover active once triggered  - [showDuration]: Total duration for hover state   Example:  ```dart  Hover(    waitDuration: Duration(milliseconds: 500),    minDuration: Duration(milliseconds: 200),    onHover: (hovered) {      print(hovered ? 'Hover activated' : 'Hover deactivated');    },    child: Container(      width: 100,      height: 100,      color: Colors.blue,    ),  )  ```"
 ---
 
 ```dart

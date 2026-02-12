@@ -1,6 +1,6 @@
 ---
 title: "Class: ScaffoldFooterPadding"
-description: "Widget that applies footer-aware padding to its child."
+description: "Widget that applies footer-aware padding to its child.   Automatically adjusts padding based on scaffold footer height."
 ---
 
 ```dart

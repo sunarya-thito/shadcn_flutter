@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuShortcut"
-description: "Displays a keyboard shortcut in a menu."
+description: "Displays a keyboard shortcut in a menu.   Renders the visual representation of a keyboard shortcut, typically  displayed on the right side of menu items.   Example:  ```dart  MenuShortcut(    activator: SingleActivator(LogicalKeyboardKey.keyS, control: true),  )  ```"
 ---
 
 ```dart

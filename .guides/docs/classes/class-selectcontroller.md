@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectController"
-description: "Controller for managing [ControlledSelect] state programmatically."
+description: "Controller for managing [ControlledSelect] state programmatically.   Extends [ValueNotifier] to provide reactive state management for select  components. Can be used to programmatically change selection, listen to  state changes, and integrate with forms and other reactive systems.   Example:  ```dart  final controller = SelectController<String>('initial');   // Listen to changes  controller.addListener(() {    print('Selection changed to: ${controller.value}');  });   // Update selection  controller.value = 'new_value';  ```"
 ---
 
 ```dart

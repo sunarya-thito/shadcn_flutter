@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledTimePicker"
-description: "A controlled time picker widget for selecting time values with external state management."
+description: "A controlled time picker widget for selecting time values with external state management.   This widget provides a time selection interface that can be controlled either through  a [TimePickerController] or through direct property values. It supports multiple  presentation modes (dialog or popover), customizable time formats (12-hour/24-hour),  and optional seconds display.   The time picker integrates with the controlled component system, making it suitable  for form integration, validation, and programmatic control. It presents the selected  time in a readable format and opens an interactive time selection interface when activated.   Example:  ```dart  ControlledTimePicker(    initialValue: TimeOfDay(hour: 9, minute: 30),    use24HourFormat: true,    showSeconds: false,    placeholder: Text('Select meeting time'),    onChanged: (time) {      print('Selected time: ${time?.format(context)}');    },  );  ```"
 ---
 
 ```dart

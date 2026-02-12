@@ -1,6 +1,6 @@
 ---
 title: "Class: CommandCategory"
-description: "A category grouping for command items in a command palette."
+description: "A category grouping for command items in a command palette.   Groups related command items under an optional category title. Items within  a category are visually grouped and can be navigated as a unit.   ## Example   ```dart  CommandCategory(    title: Text('File'),    children: [      CommandItem(title: Text('New File'), onTap: () {}),      CommandItem(title: Text('Open File'), onTap: () {}),      CommandItem(title: Text('Save'), onTap: () {}),    ],  )  ```"
 ---
 
 ```dart

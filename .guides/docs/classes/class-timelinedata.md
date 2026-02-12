@@ -1,6 +1,6 @@
 ---
 title: "Class: TimelineData"
-description: "Data model for individual timeline entries."
+description: "Data model for individual timeline entries.   Represents a single item in a timeline with time information, title,  optional content, and optional custom color for the indicator and connector.  Used by [Timeline] to construct the visual timeline representation.   Example:  ```dart  TimelineData(    time: Text('2:30 PM'),    title: Text('Meeting Started'),    content: Text('Weekly team sync began with all members present.'),    color: Colors.green,  );  ```"
 ---
 
 ```dart

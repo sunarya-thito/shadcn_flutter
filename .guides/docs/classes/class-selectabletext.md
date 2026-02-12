@@ -1,6 +1,6 @@
 ---
 title: "Class: SelectableText"
-description: "A text widget that supports text selection by users."
+description: "A text widget that supports text selection by users.   Displays text (plain or styled) that users can select, copy, and interact with.  Provides cursor display, selection highlighting, and context menu support for  rich text interaction experiences.   Features:  - **Text Selection**: Click and drag to select text portions  - **Copy Support**: Built-in copy functionality via context menu  - **Cursor Display**: Optional cursor for indicating selection position  - **Rich Text**: Supports styled text via [TextSpan] (use `.rich` constructor)  - **Customizable**: Full control over cursor, selection, and interaction behavior   Usage Patterns:   **Basic Selectable Text**:  ```dart  SelectableText(    'Select this text!',    style: TextStyle(fontSize: 16),  )  ```   **Rich Text Selection**:  ```dart  SelectableText.rich(    TextSpan(      children: [        TextSpan(text: 'Bold ', style: TextStyle(fontWeight: FontWeight.bold)),        TextSpan(text: 'and normal text'),      ],    ),  )  ```   **Custom Cursor**:  ```dart  SelectableText(    'Text with custom cursor',    showCursor: true,    cursorColor: Colors.blue,    cursorWidth: 3.0,  )  ```   See also:  - [Text] for non-selectable text display  - [TextField] for editable text input  - [SelectableTextTheme] for theming selection appearance"
 ---
 
 ```dart

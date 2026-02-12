@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapseTreeNodeIntent"
-description: "Intent to collapse a tree node."
+description: "Intent to collapse a tree node.   Used with Flutter's Actions/Shortcuts system to programmatically  collapse an expanded tree node to hide its children."
 ---
 
 ```dart

@@ -1,6 +1,6 @@
 ---
 title: "Class: InputPasteFeature"
-description: "Adds a paste button to the input field."
+description: "Adds a paste button to the input field.   Provides a button that pastes content from the clipboard into the input.  Useful for improving user experience when entering copied data.   Example:  ```dart  TextField(    features: [      InputPasteFeature(        position: InputFeaturePosition.trailing,      ),    ],  )  ```"
 ---
 
 ```dart

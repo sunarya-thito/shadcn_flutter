@@ -1,6 +1,6 @@
 ---
 title: "Class: CalendarView"
-description: "Represents a specific month and year view in calendar navigation."
+description: "Represents a specific month and year view in calendar navigation.   Provides immutable representation of a calendar's current viewing position  with navigation methods to move between months and years. Used to control  which month/year combination is displayed in calendar grids.   Key Features:  - **Navigation Methods**: [next], [previous], [nextYear], [previousYear]  - **Factory Constructors**: [now()], [fromDateTime()]  - **Validation**: Ensures month values stay within 1-12 range  - **Immutable**: All navigation returns new CalendarView instances   Example:  ```dart  // Create views for different dates  final current = CalendarView.now();  final specific = CalendarView(2024, 3); // March 2024  final fromDate = CalendarView.fromDateTime(someDateTime);   // Navigate between months  final nextMonth = current.next;  final prevMonth = current.previous;  final nextYear = current.nextYear;  ```"
 ---
 
 ```dart

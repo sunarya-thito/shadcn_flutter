@@ -1,6 +1,6 @@
 ---
 title: "Class: AvatarBadge"
-description: "A circular badge widget designed to overlay on [Avatar] components."
+description: "A circular badge widget designed to overlay on [Avatar] components.   [AvatarBadge] provides a small circular indicator typically used to show  status information, notifications, or other contextual data on avatars.  The badge can contain custom content via [child] or display as a solid  colored circle for simple status indicators.   ## Features  - **Status Indicators**: Colored circles for online/offline status  - **Custom Content**: Support for icons, text, or other widgets  - **Theme Integration**: Uses primary color by default with theme radius  - **Size Flexibility**: Configurable dimensions with automatic scaling   ## Common Use Cases  - Online status indicators (green dot)  - Notification badges (red circle with count)  - Custom status icons (checkmarks, warnings)   Example:  ```dart  AvatarBadge(    size: 16,    color: Colors.green,    child: Icon(Icons.check, size: 10, color: Colors.white),  );  ```"
 ---
 
 ```dart

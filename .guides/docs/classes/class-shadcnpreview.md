@@ -1,6 +1,6 @@
 ---
 title: "Class: ShadcnPreview"
-description: "A [Preview] that wraps the previewed widget in a [ShadcnLayer]."
+description: "A [Preview] that wraps the previewed widget in a [ShadcnLayer].   This is useful for testing shadcn widgets in a preview."
 ---
 
 ```dart

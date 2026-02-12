@@ -1,6 +1,6 @@
 ---
 title: "Class: ControlledColorInput"
-description: "A controlled color input widget integrating with form state management."
+description: "A controlled color input widget integrating with form state management.   Implements [ControlledComponent] to provide automatic form integration,  validation, and state management for color selection."
 ---
 
 ```dart

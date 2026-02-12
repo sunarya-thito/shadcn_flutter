@@ -1,6 +1,6 @@
 ---
 title: "Class: FormValidityNotification"
-description: "A notification sent when a form field's validation state changes."
+description: "A notification sent when a form field's validation state changes.   [FormValidityNotification] is dispatched through the notification system  when a field's validity transitions between valid, invalid, or null states.  Useful for updating UI or tracking form validation status."
 ---
 
 ```dart

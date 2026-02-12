@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeNode"
-description: "Abstract base class representing a node in a tree structure."
+description: "Abstract base class representing a node in a tree structure.   TreeNode defines the interface for all nodes in the tree hierarchy, providing  access to children, expansion state, and selection state. It supports immutable  updates through copy methods that return new instances with modified state.   The generic type parameter [T] represents the data type stored in tree items.  TreeNode is implemented by [TreeItem] for data-bearing nodes and [TreeRoot]  for the invisible root container.   Key operations include state updates for expansion and selection, child  manipulation, and leaf node detection. All state changes return new instances  to maintain immutability.   Example:  ```dart  TreeNode<String> node = TreeItem(    data: 'parent',    children: [TreeItem(data: 'child1'), TreeItem(data: 'child2')],  );   // Expand the node  TreeNode<String> expanded = node.updateState(expanded: true);   // Check if it's a leaf  bool isLeaf = node.leaf; // false, has children  ```"
 ---
 
 ```dart

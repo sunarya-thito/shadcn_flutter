@@ -1,6 +1,6 @@
 ---
 title: "Class: HSLColorSliderPainter"
-description: "A custom painter for rendering HSL color slider gradients."
+description: "A custom painter for rendering HSL color slider gradients.   [HSLColorSliderPainter] draws the gradient background for HSL color sliders,  showing the range of possible colors for the selected slider type. The  gradient updates based on the current color and slider configuration."
 ---
 
 ```dart

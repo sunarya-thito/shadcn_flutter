@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedInputData"
-description: "Internal data structure for formatted input parts."
+description: "Internal data structure for formatted input parts.   [FormattedInputData] holds the state and configuration data needed  to render and manage an individual input part within a formatted input."
 ---
 
 ```dart

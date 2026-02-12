@@ -1,6 +1,6 @@
 ---
 title: "Class: CapturedWrapper"
-description: "A widget that wraps a child with captured themes and data."
+description: "A widget that wraps a child with captured themes and data.   Applies previously captured inherited themes and data to the widget tree.  This is useful for maintaining theme and data context when moving widgets  across different parts of the tree."
 ---
 
 ```dart
