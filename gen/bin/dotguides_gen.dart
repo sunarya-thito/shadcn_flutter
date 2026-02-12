@@ -325,7 +325,7 @@ bool _isIconDataInit(String? typeSrc, String? initSrc) {
 
 List<_Topic> _collectApiTopics() {
   // Use only the first sentence for the YAML description (short summary)
-  final firstParagraph = (String text) {
+  String firstParagraph(String text) {
     final t = text.trim();
     if (t.isEmpty) return '';
     final lines = t.split(RegExp(r'\r?\n'));
@@ -335,7 +335,8 @@ List<_Topic> _collectApiTopics() {
       buffer.add(line.trim());
     }
     return buffer.join(' ');
-  };
+  }
+
   final topics = <_Topic>[];
   final libDir = Directory('lib');
   if (!libDir.existsSync()) return topics;
