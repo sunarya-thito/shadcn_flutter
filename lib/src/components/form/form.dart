@@ -2860,47 +2860,50 @@ class FormField<T> extends StatelessWidget {
                     ? Border.all(color: theme.colorScheme.destructive)
                     : null,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: padding!,
-                    child: Row(
-                      mainAxisAlignment: labelAxisAlignment!,
-                      children: [
-                        if (leadingLabel != null)
-                          leadingLabel!.textSmall().muted(),
-                        if (leadingLabel != null) Gap(leadingGap ?? densityGap),
-                        Expanded(
-                          child: DefaultTextStyle.merge(
-                            style: error != null
-                                ? TextStyle(
-                                    color: theme.colorScheme.destructive)
-                                : null,
-                            child: label.textSmall(),
+              child: IntrinsicWidth(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: padding!,
+                      child: Row(
+                        mainAxisAlignment: labelAxisAlignment!,
+                        children: [
+                          if (leadingLabel != null)
+                            leadingLabel!.textSmall().muted(),
+                          if (leadingLabel != null)
+                            Gap(leadingGap ?? densityGap),
+                          Expanded(
+                            child: DefaultTextStyle.merge(
+                              style: error != null
+                                  ? TextStyle(
+                                      color: theme.colorScheme.destructive)
+                                  : null,
+                              child: label.textSmall(),
+                            ),
                           ),
-                        ),
-                        if (trailingLabel != null)
-                          Gap(trailingGap ?? densityGap),
-                        if (trailingLabel != null)
-                          trailingLabel!.textSmall().muted(),
-                      ],
+                          if (trailingLabel != null)
+                            Gap(trailingGap ?? densityGap),
+                          if (trailingLabel != null)
+                            trailingLabel!.textSmall().muted(),
+                        ],
+                      ),
                     ),
-                  ),
-                  Gap(densityGap),
-                  child!,
-                  if (hint != null) ...[
                     Gap(densityGap),
-                    hint!.xSmall().muted(),
+                    child!,
+                    if (hint != null) ...[
+                      Gap(densityGap),
+                      hint!.xSmall().muted(),
+                    ],
+                    if (error is InvalidResult) ...[
+                      Gap(densityGap),
+                      DefaultTextStyle.merge(
+                        style: TextStyle(color: theme.colorScheme.destructive),
+                        child: Text(error.message).xSmall().medium(),
+                      ),
+                    ],
                   ],
-                  if (error is InvalidResult) ...[
-                    Gap(densityGap),
-                    DefaultTextStyle.merge(
-                      style: TextStyle(color: theme.colorScheme.destructive),
-                      child: Text(error.message).xSmall().medium(),
-                    ),
-                  ],
-                ],
+                ),
               ),
             ),
           );
