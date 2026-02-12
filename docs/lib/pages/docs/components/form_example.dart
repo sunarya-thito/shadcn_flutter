@@ -445,18 +445,6 @@ class _FormExampleState extends State<FormExample> {
         ),
         const AccordionItem(
           trigger: AccordionTrigger(
-            child: Text('Forgetting const on FormKey declarations'),
-          ),
-          content: Text(
-            'FormKey uses Object equality (== operator). If you declare keys '
-            'without const, each widget rebuild creates a new key instance, '
-            'breaking form tracking. Always declare keys with const: '
-            '\'final _emailKey = const TextFieldKey("email");\' or '
-            '\'const emailKey = TextFieldKey("email");\'.',
-          ),
-        ),
-        const AccordionItem(
-          trigger: AccordionTrigger(
             child: Text('Confusing showErrors with ValidationMode'),
           ),
           content: Text(
