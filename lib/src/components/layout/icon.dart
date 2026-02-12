@@ -1,11 +1,32 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+/// Provides themed icon container widgets for shadcn_flutter components.
+///
+/// Includes [IconContainerTheme] and [IconContainer] for styling icons with background, padding, and border radius.
 
 class IconContainerTheme extends ComponentThemeData {
+  /// Background color for the icon container.
   final Color? backgroundColor;
+  /// Color for the icon inside the container.
   final Color? iconColor;
+  /// Padding inside the icon container.
   final EdgeInsetsGeometry? padding;
+  /// Border radius for the icon container.
   final BorderRadius? borderRadius;
 
+  /// Creates an [IconContainerTheme].
+  ///
+  /// Parameters:
+  /// - [backgroundColor] (`Color?`, optional): Container background color.
+  /// - [iconColor] (`Color?`, optional): Icon color.
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Container padding.
+  /// - [borderRadius] (`BorderRadius?`, optional): Container border radius.
+  /// Creates an [IconContainerTheme].
+  ///
+  /// Parameters:
+  /// - [backgroundColor] (`Color?`, optional): Container background color.
+  /// - [iconColor] (`Color?`, optional): Icon color.
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Container padding.
+  /// - [borderRadius] (`BorderRadius?`, optional): Container border radius.
   const IconContainerTheme({
     this.backgroundColor,
     this.iconColor,
@@ -13,6 +34,7 @@ class IconContainerTheme extends ComponentThemeData {
     this.borderRadius,
   });
 
+  /// Returns a copy of this theme with the given fields replaced.
   IconContainerTheme copyWith({
     ValueGetter<Color?>? backgroundColor,
     ValueGetter<Color?>? iconColor,
@@ -50,12 +72,37 @@ class IconContainerTheme extends ComponentThemeData {
   }
 }
 
+/// A container widget for displaying an icon with customizable padding, background, and border radius.
+///
+/// Use [IconContainer] to wrap an icon and apply theme or custom styling.
+///
+/// Example:
+/// ```dart
+/// IconContainer(
+///   icon: Icon(Icons.star),
+///   backgroundColor: Colors.yellow,
+///   borderRadius: BorderRadius.circular(8),
+/// )
+/// ```
 class IconContainer extends StatelessWidget {
+  /// The icon widget to display.
   final Widget icon;
+  /// Padding inside the container.
   final EdgeInsetsGeometry? padding;
+  /// Border radius for the container.
   final BorderRadius? borderRadius;
+  /// Background color for the container.
   final Color? backgroundColor;
+  /// Color for the icon.
   final Color? iconColor;
+  /// Creates an [IconContainer].
+  ///
+  /// Parameters:
+  /// - [icon] (`Widget`, required): Icon widget to display.
+  /// - [padding] (`EdgeInsetsGeometry?`, optional): Container padding.
+  /// - [borderRadius] (`BorderRadius?`, optional): Container border radius.
+  /// - [backgroundColor] (`Color?`, optional): Container background color.
+  /// - [iconColor] (`Color?`, optional): Icon color.
   const IconContainer({
     super.key,
     required this.icon,

@@ -1,5 +1,3 @@
-import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// A standard navigation rail component for sidebar-style navigation.
@@ -151,10 +149,6 @@ class _NavigationRailState extends State<NavigationRail> {
   void _onSelected(Key? key) {
     widget.onSelected?.call(key);
   }
-
-  final GlobalKey _headerKey = GlobalKey();
-  final GlobalKey _footerKey = GlobalKey();
-  final GlobalKey _bodyKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

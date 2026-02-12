@@ -71,11 +71,11 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
                 return NavigationSlot(
                   leading: IconContainer(
                     backgroundColor: Colors.blue,
-                    icon: Icon(LucideIcons.galleryVerticalEnd).iconMedium,
+                    icon: const Icon(LucideIcons.galleryVerticalEnd).iconMedium,
                   ),
-                  title: Text('Acme Inc').medium.small,
-                  subtitle: Text('Enterprise').xSmall.normal,
-                  trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
+                  title: const Text('Acme Inc').medium.small,
+                  subtitle: const Text('Enterprise').xSmall.normal,
+                  trailing: const Icon(LucideIcons.chevronsUpDown).iconSmall,
                   onPressed: () {
                     showDropdown(
                         context: context,
@@ -86,16 +86,16 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
                           return DropdownMenu(children: [
                             MenuButton(
                                 leading: const Icon(Icons.person),
-                                child: Text('Profile'),
+                                child: const Text('Profile'),
                                 onPressed: (ctx) {}),
                             MenuButton(
                                 leading: const Icon(Icons.settings),
-                                child: Text('Settings'),
+                                child: const Text('Settings'),
                                 onPressed: (ctx) {}),
-                            MenuDivider(),
+                            const MenuDivider(),
                             MenuButton(
                                 leading: const Icon(Icons.logout),
-                                child: Text('Logout'),
+                                child: const Text('Logout'),
                                 onPressed: (ctx) {}),
                           ]);
                         });
@@ -110,9 +110,9 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
                   initials: 'SU',
                   backgroundColor: Colors.green.shade800,
                 ),
-                title: Text('sunarya-thito').medium.small,
-                subtitle: Text('m@gmail.com').xSmall.normal,
-                trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
+                title: const Text('sunarya-thito').medium.small,
+                subtitle: const Text('m@gmail.com').xSmall.normal,
+                trailing: const Icon(LucideIcons.chevronsUpDown).iconSmall,
                 onPressed: () {},
               ),
             ],

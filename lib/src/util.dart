@@ -2185,8 +2185,23 @@ class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
   }
 }
 
+/// A widget that filters duplicate Flutter errors, logging each unique error only once.
+///
+/// Wrap your app or subtree with [ErrorFilter] to avoid repeated error logs for the same error.
+///
+/// Example:
+/// ```dart
+/// ErrorFilter(
+///   child: MyApp(),
+/// )
+/// ```
 class ErrorFilter extends StatefulWidget {
+  /// Child widget to wrap with error filtering.
   final Widget child;
+  /// Creates an [ErrorFilter].
+  ///
+  /// Parameters:
+  /// - [child] (`Widget`, required): Child widget to wrap.
   const ErrorFilter({super.key, required this.child});
 
   @override
@@ -2194,14 +2209,18 @@ class ErrorFilter extends StatefulWidget {
 }
 
 class _ErrorFilterState extends State<ErrorFilter> {
+  /// Tracks hashes of logged errors to avoid duplicate logs.
   final Set<int> _loggedErrors = {};
 
+  /// Stores the original Flutter error handler.
   late void Function(FlutterErrorDetails)? _originalOnError;
 
+  /// Computes a hash for the error string.
   int _hashErrors(String error) {
     return error.hashCode;
   }
 
+  /// Initializes the error filter and overrides Flutter error handler.
   @override
   void initState() {
     super.initState();
@@ -2209,6 +2228,7 @@ class _ErrorFilterState extends State<ErrorFilter> {
     FlutterError.onError = _onError;
   }
 
+  /// Handles Flutter errors, logging only unique errors.
   void _onError(FlutterErrorDetails details) {
     final errorHash = _hashErrors(details.toString());
     if (_loggedErrors.contains(errorHash)) {
@@ -2218,12 +2238,14 @@ class _ErrorFilterState extends State<ErrorFilter> {
     (_originalOnError ?? FlutterError.presentError)(details);
   }
 
+  /// Restores the original Flutter error handler on dispose.
   @override
   void dispose() {
     FlutterError.onError = _originalOnError;
     super.dispose();
   }
 
+  /// Builds the widget tree, wrapping the child.
   @override
   Widget build(BuildContext context) {
     return widget.child;
