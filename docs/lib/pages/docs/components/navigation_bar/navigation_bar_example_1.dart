@@ -8,16 +8,16 @@ class NavigationBarExample1 extends StatefulWidget {
 }
 
 class _NavigationBarExample1State extends State<NavigationBarExample1> {
-  int selected = 0;
+  Key? selected = const ValueKey(0);
 
   NavigationBarAlignment alignment = NavigationBarAlignment.spaceAround;
-  bool expands = true;
   NavigationLabelType labelType = NavigationLabelType.none;
   bool customButtonStyle = true;
   bool expanded = true;
 
-  NavigationItem buildButton(String label, IconData icon) {
+  NavigationItem buildButton(String label, IconData icon, Key key) {
     return NavigationItem(
+      key: key,
       style: customButtonStyle
           ? const ButtonStyle.muted(density: ButtonDensity.icon)
           : null,
@@ -41,24 +41,26 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
             alignment: alignment,
             labelType: labelType,
             expanded: expanded,
-            expands: expands,
-            onSelected: (index) {
+            onSelected: (key) {
               setState(() {
-                selected = index;
+                selected = key;
               });
             },
-            index: selected,
+            selectedKey: selected,
             children: [
-              buildButton('Home', BootstrapIcons.house),
-              buildButton('Explore', BootstrapIcons.compass),
-              buildButton('Library', BootstrapIcons.musicNoteList),
-              buildButton('Profile', BootstrapIcons.person),
-              buildButton('App', BootstrapIcons.appIndicator),
+              buildButton('Home', BootstrapIcons.house, const ValueKey(0)),
+              buildButton('Explore', BootstrapIcons.compass, const ValueKey(1)),
+              buildButton(
+                  'Library', BootstrapIcons.musicNoteList, const ValueKey(2)),
+              buildButton('Profile', BootstrapIcons.person, const ValueKey(3)),
+              buildButton(
+                  'App', BootstrapIcons.appIndicator, const ValueKey(4)),
             ],
           ),
         ],
         child: Container(
-          color: Colors.primaries[Colors.primaries.length - selected - 1],
+          color: Colors.primaries[
+              Colors.primaries.length - (selected as ValueKey<int>).value - 1],
           padding: const EdgeInsets.all(24),
           child: Card(
             child: Wrap(
@@ -115,17 +117,6 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                         child: Text(value.name),
                       ),
                   ])),
-                ),
-                // Whether the navigation bar can expand to fill width.
-                Checkbox(
-                  state:
-                      expands ? CheckboxState.checked : CheckboxState.unchecked,
-                  onChanged: (value) {
-                    setState(() {
-                      expands = value == CheckboxState.checked;
-                    });
-                  },
-                  trailing: const Text('Expands'),
                 ),
                 // Use custom button styles for normal vs selected states.
                 Checkbox(

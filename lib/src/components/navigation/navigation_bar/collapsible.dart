@@ -1,11 +1,5 @@
-import 'dart:math' as math;
-
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/hidden.dart';
-import 'data.dart';
-import 'theme.dart';
-import 'mixin.dart';
-import 'item.dart';
 import 'misc.dart';
 
 /// A navigation item that can expand to reveal nested navigation items.
@@ -13,7 +7,7 @@ import 'misc.dart';
 /// Provides a labeled header row that toggles visibility of sub-items. Intended
 /// for hierarchical navigation structures, especially in vertical sidebars or
 /// rails.
-class NavigationGroup extends StatefulWidget implements NavigationBarItem {
+class NavigationCollapsible extends StatefulWidget {
   /// Optional leading widget for the group header.
   final Widget? leading;
 
@@ -21,7 +15,7 @@ class NavigationGroup extends StatefulWidget implements NavigationBarItem {
   final Widget label;
 
   /// The nested navigation items for this group.
-  final List<NavigationBarItem> children;
+  final List<Widget> children;
 
   /// Whether the group is expanded (controlled mode).
   final bool? expanded;
@@ -40,12 +34,6 @@ class NavigationGroup extends StatefulWidget implements NavigationBarItem {
 
   /// Callback when header selection changes.
   final ValueChanged<bool>? onChanged;
-
-  /// Optional index for selection management.
-  final int? index;
-
-  /// Whether the group header is selectable.
-  final bool selectable;
 
   /// Optional button style for the header.
   final AbstractButtonStyle? style;
@@ -71,8 +59,8 @@ class NavigationGroup extends StatefulWidget implements NavigationBarItem {
   /// How to handle label overflow.
   final NavigationOverflow overflow;
 
-  /// Creates a [NavigationGroup].
-  const NavigationGroup({
+  /// Creates a [NavigationCollapsible].
+  const NavigationCollapsible({
     super.key,
     this.leading,
     required this.label,
@@ -83,8 +71,6 @@ class NavigationGroup extends StatefulWidget implements NavigationBarItem {
     this.selectedStyle,
     this.selected,
     this.onChanged,
-    this.index,
-    this.selectable = false,
     this.style,
     this.trailing,
     this.childIndent,
@@ -96,22 +82,10 @@ class NavigationGroup extends StatefulWidget implements NavigationBarItem {
   });
 
   @override
-
-  /// Total number of selectable children, including nested groups.
-  int get selectableCount {
-    int count = (selectable && index == null) ? 1 : 0;
-    for (final child in children) {
-      count += child.selectableCount;
-    }
-    return count;
-  }
-
-  @override
-  State<NavigationGroup> createState() => _NavigationGroupState();
+  State<NavigationCollapsible> createState() => _NavigationCollapsibleState();
 }
 
-class _NavigationGroupState extends State<NavigationGroup>
-    with NavigationContainerMixin {
+class _NavigationCollapsibleState extends State<NavigationCollapsible> {
   late bool _expanded;
 
   bool get _isExpanded => widget.expanded ?? _expanded;
@@ -123,7 +97,7 @@ class _NavigationGroupState extends State<NavigationGroup>
   }
 
   @override
-  void didUpdateWidget(covariant NavigationGroup oldWidget) {
+  void didUpdateWidget(covariant NavigationCollapsible oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.expanded != null && widget.expanded != oldWidget.expanded) {
       _expanded = widget.expanded ?? _expanded;
@@ -222,7 +196,7 @@ class _NavigationGroupState extends State<NavigationGroup>
       child: NavigationChildOverflowHandle(
         overflow: widget.overflow,
         child: data?.parentLabelSize == NavigationLabelSize.small
-            ? widget.label.xSmall()
+            ? widget.label.xSmall
             : widget.label,
       ),
     );
@@ -252,19 +226,20 @@ class _NavigationGroupState extends State<NavigationGroup>
         ? Hidden(
             hidden: !(data?.expanded ?? true),
             direction: Axis.horizontal,
-            curve: Curves.easeInOut,
+            // curve: Curves.easeInOut,
             duration: kDefaultDuration,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Gap(densityGap),
                 AnimatedRotation(
-                  turns: _isExpanded ? 0.5 : 0.0,
+                  turns: _isExpanded ? 0.25 : 0.0,
                   duration: kDefaultDuration,
-                  curve: Curves.easeInOut,
+                  // curve: Curves.easeInOut,
                   child: IconTheme.merge(
                     data: IconThemeData(size: 16 * scaling),
-                    child: widget.trailing ?? const Icon(Icons.expand_more),
+                    child:
+                        widget.trailing ?? const Icon(LucideIcons.chevronRight),
                   ),
                 ),
               ],
@@ -273,25 +248,16 @@ class _NavigationGroupState extends State<NavigationGroup>
         : null;
 
     final parentExpanded = data?.expanded ?? true;
-    final groupData = Data.maybeOf<NavigationGroupControlData>(context);
-    final canSelectHeader = widget.selectable;
-    final headerIndex = canSelectHeader
-        ? (widget.index ??
-            ((widget.index == null && groupData != null)
-                ? groupData.baseIndex
-                : null))
-        : null;
-    final isSelected = canSelectHeader
-        ? (widget.selected ?? headerIndex == data?.selectedIndex)
-        : false;
+    final isSelected = widget.selected ??
+        (widget.key != null && widget.key == data?.selectedKey);
 
     Widget header = SelectedButton(
       value: isSelected,
       enabled: widget.enabled,
       onChanged: (value) {
         widget.onChanged?.call(value);
-        if (headerIndex != null) {
-          data?.onSelected?.call(headerIndex);
+        if (widget.key != null) {
+          data?.onSelected?.call(widget.key);
         }
         if (hasChildren && parentExpanded) {
           _toggleExpanded();
@@ -332,24 +298,19 @@ class _NavigationGroupState extends State<NavigationGroup>
       );
     }
 
-    return NavigationPadding(child: header);
+    return header;
   }
 
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<NavigationControlData>(context);
-    final groupData = Data.maybeOf<NavigationGroupControlData>(context);
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final direction = data?.direction ?? Axis.vertical;
-    final baseIndex = groupData?.baseIndex ?? 0;
-    final headerOffset = (widget.selectable && widget.index == null) ? 1 : 0;
-    final wrappedChildren = wrapChildren(
-      context,
-      widget.children,
-      baseIndex: baseIndex + headerOffset,
-    );
+
+    final children = widget.children;
+
     final childControlData = data == null
         ? null
         : NavigationControlData(
@@ -359,10 +320,10 @@ class _NavigationGroupState extends State<NavigationGroup>
             parentLabelSize: data.parentLabelSize,
             parentPadding: data.parentPadding,
             direction: Axis.vertical,
-            selectedIndex: data.selectedIndex,
+            selectedKey: data.selectedKey,
             onSelected: data.onSelected,
             expanded: data.expanded,
-            childCount: wrappedChildren.length,
+            childCount: children.length,
             spacing: data.spacing,
             keepCrossAxisSize: data.keepCrossAxisSize,
             keepMainAxisSize: data.keepMainAxisSize,
@@ -374,13 +335,13 @@ class _NavigationGroupState extends State<NavigationGroup>
     final parentExpanded = data?.expanded ?? true;
     if (data?.containerType == NavigationContainerType.sidebar) {
       final decoratedChildren = <Widget>[];
-      for (var i = 0; i < wrappedChildren.length; i++) {
+      for (var i = 0; i < children.length; i++) {
         decoratedChildren.add(
           _wrapGroupChild(
             context,
-            wrappedChildren[i],
+            children[i],
             i,
-            wrappedChildren.length,
+            children.length,
             direction,
           ),
         );
@@ -402,13 +363,13 @@ class _NavigationGroupState extends State<NavigationGroup>
     }
 
     final decoratedChildren = <Widget>[];
-    for (var i = 0; i < wrappedChildren.length; i++) {
+    for (var i = 0; i < children.length; i++) {
       decoratedChildren.add(
         _wrapGroupChild(
           context,
-          wrappedChildren[i],
+          children[i],
           i,
-          wrappedChildren.length,
+          children.length,
           direction,
         ),
       );
@@ -434,8 +395,9 @@ class _NavigationGroupState extends State<NavigationGroup>
           child: Hidden(
             hidden: !_isExpanded || !parentExpanded,
             direction: Axis.vertical,
-            curve: Curves.easeInOut,
+            // curve: Curves.easeInOut,
             duration: kDefaultDuration,
+            reverse: true,
             child: childList,
           ),
         ),
@@ -443,4 +405,3 @@ class _NavigationGroupState extends State<NavigationGroup>
     );
   }
 }
-

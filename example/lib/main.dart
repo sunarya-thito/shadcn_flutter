@@ -35,7 +35,7 @@ class CounterPage extends StatefulWidget {
 class CounterPageState extends State<CounterPage> {
   int _counter = 0;
 
-  int _selected = 0;
+  Key? _selected = const ValueKey(0);
 
   void _incrementCounter() {
     setState(() {
@@ -43,8 +43,9 @@ class CounterPageState extends State<CounterPage> {
     });
   }
 
-  NavigationItem _buildButton(String label, IconData icon) {
+  NavigationItem _buildButton(String label, IconData icon, Key key) {
     return NavigationItem(
+      key: key,
       label: Text(label),
       child: Icon(icon),
     );
@@ -105,16 +106,16 @@ class CounterPageState extends State<CounterPage> {
       footers: [
         const Divider(),
         NavigationBar(
-          onSelected: (i) {
+          onSelected: (key) {
             setState(() {
-              _selected = i;
+              _selected = key;
             });
           },
-          index: _selected,
+          selectedKey: _selected,
           children: [
-            _buildButton('Home', Icons.home),
-            _buildButton('Explore', Icons.explore),
-            _buildButton('Library', Icons.library_music),
+            _buildButton('Home', Icons.home, const ValueKey(0)),
+            _buildButton('Explore', Icons.explore, const ValueKey(1)),
+            _buildButton('Library', Icons.library_music, const ValueKey(2)),
           ],
         ),
       ],

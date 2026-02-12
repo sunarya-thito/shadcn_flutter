@@ -13,11 +13,12 @@ class NavigationSidebarExample1 extends StatefulWidget {
 
 class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
   // Currently selected item index in the sidebar.
-  int selected = 0;
+  Key? selected = const ValueKey(0);
 
-  NavigationBarItem buildButton(String label, IconData icon) {
+  Widget buildButton(String label, IconData icon, Key key) {
     // Helper for a standard navigation item with text label and icon.
     return NavigationItem(
+      key: key,
       label: Text(label),
       child: Icon(icon),
     );
@@ -30,41 +31,52 @@ class _NavigationSidebarExample1State extends State<NavigationSidebarExample1> {
       child: OutlinedContainer(
         child: NavigationSidebar(
           // Wire selection to local state.
-          index: selected,
-          onSelected: (index) {
+          selectedKey: selected,
+          onSelected: (key) {
             setState(() {
-              selected = index;
+              selected = key;
             });
           },
           children: [
             // A mix of labels, gaps, dividers, and items can be used to
             // structure the navigation list into logical sections.
-            const NavigationLabel(child: Text('Discovery')),
-            buildButton('Listen Now', BootstrapIcons.playCircle),
-            buildButton('Browse', BootstrapIcons.grid),
-            buildButton('Radio', BootstrapIcons.broadcast),
+            const NavigationGroup(label: Text('Discovery')),
+            buildButton(
+                'Listen Now', BootstrapIcons.playCircle, const ValueKey(0)),
+            buildButton('Browse', BootstrapIcons.grid, const ValueKey(1)),
+            buildButton('Radio', BootstrapIcons.broadcast, const ValueKey(2)),
             const NavigationGap(24),
             const NavigationDivider(),
-            const NavigationLabel(child: Text('Library')),
-            buildButton('Playlist', BootstrapIcons.musicNoteList),
-            buildButton('Songs', BootstrapIcons.musicNote),
-            buildButton('For You', BootstrapIcons.person),
-            buildButton('Artists', BootstrapIcons.mic),
-            buildButton('Albums', BootstrapIcons.record2),
+            const NavigationGroup(label: Text('Library')),
+            buildButton(
+                'Playlist', BootstrapIcons.musicNoteList, const ValueKey(3)),
+            buildButton('Songs', BootstrapIcons.musicNote, const ValueKey(4)),
+            buildButton('For You', BootstrapIcons.person, const ValueKey(5)),
+            buildButton('Artists', BootstrapIcons.mic, const ValueKey(6)),
+            buildButton('Albums', BootstrapIcons.record2, const ValueKey(7)),
             const NavigationGap(24),
             const NavigationDivider(),
-            const NavigationLabel(child: Text('Playlists')),
-            buildButton('Recently Added', BootstrapIcons.musicNoteList),
-            buildButton('Recently Played', BootstrapIcons.musicNoteList),
-            buildButton('Top Songs', BootstrapIcons.musicNoteList),
-            buildButton('Top Albums', BootstrapIcons.musicNoteList),
-            buildButton('Top Artists', BootstrapIcons.musicNoteList),
+            const NavigationGroup(label: Text('Playlists')),
+            buildButton('Recently Added', BootstrapIcons.musicNoteList,
+                const ValueKey(8)),
+            buildButton('Recently Played', BootstrapIcons.musicNoteList,
+                const ValueKey(9)),
+            buildButton(
+                'Top Songs', BootstrapIcons.musicNoteList, const ValueKey(10)),
+            buildButton(
+                'Top Albums', BootstrapIcons.musicNoteList, const ValueKey(11)),
+            buildButton('Top Artists', BootstrapIcons.musicNoteList,
+                const ValueKey(12)),
             buildButton('Logic Discography With Some Spice',
-                BootstrapIcons.musicNoteList),
-            buildButton('Bedtime Beats', BootstrapIcons.musicNoteList),
-            buildButton('Feeling Happy', BootstrapIcons.musicNoteList),
-            buildButton('I miss Y2K Pop', BootstrapIcons.musicNoteList),
-            buildButton('Runtober', BootstrapIcons.musicNoteList),
+                BootstrapIcons.musicNoteList, const ValueKey(13)),
+            buildButton('Bedtime Beats', BootstrapIcons.musicNoteList,
+                const ValueKey(14)),
+            buildButton('Feeling Happy', BootstrapIcons.musicNoteList,
+                const ValueKey(15)),
+            buildButton('I miss Y2K Pop', BootstrapIcons.musicNoteList,
+                const ValueKey(16)),
+            buildButton(
+                'Runtober', BootstrapIcons.musicNoteList, const ValueKey(17)),
           ],
         ),
       ),

@@ -1,8 +1,4 @@
-import 'dart:math' as math;
-
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/layout/hidden.dart';
-import 'data.dart';
 
 /// Theme data for customizing [NavigationBar] widget appearance.
 ///
@@ -119,4 +115,3 @@ class NavigationBarTheme extends ComponentThemeData {
         padding,
       );
 }
-

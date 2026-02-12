@@ -947,13 +947,37 @@ class _ClickableState extends State<Clickable> {
       Set<WidgetState> widgetStates) {
     var resolvedMargin = widget.margin?.resolve(widgetStates);
     var resolvedPadding = widget.padding?.resolve(widgetStates);
+    var textDirection = Directionality.of(context);
+    var expands = EdgeInsets.zero;
+    if (resolvedMargin != null) {
+      var margin = resolvedMargin.resolve(textDirection);
+      // Ensure non-negative margins, because negative margins are possible
+      // and used as BoxDecoration overflow paint
+      resolvedMargin = EdgeInsets.only(
+        left: margin.left < 0 ? 0 : margin.left,
+        top: margin.top < 0 ? 0 : margin.top,
+        right: margin.right < 0 ? 0 : margin.right,
+        bottom: margin.bottom < 0 ? 0 : margin.bottom,
+      );
+      expands = -EdgeInsets.only(
+        left: margin.left < 0 ? margin.left : 0,
+        top: margin.top < 0 ? margin.top : 0,
+        right: margin.right < 0 ? margin.right : 0,
+        bottom: margin.bottom < 0 ? margin.bottom : 0,
+      );
+    }
     if (widget.disableTransition) {
       Widget container = Container(
-        clipBehavior: Clip.antiAlias,
         margin: resolvedMargin,
-        decoration: decoration,
-        padding: resolvedPadding,
-        child: widget.child,
+        child: decoration == null
+            ? widget.child
+            : _DecoratedBox(
+                decoration: decoration,
+                expands: expands,
+                child: Padding(
+                    padding: resolvedPadding ?? EdgeInsets.zero,
+                    child: widget.child),
+              ),
       );
       if (widget.marginAlignment != null) {
         container = Align(
@@ -969,12 +993,30 @@ class _ClickableState extends State<Clickable> {
       );
     }
     Widget animatedContainer = AnimatedContainer(
-      clipBehavior: decoration == null ? Clip.none : Clip.antiAlias,
       margin: resolvedMargin,
       duration: kDefaultDuration,
-      decoration: decoration,
-      padding: resolvedPadding,
-      child: widget.child,
+      child: decoration == null
+          ? widget.child
+          : AnimatedValueBuilder<Decoration?>(
+              value: decoration,
+              duration: kDefaultDuration,
+              lerp: Decoration.lerp,
+              builder: (context, value, child) {
+                if (value == null) {
+                  return child!;
+                }
+                return _DecoratedBox(
+                  decoration: value,
+                  expands: expands,
+                  child: child,
+                );
+              },
+              child: AnimatedPadding(
+                duration: kDefaultDuration,
+                padding: resolvedPadding ?? EdgeInsets.zero,
+                child: widget.child,
+              ),
+            ),
     );
     if (widget.marginAlignment != null) {
       animatedContainer = AnimatedAlign(
@@ -984,5 +1026,181 @@ class _ClickableState extends State<Clickable> {
       );
     }
     return animatedContainer;
+  }
+}
+
+// These patches are needed because DecoratedBox can now overflow its bounds,
+// if the margin is negative.
+class _DecoratedBox extends SingleChildRenderObjectWidget {
+  const _DecoratedBox({
+    required this.decoration,
+    required this.expands,
+    super.child,
+  });
+
+  final EdgeInsets expands;
+
+  final Decoration decoration;
+
+  @override
+  _RenderDecoratedBox createRenderObject(BuildContext context) {
+    return _RenderDecoratedBox(
+      decoration: decoration,
+      position: DecorationPosition.background,
+      expands: expands,
+      configuration: createLocalImageConfiguration(context),
+    );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, _RenderDecoratedBox renderObject) {
+    renderObject
+      ..decoration = decoration
+      ..configuration = createLocalImageConfiguration(context)
+      ..expands = expands;
+  }
+}
+
+class _RenderDecoratedBox extends RenderProxyBox {
+  _RenderDecoratedBox({
+    required Decoration decoration,
+    DecorationPosition position = DecorationPosition.background,
+    ImageConfiguration configuration = ImageConfiguration.empty,
+    RenderBox? child,
+    EdgeInsets expands = EdgeInsets.zero,
+  })  : _decoration = decoration,
+        _position = position,
+        _configuration = configuration,
+        _expands = expands,
+        super(child);
+
+  BoxPainter? _painter;
+
+  EdgeInsets get expands => _expands;
+  EdgeInsets _expands;
+  set expands(EdgeInsets value) {
+    if (value == _expands) {
+      return;
+    }
+    _expands = value;
+    markNeedsPaint();
+  }
+
+  Decoration get decoration => _decoration;
+  Decoration _decoration;
+  set decoration(Decoration value) {
+    if (value == _decoration) {
+      return;
+    }
+    _painter?.dispose();
+    _painter = null;
+    _decoration = value;
+    markNeedsPaint();
+  }
+
+  DecorationPosition get position => _position;
+  DecorationPosition _position;
+  set position(DecorationPosition value) {
+    if (value == _position) {
+      return;
+    }
+    _position = value;
+    markNeedsPaint();
+  }
+
+  ImageConfiguration get configuration => _configuration;
+  ImageConfiguration _configuration;
+  set configuration(ImageConfiguration value) {
+    if (value == _configuration) {
+      return;
+    }
+    _configuration = value;
+    markNeedsPaint();
+  }
+
+  @override
+  void detach() {
+    _painter?.dispose();
+    _painter = null;
+    super.detach();
+    markNeedsPaint();
+  }
+
+  @override
+  void dispose() {
+    _painter?.dispose();
+    super.dispose();
+  }
+
+  @override
+  bool hitTestSelf(Offset position) {
+    return _decoration.hitTest(size, position,
+        textDirection: configuration.textDirection);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    _painter ??= _decoration.createBoxPainter(markNeedsPaint);
+    Size size = this.size;
+    // expand size by negative margins for painting
+    size = Size(
+      size.width + expands.left + expands.right,
+      size.height + expands.top + expands.bottom,
+    );
+    Offset adjustedOffset = offset.translate(-expands.left, -expands.top);
+    final ImageConfiguration filledConfiguration =
+        configuration.copyWith(size: size);
+    if (position == DecorationPosition.background) {
+      int? debugSaveCount;
+      assert(() {
+        debugSaveCount = context.canvas.getSaveCount();
+        return true;
+      }());
+      _painter!.paint(context.canvas, adjustedOffset, filledConfiguration);
+      assert(() {
+        if (debugSaveCount != context.canvas.getSaveCount()) {
+          throw FlutterError.fromParts(<DiagnosticsNode>[
+            ErrorSummary(
+              '${_decoration.runtimeType} painter had mismatching save and restore calls.',
+            ),
+            ErrorDescription(
+              'Before painting the decoration, the canvas save count was $debugSaveCount. '
+              'After painting it, the canvas save count was ${context.canvas.getSaveCount()}. '
+              'Every call to save() or saveLayer() must be matched by a call to restore().',
+            ),
+            DiagnosticsProperty<Decoration>(
+              'The decoration was',
+              decoration,
+              style: DiagnosticsTreeStyle.errorProperty,
+            ),
+            DiagnosticsProperty<BoxPainter>(
+              'The painter was',
+              _painter,
+              style: DiagnosticsTreeStyle.errorProperty,
+            ),
+          ]);
+        }
+        return true;
+      }());
+      if (decoration.isComplex) {
+        context.setIsComplexHint();
+      }
+    }
+    super.paint(context, offset);
+    if (position == DecorationPosition.foreground) {
+      _painter!.paint(context.canvas, offset, filledConfiguration);
+      if (decoration.isComplex) {
+        context.setIsComplexHint();
+      }
+    }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(_decoration.toDiagnosticsNode(name: 'decoration'));
+    properties.add(DiagnosticsProperty<ImageConfiguration>(
+        'configuration', configuration));
   }
 }

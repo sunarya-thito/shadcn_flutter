@@ -24,7 +24,7 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
     // and a primary icon style when selected.
     return NavigationItem(
       label: Text(text),
-      alignment: Alignment.centerLeft,
+      // alignment: Alignment.centerLeft,
       selectedStyle: const ButtonStyle.primaryIcon(),
       selected: selected == text,
       onChanged: (selected) {
@@ -38,12 +38,12 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
     );
   }
 
-  NavigationLabel buildLabel(String label) {
+  NavigationGroup buildLabel(String label, List<Widget> children) {
     // Section header used to group related navigation items.
-    return NavigationLabel(
-      alignment: Alignment.centerLeft,
-      child: Text(label).semiBold().muted(),
-      // padding: EdgeInsets.zero,
+    return NavigationGroup(
+      labelAlignment: Alignment.centerLeft,
+      label: Text(label).semiBold.muted.xSmall,
+      children: children,
     );
   }
 
@@ -64,22 +64,52 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
             labelType: NavigationLabelType.expanded,
             labelPosition: NavigationLabelPosition.end,
             alignment: NavigationRailAlignment.start,
+            expandedSize: 250,
             expanded: expanded,
             header: [
-              NavigationSlotItem(
-                leading: IconContainer(
-                  backgroundColor: Colors.blue,
-                  icon: Icon(LucideIcons.galleryVerticalEnd).iconMedium,
-                ),
-                title: Text('Acme Inc').medium.small,
-                subtitle: Text('Enterprise').xSmall.normal,
-                trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
-                onPressed: () {},
-              ),
+              Builder(builder: (context) {
+                return NavigationSlot(
+                  leading: IconContainer(
+                    backgroundColor: Colors.blue,
+                    icon: Icon(LucideIcons.galleryVerticalEnd).iconMedium,
+                  ),
+                  title: Text('Acme Inc').medium.small,
+                  subtitle: Text('Enterprise').xSmall.normal,
+                  trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
+                  onPressed: () {
+                    showDropdown(
+                        context: context,
+                        anchorAlignment: AlignmentDirectional.centerEnd,
+                        alignment: AlignmentDirectional.centerStart,
+                        offset: const Offset(16, 0),
+                        builder: (context) {
+                          return DropdownMenu(children: [
+                            MenuButton(
+                                leading: const Icon(Icons.person),
+                                child: Text('Profile'),
+                                onPressed: (ctx) {}),
+                            MenuButton(
+                                leading: const Icon(Icons.settings),
+                                child: Text('Settings'),
+                                onPressed: (ctx) {}),
+                            MenuDivider(),
+                            MenuButton(
+                                leading: const Icon(Icons.logout),
+                                child: Text('Logout'),
+                                onPressed: (ctx) {}),
+                          ]);
+                        });
+                  },
+                );
+              }),
             ],
             footer: [
-              NavigationSlotItem(
-                leading: Avatar(initials: 'SU'),
+              NavigationSlot(
+                leading: Avatar(
+                  size: 32,
+                  initials: 'SU',
+                  backgroundColor: Colors.green.shade800,
+                ),
                 title: Text('sunarya-thito').medium.small,
                 subtitle: Text('m@gmail.com').xSmall.normal,
                 trailing: Icon(LucideIcons.chevronsUpDown).iconSmall,
@@ -87,12 +117,13 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
               ),
             ],
             children: [
-              buildLabel('You'),
-              buildButton('Home', Icons.home_filled),
-              buildButton('Trending', Icons.trending_up),
-              buildButton('Subscription', Icons.subscriptions),
+              buildLabel('You', [
+                buildButton('Home', Icons.home_filled),
+                buildButton('Trending', Icons.trending_up),
+                buildButton('Subscription', Icons.subscriptions),
+              ]),
               const NavigationDivider(),
-              NavigationGroup(
+              NavigationCollapsible(
                 leading: const Icon(Icons.history),
                 label: const Text('History'),
                 children: [
@@ -101,12 +132,13 @@ class _ExpandableSidebarExample1State extends State<ExpandableSidebarExample1> {
                 ],
               ),
               const NavigationDivider(),
-              buildLabel('Movie'),
-              buildButton('Action', Icons.movie_creation_outlined),
-              buildButton('Horror', Icons.movie_creation_outlined),
-              buildButton('Thriller', Icons.movie_creation_outlined),
+              buildLabel('Movie', [
+                buildButton('Action', Icons.movie_creation_outlined),
+                buildButton('Horror', Icons.movie_creation_outlined),
+                buildButton('Thriller', Icons.movie_creation_outlined),
+              ]),
               const NavigationDivider(),
-              NavigationGroup(
+              NavigationCollapsible(
                 leading: const Icon(Icons.movie_filter_outlined),
                 label: const Text('Short Films'),
                 children: [

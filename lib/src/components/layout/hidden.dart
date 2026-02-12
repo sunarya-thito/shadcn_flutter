@@ -176,7 +176,7 @@ class Hidden extends StatelessWidget {
     final curveValue = styleValue(
       widgetValue: curve,
       themeValue: compTheme?.curve,
-      defaultValue: Curves.easeInOut,
+      defaultValue: Curves.linear,
     );
     final reverseValue = styleValue(
       widgetValue: reverse,

@@ -2,6 +2,11 @@ import 'dart:ui';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+/// 2x extra small padding multiplier (0.25).
+///
+/// At default density (base 16px), produces ~4px padding.
+const padX2s = 0.25;
+
 /// Extra small padding multiplier (0.5).
 ///
 /// At default density (base 16px), produces ~8px padding.

@@ -53,7 +53,7 @@ class _NavigationRailExample1State extends State<NavigationRailExample1> {
               buildButton('Explore', BootstrapIcons.compass),
               buildButton('Library', BootstrapIcons.musicNoteList),
               const NavigationDivider(),
-              const NavigationLabel(child: Text('Settings')),
+              const NavigationGroup(label: Text('Settings')),
               buildButton('Profile', BootstrapIcons.person),
               buildButton('App', BootstrapIcons.appIndicator),
               const NavigationDivider(),

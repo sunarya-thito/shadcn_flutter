@@ -1,7 +1,4 @@
-import 'dart:math' as math;
-
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
 /// Enumeration defining alignment options for navigation bar items.
 ///
@@ -106,39 +103,6 @@ enum NavigationLabelSize {
   large,
 }
 
-/// Data class tracking navigation child position and selection state.
-///
-/// Associates a navigation item with its logical index (for selection)
-/// and actual index (for layout position).
-class NavigationChildControlData {
-  /// Logical index for selection (null if not selectable).
-  final int? index;
-
-  /// Actual position index in the navigation layout.
-  final int actualIndex;
-
-  /// Creates navigation child control data.
-  ///
-  /// Parameters:
-  /// - [index] (int?): Logical selection index
-  /// - [actualIndex] (int, required): Layout position index
-  NavigationChildControlData({this.index, required this.actualIndex});
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is NavigationChildControlData &&
-        other.index == index &&
-        other.actualIndex == actualIndex;
-  }
-
-  @override
-  int get hashCode {
-    return Object.hash(index, actualIndex);
-  }
-}
-
 /// Data class containing navigation control configuration and state.
 ///
 /// Manages layout, styling, and interaction settings for navigation
@@ -163,14 +127,14 @@ class NavigationControlData {
   /// Layout direction (horizontal or vertical).
   final Axis direction;
 
-  /// Currently selected item index (null if none selected).
-  final int? selectedIndex;
+  /// Currently selected item key (null if none selected).
+  final Key? selectedKey;
 
   /// Total number of child items.
   final int childCount;
 
   /// Callback when an item is selected.
-  final ValueChanged<int>? onSelected;
+  final ValueChanged<Key?>? onSelected;
 
   /// Whether the navigation is expanded to fill available space.
   final bool expanded;
@@ -203,8 +167,8 @@ class NavigationControlData {
   /// - [parentLabelSize] (NavigationLabelSize, required): Label size variant
   /// - [parentPadding] (EdgeInsets, required): Container padding
   /// - [direction] (Axis, required): Layout direction
-  /// - [selectedIndex] (int?): Selected item index
-  /// - [onSelected] (`ValueChanged<int>`, required): Selection callback
+  /// - [selectedKey] (Key?): Selected item key
+  /// - [onSelected] (`ValueChanged<Key>`, required): Selection callback
   /// - [expanded] (bool, required): Whether expanded
   /// - [childCount] (int, required): Number of children
   /// - [spacing] (double, required): Item spacing
@@ -217,7 +181,7 @@ class NavigationControlData {
     required this.parentLabelSize,
     required this.parentPadding,
     required this.direction,
-    this.selectedIndex,
+    this.selectedKey,
     this.onSelected,
     required this.expanded,
     required this.childCount,
@@ -235,7 +199,7 @@ class NavigationControlData {
         other.parentLabelType == parentLabelType &&
         other.parentPadding == parentPadding &&
         other.direction == direction &&
-        other.selectedIndex == selectedIndex &&
+        other.selectedKey == selectedKey &&
         other.onSelected == onSelected &&
         other.parentLabelPosition == parentLabelPosition &&
         other.parentLabelSize == parentLabelSize &&
@@ -253,7 +217,7 @@ class NavigationControlData {
       parentLabelType,
       parentPadding,
       direction,
-      selectedIndex,
+      selectedKey,
       onSelected,
       parentLabelPosition,
       parentLabelSize,
@@ -265,22 +229,3 @@ class NavigationControlData {
     );
   }
 }
-
-/// Control data for navigation groups with nested items.
-///
-/// Provides the base selection index for nested items and the total count
-/// of selectable children within a group.
-class NavigationGroupControlData {
-  /// Base selection index for the group's first selectable child.
-  final int baseIndex;
-
-  /// Total number of selectable items within the group.
-  final int selectableCount;
-
-  /// Creates group control data.
-  const NavigationGroupControlData({
-    required this.baseIndex,
-    required this.selectableCount,
-  });
-}
-

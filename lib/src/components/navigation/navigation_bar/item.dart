@@ -1,21 +1,5 @@
-import 'dart:math' as math;
-
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/layout/hidden.dart';
-import 'data.dart';
 import 'misc.dart';
-
-/// Base class for navigation bar items.
-///
-/// Abstract widget class that all navigation items must extend.
-/// Provides common interface for items within [NavigationBar].
-abstract class NavigationBarItem extends Widget {
-  /// Creates a [NavigationBarItem].
-  const NavigationBarItem({super.key});
-
-  /// Number of selectable items represented by this item.
-  int get selectableCount;
-}
 
 /// Selectable navigation item with selection state management.
 ///
@@ -25,11 +9,12 @@ abstract class NavigationBarItem extends Widget {
 /// Example:
 /// ```dart
 /// NavigationItem(
-///   index: 0,
+///   key: ValueKey('home'),
 ///   label: Text('Home'),
 ///   child: Icon(Icons.home),
-///   selected: selectedIndex == 0,
-///   onChanged: (selected) => setState(() => selectedIndex = 0),
+///   selected: selectedKey == ValueKey('home'),
+///   onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),
+/// )
 /// )
 /// ```
 class NavigationItem extends AbstractNavigationButton {
@@ -42,9 +27,6 @@ class NavigationItem extends AbstractNavigationButton {
   /// Callback when selection state changes.
   final ValueChanged<bool>? onChanged;
 
-  /// Optional index for selection management.
-  final int? index;
-
   /// Creates a navigation item.
   ///
   /// Parameters:
@@ -52,13 +34,12 @@ class NavigationItem extends AbstractNavigationButton {
   /// - [selectedStyle] (AbstractButtonStyle?): Style when selected
   /// - [selected] (bool?): Current selection state
   /// - [onChanged] (`ValueChanged<bool>?`): Selection change callback
-  /// - [index] (int?): Item index for selection
   /// - [label] (Widget?): Optional label text
   /// - [spacing] (double?): Space between icon and label
   /// - [style] (AbstractButtonStyle?): Default style
   /// - [alignment] (AlignmentGeometry?): Content alignment
   /// - [enabled] (bool?): Whether enabled for interaction
-  /// - [overflow] (TextOverflow?): Label overflow behavior
+  /// - [overflow] (NavigationOverflow): Overflow behavior
   /// - [marginAlignment] (AlignmentGeometry?): Margin alignment
   const NavigationItem({
     super.key,
@@ -69,19 +50,11 @@ class NavigationItem extends AbstractNavigationButton {
     super.spacing,
     super.style,
     super.alignment,
-    this.index,
     super.enabled,
     super.overflow,
     super.marginAlignment,
     required super.child,
   });
-
-  @override
-  int get selectableCount {
-    // if index is not null, then the child itself handles the selection
-    // if index is null, then the parent handles the selection
-    return index == null ? 1 : 0;
-  }
 
   @override
   State<AbstractNavigationButton> createState() => _NavigationItemState();
@@ -93,19 +66,19 @@ class _NavigationItemState
   Widget buildBox(
     BuildContext context,
     NavigationControlData? data,
-    NavigationChildControlData? childData,
   ) {
+    var key = widget.key;
+    var isSelected =
+        widget.selected ?? (key != null && key == data?.selectedKey);
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     final direction = data?.direction ?? Axis.vertical;
-    var index = childData?.index ?? widget.index;
-    var isSelected = widget.selected ?? index == data?.selectedIndex;
-    var parentIndex = childData?.index;
     bool showLabel = labelType == NavigationLabelType.all ||
         (labelType == NavigationLabelType.selected && isSelected) ||
         (labelType == NavigationLabelType.expanded && data?.expanded == true);
+
     AbstractButtonStyle style = widget.style ??
         (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.ghost(density: ButtonDensity.icon)
@@ -116,7 +89,7 @@ class _NavigationItemState
             : const ButtonStyle.secondary());
 
     Widget? label = widget.label == null
-        ? const SizedBox()
+        ? const SizedBox.shrink()
         : DefaultTextStyle.merge(
             textAlign: TextAlign.center,
             child: NavigationChildOverflowHandle(
@@ -129,49 +102,36 @@ class _NavigationItemState
     var canShowLabel = (labelType == NavigationLabelType.expanded ||
         labelType == NavigationLabelType.all ||
         labelType == NavigationLabelType.selected);
-    return NavigationPadding(
-      child: SelectedButton(
-        value: isSelected,
-        enabled: widget.enabled,
-        onChanged: parentIndex != null || widget.index != null
-            ? (value) {
-                widget.onChanged?.call(value);
-                data?.onSelected?.call(parentIndex ?? widget.index!);
-              }
-            : widget.onChanged,
-        marginAlignment: widget.marginAlignment,
-        style: style,
-        selectedStyle: selectedStyle,
-        alignment: widget.alignment ??
-            () {
-              if (data?.expanded == true) {
-                return Alignment.center;
-              }
-              if (data?.containerType == NavigationContainerType.sidebar &&
-                  data?.labelDirection == Axis.horizontal) {
-                if (data?.parentLabelPosition ==
-                    NavigationLabelPosition.start) {
-                  return AlignmentDirectional.centerEnd;
-                } else if (data?.parentLabelPosition ==
-                    NavigationLabelPosition.end) {
-                  return AlignmentDirectional.centerStart;
-                } else {
-                  return Alignment.center;
-                }
-              }
-              return null;
-            }(),
-        child: NavigationLabeled(
-          label: label,
-          showLabel: showLabel,
-          labelType: labelType,
-          direction: direction,
-          keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
-          keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
-          position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
-          spacing: widget.spacing ?? densityGap,
-          child: widget.child,
-        ),
+
+    return SelectedButton(
+      value: isSelected,
+      enabled: widget.enabled,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+        if (key != null && value) {
+          data?.onSelected?.call(key);
+        }
+      },
+      marginAlignment: widget.marginAlignment,
+      style: style,
+      selectedStyle: selectedStyle,
+      alignment: widget.alignment ??
+          (data?.containerType == NavigationContainerType.sidebar &&
+                  data?.labelDirection == Axis.horizontal
+              ? (data?.parentLabelPosition == NavigationLabelPosition.start
+                  ? AlignmentDirectional.centerEnd
+                  : AlignmentDirectional.centerStart)
+              : null),
+      child: NavigationLabeled(
+        label: label,
+        showLabel: showLabel,
+        labelType: labelType,
+        direction: direction,
+        keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
+        keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
+        position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
+        spacing: widget.spacing ?? densityGap,
+        child: widget.child,
       ),
     );
   }
@@ -194,6 +154,8 @@ class _NavigationItemState
 class NavigationButton extends AbstractNavigationButton {
   /// Callback when button is pressed.
   final VoidCallback? onPressed;
+
+  /// Whether to enable haptic feedback.
   final bool? enableFeedback;
 
   /// Creates a navigation button.
@@ -224,9 +186,6 @@ class NavigationButton extends AbstractNavigationButton {
   });
 
   @override
-  int get selectableCount => 0;
-
-  @override
   State<AbstractNavigationButton> createState() => _NavigationButtonState();
 }
 
@@ -236,7 +195,6 @@ class _NavigationButtonState
   Widget buildBox(
     BuildContext context,
     NavigationControlData? data,
-    NavigationChildControlData? childData,
   ) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
@@ -264,31 +222,29 @@ class _NavigationButtonState
     var canShowLabel = (labelType == NavigationLabelType.expanded ||
         labelType == NavigationLabelType.all ||
         labelType == NavigationLabelType.selected);
-    return NavigationPadding(
-      child: Button(
-        enabled: widget.enabled,
-        onPressed: widget.onPressed,
-        marginAlignment: widget.marginAlignment,
-        style: style,
-        enableFeedback: widget.enableFeedback,
-        alignment: widget.alignment ??
-            (data?.containerType == NavigationContainerType.sidebar &&
-                    data?.labelDirection == Axis.horizontal
-                ? (data?.parentLabelPosition == NavigationLabelPosition.start
-                    ? AlignmentDirectional.centerEnd
-                    : AlignmentDirectional.centerStart)
-                : null),
-        child: NavigationLabeled(
-          label: label,
-          showLabel: showLabel,
-          labelType: labelType,
-          direction: direction,
-          keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
-          keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
-          position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
-          spacing: widget.spacing ?? densityGap,
-          child: widget.child,
-        ),
+    return Button(
+      enabled: widget.enabled,
+      onPressed: widget.onPressed,
+      marginAlignment: widget.marginAlignment,
+      style: style,
+      enableFeedback: widget.enableFeedback,
+      alignment: widget.alignment ??
+          (data?.containerType == NavigationContainerType.sidebar &&
+                  data?.labelDirection == Axis.horizontal
+              ? (data?.parentLabelPosition == NavigationLabelPosition.start
+                  ? AlignmentDirectional.centerEnd
+                  : AlignmentDirectional.centerStart)
+              : null),
+      child: NavigationLabeled(
+        label: label,
+        showLabel: showLabel,
+        labelType: labelType,
+        direction: direction,
+        keepMainAxisSize: (data?.keepMainAxisSize ?? false) && canShowLabel,
+        keepCrossAxisSize: (data?.keepCrossAxisSize ?? false) && canShowLabel,
+        position: data?.parentLabelPosition ?? NavigationLabelPosition.bottom,
+        spacing: widget.spacing ?? densityGap,
+        child: widget.child,
       ),
     );
   }
@@ -300,8 +256,7 @@ class _NavigationButtonState
 /// Subclasses include [NavigationItem] and [NavigationButton].
 ///
 /// Handles layout, labels, styling, and integration with navigation containers.
-abstract class AbstractNavigationButton extends StatefulWidget
-    implements NavigationBarItem {
+abstract class AbstractNavigationButton extends StatefulWidget {
   /// Main content widget (typically an icon).
   final Widget child;
 
@@ -358,24 +313,22 @@ abstract class _AbstractNavigationButtonState<
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<NavigationControlData>(context);
-    final childData = Data.maybeOf<NavigationChildControlData>(context);
     if (data?.containerType == NavigationContainerType.sidebar) {
-      return buildSliver(context, data, childData);
+      return buildSliver(context, data);
     }
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     if (labelType == NavigationLabelType.tooltip) {
-      return buildTooltip(context, data, childData);
+      return buildTooltip(context, data);
     }
-    return _buildBox(context, data, childData);
+    return _buildBox(context, data);
   }
 
   Widget buildTooltip(
     BuildContext context,
     NavigationControlData? data,
-    NavigationChildControlData? childData,
   ) {
     if (widget.label == null) {
-      return buildBox(context, data, childData);
+      return buildBox(context, data);
     }
     AlignmentGeometry alignment = Alignment.topCenter;
     AlignmentGeometry anchorAlignment = Alignment.bottomCenter;
@@ -390,40 +343,30 @@ abstract class _AbstractNavigationButtonState<
       alignment: alignment,
       anchorAlignment: anchorAlignment,
       tooltip: TooltipContainer(child: widget.label!).call,
-      child: buildBox(context, data, childData),
+      child: buildBox(context, data),
     );
   }
 
   Widget buildSliver(
     BuildContext context,
     NavigationControlData? data,
-    NavigationChildControlData? childData,
   ) {
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     if (labelType == NavigationLabelType.tooltip) {
-      return SliverToBoxAdapter(child: buildTooltip(context, data, childData));
+      return SliverToBoxAdapter(child: buildTooltip(context, data));
     }
-    return SliverToBoxAdapter(child: _buildBox(context, data, childData));
+    return SliverToBoxAdapter(child: _buildBox(context, data));
   }
 
   Widget _buildBox(
     BuildContext context,
     NavigationControlData? data,
-    NavigationChildControlData? childData,
   ) {
-    final box = childData == null
-        ? buildBox(context, data, null)
-        : RepaintBoundary.wrap(
-            buildBox(context, data, childData),
-            childData.actualIndex,
-          );
-    return box;
+    return buildBox(context, data);
   }
 
   Widget buildBox(
     BuildContext context,
     NavigationControlData? data,
-    NavigationChildControlData? childData,
   );
 }
-

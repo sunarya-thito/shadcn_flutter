@@ -1,10 +1,4 @@
-import 'dart:math' as math;
-
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/src/components/layout/hidden.dart';
-import 'data.dart';
-import 'theme.dart';
-import 'mixin.dart';
 import 'misc.dart';
 
 /// A full-width navigation sidebar component for comprehensive navigation.
@@ -28,21 +22,24 @@ import 'misc.dart';
 /// NavigationSidebar(
 ///   backgroundColor: Colors.grey.shade50,
 ///   labelType: NavigationLabelType.all,
-///   index: currentPageIndex,
-///   onSelected: (index) => _navigateToPage(index),
+///   selectedKey: ValueKey('dashboard'),
+///   onSelected: (key) => _navigateToPage(key),
 ///   children: [
-///     NavigationBarItem(
+///     NavigationItem(
+///       key: ValueKey('dashboard'),
 ///       icon: Icon(Icons.dashboard),
-///       label: 'Dashboard',
+///       label: Text('Dashboard'),
 ///       badge: Badge(child: Text('New')),
 ///     ),
-///     NavigationBarItem(
+///     NavigationItem(
+///       key: ValueKey('analytics'),
 ///       icon: Icon(Icons.analytics),
-///       label: 'Analytics',
+///       label: Text('Analytics'),
 ///     ),
-///     NavigationBarItem(
+///     NavigationItem(
+///       key: ValueKey('settings'),
 ///       icon: Icon(Icons.settings),
-///       label: 'Settings',
+///       label: Text('Settings'),
 ///     ),
 ///   ],
 /// )
@@ -56,16 +53,15 @@ class NavigationSidebar extends StatefulWidget {
 
   /// List of navigation items to display in the sidebar.
   ///
-  /// Each item should be a [NavigationBarItem] that defines the navigation
-  /// destination with icon, label, and optional badge. Items are arranged
-  /// vertically with full-width presentation.
-  final List<NavigationBarItem> children;
+  /// Each item should be a widget that defines the navigation
+  /// destination. Items are arranged vertically with full-width presentation.
+  final List<Widget> children;
 
   /// Optional fixed header items displayed before the scrollable content.
-  final List<NavigationBarItem>? header;
+  final List<Widget>? header;
 
   /// Optional fixed footer items displayed after the scrollable content.
-  final List<NavigationBarItem>? footer;
+  final List<Widget>? footer;
 
   /// Spacing between navigation items.
   ///
@@ -103,17 +99,17 @@ class NavigationSidebar extends StatefulWidget {
   /// responsive layouts and consistent sidebar sizing.
   final BoxConstraints? constraints;
 
-  /// Index of the currently selected navigation item.
+  /// Key of the currently selected navigation item.
   ///
   /// Highlights the corresponding item with selected styling.
   /// When null, no item appears selected.
-  final int? index;
+  final Key? selectedKey;
 
   /// Callback invoked when a navigation item is selected.
   ///
-  /// Called with the index of the selected item. Use this to update
+  /// Called with the key of the selected item. Use this to update
   /// the selection state and handle navigation actions.
-  final ValueChanged<int>? onSelected;
+  final ValueChanged<Key?>? onSelected;
 
   /// Opacity level for surface background effects.
   ///
@@ -147,32 +143,14 @@ class NavigationSidebar extends StatefulWidget {
 
   /// Creates a [NavigationSidebar] with the specified configuration and items.
   ///
-  /// The [children] parameter is required and should contain [NavigationBarItem]
-  /// widgets that define the navigation destinations. Default values are
-  /// optimized for sidebar presentation with expanded labels and large sizing.
-  ///
-  /// The sidebar defaults to expanded label presentation with large sizing
-  /// and end-positioned labels, creating a comprehensive navigation experience
-  /// suitable for desktop and tablet interfaces.
-  ///
   /// Parameters:
-  /// - [children] (`List<NavigationBarItem>`, required): Navigation destinations
+  /// - [children] (`List<Widget>`, required): Navigation destinations
   /// - [labelType] (NavigationLabelType, default: expanded): Label display behavior
   /// - [labelPosition] (NavigationLabelPosition, default: end): Label positioning
   /// - [labelSize] (NavigationLabelSize, default: large): Size variant for items
-  /// - [index] (int?, optional): Currently selected item index
-  /// - [onSelected] (`ValueChanged<int>?`, optional): Selection change callback
+  /// - [selectedKey] (Key?, optional): Currently selected item key
+  /// - [onSelected] (`ValueChanged<Key?>?`, optional): Selection change callback
   /// - [expanded] (bool, default: true): Whether to fill available width
-  ///
-  /// Example:
-  /// ```dart
-  /// NavigationSidebar(
-  ///   backgroundColor: Theme.of(context).colorScheme.surface,
-  ///   index: selectedIndex,
-  ///   onSelected: (index) => _handleNavigation(index),
-  ///   children: sidebarItems,
-  /// )
-  /// ```
   const NavigationSidebar({
     super.key,
     this.backgroundColor,
@@ -182,7 +160,7 @@ class NavigationSidebar extends StatefulWidget {
     this.labelSize = NavigationLabelSize.large,
     this.padding,
     this.constraints,
-    this.index,
+    this.selectedKey,
     this.onSelected,
     this.surfaceOpacity,
     this.surfaceBlur,
@@ -198,8 +176,7 @@ class NavigationSidebar extends StatefulWidget {
   State<NavigationSidebar> createState() => _NavigationSidebarState();
 }
 
-class _NavigationSidebarState extends State<NavigationSidebar>
-    with NavigationContainerMixin {
+class _NavigationSidebarState extends State<NavigationSidebar> {
   BoxConstraints getDefaultConstraints(BuildContext context, ThemeData theme) {
     final scaling = theme.scaling;
     return BoxConstraints(minWidth: 200 * scaling, maxWidth: 200 * scaling);
@@ -212,8 +189,8 @@ class _NavigationSidebarState extends State<NavigationSidebar>
     return EdgeInsets.only(top: padding.top, bottom: padding.bottom);
   }
 
-  void _onSelected(int index) {
-    widget.onSelected?.call(index);
+  void _onSelected(Key? key) {
+    widget.onSelected?.call(key);
   }
 
   @override
@@ -222,24 +199,19 @@ class _NavigationSidebarState extends State<NavigationSidebar>
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final densityContentPadding = theme.density.baseContentPadding * scaling;
-    final headerItems = widget.header ?? const <NavigationBarItem>[];
-    final footerItems = widget.footer ?? const <NavigationBarItem>[];
-    int headerSelectable = 0;
-    for (final item in headerItems) {
-      headerSelectable += item.selectableCount;
-    }
-    int bodySelectable = 0;
-    for (final item in widget.children) {
-      bodySelectable += item.selectableCount;
-    }
-    final headerChildren = wrapChildren(context, headerItems, baseIndex: 0);
-    final bodyChildren =
-        wrapChildren(context, widget.children, baseIndex: headerSelectable);
-    final footerChildren = wrapChildren(
-      context,
-      footerItems,
-      baseIndex: headerSelectable + bodySelectable,
-    );
+
+    final headerChildren = (widget.header ?? [])
+        .map((e) => e is SliverToBoxAdapter ? e : SliverToBoxAdapter(child: e))
+        .toList();
+
+    final bodyChildren = widget.children
+        .map((e) => e is SliverToBoxAdapter ? e : SliverToBoxAdapter(child: e))
+        .toList();
+
+    final footerChildren = (widget.footer ?? [])
+        .map((e) => e is SliverToBoxAdapter ? e : SliverToBoxAdapter(child: e))
+        .toList();
+
     var parentPadding = widget.padding ??
         EdgeInsets.symmetric(
           vertical: densityGap,
@@ -257,7 +229,7 @@ class _NavigationSidebarState extends State<NavigationSidebar>
         parentPadding: resolvedPadding,
         direction: direction,
         onSelected: _onSelected,
-        selectedIndex: widget.index,
+        selectedKey: widget.selectedKey,
         expanded: widget.expanded,
         childCount: widget.children.length,
         spacing: widget.spacing ?? 0,
@@ -332,7 +304,7 @@ class _NavigationSidebarState extends State<NavigationSidebar>
         parentPadding: resolvedPadding,
         direction: Axis.vertical,
         onSelected: _onSelected,
-        selectedIndex: widget.index,
+        selectedKey: widget.selectedKey,
         expanded: widget.expanded,
         childCount: items.length,
         spacing: widget.spacing ?? 0,
@@ -358,4 +330,3 @@ class _NavigationSidebarState extends State<NavigationSidebar>
     );
   }
 }
-
