@@ -274,7 +274,7 @@ class NavigationGroup extends StatelessWidget {
     this.labelPadding,
     this.labelOverflow = NavigationOverflow.clip,
     this.labelFloating = false,
-    this.labelPinned = false,
+    this.labelPinned = true,
   });
 
   @override
@@ -302,6 +302,50 @@ class NavigationGroup extends StatelessWidget {
           child: label,
         ),
       ),
+    );
+  }
+
+  /// Builds a SliverPersistentHeader for the label and a SliverMainAxisGroup for the children.
+  Widget buildSliverLabelChild(
+      BuildContext context, NavigationControlData? data) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final densityContentPadding = theme.density.baseContentPadding * scaling;
+    final densityContainerPadding =
+        theme.density.baseContainerPadding * scaling;
+    return AnimatedValueBuilder(
+      duration: kDefaultDuration,
+      curve: Curves.easeInOut,
+      value: (data?.expanded ?? true) ? 1.0 : 0.0,
+      child: buildLabelChild(context, data),
+      builder: (context, value, child) {
+        return SliverPersistentHeader(
+          pinned: labelPinned,
+          floating: labelFloating,
+          delegate: _NavigationLabelDelegate(
+            maxExtent: densityContainerPadding * 3 * value,
+            minExtent: densityContainerPadding * 3 * value,
+            child: Builder(builder: (context) {
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  Scrollable.ensureVisible(
+                    context,
+                    duration: kDefaultDuration,
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: Container(
+                  alignment: labelAlignment ?? AlignmentDirectional.centerStart,
+                  padding: labelPadding ??
+                      EdgeInsets.symmetric(horizontal: densityContentPadding),
+                  child: child!.semiBold().large(),
+                ),
+              );
+            }),
+          ),
+        );
+      },
     );
   }
 
@@ -339,7 +383,6 @@ class NavigationGroup extends StatelessWidget {
             keepCrossAxisSize: data.keepCrossAxisSize,
             keepMainAxisSize: data.keepMainAxisSize,
           );
-
     final flexChildren = [
       if (labelPosition == NavigationLabelPosition.top ||
           labelPosition == NavigationLabelPosition.start) ...[
@@ -357,7 +400,8 @@ class NavigationGroup extends StatelessWidget {
           direction: data?.direction ?? Axis.vertical,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: data?.spacing ?? 0,
+          // "The bug does not exist in reproducible code" weird ah bug
+          spacing: items.isEmpty ? 0 : data?.spacing ?? 0,
           children: items,
         ),
       ),
@@ -383,7 +427,134 @@ class NavigationGroup extends StatelessWidget {
 
   /// Builds a SliverMainAxisGroup containing the label and children. (Sidebar/Sliver context)
   Widget buildSliver(BuildContext context, NavigationControlData? data) {
-    return SliverToBoxAdapter(child: buildBox(context, data));
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final labelWidget = buildSliverLabelChild(context, data);
+    final gap = theme.density.baseGap * scaling * gapSm;
+
+    final items = children;
+
+    final childControlData = data == null
+        ? null
+        : NavigationControlData(
+            containerType: data.containerType,
+            parentLabelType: data.parentLabelType,
+            parentLabelPosition: data.parentLabelPosition,
+            parentLabelSize: data.parentLabelSize,
+            parentPadding: data.parentPadding,
+            direction: data.direction,
+            selectedKey: data.selectedKey,
+            onSelected: data.onSelected,
+            expanded: data.expanded,
+            childCount: items.length,
+            spacing: data.spacing,
+            keepCrossAxisSize: data.keepCrossAxisSize,
+            keepMainAxisSize: data.keepMainAxisSize,
+          );
+
+    final sliverChildren = [
+      if (labelPosition == NavigationLabelPosition.top ||
+          labelPosition == NavigationLabelPosition.start) ...[
+        labelWidget,
+        SliverGap(gap),
+      ],
+      Data.inherit(
+          data: childControlData,
+          child: SliverMainAxisGroup(
+            slivers: items,
+          )),
+      if (labelPosition == NavigationLabelPosition.bottom ||
+          labelPosition == NavigationLabelPosition.end) ...[
+        SliverGap(gap),
+        labelWidget,
+      ],
+    ];
+
+    return SliverMainAxisGroup(
+      slivers: sliverChildren,
+    );
+  }
+}
+
+class _NavigationLabelDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  @override
+  final double maxExtent;
+  @override
+  final double minExtent;
+
+  _NavigationLabelDelegate({
+    required this.maxExtent,
+    required this.minExtent,
+    required this.child,
+  });
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    final theme = Theme.of(context);
+    final data = Data.maybeOf<NavigationControlData>(context);
+    final parentPadding = data?.parentPadding ?? EdgeInsets.zero;
+    final direction = data?.direction ?? Axis.vertical;
+    final color = theme.colorScheme.background;
+    return CustomPaint(
+      painter: _NavigationLabelBackgroundPainter(
+        color: color,
+        indent: -startPadding(parentPadding, direction),
+        endIndent: -endPadding(parentPadding, direction),
+        direction: direction,
+      ),
+      child: child,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _NavigationLabelDelegate oldDelegate) {
+    return oldDelegate.child != child ||
+        oldDelegate.maxExtent != maxExtent ||
+        oldDelegate.minExtent != minExtent;
+  }
+}
+
+class _NavigationLabelBackgroundPainter extends CustomPainter {
+  final Color color;
+  final double indent;
+  final double endIndent;
+  final Axis direction;
+
+  _NavigationLabelBackgroundPainter({
+    required this.color,
+    required this.indent,
+    required this.endIndent,
+    required this.direction,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = color;
+    // indent and endIndent is direction dependent
+    if (direction == Axis.vertical) {
+      canvas.drawRect(
+        Rect.fromLTWH(indent, 0, size.width - indent - endIndent, size.height),
+        paint,
+      );
+    } else {
+      canvas.drawRect(
+        Rect.fromLTWH(0, indent, size.width, size.height - indent - endIndent),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _NavigationLabelBackgroundPainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.indent != indent ||
+        oldDelegate.endIndent != endIndent ||
+        oldDelegate.direction != direction;
   }
 }
 

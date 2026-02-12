@@ -302,8 +302,7 @@ class _NavigationRailState extends State<NavigationRail> {
     return _wrapIntrinsic(child: rail);
   }
 
-  Widget _wrapIntrinsic({required Widget child, bool wrap = true}) {
-    if (!wrap) return child;
+  Widget _wrapIntrinsic({required Widget child}) {
     if (widget.direction == Axis.horizontal) {
       return IntrinsicHeight(child: child);
     }

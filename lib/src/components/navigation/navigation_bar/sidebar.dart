@@ -200,17 +200,11 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
     final densityGap = theme.density.baseGap * scaling;
     final densityContentPadding = theme.density.baseContentPadding * scaling;
 
-    final headerChildren = (widget.header ?? [])
-        .map((e) => e is SliverToBoxAdapter ? e : SliverToBoxAdapter(child: e))
-        .toList();
+    final headerChildren = widget.header ?? [];
 
-    final bodyChildren = widget.children
-        .map((e) => e is SliverToBoxAdapter ? e : SliverToBoxAdapter(child: e))
-        .toList();
+    final bodyChildren = widget.children;
 
-    final footerChildren = (widget.footer ?? [])
-        .map((e) => e is SliverToBoxAdapter ? e : SliverToBoxAdapter(child: e))
-        .toList();
+    final footerChildren = widget.footer ?? [];
 
     var parentPadding = widget.padding ??
         EdgeInsets.symmetric(
