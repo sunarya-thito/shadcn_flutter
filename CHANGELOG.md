@@ -4,6 +4,9 @@
 
 - Fixed ControlledComponent assertion error when no initial value is provided
   despite having a nullable type parameter
+- Fixed NavigationGroup causing negative size errors when the children list is
+  empty
+- Fixed NavigationSidebar not working correctly after recent breaking changes
 
 ## [0.0.50]
 
