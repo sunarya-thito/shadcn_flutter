@@ -1,3 +1,10 @@
+## [0.0.51] Unreleased
+
+### Fixed
+
+- Fixed ControlledComponent assertion error when no initial value is provided
+  despite having a nullable type parameter
+
 ## [0.0.50]
 
 ### Added
