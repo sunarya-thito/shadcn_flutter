@@ -217,7 +217,7 @@ class ControlledDatePicker extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentAdapter(
+    return ControlledComponentAdapter<DateTime?>(
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
