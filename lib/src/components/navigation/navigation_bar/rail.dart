@@ -222,8 +222,7 @@ class _NavigationRailState extends State<NavigationRail> {
         data: baseData,
         child: SurfaceBlur(
           surfaceBlur: widget.surfaceBlur,
-          child: AnimatedContainer(
-            duration: kDefaultDuration,
+          child: Container(
             color: widget.backgroundColor ??
                 (theme.colorScheme.background.scaleAlpha(
                   widget.surfaceOpacity ?? 1,
