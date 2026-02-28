@@ -1,3 +1,9 @@
+## [0.0.52]
+
+### Fixed
+
+- [#400] Fixed DatePicker resetting its view back to the current month after selecting a date in another month.
+
 ## [0.0.51]
 
 ### Fixed
