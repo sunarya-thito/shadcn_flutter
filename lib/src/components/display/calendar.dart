@@ -188,8 +188,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   @override
   void didUpdateWidget(covariant DatePickerDialog oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialView != oldWidget.initialView ||
-        widget.initialValue != oldWidget.initialValue) {
+    if (widget.initialView != oldWidget.initialView) {
       _view =
           widget.initialView ?? widget.initialValue?.view ?? CalendarView.now();
       _alternateView = _view.next;

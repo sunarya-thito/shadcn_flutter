@@ -39,4 +39,4 @@ build/
 /example/windows/
 /.flutter-plugins
 /.flutter-plugins-dependencies
-/test_widget
+/test_widgets

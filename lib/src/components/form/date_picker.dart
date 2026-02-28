@@ -327,7 +327,7 @@ class DatePicker extends StatelessWidget {
     final resolvedInitialView = styleValue(
       widgetValue: initialView,
       themeValue: compTheme?.initialView,
-      defaultValue: CalendarView.now(),
+      defaultValue: null,
     );
     final resolvedInitialViewType = styleValue(
       widgetValue: initialViewType,
