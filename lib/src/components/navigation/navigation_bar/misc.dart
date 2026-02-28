@@ -302,7 +302,7 @@ class NavigationGroup extends StatelessWidget {
       reverse: true,
       duration: kDefaultDuration,
       child: DefaultTextStyle.merge(
-        textAlign: TextAlign.start,
+        textAlign: TextAlign.center,
         maxLines: 1,
         child: NavigationChildOverflowHandle(
           overflow: labelOverflow,
@@ -364,7 +364,7 @@ class NavigationGroup extends StatelessWidget {
 
     final labelWidget = buildLabelChild(context, data);
     final paddedLabel = Container(
-      alignment: labelAlignment ?? AlignmentDirectional.centerStart,
+      alignment: labelAlignment ?? Alignment.center,
       padding: labelPadding ??
           EdgeInsets.symmetric(horizontal: densityContentPadding * padXs),
       child: labelWidget,
@@ -507,22 +507,11 @@ class _NavigationLabelDelegate extends SliverPersistentHeaderDelegate {
     final parentPadding = data?.parentPadding ?? EdgeInsets.zero;
     final direction = data?.direction ?? Axis.vertical;
     final color = theme.colorScheme.background;
-    final textDir = Directionality.of(context);
-    final resolvedIndent = direction == Axis.vertical
-        ? (textDir == TextDirection.rtl
-            ? parentPadding.right
-            : parentPadding.left)
-        : parentPadding.top;
-    final resolvedEndIndent = direction == Axis.vertical
-        ? (textDir == TextDirection.rtl
-            ? parentPadding.left
-            : parentPadding.right)
-        : parentPadding.bottom;
     return CustomPaint(
       painter: _NavigationLabelBackgroundPainter(
         color: color,
-        indent: -resolvedIndent,
-        endIndent: -resolvedEndIndent,
+        indent: -startPadding(parentPadding, direction),
+        endIndent: -endPadding(parentPadding, direction),
         direction: direction,
       ),
       child: child,
