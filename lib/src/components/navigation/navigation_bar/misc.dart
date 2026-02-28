@@ -3,7 +3,7 @@ import 'package:shadcn_flutter/src/components/layout/hidden.dart';
 
 /// Returns the padding at the start of the axis.
 double startPadding(EdgeInsets padding, Axis direction) {
-  if (direction == Axis.vertical) {
+  if (direction == Axis.horizontal) {
     return padding.top;
   }
   return padding.left;
@@ -11,7 +11,7 @@ double startPadding(EdgeInsets padding, Axis direction) {
 
 /// Returns the padding at the end of the axis.
 double endPadding(EdgeInsets padding, Axis direction) {
-  if (direction == Axis.vertical) {
+  if (direction == Axis.horizontal) {
     return padding.bottom;
   }
   return padding.right;
@@ -80,11 +80,18 @@ class NavigationDivider extends StatelessWidget {
     final data = Data.maybeOf<NavigationControlData>(context);
     final parentPadding = data?.parentPadding ?? EdgeInsets.zero;
     final direction = data?.direction ?? Axis.vertical;
+    final textDir = Directionality.of(context);
     Widget child;
     if (direction == Axis.vertical) {
+      final leadingPad = textDir == TextDirection.rtl
+          ? parentPadding.right
+          : parentPadding.left;
+      final trailingPad = textDir == TextDirection.rtl
+          ? parentPadding.left
+          : parentPadding.right;
       child = Divider(
-        indent: -parentPadding.left,
-        endIndent: -parentPadding.right,
+        indent: -leadingPad,
+        endIndent: -trailingPad,
         thickness: thickness ?? (1 * scaling),
         color: color ?? theme.colorScheme.muted,
       );
@@ -184,11 +191,11 @@ class NavigationLabeled extends StatelessWidget {
             ? keepMainAxisSize
             : keepCrossAxisSize),
         child: Padding(
-          padding: EdgeInsets.only(
+          padding: EdgeInsetsDirectional.only(
             top: position == NavigationLabelPosition.bottom ? spacing : 0,
             bottom: position == NavigationLabelPosition.top ? spacing : 0,
-            left: position == NavigationLabelPosition.end ? spacing : 0,
-            right: position == NavigationLabelPosition.start ? spacing : 0,
+            start: position == NavigationLabelPosition.end ? spacing : 0,
+            end: position == NavigationLabelPosition.start ? spacing : 0,
           ),
           child: Align(
               alignment: switch (position) {
