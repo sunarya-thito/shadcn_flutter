@@ -252,7 +252,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             }
                           });
                         },
-                        child: Icon(LucideIcons.arrowLeft, color: arrowColor)
+                        child: Icon(Directionality.of(context) == TextDirection.rtl ? LucideIcons.arrowRight : LucideIcons.arrowLeft, color: arrowColor)
                             .iconXSmall(),
                       ),
                       SizedBox(
@@ -313,7 +313,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                          child: Icon(Directionality.of(context) == TextDirection.rtl ? LucideIcons.arrowLeft : LucideIcons.arrowRight, color: arrowColor)
                               .iconXSmall(),
                         ),
                     ],
@@ -379,7 +379,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                          child: Icon(Directionality.of(context) == TextDirection.rtl ? LucideIcons.arrowLeft : LucideIcons.arrowRight, color: arrowColor)
                               .iconXSmall(),
                         ),
                       ],
@@ -466,7 +466,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   });
                 },
                 child:
-                    Icon(LucideIcons.arrowLeft, color: arrowColor).iconXSmall(),
+                    Icon(Directionality.of(context) == TextDirection.rtl ? LucideIcons.arrowRight : LucideIcons.arrowLeft, color: arrowColor).iconXSmall(),
               ),
               SizedBox(
                 width: theme.scaling * 16,
@@ -517,7 +517,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                child: Icon(Directionality.of(context) == TextDirection.rtl ? LucideIcons.arrowLeft : LucideIcons.arrowRight, color: arrowColor)
                     .iconXSmall(),
               ),
             ],
