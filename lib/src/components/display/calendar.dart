@@ -227,7 +227,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
@@ -387,6 +389,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   ),
               ],
             ),
+            ),
             Gap(theme.density.baseGap * theme.scaling * 2),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,7 +449,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Row(
             children: [
               OutlineButton(
                 density: ButtonDensity.icon,
@@ -521,6 +526,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     .iconXSmall(),
               ),
             ],
+          ),
           ),
           Gap(theme.density.baseGap * theme.scaling * 2),
           buildView(
