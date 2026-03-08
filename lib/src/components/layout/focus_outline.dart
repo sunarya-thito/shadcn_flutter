@@ -159,6 +159,7 @@ class FocusOutline extends StatelessWidget {
     );
     final double offset = -align;
     TextDirection textDirection = Directionality.of(context);
+
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
@@ -168,33 +169,34 @@ class FocusOutline extends StatelessWidget {
             value: focused ? 1.0 : 0.0,
             duration: kDefaultDuration,
             builder: (context, value, child) {
+              final borderStyle = styleValue(
+                defaultValue: Border.all(
+                  color: Theme.of(context).colorScheme.ring.scaleAlpha(0.5),
+                  width: 3.0,
+                ),
+                themeValue: compTheme?.border,
+                widgetValue: border,
+              ).scale(value);
+
+              final shapeBorder =
+                  (shape ?? BoxShape.rectangle) == BoxShape.circle
+                      ? CircleBorder(side: borderStyle.top)
+                      : RoundedRectangleBorder(
+                          borderRadius: _getAdjustedBorderRadius(
+                            textDirection,
+                            align,
+                            borderRadius,
+                          ),
+                          side: borderStyle.top,
+                        );
               return Positioned(
                 top: offset * value,
                 right: offset * value,
                 bottom: offset * value,
                 left: offset * value,
                 child: IgnorePointer(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: shape != BoxShape.circle
-                            ? _getAdjustedBorderRadius(
-                                textDirection,
-                                align,
-                                borderRadius,
-                              )
-                            : null,
-                        shape: shape ?? BoxShape.rectangle,
-                        border: styleValue(
-                          defaultValue: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .ring
-                                .scaleAlpha(0.5),
-                            width: 3.0,
-                          ),
-                          themeValue: compTheme?.border,
-                          widgetValue: border,
-                        ).scale(value)),
+                  child: DecoratedBox(
+                    decoration: ShapeDecoration(shape: shapeBorder),
                   ),
                 ),
               );

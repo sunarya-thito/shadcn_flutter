@@ -786,8 +786,10 @@ class _ClickableState extends State<Clickable> {
     widgetStates = widgetStates.union(_controller.value);
     Decoration? decoration = widget.decoration?.resolve(widgetStates);
     BorderRadiusGeometry borderRadius;
+    BoxShape shape = BoxShape.rectangle;
     if (decoration is BoxDecoration) {
       borderRadius = decoration.borderRadius ?? theme.borderRadiusMd;
+      shape = decoration.shape;
     } else {
       borderRadius = theme.borderRadiusMd;
     }
@@ -797,6 +799,7 @@ class _ClickableState extends State<Clickable> {
           widgetStates.contains(WidgetState.focused) &&
           !widget.disableFocusOutline,
       borderRadius: borderRadius,
+      shape: shape,
       child: GestureDetector(
         behavior: widget.behavior,
         onTap: widget.onPressed != null ? _onPressed : null,
@@ -971,7 +974,7 @@ class _ClickableState extends State<Clickable> {
         margin: resolvedMargin,
         child: decoration == null
             ? widget.child
-            : _DecoratedBox(
+            : OverflowDecoratedBox(
                 decoration: decoration,
                 expands: expands,
                 child: Padding(
@@ -1000,12 +1003,12 @@ class _ClickableState extends State<Clickable> {
           : AnimatedValueBuilder<Decoration?>(
               value: decoration,
               duration: kDefaultDuration,
-              lerp: Decoration.lerp,
+              lerp: _lerpDecoration,
               builder: (context, value, child) {
                 if (value == null) {
                   return child!;
                 }
-                return _DecoratedBox(
+                return OverflowDecoratedBox(
                   decoration: value,
                   expands: expands,
                   child: child,
@@ -1027,24 +1030,95 @@ class _ClickableState extends State<Clickable> {
     }
     return animatedContainer;
   }
+
+  static Decoration? _lerpDecoration(Decoration? a, Decoration? b, double t) {
+    if (t == 0.0) {
+      return a;
+    }
+    if (t == 1.0) {
+      return b;
+    }
+    if (a is BoxDecoration && b is BoxDecoration) {
+      if (a.shape != b.shape &&
+          a.backgroundBlendMode == null &&
+          b.backgroundBlendMode == null) {
+        ShapeBorder shapeA;
+        if (a.shape == BoxShape.circle) {
+          shapeA = const CircleBorder();
+        } else {
+          shapeA = RoundedRectangleBorder(
+            borderRadius: a.borderRadius ?? BorderRadius.zero,
+          );
+        }
+        ShapeBorder shapeB;
+        if (b.shape == BoxShape.circle) {
+          shapeB = const CircleBorder();
+        } else {
+          shapeB = RoundedRectangleBorder(
+            borderRadius: b.borderRadius ?? BorderRadius.zero,
+          );
+        }
+        if (a.border is Border) {
+          shapeA = (shapeA as OutlinedBorder)
+              .copyWith(side: (a.border as Border).top);
+        }
+        if (b.border is Border) {
+          shapeB = (shapeB as OutlinedBorder)
+              .copyWith(side: (b.border as Border).top);
+        }
+        return ShapeDecoration.lerp(
+          ShapeDecoration(
+            color: a.color,
+            image: a.image,
+            shadows: a.boxShadow,
+            gradient: a.gradient,
+            shape: shapeA,
+          ),
+          ShapeDecoration(
+            color: b.color,
+            image: b.image,
+            shadows: b.boxShadow,
+            gradient: b.gradient,
+            shape: shapeB,
+          ),
+          t,
+        );
+      }
+    }
+    final lerped = Decoration.lerp(a, b, t);
+    if (lerped is BoxDecoration &&
+        lerped.shape == BoxShape.circle &&
+        lerped.borderRadius != null) {
+      return lerped.copyWith(borderRadius: null);
+    }
+    return lerped;
+  }
 }
 
-// These patches are needed because DecoratedBox can now overflow its bounds,
-// if the margin is negative.
-class _DecoratedBox extends SingleChildRenderObjectWidget {
-  const _DecoratedBox({
+/// A [DecoratedBox] that can overflow its bounds.
+///
+/// [OverflowDecoratedBox] is similar to [DecoratedBox], but it can paint its
+/// decoration outside its layout bounds when [expands] margins are provided.
+/// This is used internally by [Clickable] to support negative margins for
+/// visual effects like hover outlines.
+class OverflowDecoratedBox extends SingleChildRenderObjectWidget {
+  /// Creates an [OverflowDecoratedBox].
+  const OverflowDecoratedBox({
+    super.key,
     required this.decoration,
     required this.expands,
     super.child,
   });
 
+  /// The amount by which the decoration should expand beyond the layout bounds.
   final EdgeInsets expands;
 
+  /// The decoration to paint.
   final Decoration decoration;
 
   @override
-  _RenderDecoratedBox createRenderObject(BuildContext context) {
-    return _RenderDecoratedBox(
+  RenderOverflowDecoratedBox createRenderObject(BuildContext context) {
+    return RenderOverflowDecoratedBox(
       decoration: decoration,
       position: DecorationPosition.background,
       expands: expands,
@@ -1054,7 +1128,7 @@ class _DecoratedBox extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderDecoratedBox renderObject) {
+      BuildContext context, RenderOverflowDecoratedBox renderObject) {
     renderObject
       ..decoration = decoration
       ..configuration = createLocalImageConfiguration(context)
@@ -1062,8 +1136,10 @@ class _DecoratedBox extends SingleChildRenderObjectWidget {
   }
 }
 
-class _RenderDecoratedBox extends RenderProxyBox {
-  _RenderDecoratedBox({
+/// The [RenderObject] for [OverflowDecoratedBox].
+class RenderOverflowDecoratedBox extends RenderProxyBox {
+  /// Creates a [RenderOverflowDecoratedBox].
+  RenderOverflowDecoratedBox({
     required Decoration decoration,
     DecorationPosition position = DecorationPosition.background,
     ImageConfiguration configuration = ImageConfiguration.empty,
@@ -1077,6 +1153,7 @@ class _RenderDecoratedBox extends RenderProxyBox {
 
   BoxPainter? _painter;
 
+  /// The amount by which the decoration should expand beyond the layout bounds.
   EdgeInsets get expands => _expands;
   EdgeInsets _expands;
   set expands(EdgeInsets value) {
@@ -1087,6 +1164,7 @@ class _RenderDecoratedBox extends RenderProxyBox {
     markNeedsPaint();
   }
 
+  /// The decoration to paint.
   Decoration get decoration => _decoration;
   Decoration _decoration;
   set decoration(Decoration value) {
@@ -1099,6 +1177,7 @@ class _RenderDecoratedBox extends RenderProxyBox {
     markNeedsPaint();
   }
 
+  /// Whether the decoration should be painted in the background or foreground.
   DecorationPosition get position => _position;
   DecorationPosition _position;
   set position(DecorationPosition value) {
@@ -1109,6 +1188,7 @@ class _RenderDecoratedBox extends RenderProxyBox {
     markNeedsPaint();
   }
 
+  /// The image configuration for the decoration.
   ImageConfiguration get configuration => _configuration;
   ImageConfiguration _configuration;
   set configuration(ImageConfiguration value) {
