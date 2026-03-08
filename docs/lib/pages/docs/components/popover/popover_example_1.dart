@@ -10,7 +10,6 @@ class PopoverExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return PrimaryButton(
       onPressed: () {
         showPopover(
@@ -18,11 +17,6 @@ class PopoverExample1 extends StatelessWidget {
           // Position the popover above the button, shifted by 8px.
           alignment: Alignment.topCenter,
           offset: const Offset(0, 8),
-          // Unless you have full opacity surface,
-          // you should explicitly set the overlay barrier.
-          overlayBarrier: OverlayBarrier(
-            borderRadius: theme.borderRadiusLg,
-          ),
           builder: (context) {
             return ModalContainer(
               child: SizedBox(
