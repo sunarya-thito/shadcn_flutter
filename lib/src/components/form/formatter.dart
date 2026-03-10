@@ -230,6 +230,14 @@ class _DoubleOnlyFormatter extends TextInputFormatter {
           : value.toStringAsFixed(decimalDigits!);
     } else {
       newText = value.toString();
+      if (newText.contains('.')) {
+        while (newText.endsWith('0')) {
+          newText = newText.substring(0, newText.length - 1);
+        }
+        if (newText.endsWith('.')) {
+          newText = newText.substring(0, newText.length - 1);
+        }
+      }
     }
     if (endsWithDot) {
       newText += '.';
