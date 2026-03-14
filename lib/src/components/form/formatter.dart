@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 ///
 /// Helper function that ensures selection offsets don't exceed the bounds
 /// of the updated text.
-TextSelection contraintToNewText(TextEditingValue newValue, String newText) {
+TextSelection constraintToNewText(TextEditingValue newValue, String newText) {
   return TextSelection(
     baseOffset: newValue.selection.baseOffset.clamp(0, newText.length),
     extentOffset: newValue.selection.extentOffset.clamp(0, newText.length),
@@ -59,16 +59,10 @@ class TextInputFormatters {
   /// - [min]: Optional minimum value.
   /// - [max]: Optional maximum value.
   /// - [decimalDigits]: Optional fixed number of decimal places.
-  static TextInputFormatter digitsOnly({
-    double? min,
-    double? max,
-    int? decimalDigits,
-  }) {
+  static TextInputFormatter digitsOnly(
+      {double? min, double? max, int? decimalDigits}) {
     return _DoubleOnlyFormatter(
-      min: min,
-      max: max,
-      decimalDigits: decimalDigits,
-    );
+        min: min, max: max, decimalDigits: decimalDigits);
   }
 
   /// Creates a formatter that evaluates mathematical expressions.
@@ -95,9 +89,7 @@ class _TimeFormatter extends TextInputFormatter {
   const _TimeFormatter({required this.length});
   @override
   TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
+      TextEditingValue oldValue, TextEditingValue newValue) {
     // make sure new value has leading zero
     var newText = newValue.text;
     int substringCount = 0;
@@ -117,14 +109,10 @@ class _TimeFormatter extends TextInputFormatter {
       text: newText,
       composing: newValue.composing.isValid
           ? TextRange(
-              start: newValue.composing.start.clamp(
-                0,
-                min(length, newValue.text.length),
-              ),
-              end: newValue.composing.end.clamp(
-                0,
-                min(length, newValue.text.length),
-              ),
+              start: newValue.composing.start
+                  .clamp(0, min(length, newValue.text.length)),
+              end: newValue.composing.end
+                  .clamp(0, min(length, newValue.text.length)),
             )
           : newValue.composing,
       selection: TextSelection(
@@ -176,7 +164,7 @@ class _IntegerOnlyFormatter extends TextInputFormatter {
     }
     return TextEditingValue(
       text: newText,
-      selection: contraintToNewText(newValue, newText),
+      selection: constraintToNewText(newValue, newText),
     );
   }
 }
@@ -197,58 +185,76 @@ class _DoubleOnlyFormatter extends TextInputFormatter {
     if (newText.isEmpty) {
       return newValue;
     }
+
+    // Handle intermediate states
+    if (newText == '-') {
+      if (min != null && min! >= 0) return oldValue;
+      return newValue;
+    }
+    if (newText == '.') {
+      if (decimalDigits == 0) return oldValue;
+      return newValue;
+    }
+    if (newText == '-.') {
+      if (decimalDigits == 0) return oldValue;
+      if (min != null && min! >= 0) return oldValue;
+      return newValue;
+    }
+
+    // Handle negative sign separately to allow it during typing
     bool negate = newText.startsWith('-');
-    if (negate) {
-      newText = newText.substring(1);
+    String absText = negate ? newText.substring(1) : newText;
+
+    // Validate decimal point and digits
+    if (absText.contains('.')) {
+      if (decimalDigits == 0) return oldValue;
+      final parts = absText.split('.');
+      if (parts.length > 2) return oldValue; // Multiple dots
+      if (decimalDigits != null && parts[1].length > decimalDigits!) {
+        return oldValue; // Too many decimal digits
+      }
     }
-    bool endsWithDot = newText.endsWith('.');
-    if (endsWithDot) {
-      newText = newText.substring(0, newText.length - 1);
-    }
+
     double? value = double.tryParse(newText);
     if (value == null) {
-      if (negate) {
-        return const TextEditingValue(
-          text: '-',
-          selection: TextSelection.collapsed(offset: 1),
-        );
-      }
       return oldValue;
     }
-    if (min != null && value <= min!) {
-      value = min!;
-      endsWithDot = false;
-    }
-    if (max != null && value >= max!) {
-      value = max!;
-      endsWithDot = false;
-    }
-    // var newText = value.toString();
-    if (decimalDigits != null) {
-      newText = value.toStringAsFixed(decimalDigits!).contains(newText)
-          ? newText
-          : value.toStringAsFixed(decimalDigits!);
-    } else {
-      newText = value.toString();
-      if (newText.contains('.')) {
-        while (newText.endsWith('0')) {
-          newText = newText.substring(0, newText.length - 1);
+
+    String formatClamped(double val) {
+      if (decimalDigits != null) {
+        return val.toStringAsFixed(decimalDigits!);
+      }
+      String s = val.toString();
+      if (s.contains('.')) {
+        while (s.endsWith('0')) {
+          s = s.substring(0, s.length - 1);
         }
-        if (newText.endsWith('.')) {
-          newText = newText.substring(0, newText.length - 1);
+        if (s.endsWith('.')) {
+          s = s.substring(0, s.length - 1);
         }
       }
+      return s;
     }
-    if (endsWithDot) {
-      newText += '.';
+
+    // Clamping Max
+    if (max != null && value > max!) {
+      String clampedText = formatClamped(max!);
+      return TextEditingValue(
+        text: clampedText,
+        selection: constraintToNewText(newValue, clampedText),
+      );
     }
-    if (negate) {
-      newText = '-$newText';
+
+    // Clamping Min
+    if (min != null && value < min!) {
+      String clampedText = formatClamped(min!);
+      return TextEditingValue(
+        text: clampedText,
+        selection: constraintToNewText(newValue, clampedText),
+      );
     }
-    return TextEditingValue(
-      text: newText,
-      selection: contraintToNewText(newValue, newText),
-    );
+
+    return newValue;
   }
 }
 
@@ -283,7 +289,7 @@ class _MathExpressionFormatter extends TextInputFormatter {
     }
     return TextEditingValue(
       text: resultText,
-      selection: contraintToNewText(newValue, resultText),
+      selection: constraintToNewText(newValue, resultText),
     );
   }
 }
@@ -335,13 +341,12 @@ class _HexTextFormatter extends TextInputFormatter {
       }
     }
     // make sure all characters are valid hex characters
-    final hexRegExp = hashPrefix
-        ? RegExp(r'^#?[0-9a-fA-F]*$')
-        : RegExp(r'^[0-9a-fA-F]*$');
+    final hexRegExp =
+        hashPrefix ? RegExp(r'^#?[0-9a-fA-F]*$') : RegExp(r'^[0-9a-fA-F]*$');
     if (!hexRegExp.hasMatch(newText)) {
       return oldValue;
     }
-    var selection = contraintToNewText(newValue, newText);
+    var selection = constraintToNewText(newValue, newText);
     // make sure selection is after the hash if hashPrefix is true
     if (hashPrefix) {
       if (selection.baseOffset == 0) {
@@ -351,6 +356,9 @@ class _HexTextFormatter extends TextInputFormatter {
         selection = selection.copyWith(extentOffset: 1);
       }
     }
-    return TextEditingValue(text: newText, selection: selection);
+    return TextEditingValue(
+      text: newText,
+      selection: selection,
+    );
   }
 }
