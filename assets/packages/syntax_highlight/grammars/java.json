@@ -1,0 +1,142 @@
+{
+  "name": "Java",
+  "version": "1.0.0",
+  "fileTypes": ["java"],
+  "scopeName": "source.java",
+
+  "foldingStartMarker": "\\{\\s*$",
+  "foldingStopMarker": "^\\s*\\}",
+
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#annotations"
+    }
+  ],
+
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.java",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.block.documentation.java",
+          "begin": "/\\*\\*",
+          "end": "\\*/",
+          "patterns": [
+            {
+              "name": "entity.name.tag.documentation.java",
+              "match": "@[a-zA-Z]+"
+            }
+          ]
+        },
+        {
+          "name": "comment.line.double-slash.java",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.java",
+          "match": "\\b(if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw|assert)\\b"
+        },
+        {
+          "name": "keyword.declaration.java",
+          "match": "\\b(public|private|protected|static|final|abstract|synchronized|volatile|transient|native|strictfp)\\b"
+        },
+        {
+          "name": "keyword.operator.java",
+          "match": "\\b(new|instanceof)\\b"
+        },
+        {
+          "name": "keyword.other.java",
+          "match": "\\b(import|package|class|interface|enum|extends|implements|throws)\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.java",
+          "match": "\\b(true|false|null)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.java",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.java",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.java",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.java",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.java",
+          "match": "\\b([+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?[fFdDlL]?)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.java",
+          "match": "\\b(byte|short|int|long|float|double|boolean|char|void)\\b"
+        },
+        {
+          "name": "entity.name.type.class.java",
+          "match": "\\b([A-Z][a-zA-Z0-9_]*)\\b"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "meta.annotation.java",
+          "match": "@[a-zA-Z][a-zA-Z0-9_]*"
+        }
+      ]
+    }
+  }
+}
