@@ -38,7 +38,8 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
   }
 
   // Render a single tab header item. It shows a badge-like count and a close button.
-  TabItem _buildTabItem(MyTab data) {
+  TabItem _buildTabItem(int index) {
+    MyTab data = tabs[index].data;
     return TabItem(
       child: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 150),
@@ -61,7 +62,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
             icon: const Icon(Icons.close),
             onPressed: () {
               setState(() {
-                tabs.remove(data);
+                tabs.removeAt(index);
               });
             },
           ),
@@ -78,7 +79,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
       // Provide the items and how to render each tab header.
       items: tabs,
       itemBuilder: (context, item, index) {
-        return _buildTabItem(item.data);
+        return _buildTabItem(index);
       },
       // The currently focused tab index.
       focused: focused,
