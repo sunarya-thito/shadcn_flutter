@@ -37,33 +37,65 @@ void main() async {
       final result =
           parseFile(path: file.absolute.path, featureSet: featureSet);
       final unit = result.unit;
+      final normalizedFileName = normalizeIdentifier(fileName);
+
+      ClassDeclaration? bestMatchDeclaration;
+      String? bestMatchClassName;
+      var bestMatchScore = 0;
+
+      ClassDeclaration? documentedFallbackDeclaration;
+      String? documentedFallbackClassName;
 
       for (final declaration in unit.declarations) {
-        if (declaration is ClassDeclaration) {
-          final className = declaration.name.lexeme;
-          if (className.endsWith('State') || className.startsWith('_')) {
-            continue;
-          }
+        if (declaration is! ClassDeclaration) continue;
 
-          if (!className
-                  .toLowerCase()
-                  .contains(fileName.replaceAll('_', '').toLowerCase()) &&
-              declaration.documentationComment == null) {
-            continue;
-          }
+        final className = declaration.name.lexeme;
+        if (className.endsWith('State') || className.startsWith('_')) continue;
 
-          final markdown =
-              generateMarkdown(fileName, className, declaration, docsDir);
-          final outputFile = File(p.join(skillsDir.path, '$fileName.md'));
-          outputFile.writeAsStringSync(markdown);
-          print('  Generated ${outputFile.path}');
-          break;
+        final normalizedClassName = normalizeIdentifier(className);
+        final hasDocumentation = declaration.documentationComment != null;
+
+        var matchScore = 0;
+        if (normalizedClassName == normalizedFileName) {
+          matchScore = 2;
+        } else if (normalizedClassName.contains(normalizedFileName) ||
+            normalizedFileName.contains(normalizedClassName)) {
+          matchScore = 1;
         }
+
+        if (matchScore > bestMatchScore) {
+          bestMatchScore = matchScore;
+          bestMatchDeclaration = declaration;
+          bestMatchClassName = className;
+        }
+
+        if (hasDocumentation && documentedFallbackDeclaration == null) {
+          documentedFallbackDeclaration = declaration;
+          documentedFallbackClassName = className;
+        }
+      }
+
+      final selectedDeclaration = bestMatchScore > 0
+          ? bestMatchDeclaration
+          : documentedFallbackDeclaration;
+      final selectedClassName =
+          bestMatchScore > 0 ? bestMatchClassName : documentedFallbackClassName;
+
+      if (selectedDeclaration != null && selectedClassName != null) {
+        final markdown = generateMarkdown(
+            fileName, selectedClassName, selectedDeclaration, docsDir);
+        final outputFile = File(p.join(skillsDir.path, '$fileName.md'));
+        outputFile.writeAsStringSync(markdown);
+        print('  Generated ${outputFile.path}');
       }
     } catch (e) {
       print('  Error processing $fileName: $e');
     }
   }
+}
+
+String normalizeIdentifier(String value) {
+  return value.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toLowerCase();
 }
 
 String generateMarkdown(String fileName, String className,
