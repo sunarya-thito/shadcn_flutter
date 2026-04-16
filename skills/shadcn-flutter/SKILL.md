@@ -116,7 +116,7 @@ Shadcn Flutter features over 100+ high-quality components. Below are the core ca
 | :--- | :--- |
 | **Dialog** | [components/dialog.md](./components/dialog.md) |
 | **Drawer** | [components/drawer.md](./components/drawer.md) |
-| **Navigation Bar** | [components/navigation_bar.md](./components/navigation_bar.md) |
+| **Navigation Bar** | [components/bar.md](./components/bar.md) |
 | **Pagination** | [components/pagination.md](./components/pagination.md) |
 | **Popover** | [components/popover.md](./components/popover.md) |
 | **Tabs** | [components/tabs.md](./components/tabs.md) |
