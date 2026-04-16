@@ -136,6 +136,13 @@ feed to LLMs and editor assistants:
 - [`llms-full.txt`](https://sunarya-thito.github.io/shadcn_flutter/llms-full.txt) -
   Full component reference with props, methods, and usage examples
 
+## Agent Skills
+
+For compatible coding agents that support [Agent Skills](https://agentskills.io), you can install with this command:
+```bash
+npx skills sunarya-thito/shadcn_flutter
+```
+
 ## FAQ
 
 <details>
