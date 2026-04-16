@@ -148,6 +148,7 @@ void main() async {
       }
     }
   }
+  colorsGuide.parent.createSync(recursive: true);
   colorsGuide.writeAsStringSync(colorBuffer.toString());
 
   print('Done!');
