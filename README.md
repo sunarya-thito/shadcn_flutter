@@ -140,7 +140,7 @@ feed to LLMs and editor assistants:
 
 For compatible coding agents that support [Agent Skills](https://agentskills.io), you can install with this command:
 ```bash
-npx skills sunarya-thito/shadcn_flutter
+npx skills add sunarya-thito/shadcn_flutter
 ```
 
 ## FAQ
