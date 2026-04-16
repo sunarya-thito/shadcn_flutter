@@ -23,8 +23,29 @@ Future<void> generateComponentSkills(FeatureSet featureSet) async {
   final docsDir = Directory('docs/lib/pages/docs/components');
   final skillsDir = Directory('skills/shadcn-flutter/components');
 
-  if (!skillsDir.existsSync()) {
-    skillsDir.createSync(recursive: true);
+  if (skillsDir.existsSync()) {
+    skillsDir.deleteSync(recursive: true);
+  }
+  skillsDir.createSync(recursive: true);
+
+  // Parse docs_page.dart to get component groupings as on the website.
+  final docsPageContent =
+      File('docs/lib/pages/docs_page.dart').readAsStringSync();
+  final categories = <String, String>{};
+  final pageTitles = <String, String>{};
+  final sectionRegex = RegExp(
+      r"ShadcnDocsSection\(\s*'([^']+)',\s*(?:List\.unmodifiable\()?\[(.*?)\]",
+      dotAll: true);
+  for (final match in sectionRegex.allMatches(docsPageContent)) {
+    final category = match.group(1)!;
+    final pagesContent = match.group(2)!;
+    final pageRegex = RegExp(r"ShadcnDocsPage\(\s*'([^']+)'\s*,\s*'([^']+)'");
+    for (final pageMatch in pageRegex.allMatches(pagesContent)) {
+      final title = pageMatch.group(1)!;
+      final pageName = pageMatch.group(2)!;
+      categories[pageName] = category;
+      pageTitles[pageName] = title;
+    }
   }
 
   final files = componentsDir
@@ -96,12 +117,82 @@ Future<void> generateComponentSkills(FeatureSet featureSet) async {
       if (selectedDeclaration != null && selectedClassName != null) {
         final markdown = generateMarkdown(
             fileName, selectedClassName, selectedDeclaration, docsDir);
-        final outputFile = File(p.join(skillsDir.path, '$fileName.md'));
+
+        final categoryName = categories[fileName] ?? 'Other';
+        final categoryFolder = categoryName.toLowerCase().replaceAll(' ', '_');
+        final outputDir = Directory(p.join(skillsDir.path, categoryFolder));
+        if (!outputDir.existsSync()) {
+          outputDir.createSync(recursive: true);
+        }
+
+        final outputFile = File(p.join(outputDir.path, '$fileName.md'));
         outputFile.writeAsStringSync(markdown);
         print('    Generated ${outputFile.path}');
       }
     } catch (e) {
       print('    Error processing $fileName: $e');
+    }
+  }
+
+  // Generate SKILL.md components section
+  final skillFile = File('skills/shadcn-flutter/SKILL.md');
+  if (skillFile.existsSync()) {
+    final skillContent = skillFile.readAsStringSync();
+    final parts = skillContent.split('## Components');
+    if (parts.length == 2) {
+      final buffer = StringBuffer();
+      buffer.writeln(parts[0].trimRight());
+      buffer.writeln();
+      buffer.writeln('## Components');
+      buffer.writeln();
+      buffer.writeln('Shadcn Flutter features over 100+ high-quality components. Below are the core categories.');
+
+      final groupedCategories = <String, List<String>>{};
+      for (final docPage in categories.keys) {
+        final cat = categories[docPage]!;
+        if (!groupedCategories.containsKey(cat)) groupedCategories[cat] = [];
+        groupedCategories[cat]!.add(docPage);
+      }
+
+      final keys = groupedCategories.keys.toList()..sort();
+      for (final key in keys) {
+        if (key == 'Application' || key == 'Getting Started') continue; // Not component categories
+        
+        final pagesCat = groupedCategories[key]!;
+        final pages = <String>[];
+        for (final pageNameCat in pagesCat) {
+            final exists = File(p.join(skillsDir.path, key.toLowerCase().replaceAll(' ', '_'), '$pageNameCat.md')).existsSync();
+            if (exists) pages.add(pageNameCat);
+        }
+        pages.sort();
+
+        if (pages.isEmpty) continue;
+        
+        buffer.writeln();
+        buffer.writeln('### $key');
+        buffer.writeln('| Component | Path |');
+        buffer.writeln('| :--- | :--- |');
+        for (final page in pages) {
+          final title = pageTitles[page] ?? page;
+          final categoryFolder = key.toLowerCase().replaceAll(' ', '_');
+          buffer.writeln('| **$title** | [components/$categoryFolder/$page.md](./components/$categoryFolder/$page.md) |');
+        }
+      }
+
+      buffer.writeln();
+      buffer.writeln('> [!TIP]');
+      buffer.writeln('> This is a curated list. For the full list of all 100+ components, check the [components directory](./components/).');
+      buffer.writeln();
+      
+      final afterComponentsPart = parts[1];
+      final interactiveTipsIndex = afterComponentsPart.indexOf('## Interactive Usage Tips');
+      if (interactiveTipsIndex != -1) {
+          buffer.writeln(afterComponentsPart.substring(interactiveTipsIndex).trim());
+          buffer.writeln();
+      }
+
+      skillFile.writeAsStringSync(buffer.toString());
+      print('Updated SKILL.md components section.');
     }
   }
 }
@@ -355,7 +446,8 @@ String extractDocExample(String comment) {
   return '';
 }
 
-String findExamples(String fileName, String className, ClassDeclaration clazz, Directory docsDir, String docComment) {
+String findExamples(String fileName, String className, ClassDeclaration clazz,
+    Directory docsDir, String docComment) {
   final examples = <String, String>{};
 
   // 1. Look in subfolder docsDir/fileName/

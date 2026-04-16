@@ -68,68 +68,112 @@ Learn the core concepts and design system fundamentals.
 
 Shadcn Flutter features over 100+ high-quality components. Below are the core categories.
 
-### Form & Input
+### Animation
 | Component | Path |
 | :--- | :--- |
-| **Autocomplete** | [components/autocomplete.md](./components/autocomplete.md) |
-| **Checkbox** | [components/checkbox.md](./components/checkbox.md) |
-| **Color Picker** | [components/color_picker.md](./components/color_picker.md) |
-| **Date Picker** | [components/date_picker.md](./components/date_picker.md) |
-| **File Picker** | [components/file_picker.md](./components/file_picker.md) |
-| **Input** | [components/input.md](./components/input.md) |
-| **Input OTP** | [components/input_otp.md](./components/input_otp.md) |
-| **Radio Group** | [components/radio_group.md](./components/radio_group.md) |
-| **Select** | [components/select.md](./components/select.md) |
-| **Slider** | [components/slider.md](./components/slider.md) |
-| **Switch** | [components/switch.md](./components/switch.md) |
-| **Text Area** | [components/text_area.md](./components/text_area.md) |
+| **Number Ticker** | [components/animation/number_ticker.md](./components/animation/number_ticker.md) |
 
-### Layout
+### Control
 | Component | Path |
 | :--- | :--- |
-| **Accordion** | [components/accordion.md](./components/accordion.md) |
-| **Alert** | [components/alert.md](./components/alert.md) |
-| **Breadcrumb** | [components/breadcrumb.md](./components/breadcrumb.md) |
-| **Card** | [components/card.md](./components/card.md) |
-| **Collapsible** | [components/collapsible.md](./components/collapsible.md) |
-| **Resizable** | [components/resizable.md](./components/resizable.md) |
-| **Scaffold** | [components/scaffold.md](./components/scaffold.md) |
-| **Table** | [components/table.md](./components/table.md) |
-| **Timeline** | [components/timeline.md](./components/timeline.md) |
-| **Tree** | [components/tree.md](./components/tree.md) |
+| **Button** | [components/control/button.md](./components/control/button.md) |
+
+### Disclosure
+| Component | Path |
+| :--- | :--- |
+| **Accordion** | [components/disclosure/accordion.md](./components/disclosure/accordion.md) |
+| **Collapsible** | [components/disclosure/collapsible.md](./components/disclosure/collapsible.md) |
 
 ### Display
 | Component | Path |
 | :--- | :--- |
-| **Avatar** | [components/avatar.md](./components/avatar.md) |
-| **Badge** | [components/badge.md](./components/badge.md) |
-| **Carousel** | [components/carousel.md](./components/carousel.md) |
-| **Chat** | [components/chat.md](./components/chat.md) |
-| **Chip** | [components/chip.md](./components/chip.md) |
-| **Code Snippet** | [components/code_snippet.md](./components/code_snippet.md) |
-| **Progress** | [components/progress.md](./components/progress.md) |
-| **Skeleton** | [components/skeleton.md](./components/skeleton.md) |
-| **Spinner** | [components/spinner.md](./components/spinner.md) |
+| **Avatar** | [components/display/avatar.md](./components/display/avatar.md) |
+| **Chat Bubble** | [components/display/chat.md](./components/display/chat.md) |
+| **Code Snippet** | [components/display/code_snippet.md](./components/display/code_snippet.md) |
+| **Table** | [components/display/table.md](./components/display/table.md) |
+| **Tracker** | [components/display/tracker.md](./components/display/tracker.md) |
 
-### Overlay & Navigation
+### Feedback
 | Component | Path |
 | :--- | :--- |
-| **Dialog** | [components/dialog.md](./components/dialog.md) |
-| **Drawer** | [components/drawer.md](./components/drawer.md) |
-| **Navigation Bar** | [components/bar.md](./components/bar.md) |
-| **Pagination** | [components/pagination.md](./components/pagination.md) |
-| **Popover** | [components/popover.md](./components/popover.md) |
-| **Tabs** | [components/tabs.md](./components/tabs.md) |
-| **Toast** | [components/toast.md](./components/toast.md) |
-| **Tooltip** | [components/tooltip.md](./components/tooltip.md) |
+| **Alert** | [components/feedback/alert.md](./components/feedback/alert.md) |
+| **Alert Dialog** | [components/feedback/alert_dialog.md](./components/feedback/alert_dialog.md) |
+| **Progress** | [components/feedback/progress.md](./components/feedback/progress.md) |
+| **Skeleton** | [components/feedback/skeleton.md](./components/feedback/skeleton.md) |
+| **Toast** | [components/feedback/toast.md](./components/feedback/toast.md) |
 
-### Menu
+### Form
 | Component | Path |
 | :--- | :--- |
-| **Context Menu** | [components/context_menu.md](./components/context_menu.md) |
-| **Dropdown Menu** | [components/dropdown_menu.md](./components/dropdown_menu.md) |
-| **Menubar** | [components/menubar.md](./components/menubar.md) |
-| **Navigation Menu** | [components/navigation_menu.md](./components/navigation_menu.md) |
+| **AutoComplete** | [components/form/autocomplete.md](./components/form/autocomplete.md) |
+| **Checkbox** | [components/form/checkbox.md](./components/form/checkbox.md) |
+| **Chip Input** | [components/form/chip_input.md](./components/form/chip_input.md) |
+| **Color Picker** | [components/form/color_picker.md](./components/form/color_picker.md) |
+| **Date Picker** | [components/form/date_picker.md](./components/form/date_picker.md) |
+| **Form** | [components/form/form.md](./components/form/form.md) |
+| **Formatted Input** | [components/form/formatted_input.md](./components/form/formatted_input.md) |
+| **Text Input** | [components/form/input.md](./components/form/input.md) |
+| **Input OTP** | [components/form/input_otp.md](./components/form/input_otp.md) |
+| **Item Picker** | [components/form/item_picker.md](./components/form/item_picker.md) |
+| **Phone Input** | [components/form/phone_input.md](./components/form/phone_input.md) |
+| **Radio Group** | [components/form/radio_group.md](./components/form/radio_group.md) |
+| **Select** | [components/form/select.md](./components/form/select.md) |
+| **Slider** | [components/form/slider.md](./components/form/slider.md) |
+| **Star Rating** | [components/form/star_rating.md](./components/form/star_rating.md) |
+| **Switch** | [components/form/switch.md](./components/form/switch.md) |
+| **Text Area** | [components/form/text_area.md](./components/form/text_area.md) |
+| **Time Picker** | [components/form/time_picker.md](./components/form/time_picker.md) |
+
+### Layout
+| Component | Path |
+| :--- | :--- |
+| **Card** | [components/layout/card.md](./components/layout/card.md) |
+| **Card Image** | [components/layout/card_image.md](./components/layout/card_image.md) |
+| **Carousel** | [components/layout/carousel.md](./components/layout/carousel.md) |
+| **Divider** | [components/layout/divider.md](./components/layout/divider.md) |
+| **Resizable** | [components/layout/resizable.md](./components/layout/resizable.md) |
+| **Scaffold** | [components/layout/scaffold.md](./components/layout/scaffold.md) |
+| **Sortable** | [components/layout/sortable.md](./components/layout/sortable.md) |
+| **Stepper** | [components/layout/stepper.md](./components/layout/stepper.md) |
+| **Steps** | [components/layout/steps.md](./components/layout/steps.md) |
+| **Timeline** | [components/layout/timeline.md](./components/layout/timeline.md) |
+
+### Navigation
+| Component | Path |
+| :--- | :--- |
+| **Breadcrumb** | [components/navigation/breadcrumb.md](./components/navigation/breadcrumb.md) |
+| **Dot Indicator** | [components/navigation/dot_indicator.md](./components/navigation/dot_indicator.md) |
+| **Menubar** | [components/navigation/menubar.md](./components/navigation/menubar.md) |
+| **Navigation Menu** | [components/navigation/navigation_menu.md](./components/navigation/navigation_menu.md) |
+| **Pagination** | [components/navigation/pagination.md](./components/navigation/pagination.md) |
+| **Switcher** | [components/navigation/switcher.md](./components/navigation/switcher.md) |
+| **Tab List** | [components/navigation/tab_list.md](./components/navigation/tab_list.md) |
+| **Tab Pane** | [components/navigation/tab_pane.md](./components/navigation/tab_pane.md) |
+| **Tabs** | [components/navigation/tabs.md](./components/navigation/tabs.md) |
+| **Tree** | [components/navigation/tree.md](./components/navigation/tree.md) |
+
+### Overlay
+| Component | Path |
+| :--- | :--- |
+| **Dialog** | [components/overlay/dialog.md](./components/overlay/dialog.md) |
+| **Drawer** | [components/overlay/drawer.md](./components/overlay/drawer.md) |
+| **Hover Card** | [components/overlay/hover_card.md](./components/overlay/hover_card.md) |
+| **Popover** | [components/overlay/popover.md](./components/overlay/popover.md) |
+| **Swiper** | [components/overlay/swiper.md](./components/overlay/swiper.md) |
+| **Tooltip** | [components/overlay/tooltip.md](./components/overlay/tooltip.md) |
+| **Window** | [components/overlay/window.md](./components/overlay/window.md) |
+
+### Utility
+| Component | Path |
+| :--- | :--- |
+| **Badge** | [components/utility/badge.md](./components/utility/badge.md) |
+| **Calendar** | [components/utility/calendar.md](./components/utility/calendar.md) |
+| **Chip** | [components/utility/chip.md](./components/utility/chip.md) |
+| **Command** | [components/utility/command.md](./components/utility/command.md) |
+| **Context Menu** | [components/utility/context_menu.md](./components/utility/context_menu.md) |
+| **Dropdown Menu** | [components/utility/dropdown_menu.md](./components/utility/dropdown_menu.md) |
+| **Overflow Marquee** | [components/utility/overflow_marquee.md](./components/utility/overflow_marquee.md) |
+| **Refresh Trigger** | [components/utility/refresh_trigger.md](./components/utility/refresh_trigger.md) |
 
 > [!TIP]
 > This is a curated list. For the full list of all 100+ components, check the [components directory](./components/).
@@ -139,3 +183,4 @@ Shadcn Flutter features over 100+ high-quality components. Below are the core ca
 1. **Wait for Interaction**: When using `Popover` or `Dialog`, prefer using the provided controllers for programmatic access.
 2. **Lean on Extensions**: Use `.h1()`, `.p()`, `.iconSmall()` etc., instead of manually configuring `TextStyle` or `size`.
 3. **Density Matters**: Use `DensityContainer` or `theme.density` to ensure spacing is consistent across platform-specific densities.
+
