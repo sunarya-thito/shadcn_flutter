@@ -1,10 +1,10 @@
-# SurfaceBlur
+# OutlinedContainer
 
-A widget that applies a blur effect to its background.
+A container widget with an outlined surface style.
 
 ## Usage
 
-// No examples found for outlined_container
+// No examples found for OutlinedContainer
 
 ## Features
 - Responsive design
