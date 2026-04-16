@@ -4,7 +4,14 @@ A widget that displays its children in a one-dimensional array.
 
 ## Usage
 
-No examples found for flex.
+### Basic Example
+```dart
+Flex(
+  direction: null, // TODO: Provide direction
+)
+```
+
+
 
 ## Features
 - Responsive design

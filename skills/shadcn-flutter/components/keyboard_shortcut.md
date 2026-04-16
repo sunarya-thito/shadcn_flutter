@@ -4,7 +4,13 @@ Theme for keyboard shortcut displays.
 
 ## Usage
 
-No examples found for keyboard_shortcut.
+### Basic Example
+```dart
+KeyboardShortcutTheme(
+)
+```
+
+
 
 ## Features
 - Responsive design

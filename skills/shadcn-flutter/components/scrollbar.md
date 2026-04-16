@@ -4,7 +4,21 @@ A customizable scrollbar widget for shadcn_flutter.
 
 ## Usage
 
-No examples found for scrollbar.
+### Basic Example
+```dart
+Scrollbar(
+  controller: scrollController,
+  thumbVisibility: true,
+  thickness: 8,
+  child: ListView.builder(
+    controller: scrollController,
+    itemCount: 100,
+    itemBuilder: (context, index) => ListTile(title: Text('Item $index')),
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

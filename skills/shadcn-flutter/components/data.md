@@ -4,7 +4,24 @@ Data class containing navigation control configuration and state.
 
 ## Usage
 
-No examples found for data.
+### Basic Example
+```dart
+NavigationControlData(
+  containerType: null, // TODO: Provide containerType
+  parentLabelType: null, // TODO: Provide parentLabelType
+  parentLabelPosition: null, // TODO: Provide parentLabelPosition
+  parentLabelSize: null, // TODO: Provide parentLabelSize
+  parentPadding: null, // TODO: Provide parentPadding
+  direction: null, // TODO: Provide direction
+  expanded: null, // TODO: Provide expanded
+  childCount: null, // TODO: Provide childCount
+  spacing: null, // TODO: Provide spacing
+  keepCrossAxisSize: null, // TODO: Provide keepCrossAxisSize
+  keepMainAxisSize: null, // TODO: Provide keepMainAxisSize
+)
+```
+
+
 
 ## Features
 - Responsive design

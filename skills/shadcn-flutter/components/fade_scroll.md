@@ -4,7 +4,15 @@ A widget that applies fade effects at the edges of scrollable content.
 
 ## Usage
 
-No examples found for fade_scroll.
+### Basic Example
+```dart
+FadeScroll(
+  child: null, // TODO: Provide child
+  controller: null, // TODO: Provide controller
+)
+```
+
+
 
 ## Features
 - Responsive design

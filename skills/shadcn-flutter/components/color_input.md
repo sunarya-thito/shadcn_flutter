@@ -4,7 +4,19 @@ A color input widget that allows users to select and edit colors.
 
 ## Usage
 
-No examples found for color_input.
+### Basic Example
+```dart
+ColorInput(
+  value: ColorDerivative.fromColor(Colors.blue),
+  onChanged: (color) {
+    print('Selected color: ${color.toColor()}');
+  },
+  showAlpha: true,
+  enableEyeDropper: true,
+)
+```
+
+
 
 ## Features
 - Responsive design

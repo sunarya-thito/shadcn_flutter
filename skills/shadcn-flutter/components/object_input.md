@@ -4,7 +4,18 @@ Reactive date input field with integrated date picker and text editing.
 
 ## Usage
 
-No examples found for object_input.
+### Basic Example
+```dart
+final controller = DatePickerController(DateTime.now());
+
+DateInput(
+  controller: controller,
+  mode: PromptMode.popover,
+  placeholder: Text('Select date'),
+)
+```
+
+
 
 ## Features
 - **Dual input modes**: Text field editing with date picker integration

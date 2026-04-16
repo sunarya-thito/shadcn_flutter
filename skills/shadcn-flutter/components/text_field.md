@@ -4,7 +4,20 @@ A highly customizable single-line text input widget with extensive feature suppo
 
 ## Usage
 
-No examples found for text_field.
+### Basic Example
+```dart
+TextField(
+  hintText: 'Enter your email',
+  keyboardType: TextInputType.emailAddress,
+  features: [
+    InputClearFeature(),
+    InputRevalidateFeature(),
+  ],
+  onChanged: (text) => _handleTextChange(text),
+);
+```
+
+
 
 ## Features
 - Responsive design

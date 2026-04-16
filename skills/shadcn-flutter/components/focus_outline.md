@@ -4,7 +4,19 @@ A widget that displays a visual outline when focused.
 
 ## Usage
 
-No examples found for focus_outline.
+### Basic Example
+```dart
+FocusOutline(
+  focused: hasFocus,
+  borderRadius: BorderRadius.circular(8),
+  child: TextButton(
+    onPressed: () {},
+    child: Text('Focused Button'),
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

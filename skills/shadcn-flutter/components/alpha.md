@@ -4,7 +4,12 @@ A custom painter that draws a checkboard pattern for alpha/transparency visualiz
 
 ## Usage
 
-No examples found for alpha.
+### Basic Example
+```dart
+AlphaPainter()
+```
+
+
 
 ## Features
 - Responsive design

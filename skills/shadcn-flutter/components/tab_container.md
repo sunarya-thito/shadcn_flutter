@@ -4,7 +4,16 @@ Container widget for managing multiple tabs.
 
 ## Usage
 
-No examples found for tab_container.
+### Basic Example
+```dart
+TabContainer(
+  selected: null, // TODO: Provide selected
+  onSelect: null, // TODO: Provide onSelect
+  children: null, // TODO: Provide children
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,13 @@ Abstract base class for text modifier widgets.
 
 ## Usage
 
-No examples found for text.
+### Basic Example
+```dart
+TextModifier(
+)
+```
+
+
 
 ## Features
 - Responsive design

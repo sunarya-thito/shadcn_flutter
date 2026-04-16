@@ -4,7 +4,17 @@ A versatile layout widget for arranging leading, title, subtitle, content, and t
 
 ## Usage
 
-No examples found for basic.
+### Basic Example
+```dart
+Basic(
+  leading: Icon(Icons.person),
+  title: Text('John Doe'),
+  subtitle: Text('john@example.com'),
+  trailing: Icon(Icons.chevron_right),
+)
+```
+
+
 
 ## Features
 - Responsive design

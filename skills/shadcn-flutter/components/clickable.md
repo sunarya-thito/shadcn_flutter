@@ -4,7 +4,24 @@ A highly configurable clickable widget with extensive gesture and state support.
 
 ## Usage
 
-No examples found for clickable.
+### Basic Example
+```dart
+Clickable(
+  onPressed: () => print('Clicked!'),
+  decoration: WidgetStateProperty.resolveWith((states) {
+    if (states.contains(WidgetState.pressed)) {
+      return BoxDecoration(color: Colors.blue.shade700);
+    }
+    return BoxDecoration(color: Colors.blue);
+  }),
+  child: Padding(
+    padding: EdgeInsets.all(8),
+    child: Text('Click Me'),
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,14 @@ Spacing gap between navigation items.
 
 ## Usage
 
-No examples found for misc.
+### Basic Example
+```dart
+NavigationGap(
+  null, // TODO: Provide gap
+)
+```
+
+
 
 ## Features
 - Responsive design

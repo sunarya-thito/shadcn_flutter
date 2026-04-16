@@ -4,7 +4,19 @@ A layer widget that provides eye dropper (color picking) functionality.
 
 ## Usage
 
-No examples found for eye_dropper.
+### Basic Example
+```dart
+EyeDropperLayer(
+  child: MyApp(),
+  showPreview: true,
+  previewScale: 10,
+  previewLabelBuilder: (context, color) {
+    return Text('Color: ${colorToHex(color)}');
+  },
+)
+```
+
+
 
 ## Features
 - Responsive design

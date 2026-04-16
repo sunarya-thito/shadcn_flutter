@@ -4,7 +4,23 @@ A widget that displays validation feedback for form entries.
 
 ## Usage
 
-No examples found for validated.
+### Basic Example
+```dart
+Validated<String>(
+  validator: (value) => value.isEmpty ? ValidationResult.error('Required') : null,
+  builder: (context, error, child) {
+    return Column(
+      children: [
+        child!,
+        if (error != null) Text(error.message, style: TextStyle(color: Colors.red)),
+      ],
+    );
+  },
+  child: TextField(),
+)
+```
+
+
 
 ## Features
 - Responsive design

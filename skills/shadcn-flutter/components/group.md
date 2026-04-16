@@ -4,7 +4,20 @@ A multi-child layout widget that positions children using absolute coordinates.
 
 ## Usage
 
-No examples found for group.
+### Basic Example
+```dart
+GroupWidget(
+  children: [
+    GroupPositioned(
+      top: 10,
+      left: 10,
+      child: Text('Positioned text'),
+    ),
+  ],
+)
+```
+
+
 
 ## Features
 - Responsive design

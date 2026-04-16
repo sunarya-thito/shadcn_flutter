@@ -4,7 +4,18 @@ A slider widget for adjusting HSV color components.
 
 ## Usage
 
-No examples found for hsv.
+### Basic Example
+```dart
+HSVColorSlider(
+  value: HSVColor.fromColor(Colors.blue),
+  sliderType: HSVColorSliderType.hue,
+  onChanged: (newColor) {
+    print('New hue: ${newColor.hue}');
+  },
+)
+```
+
+
 
 ## Features
 - Responsive design

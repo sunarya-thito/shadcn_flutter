@@ -4,7 +4,14 @@ Widget that intercepts scroll events to simulate middle-button drag scrolling.
 
 ## Usage
 
-No examples found for scrollview.
+### Basic Example
+```dart
+ScrollViewInterceptor(
+  child: null, // TODO: Provide child
+)
+```
+
+
 
 ## Features
 - Responsive design

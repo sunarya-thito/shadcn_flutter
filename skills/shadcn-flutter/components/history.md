@@ -4,7 +4,18 @@ A grid widget that displays a history of previously used colors.
 
 ## Usage
 
-No examples found for history.
+### Basic Example
+```dart
+ColorHistoryGrid(
+  storage: myColorHistory,
+  onColorPicked: (color) {
+    print('Selected from history: $color');
+  },
+  crossAxisCount: 8,
+)
+```
+
+
 
 ## Features
 - Responsive design

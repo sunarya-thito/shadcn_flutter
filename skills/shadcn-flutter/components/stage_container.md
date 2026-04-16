@@ -4,7 +4,21 @@ A responsive container that adapts to screen size using breakpoints.
 
 ## Usage
 
-No examples found for stage_container.
+### Basic Example
+```dart
+StageContainer(
+  breakpoint: StageBreakpoint.defaultBreakpoints,
+  padding: EdgeInsets.symmetric(horizontal: 24),
+  builder: (context, padding) {
+    return Container(
+      padding: padding,
+      child: Text('Responsive content'),
+    );
+  },
+)
+```
+
+
 
 ## Features
 - Responsive design

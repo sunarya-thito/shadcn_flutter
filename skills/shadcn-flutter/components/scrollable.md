@@ -4,7 +4,13 @@ Theme data for [ScrollableClient].
 
 ## Usage
 
-No examples found for scrollable.
+### Basic Example
+```dart
+ScrollableClientTheme(
+)
+```
+
+
 
 ## Features
 - Responsive design

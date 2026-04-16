@@ -4,7 +4,14 @@ Details about a click event, including the click count.
 
 ## Usage
 
-No examples found for patch.
+### Basic Example
+```dart
+ClickDetails(
+  clickCount: null, // TODO: Provide clickCount
+)
+```
+
+
 
 ## Features
 - Responsive design

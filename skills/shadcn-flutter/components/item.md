@@ -4,7 +4,19 @@ Selectable navigation item with selection state management.
 
 ## Usage
 
-No examples found for item.
+### Basic Example
+```dart
+NavigationItem(
+  key: ValueKey('home'),
+  label: Text('Home'),
+  child: Icon(Icons.home),
+  selected: selectedKey == ValueKey('home'),
+  onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),
+)
+)
+```
+
+
 
 ## Features
 - Responsive design

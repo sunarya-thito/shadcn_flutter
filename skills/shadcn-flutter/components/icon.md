@@ -4,7 +4,18 @@ A widget that wraps an icon with custom theme data.
 
 ## Usage
 
-No examples found for icon.
+### Basic Example
+```dart
+WrappedIcon(
+  data: (context, theme) => IconThemeData(
+    size: 24,
+    color: theme.colorScheme.primary,
+  ),
+  child: Icon(Icons.star),
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,14 @@ A flexible navigation container widget for organizing navigation items.
 
 ## Usage
 
-No examples found for bar.
+### Basic Example
+```dart
+NavigationBar(
+  children: null, // TODO: Provide children
+)
+```
+
+
 
 ## Features
 - Responsive design

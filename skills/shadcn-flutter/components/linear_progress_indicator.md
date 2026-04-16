@@ -4,7 +4,17 @@ A sophisticated linear progress indicator with advanced visual effects.
 
 ## Usage
 
-No examples found for linear_progress_indicator.
+### Basic Example
+```dart
+LinearProgressIndicator(
+  value: 0.7,
+  showSparks: true,
+  color: Colors.blue,
+  minHeight: 6.0,
+);
+```
+
+
 
 ## Features
 - Responsive design

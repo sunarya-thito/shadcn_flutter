@@ -4,7 +4,13 @@ Abstract base class for all spinner widgets.
 
 ## Usage
 
-No examples found for spinner.
+### Basic Example
+```dart
+Spinner(
+)
+```
+
+
 
 ## Features
 - Responsive design

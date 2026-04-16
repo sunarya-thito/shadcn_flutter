@@ -6,7 +6,13 @@ Styling options for menu widgets such as [MenuGroup] and [MenuButton].
 
 ## Usage
 
-No examples found for menu.
+### Basic Example
+```dart
+MenuTheme(
+)
+```
+
+
 
 ## Features
 - Responsive design

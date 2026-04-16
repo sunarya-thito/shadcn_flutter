@@ -4,7 +4,27 @@ A standard navigation rail component for sidebar-style navigation.
 
 ## Usage
 
-No examples found for rail.
+### Basic Example
+```dart
+NavigationRail(
+  selectedKey: ValueKey('home'),
+  onSelected: (key) => setState(() => selectedKey = key),
+  children: [
+    NavigationItem(
+      key: ValueKey('home'),
+      icon: Icon(Icons.home),
+      label: Text('Home'),
+    ),
+    NavigationItem(
+      key: ValueKey('search'),
+      icon: Icon(Icons.search),
+      label: Text('Search'),
+    ),
+  ],
+)
+```
+
+
 
 ## Features
 - Responsive design

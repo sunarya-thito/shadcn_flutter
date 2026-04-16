@@ -4,7 +4,13 @@ Theme configuration for [MediaQueryVisibility].
 
 ## Usage
 
-No examples found for media_query.
+### Basic Example
+```dart
+MediaQueryVisibilityTheme(
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,20 @@ A widget that conditionally hides its child with optional animation.
 
 ## Usage
 
-No examples found for hidden.
+### Basic Example
+```dart
+Hidden(
+  hidden: !isVisible,
+  direction: Axis.vertical,
+  duration: Duration(milliseconds: 300),
+  child: Container(
+    height: 100,
+    child: Text('Toggle visibility'),
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

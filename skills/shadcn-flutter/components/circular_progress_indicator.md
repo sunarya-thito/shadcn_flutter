@@ -4,7 +4,16 @@ A circular progress indicator that displays task completion as a rotating arc.
 
 ## Usage
 
-No examples found for circular_progress_indicator.
+### Basic Example
+```dart
+CircularProgressIndicator(
+  value: 0.75,
+  size: 32.0,
+  color: Colors.blue,
+);
+```
+
+
 
 ## Features
 - Responsive design

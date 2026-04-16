@@ -4,7 +4,17 @@ Provides factory methods for common text input formatters.
 
 ## Usage
 
-No examples found for formatter.
+### Basic Example
+```dart
+TextField(
+  inputFormatters: [
+    TextInputFormatters.toUpperCase,
+    TextInputFormatters.integerOnly(min: 0, max: 100),
+  ],
+)
+```
+
+
 
 ## Features
 - Responsive design

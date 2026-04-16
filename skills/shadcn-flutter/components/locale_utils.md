@@ -4,7 +4,15 @@ Configuration for file size unit formatting.
 
 ## Usage
 
-No examples found for locale_utils.
+### Basic Example
+```dart
+SizeUnitLocale(
+  null, // TODO: Provide base
+  null, // TODO: Provide units
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,18 @@ A form field widget for complex object values.
 
 ## Usage
 
-No examples found for form_field.
+### Basic Example
+```dart
+ObjectFormField<DateTime>(
+  value: selectedDate,
+  placeholder: Text('Select date'),
+  builder: (context, date) => Text(formatDate(date)),
+  editorBuilder: (context, handler) => CalendarWidget(),
+  mode: PromptMode.dialog,
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,24 @@ A widget that displays multiple dots, commonly used for loading indicators or me
 
 ## Usage
 
-No examples found for triple_dots.
+### Basic Example
+```dart
+// Horizontal three-dot menu icon
+MoreDots(
+  count: 3,
+  direction: Axis.horizontal,
+  spacing: 4,
+)
+
+// Vertical loading indicator
+MoreDots(
+  count: 5,
+  direction: Axis.vertical,
+  color: Colors.blue,
+)
+```
+
+
 
 ## Features
 - Responsive design

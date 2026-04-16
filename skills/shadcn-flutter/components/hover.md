@@ -4,7 +4,23 @@ A widget that manages hover state with configurable timing behavior.
 
 ## Usage
 
-No examples found for hover.
+### Basic Example
+```dart
+Hover(
+  waitDuration: Duration(milliseconds: 500),
+  minDuration: Duration(milliseconds: 200),
+  onHover: (hovered) {
+    print(hovered ? 'Hover activated' : 'Hover deactivated');
+  },
+  child: Container(
+    width: 100,
+    height: 100,
+    color: Colors.blue,
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,18 @@ A container widget with customizable border and surface effects.
 
 ## Usage
 
-No examples found for outlined_container.
+### Basic Example
+```dart
+OutlinedContainer(
+  borderRadius: BorderRadius.circular(12),
+  borderColor: Colors.blue,
+  backgroundColor: Colors.white,
+  padding: EdgeInsets.all(16),
+  child: Text('Outlined content'),
+)
+```
+
+
 
 ## Features
 - Responsive design

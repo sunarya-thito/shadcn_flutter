@@ -265,7 +265,7 @@ String normalizeIdentifier(String value) {
 String generateMarkdown(String fileName, String className,
     ClassDeclaration clazz, Directory docsDir) {
   final comment = clazz.documentationComment?.tokens
-          .map((t) => t.lexeme.replaceAll('///', '').trim())
+          .map((t) => t.lexeme.replaceFirst(RegExp(r'^///\s?'), ''))
           .join('\n') ??
       'No overview available.';
 
@@ -275,7 +275,7 @@ String generateMarkdown(String fileName, String className,
 
   final features = extractFeatures(comment);
   final properties = extractProperties(clazz);
-  final examples = findExamples(fileName, docsDir);
+  final examples = findExamples(fileName, className, clazz, docsDir, comment);
 
   return '''# $className
 
@@ -346,7 +346,16 @@ List<Property> extractProperties(ClassDeclaration clazz) {
   return props;
 }
 
-String findExamples(String fileName, Directory docsDir) {
+String extractDocExample(String comment) {
+  final regex = RegExp(r'```dart\n(.*?)\n```', dotAll: true);
+  final match = regex.firstMatch(comment);
+  if (match != null) {
+    return match.group(1) ?? '';
+  }
+  return '';
+}
+
+String findExamples(String fileName, String className, ClassDeclaration clazz, Directory docsDir, String docComment) {
   final examples = <String, String>{};
 
   // 1. Look in subfolder docsDir/fileName/
@@ -374,7 +383,17 @@ String findExamples(String fileName, Directory docsDir) {
   }
 
   if (examples.isEmpty) {
-    return 'No examples found for $fileName.';
+    final docExample = extractDocExample(docComment);
+    if (docExample.isNotEmpty) {
+      final buffer = StringBuffer();
+      buffer.writeln('### Basic Example');
+      buffer.writeln('```dart');
+      buffer.writeln(docExample.trimRight());
+      buffer.writeln('```');
+      buffer.writeln();
+      return buffer.toString();
+    }
+    return generateMinimalExample(className, clazz);
   }
 
   final sortedKeys = examples.keys.toList()..sort();
@@ -387,6 +406,44 @@ String findExamples(String fileName, Directory docsDir) {
     buffer.writeln('```');
     buffer.writeln();
   }
+
+  return buffer.toString();
+}
+
+String generateMinimalExample(String className, ClassDeclaration clazz) {
+  final buffer = StringBuffer();
+  buffer.writeln('### Basic Example');
+  buffer.writeln('```dart');
+
+  ConstructorDeclaration? mainConstructor;
+  for (final member in clazz.members) {
+    if (member is ConstructorDeclaration && member.name == null) {
+      mainConstructor = member;
+      break;
+    }
+  }
+
+  if (mainConstructor != null &&
+      mainConstructor.parameters.parameters.isNotEmpty) {
+    buffer.writeln('$className(');
+    for (final param in mainConstructor.parameters.parameters) {
+      final paramName = param.name?.lexeme;
+      if (paramName != null &&
+          (param.isRequiredNamed || param.isRequiredPositional)) {
+        if (param.isNamed) {
+          buffer.writeln('  $paramName: null, // TODO: Provide $paramName');
+        } else {
+          buffer.writeln('  null, // TODO: Provide $paramName');
+        }
+      }
+    }
+    buffer.writeln(')');
+  } else {
+    buffer.writeln('$className()');
+  }
+
+  buffer.writeln('```');
+  buffer.writeln();
 
   return buffer.toString();
 }

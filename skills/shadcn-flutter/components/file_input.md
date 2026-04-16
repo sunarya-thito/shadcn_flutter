@@ -4,7 +4,18 @@ Provides customizable file icons in the widget tree.
 
 ## Usage
 
-No examples found for file_input.
+### Basic Example
+```dart
+FileIconProvider.builder(
+  builder: (extension) {
+    if (extension == 'txt') return Icon(Icons.text_snippet);
+    return Icon(Icons.insert_drive_file);
+  },
+  child: MyFileList(),
+)
+```
+
+
 
 ## Features
 - Responsive design

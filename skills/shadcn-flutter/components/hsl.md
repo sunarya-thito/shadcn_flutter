@@ -4,7 +4,18 @@ A slider widget for adjusting HSL color components.
 
 ## Usage
 
-No examples found for hsl.
+### Basic Example
+```dart
+HSLColorSlider(
+  color: HSLColor.fromColor(Colors.blue),
+  sliderType: HSLColorSliderType.hue,
+  onChanged: (newColor) {
+    print('New hue: ${newColor.hue}');
+  },
+)
+```
+
+
 
 ## Features
 - Responsive design

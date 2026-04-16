@@ -4,7 +4,32 @@ Individual focusable widget within a SubFocusScope hierarchy.
 
 ## Usage
 
-No examples found for subfocus.
+### Basic Example
+```dart
+SubFocus(
+  enabled: true,
+  builder: (context, state) => GestureDetector(
+    onTap: () => state.requestFocus(),
+    child: Container(
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: state.isFocused ? Colors.blue : Colors.transparent,
+        border: Border.all(
+          color: state.isFocused ? Colors.blue : Colors.grey,
+        ),
+      ),
+      child: Text(
+        'Focusable Item',
+        style: TextStyle(
+          color: state.isFocused ? Colors.white : Colors.black,
+        ),
+      ),
+    ),
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

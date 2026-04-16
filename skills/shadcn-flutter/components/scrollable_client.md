@@ -4,7 +4,22 @@ A customizable scrollable widget with two-axis scrolling support.
 
 ## Usage
 
-No examples found for scrollable_client.
+### Basic Example
+```dart
+ScrollableClient(
+  mainAxis: Axis.vertical,
+  verticalDetails: ScrollableDetails.vertical(),
+  builder: (context, offset, viewportSize, child) {
+    return CustomPaint(
+      painter: MyPainter(offset),
+      child: child,
+    );
+  },
+  child: MyContent(),
+)
+```
+
+
 
 ## Features
 - Responsive design

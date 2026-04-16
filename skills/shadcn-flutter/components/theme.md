@@ -4,7 +4,13 @@ Theme data for customizing [NavigationBar] widget appearance.
 
 ## Usage
 
-No examples found for theme.
+### Basic Example
+```dart
+NavigationBarTheme(
+)
+```
+
+
 
 ## Features
 - Responsive design

@@ -4,7 +4,21 @@ A widget for single-selection choice scenarios.
 
 ## Usage
 
-No examples found for multiple_choice.
+### Basic Example
+```dart
+MultipleChoice<String>(
+  value: selectedOption,
+  onChanged: (value) => setState(() => selectedOption = value),
+  child: Wrap(
+    children: [
+      ChoiceChip(value: 'A', child: Text('Option A')),
+      ChoiceChip(value: 'B', child: Text('Option B')),
+    ],
+  ),
+)
+```
+
+
 
 ## Features
 - Responsive design

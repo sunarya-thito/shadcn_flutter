@@ -4,7 +4,35 @@ A full-width navigation sidebar component for comprehensive navigation.
 
 ## Usage
 
-No examples found for sidebar.
+### Basic Example
+```dart
+NavigationSidebar(
+  backgroundColor: Colors.grey.shade50,
+  labelType: NavigationLabelType.all,
+  selectedKey: ValueKey('dashboard'),
+  onSelected: (key) => _navigateToPage(key),
+  children: [
+    NavigationItem(
+      key: ValueKey('dashboard'),
+      icon: Icon(Icons.dashboard),
+      label: Text('Dashboard'),
+      badge: Badge(child: Text('New')),
+    ),
+    NavigationItem(
+      key: ValueKey('analytics'),
+      icon: Icon(Icons.analytics),
+      label: Text('Analytics'),
+    ),
+    NavigationItem(
+      key: ValueKey('settings'),
+      icon: Icon(Icons.settings),
+      label: Text('Settings'),
+    ),
+  ],
+)
+```
+
+
 
 ## Features
 - Responsive design
