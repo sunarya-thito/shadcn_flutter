@@ -1,6 +1,6 @@
-# ContextMenuTheme
+# ContextMenu
 
-Theme for [ContextMenuPopup] and context menu widgets.
+A widget that shows a context menu when right-clicked or long-pressed.
 
 ## Usage
 
@@ -318,5 +318,8 @@ class ContextMenuTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `surfaceOpacity` | `double?` | Surface opacity for the popup container. |
-| `surfaceBlur` | `double?` | Surface blur for the popup container. |
+| `child` | `Widget` | The child widget that triggers the context menu. |
+| `items` | `List<MenuItem>` | Menu items to display in the context menu. |
+| `behavior` | `HitTestBehavior` | How hit testing behaves for the child. |
+| `direction` | `Axis` | Direction to lay out menu items. |
+| `enabled` | `bool` | Whether the context menu is enabled. |

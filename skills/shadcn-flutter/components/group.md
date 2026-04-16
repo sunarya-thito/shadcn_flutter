@@ -4,7 +4,7 @@ A multi-child layout widget that positions children using absolute coordinates.
 
 ## Usage
 
-// No examples found for group
+No examples found for group.
 
 ## Features
 - Responsive design

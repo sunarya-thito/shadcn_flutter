@@ -1,6 +1,6 @@
-# InputOTPTheme
+# InputOTP
 
-Theme data for customizing [InputOTP] widget appearance.
+A specialized input widget for One-Time Password (OTP) and verification code entry.
 
 ## Usage
 
@@ -280,5 +280,7 @@ class InputOTPTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `spacing` | `double?` | Horizontal spacing between OTP input fields. |
-| `height` | `double?` | Height of each OTP input container. |
+| `children` | `List<InputOTPChild>` | The list of children defining input fields, separators, and spaces. |
+| `initialValue` | `OTPCodepointList?` | Initial OTP codepoint values. |
+| `onChanged` | `ValueChanged<OTPCodepointList>?` | Called when the OTP value changes. |
+| `onSubmitted` | `ValueChanged<OTPCodepointList>?` | Called when the user submits the OTP (e.g., presses Enter on last field). |

@@ -4,7 +4,7 @@ A flexible navigation container widget for organizing navigation items.
 
 ## Usage
 
-// No examples found for bar
+No examples found for bar.
 
 ## Features
 - Responsive design

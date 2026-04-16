@@ -1,6 +1,6 @@
-# AutoCompleteTheme
+# AutoComplete
 
-Theme configuration for [AutoComplete] widget styling and behavior.
+Intelligent autocomplete functionality with customizable suggestion handling.
 
 ## Usage
 
@@ -172,16 +172,21 @@ class AutocompleteTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Multiple completion modes**: append, replace word, or replace all text
+- **Keyboard navigation**: arrow keys to navigate, tab/enter to accept
+- **Customizable presentation**: popover positioning, sizing, and constraints
+- **Smart suggestion filtering**: automatically manages suggestion visibility
+- **Accessibility support**: proper focus management and keyboard shortcuts
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `popoverConstraints` | `BoxConstraints?` | Constraints applied to the autocomplete popover container.  Controls the maximum/minimum dimensions of the suggestion list popover. Defaults to a maximum height of 300 logical pixels when null. |
-| `popoverWidthConstraint` | `PopoverConstraint?` | Width constraint strategy for the autocomplete popover.  Determines how the popover width relates to its anchor (the text field). Options include matching anchor width, flexible sizing, or fixed dimensions. |
-| `popoverAnchorAlignment` | `AlignmentDirectional?` | Alignment point on the anchor widget where the popover attaches.  Specifies which edge/corner of the text field the popover should align to. Defaults to bottom-start (bottom-left in LTR, bottom-right in RTL). |
-| `popoverAlignment` | `AlignmentDirectional?` | Alignment point on the popover that aligns with the anchor point.  Specifies which edge/corner of the popover aligns with the anchor alignment. Defaults to top-start (top-left in LTR, top-right in RTL). |
-| `mode` | `AutoCompleteMode?` | Default mode for how suggestions are applied to text fields.  Controls the text replacement strategy when a suggestion is selected. Defaults to [AutoCompleteMode.replaceWord] when null. |
+| `suggestions` | `List<String>` | List of suggestions to display in the autocomplete popover.  When non-empty, triggers the popover to appear with selectable options. The suggestions are filtered and managed externally - this widget only handles the presentation and selection logic. |
+| `child` | `Widget` | The child widget that receives autocomplete functionality.  Typically a [TextField] or similar text input widget. The autocomplete popover will be positioned relative to this widget, and keyboard actions will be applied to the focused text field within this child tree. |
+| `popoverConstraints` | `BoxConstraints?` | Constraints applied to the autocomplete popover container.  Overrides the theme default. Controls maximum/minimum dimensions of the suggestion list. When null, uses theme value or framework default. |
+| `popoverWidthConstraint` | `PopoverConstraint?` | Width constraint strategy for the autocomplete popover.  Overrides the theme default. Determines how popover width relates to the anchor widget. When null, uses theme value or matches anchor width. |
+| `popoverAnchorAlignment` | `AlignmentDirectional?` | Alignment point on the anchor widget for popover attachment.  Overrides the theme default. Specifies which edge/corner of the child widget the popover aligns to. When null, uses theme or bottom-start. |
+| `popoverAlignment` | `AlignmentDirectional?` | Alignment point on the popover for anchor attachment.  Overrides the theme default. Specifies which edge/corner of the popover aligns with the anchor point. When null, uses theme or top-start. |
+| `mode` | `AutoCompleteMode?` | Text replacement strategy when a suggestion is selected.  Overrides the theme default. Controls how selected suggestions modify the text field content. When null, uses theme or [AutoCompleteMode.replaceWord]. |
+| `completer` | `AutoCompleteCompleter` | Function to customize suggestion text before application.  Called when a suggestion is selected, allowing modification of the final text inserted into the field. Useful for adding prefixes, suffixes, or formatting. Defaults to returning the suggestion unchanged. |

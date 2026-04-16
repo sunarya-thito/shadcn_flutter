@@ -1,6 +1,6 @@
-# StepsTheme
+# Steps
 
-Theme for [Steps].
+Vertical step progression widget with numbered indicators and connectors.
 
 ## Usage
 
@@ -119,15 +119,14 @@ class StepsTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Numbered indicators**: Circular indicators with automatic step numbering
+- **Connector lines**: Visual lines connecting consecutive steps
+- **Flexible content**: Each step can contain any widget content
+- **Responsive theming**: Customizable indicator size, spacing, and colors
+- **Intrinsic sizing**: Automatically adjusts to content height
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `indicatorSize` | `double?` | Diameter of the step indicator circle. |
-| `spacing` | `double?` | Gap between the indicator and the step content. |
-| `indicatorColor` | `Color?` | Color of the indicator and connector line. |
-| `connectorThickness` | `double?` | Thickness of the connector line. |
+| `children` | `List<Widget>` | List of widgets representing each step in the sequence.  Each widget will be displayed with an automatically numbered circular indicator showing its position in the sequence. |

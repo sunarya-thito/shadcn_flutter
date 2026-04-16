@@ -1,6 +1,6 @@
-# TabPaneTheme
+# TabPane
 
-Theme configuration for [TabPane] appearance and layout.
+A comprehensive tab pane widget with sortable tabs and integrated content display.
 
 ## Usage
 
@@ -279,7 +279,15 @@ class TabPaneTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the tab pane container and individual tabs.  Type: `BorderRadiusGeometry?`. If null, uses the theme's large border radius. This affects both the main content area and the tab button appearance. |
-| `backgroundColor` | `Color?` | Background color for the tab pane content area and active tabs.  Type: `Color?`. If null, uses the theme's card color. This provides the background for both the main content area and highlighted tabs. |
-| `border` | `BorderSide?` | Border styling for the tab pane container.  Type: `BorderSide?`. If null, uses the theme's default border. This creates the outline around the entire tab pane component. |
-| `barHeight` | `double?` | Height of the tab bar area in logical pixels.  Type: `double?`. If null, uses 32 logical pixels scaled by theme scaling. This determines the vertical space allocated for the tab buttons. |
+| `items` | `List<TabPaneData<T>>` | List of tab data items to display in the tab pane.  Type: `List<TabPaneData<T>>`. Each item contains the data for one tab and will be passed to the [itemBuilder] to create the visual representation. |
+| `itemBuilder` | `TabPaneItemBuilder<T>` | Builder function to create tab child widgets from data items.  Type: `TabPaneItemBuilder<T>`. Called for each tab item to create the visual representation in the tab bar. Should return a TabChild widget. |
+| `onSort` | `ValueChanged<List<TabPaneData<T>>>?` | Callback invoked when tabs are reordered through drag-and-drop.  Type: `ValueChanged<List<TabPaneData<T>>>?`. Called with the new tab order when sorting operations complete. If null, sorting is disabled. |
+| `focused` | `int` | Index of the currently focused/selected tab.  Type: `int`. Zero-based index of the active tab. The focused tab receives special visual styling and its content is typically displayed. |
+| `onFocused` | `ValueChanged<int>` | Callback invoked when the focused tab changes.  Type: `ValueChanged<int>`. Called when a tab is selected either through user interaction or programmatic changes during sorting operations. |
+| `leading` | `List<Widget>` | Widgets displayed at the leading edge of the tab bar.  Type: `List<Widget>`, default: `[]`. These widgets appear before the scrollable tab area, useful for controls or branding elements. |
+| `trailing` | `List<Widget>` | Widgets displayed at the trailing edge of the tab bar.  Type: `List<Widget>`, default: `[]`. These widgets appear after the scrollable tab area, useful for actions or controls. |
+| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the tab pane container.  Type: `BorderRadiusGeometry?`. If null, uses the theme's large border radius. Applied to both the content area and tab styling. |
+| `backgroundColor` | `Color?` | Background color for the content area and active tabs.  Type: `Color?`. If null, uses the theme's card background color. Provides consistent styling across the tab pane components. |
+| `border` | `BorderSide?` | Border styling for the tab pane container.  Type: `BorderSide?`. If null, uses theme defaults for border appearance around the entire tab pane structure. |
+| `child` | `Widget` | The main content widget displayed in the content area.  Type: `Widget`. This widget fills the content area above the tab bar and typically shows content related to the currently focused tab. |
+| `barHeight` | `double?` | Height of the tab bar area in logical pixels.  Type: `double?`. If null, uses 32 logical pixels scaled by theme scaling. Determines the vertical space allocated for tab buttons. |

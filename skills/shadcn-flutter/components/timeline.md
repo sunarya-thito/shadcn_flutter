@@ -1,6 +1,6 @@
-# TimelineTheme
+# Timeline
 
-Theme configuration for [Timeline] widgets.
+A vertical timeline widget for displaying chronological data.
 
 ## Usage
 
@@ -112,9 +112,5 @@ class TimelineTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `timeConstraints` | `BoxConstraints?` | Default constraints for the time column width.  Controls the minimum and maximum width allocated for displaying time information in each timeline row. If null, individual Timeline widgets use their own constraints or a default of 120 logical pixels. |
-| `spacing` | `double?` | Default horizontal spacing between timeline columns.  Determines the gap between the time column, indicator column, and content column. If null, defaults to 16 logical pixels scaled by theme scaling factor. |
-| `dotSize` | `double?` | Default diameter of timeline indicator dots.  Controls the size of the circular (or square, based on theme radius) indicator that marks each timeline entry. If null, defaults to 12 logical pixels. |
-| `connectorThickness` | `double?` | Default thickness of connector lines between timeline entries.  Controls the width of vertical lines that connect timeline indicators. If null, defaults to 2 logical pixels scaled by theme scaling factor. |
-| `color` | `Color?` | Default color for indicators and connectors when not specified per entry.  Used as the fallback color for timeline dots and connecting lines when individual [TimelineData] entries don't specify their own color. |
-| `rowGap` | `double?` | Default vertical spacing between timeline rows.  Controls the gap between each timeline entry in the vertical layout. If null, defaults to 16 logical pixels scaled by theme scaling factor. |
+| `data` | `List<TimelineData>` | List of timeline entries to display.  Each [TimelineData] object represents one row in the timeline with time information, title, optional content, and optional custom color. The timeline renders entries in the order provided in this list. |
+| `timeConstraints` | `BoxConstraints?` | Override constraints for the time column width.  When provided, overrides the theme's [TimelineTheme.timeConstraints] for this specific timeline instance. Controls how much space is allocated for displaying time information. If null, uses theme or default constraints. |

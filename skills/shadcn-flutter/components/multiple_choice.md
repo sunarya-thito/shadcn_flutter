@@ -1,10 +1,10 @@
-# MultipleChoiceTheme
+# MultipleChoice
 
-Theme data for [MultipleChoice] and [MultipleAnswer].
+A widget for single-selection choice scenarios.
 
 ## Usage
 
-// No examples found for multiple_choice
+No examples found for multiple_choice.
 
 ## Features
 - Responsive design
@@ -15,4 +15,8 @@ Theme data for [MultipleChoice] and [MultipleAnswer].
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `allowUnselect` | `bool?` | Whether selections can be unselected. |
+| `child` | `Widget` | The child widget tree containing choice items. |
+| `value` | `T?` | The currently selected value. |
+| `onChanged` | `ValueChanged<T?>?` | Callback when the selection changes. |
+| `enabled` | `bool?` | Whether choices are enabled. |
+| `allowUnselect` | `bool?` | Whether the current selection can be unselected. |

@@ -4,7 +4,7 @@ A theme for [MenuPopup].
 
 ## Usage
 
-// No examples found for popup
+No examples found for popup.
 
 ## Features
 - Responsive design

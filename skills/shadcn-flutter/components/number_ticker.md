@@ -1,6 +1,6 @@
-# NumberTickerTheme
+# NumberTicker
 
-Theme configuration for [NumberTicker] widgets.
+A widget that smoothly animates between numeric values with customizable display.
 
 ## Usage
 
@@ -180,6 +180,11 @@ class NumberTickerTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `duration` | `Duration?` | The default animation duration for number transitions.  If null, individual [NumberTicker] widgets will use their own duration or fall back to the default value of 500 milliseconds. |
-| `curve` | `Curve?` | The default animation curve for number transitions.  If null, individual [NumberTicker] widgets will use their own curve or fall back to [Curves.easeInOut]. |
-| `style` | `TextStyle?` | The default text style for formatted number display.  Only used when [NumberTicker] is constructed with a [formatter] function. If null, the default system text style is used. |
+| `initialNumber` | `num?` | The initial number value to start animation from.  If null, no initial animation occurs and the widget starts directly with the [number] value. When provided, causes an animation from this initial value to [number] on first build. |
+| `number` | `num` | The target number value to animate to and display.  When this changes, triggers a smooth animation from the current displayed value to this new target value. Supports any numeric type (int, double). |
+| `builder` | `NumberTickerBuilder?` | Custom builder function for complete display control.  Used only with [NumberTicker.builder] constructor. Receives the current animated numeric value and optional child widget. Allows for complex custom presentations beyond simple text formatting. |
+| `child` | `Widget?` | Optional child widget passed to custom builders.  Available only when using [NumberTicker.builder]. Passed through to the builder function for optimization when part of the display remains constant. |
+| `formatter` | `NumberTickerFormatted?` | Function to format numbers into display strings.  Used only with default constructor. Called with the current animated numeric value and must return a string representation for display. Enables custom formatting like currency, percentages, or localization. |
+| `duration` | `Duration?` | Override duration for this widget's animations.  If null, uses the duration from [NumberTickerTheme] or defaults to 500 milliseconds. Controls how long transitions take when [number] changes. |
+| `curve` | `Curve?` | Override animation curve for this widget.  If null, uses the curve from [NumberTickerTheme] or defaults to [Curves.easeInOut]. Controls the timing function of number transitions. |
+| `style` | `TextStyle?` | Override text style for formatted number display.  Only used with default constructor. If null, uses the style from [NumberTickerTheme] or system default. Has no effect when using builder. |

@@ -1,6 +1,6 @@
-# HoverCardTheme
+# HoverCard
 
-Theme configuration for hover card behavior and appearance.
+A widget that displays a popover when hovered or long-pressed.
 
 ## Usage
 
@@ -157,9 +157,13 @@ class HoverCardTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `debounce` | `Duration?` | Duration to wait before hiding the hover card after mouse exit. |
-| `wait` | `Duration?` | Duration to wait before showing the hover card after mouse enter. |
+| `child` | `Widget` | The child widget that triggers the hover card. |
+| `debounce` | `Duration?` | Duration to wait before hiding after mouse exit. |
+| `wait` | `Duration?` | Duration to wait before showing after mouse enter. |
+| `hoverBuilder` | `WidgetBuilder` | Builder function that creates the hover card content. |
 | `popoverAlignment` | `AlignmentGeometry?` | Alignment of the popover relative to its anchor. |
 | `anchorAlignment` | `AlignmentGeometry?` | Alignment point on the anchor widget. |
 | `popoverOffset` | `Offset?` | Offset of the popover from its calculated position. |
 | `behavior` | `HitTestBehavior?` | Hit test behavior for mouse interactions. |
+| `controller` | `PopoverController?` | Controller to programmatically manage the popover. |
+| `handler` | `OverlayHandler?` | Custom overlay handler for popover display. |

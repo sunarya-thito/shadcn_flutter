@@ -4,7 +4,7 @@ Selectable navigation item with selection state management.
 
 ## Usage
 
-// No examples found for item
+No examples found for item.
 
 ## Features
 - Responsive design

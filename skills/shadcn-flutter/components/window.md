@@ -1,6 +1,6 @@
-# WindowTheme
+# Window
 
-Theme configuration for window components.
+A comprehensive windowing system for creating desktop-like window interfaces.
 
 ## Usage
 
@@ -208,5 +208,20 @@ class WindowTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `titleBarHeight` | `double?` | Height of the window's title bar in logical pixels.  Determines the vertical space allocated for the title bar which typically contains the window title, control buttons (minimize, maximize, close), and any custom action widgets.  If `null`, uses the default title bar height from the theme. |
-| `resizeThickness` | `double?` | Thickness of the window's resize border in logical pixels.  Defines the width of the interactive area along window edges that allows users to resize the window by dragging. A larger value makes it easier to grab the edge for resizing.  If `null`, uses the default resize border thickness from the theme. |
+| `title` | `Widget?` | Title widget displayed in the window's title bar. |
+| `actions` | `Widget?` | Custom action widgets displayed in the title bar (e.g., minimize, maximize, close buttons). |
+| `content` | `Widget?` | Main content widget displayed in the window body. |
+| `controller` | `WindowController?` | Controller for programmatic window management (position, size, state). |
+| `bounds` | `Rect?` | Initial bounds (position and size) of the window. |
+| `maximized` | `Rect?` | Bounds when window is in maximized state. |
+| `minimized` | `bool?` | Whether the window starts in minimized state. |
+| `alwaysOnTop` | `bool?` | Whether the window should always appear on top of other windows. |
+| `enableSnapping` | `bool?` | Whether window snapping is enabled (snap to edges or other windows). |
+| `resizable` | `bool?` | Whether the window can be resized by dragging edges. |
+| `draggable` | `bool?` | Whether the window can be dragged by its title bar. |
+| `closable` | `bool?` | Whether the window can be closed via the close button. |
+| `maximizable` | `bool?` | Whether the window can be maximized. |
+| `minimizable` | `bool?` | Whether the window can be minimized. |
+| `constraints` | `BoxConstraints?` | Size constraints for the window (min/max width and height). |
+| `_key` | `GlobalKey<_WindowWidgetState>` |  |
+| `closed` | `ValueNotifier<bool>` | Notifier that indicates whether the window has been closed.  External code can listen to this notifier to react to window close events. |

@@ -1,6 +1,6 @@
-# DividerProperties
+# Divider
 
-Immutable properties for divider appearance.
+A horizontal line widget used to visually separate content sections.
 
 ## Usage
 
@@ -232,7 +232,11 @@ class DividerTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `color` | `Color` | The color of the divider line. |
-| `thickness` | `double` | The thickness of the divider line in logical pixels. |
-| `indent` | `double` | The amount of empty space to the leading edge of the divider. |
-| `endIndent` | `double` | The amount of empty space to the trailing edge of the divider. |
+| `color` | `Color?` | The color of the divider line. |
+| `height` | `double?` | The total height of the divider (including padding). |
+| `thickness` | `double?` | The thickness of the divider line. |
+| `indent` | `double?` | The amount of empty space before the divider line starts. |
+| `endIndent` | `double?` | The amount of empty space after the divider line ends. |
+| `child` | `Widget?` | Optional child widget to display alongside the divider (e.g., text label). |
+| `padding` | `EdgeInsetsGeometry?` | Padding around the divider content. |
+| `childAlignment` | `AxisAlignmentGeometry?` | Alignment of the [child] along the divider axis. |

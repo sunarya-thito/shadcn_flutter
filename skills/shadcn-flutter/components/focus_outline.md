@@ -1,10 +1,10 @@
-# FocusOutlineTheme
+# FocusOutline
 
-Theme configuration for focus outline appearance.
+A widget that displays a visual outline when focused.
 
 ## Usage
 
-// No examples found for focus_outline
+No examples found for focus_outline.
 
 ## Features
 - Responsive design
@@ -15,6 +15,9 @@ Theme configuration for focus outline appearance.
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `align` | `double?` | The alignment offset of the outline relative to the widget bounds.  Positive values expand the outline outward, negative values contract it. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for rounded corners on the focus outline. |
-| `border` | `Border?` | The border style for the focus outline. |
+| `child` | `Widget` | The child widget to wrap with the focus outline. |
+| `focused` | `bool` | Whether to display the focus outline.  When `true`, the outline is visible. When `false`, it's hidden. |
+| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the focus outline corners.  If `null`, uses the default from [FocusOutlineTheme]. |
+| `align` | `double?` | Alignment offset for positioning the outline.  If `null`, uses the default from [FocusOutlineTheme]. |
+| `border` | `Border?` | The border style for the outline.  If `null`, uses the default from [FocusOutlineTheme]. |
+| `shape` | `BoxShape?` | The shape of the outline.  Can be [BoxShape.rectangle] or [BoxShape.circle]. |

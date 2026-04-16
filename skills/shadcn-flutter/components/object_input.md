@@ -4,7 +4,7 @@ Reactive date input field with integrated date picker and text editing.
 
 ## Usage
 
-// No examples found for object_input
+No examples found for object_input.
 
 ## Features
 - **Dual input modes**: Text field editing with date picker integration

@@ -4,7 +4,7 @@ Theme configuration for [MediaQueryVisibility].
 
 ## Usage
 
-// No examples found for media_query
+No examples found for media_query.
 
 ## Features
 - Responsive design

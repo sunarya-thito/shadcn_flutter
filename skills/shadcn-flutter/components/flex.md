@@ -1,10 +1,10 @@
-# FlexParentData
+# Flex
 
-Parent data for use with [RenderFlex].
+A widget that displays its children in a one-dimensional array.
 
 ## Usage
 
-// No examples found for flex
+No examples found for flex.
 
 ## Features
 - Responsive design

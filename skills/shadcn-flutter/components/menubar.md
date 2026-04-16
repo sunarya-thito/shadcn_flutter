@@ -1,6 +1,6 @@
-# MenubarTheme
+# Menubar
 
-Theme configuration for [Menubar] appearance and layout.
+A horizontal menubar widget for displaying application menus and menu items.
 
 ## Usage
 
@@ -421,9 +421,6 @@ class MenubarTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `border` | `bool?` | Whether to draw a border around the menubar container.  Type: `bool?`. If null, uses the widget's border property. When true, the menubar is wrapped with an outlined container with customizable border color and radius. |
-| `subMenuOffset` | `Offset?` | Positioning offset for submenu popovers when menu items are opened.  Type: `Offset?`. If null, uses calculated defaults based on border presence. Controls where submenus appear relative to their parent items. |
-| `padding` | `EdgeInsetsGeometry?` | Internal padding within the menubar container.  Type: `EdgeInsetsGeometry?`. If null, uses 4 logical pixels on all sides scaled by theme scaling. Applied inside the border when present. |
-| `borderColor` | `Color?` | Color of the border when [border] is enabled.  Type: `Color?`. If null, uses the theme's border color. Only visible when [border] is true. |
-| `backgroundColor` | `Color?` | Background color of the menubar container.  Type: `Color?`. If null, uses the theme's background color. Applied to the menubar's container element. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the menubar container corners.  Type: `BorderRadiusGeometry?`. If null, uses the theme's medium border radius. Only visible when [border] is true. |
+| `children` | `List<MenuItem>` | List of menu items to display in the menubar.  Type: `List<MenuItem>`. Each MenuItem represents a top-level menu that can contain nested menu items for dropdown functionality. Items are displayed horizontally in the order provided. |
+| `popoverOffset` | `Offset?` | Positioning offset for submenu popovers when items are opened.  Type: `Offset?`. If null, uses theme defaults or calculated values based on border presence. Controls where dropdown menus appear relative to their parent menu items. |
+| `border` | `bool` | Whether to draw a border around the menubar container.  Type: `bool`, default: `true`. When true, the menubar is wrapped with an outlined container using theme colors and border radius. |

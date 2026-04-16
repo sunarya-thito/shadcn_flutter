@@ -4,7 +4,7 @@ Abstract interface for overlay operation completion tracking.
 
 ## Usage
 
-// No examples found for overlay
+No examples found for overlay.
 
 ## Features
 - Responsive design

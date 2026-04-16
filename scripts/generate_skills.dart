@@ -7,6 +7,18 @@ import 'package:path/path.dart' as p;
 import 'package:analyzer/dart/analysis/features.dart';
 
 void main() async {
+  final featureSet = FeatureSet.latestLanguageVersion();
+
+  print('Starting skill generation...');
+
+  await generateComponentSkills(featureSet);
+  await generateIconSkills(featureSet);
+  await generateColorSkills(featureSet);
+
+  print('Done!');
+}
+
+Future<void> generateComponentSkills(FeatureSet featureSet) async {
   final componentsDir = Directory('lib/src/components');
   final docsDir = Directory('docs/lib/pages/docs/components');
   final skillsDir = Directory('skills/shadcn-flutter/components');
@@ -20,7 +32,7 @@ void main() async {
       .whereType<File>()
       .where((f) => f.path.endsWith('.dart'));
 
-  final featureSet = FeatureSet.latestLanguageVersion();
+  print('Generating Component Skills...');
 
   for (final file in files) {
     final fileName = p.basenameWithoutExtension(file.path);
@@ -31,7 +43,7 @@ void main() async {
       continue;
     }
 
-    print('Processing $fileName...');
+    print('  Processing $fileName...');
 
     try {
       final result =
@@ -86,12 +98,164 @@ void main() async {
             fileName, selectedClassName, selectedDeclaration, docsDir);
         final outputFile = File(p.join(skillsDir.path, '$fileName.md'));
         outputFile.writeAsStringSync(markdown);
-        print('  Generated ${outputFile.path}');
+        print('    Generated ${outputFile.path}');
       }
     } catch (e) {
-      print('  Error processing $fileName: $e');
+      print('    Error processing $fileName: $e');
     }
   }
+}
+
+Future<void> generateIconSkills(FeatureSet featureSet) async {
+  final iconDir = Directory('lib/src/icons');
+  final iconOutputFolder = Directory('skills/shadcn-flutter/icons');
+
+  if (!iconOutputFolder.existsSync()) {
+    iconOutputFolder.createSync(recursive: true);
+  }
+
+  print('Generating Icon Skills...');
+
+  if (!iconDir.existsSync()) {
+    print('  Icon directory not found at ${iconDir.path}');
+    return;
+  }
+
+  final iconFiles = iconDir
+      .listSync()
+      .whereType<File>()
+      .where((f) => f.path.endsWith('.dart'));
+
+  for (final file in iconFiles) {
+    final fileName = p.basenameWithoutExtension(file.path);
+    final className =
+        '${fileName.split('_').map((s) => s[0].toUpperCase() + s.substring(1)).join()}s';
+    final setName = fileName
+        .split('_')
+        .map((s) => s[0].toUpperCase() + s.substring(1))
+        .join(' ');
+
+    final providerFile = File(p.join(iconOutputFolder.path, '$fileName.md'));
+    final iconBuffer = StringBuffer();
+
+    iconBuffer.writeln('# $setName');
+    iconBuffer.writeln();
+    iconBuffer.writeln('Exhaustive listing for the $setName set.');
+    iconBuffer.writeln();
+    iconBuffer.writeln('Usage: `Icon($className.iconName)`');
+    iconBuffer.writeln();
+
+    final result = parseFile(path: file.absolute.path, featureSet: featureSet);
+    final unit = result.unit;
+    final icons = <String>[];
+
+    for (final declaration in unit.declarations) {
+      if (declaration is ClassDeclaration) {
+        for (final member in declaration.members) {
+          if (member is FieldDeclaration && member.isStatic) {
+            for (final field in member.fields.variables) {
+              icons.add(field.name.lexeme);
+            }
+          }
+        }
+      }
+    }
+
+    iconBuffer.writeln('Total icons: ${icons.length}');
+    iconBuffer.writeln();
+    for (final icon in icons) {
+      iconBuffer.writeln('- `$icon`');
+    }
+    iconBuffer.writeln();
+
+    providerFile.writeAsStringSync(iconBuffer.toString());
+    print('  Generated icons listing for $setName at ${providerFile.path}');
+  }
+}
+
+Future<void> generateColorSkills(FeatureSet featureSet) async {
+  final colorsFile = File('lib/src/theme/generated_colors.dart');
+  final themesFile = File('lib/src/theme/generated_themes.dart');
+  final colorsGuide = File('skills/shadcn-flutter/guides/colors.md');
+
+  print('Generating Color & Theme Skills...');
+
+  if (!colorsGuide.parent.existsSync()) {
+    colorsGuide.parent.createSync(recursive: true);
+  }
+
+  final colorBuffer = StringBuffer();
+  colorBuffer.writeln('# Colors & Themes');
+  colorBuffer.writeln();
+  colorBuffer.writeln(
+      'Shadcn Flutter uses a Tailwind-inspired color palette and a flexible theme system.');
+  colorBuffer.writeln();
+
+  if (colorsFile.existsSync()) {
+    colorBuffer.writeln('## Color Palette');
+    colorBuffer.writeln(
+        'Access via `Colors.colorName.shade` (e.g., `Colors.blue[500]`).');
+    colorBuffer.writeln();
+
+    final result =
+        parseFile(path: colorsFile.absolute.path, featureSet: featureSet);
+    final unit = result.unit;
+    for (final declaration in unit.declarations) {
+      if (declaration is ClassDeclaration &&
+          declaration.name.lexeme == 'Colors') {
+        colorBuffer.writeln('| Palette | Shades |');
+        colorBuffer.writeln('| :--- | :--- |');
+        for (final member in declaration.members) {
+          if (member is FieldDeclaration && member.isStatic) {
+            final type = member.fields.type?.toString() ?? '';
+            if (type == 'ColorShades') {
+              for (final field in member.fields.variables) {
+                colorBuffer.writeln(
+                    '| **${field.name.lexeme}** | 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950 |');
+              }
+            }
+          }
+        }
+        colorBuffer.writeln();
+      }
+    }
+  }
+
+  if (themesFile.existsSync()) {
+    colorBuffer.writeln('## Predefined Color Schemes');
+    colorBuffer.writeln(
+        'Usage: `ShadcnApp(theme: ThemeData(colorScheme: ColorSchemes.schemeName))`');
+    colorBuffer.writeln();
+
+    final result =
+        parseFile(path: themesFile.absolute.path, featureSet: featureSet);
+    final unit = result.unit;
+    for (final declaration in unit.declarations) {
+      if (declaration is ClassDeclaration &&
+          declaration.name.lexeme == 'ColorSchemes') {
+        final schemes = <String>[];
+        for (final member in declaration.members) {
+          if (member is FieldDeclaration &&
+              member.isStatic &&
+              member.fields.type?.toString() == 'ColorScheme') {
+            for (final field in member.fields.variables) {
+              schemes.add(field.name.lexeme);
+            }
+          }
+        }
+        colorBuffer.writeln('| Scheme Name | Brightness |');
+        colorBuffer.writeln('| :--- | :--- |');
+        for (final scheme in schemes) {
+          final brightness = scheme.startsWith('dark') ? 'Dark' : 'Light';
+          colorBuffer.writeln('| `$scheme` | $brightness |');
+        }
+        colorBuffer.writeln();
+      }
+    }
+  }
+
+  colorsGuide.writeAsStringSync(colorBuffer.toString());
+  print('  Generated colors guide at ${colorsGuide.path}');
 }
 
 String normalizeIdentifier(String value) {

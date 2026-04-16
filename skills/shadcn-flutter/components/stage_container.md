@@ -1,10 +1,10 @@
-# StageBreakpoint
+# StageContainer
 
-Abstract base class for defining stage-based layout breakpoints.
+A responsive container that adapts to screen size using breakpoints.
 
 ## Usage
 
-// No examples found for stage_container
+No examples found for stage_container.
 
 ## Features
 - Responsive design
@@ -15,4 +15,6 @@ Abstract base class for defining stage-based layout breakpoints.
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `defaultBreakpoints` | `StageBreakpoint` | Default responsive breakpoints (576, 768, 992, 1200, 1400).  Matches common responsive design breakpoints for mobile, tablet, desktop. |
+| `breakpoint` | `StageBreakpoint` | The breakpoint strategy for determining container width.  Defaults to [StageBreakpoint.defaultBreakpoints]. |
+| `builder` | `Widget Function(BuildContext context, EdgeInsets padding)` | Builder function that receives context and calculated padding.  The padding parameter accounts for responsive adjustments. |
+| `padding` | `EdgeInsets` | Base padding for the container.  Defaults to `EdgeInsets.symmetric(horizontal: 72)`. |

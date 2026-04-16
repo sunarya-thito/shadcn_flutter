@@ -1,6 +1,6 @@
-# DotIndicatorTheme
+# DotIndicator
 
-Theme configuration for [DotIndicator] and its dot items.
+Navigation indicator with customizable dots showing current position in a sequence.
 
 ## Usage
 
@@ -152,20 +152,21 @@ class DotIndicatorTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Position indication**: Clear visual representation of current position
+- **Interactive navigation**: Optional tap-to-navigate functionality
+- **Flexible orientation**: Horizontal or vertical dot arrangement
+- **Custom dot builders**: Complete control over dot appearance and behavior
+- **Responsive spacing**: Automatic scaling with theme configuration
+- **Accessibility support**: Screen reader friendly with semantic information
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
+| `index` | `int` | The current active index (0-based). |
+| `length` | `int` | The total number of dots to display. |
+| `onChanged` | `ValueChanged<int>?` | Callback invoked when a dot is tapped. |
 | `spacing` | `double?` | Spacing between dots. |
+| `direction` | `Axis` | The direction of the dot layout (horizontal or vertical). |
 | `padding` | `EdgeInsetsGeometry?` | Padding around the dots container. |
-| `dotBuilder` | `DotBuilder?` | Builder for individual dots. |
-| `size` | `double?` | Size of each dot. |
-| `borderRadius` | `double?` | Border radius of dots. |
-| `activeColor` | `Color?` | Color of the active dot. |
-| `inactiveColor` | `Color?` | Color of the inactive dot. |
-| `inactiveBorderColor` | `Color?` | Border color of the inactive dot. |
-| `inactiveBorderWidth` | `double?` | Border width of the inactive dot. |
+| `dotBuilder` | `DotBuilder?` | Custom builder for individual dots. |

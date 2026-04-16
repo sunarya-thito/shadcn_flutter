@@ -1,6 +1,6 @@
-# ColorPickerTheme
+# ColorPicker
 
-Theme configuration for [ColorPicker] widget styling and layout.
+A comprehensive color picker widget with multiple color mode support.
 
 ## Usage
 
@@ -293,8 +293,17 @@ class ColorPickerTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `spacing` | `double?` | Spacing between major color picker sections. |
-| `controlSpacing` | `double?` | Spacing between individual controls within sections. |
-| `orientation` | `Axis?` | Layout orientation (horizontal or vertical). |
+| `value` | `ColorDerivative` | The current color value. |
+| `onChanged` | `ValueChanged<ColorDerivative>?` | Called when the color is finalized. |
+| `onChanging` | `ValueChanged<ColorDerivative>?` | Called continuously while the color is being changed. |
+| `showAlpha` | `bool` | Whether to show alpha (opacity) controls. |
+| `showHistoryButton` | `bool` | Whether to show the color history button. |
+| `initialShowHistory` | `bool` | Whether to show the color history panel initially. |
+| `initialMode` | `ColorPickerMode` | The initial color picker mode. |
+| `onModeChanged` | `ValueChanged<ColorPickerMode>?` | Called when the color picker mode changes. |
+| `onEyeDropperRequested` | `VoidCallback?` | Called when the eye dropper button is pressed. |
 | `enableEyeDropper` | `bool?` | Whether to enable the eye dropper feature. |
-| `sliderSize` | `double?` | The size of color sliders. |
+| `orientation` | `Axis?` | Layout orientation of the color picker. |
+| `spacing` | `double?` | Spacing between major sections. |
+| `controlSpacing` | `double?` | Spacing between individual controls. |
+| `sliderSize` | `double?` | Size of the color sliders. |

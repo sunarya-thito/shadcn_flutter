@@ -6,7 +6,7 @@ Styling options for menu widgets such as [MenuGroup] and [MenuButton].
 
 ## Usage
 
-// No examples found for menu
+No examples found for menu.
 
 ## Features
 - Responsive design

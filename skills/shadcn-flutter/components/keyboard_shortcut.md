@@ -4,7 +4,7 @@ Theme for keyboard shortcut displays.
 
 ## Usage
 
-// No examples found for keyboard_shortcut
+No examples found for keyboard_shortcut.
 
 ## Features
 - Responsive design

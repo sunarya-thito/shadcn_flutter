@@ -4,7 +4,7 @@ Abstract base class for text modifier widgets.
 
 ## Usage
 
-// No examples found for text
+No examples found for text.
 
 ## Features
 - Responsive design

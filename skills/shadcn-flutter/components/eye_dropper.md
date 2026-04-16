@@ -4,7 +4,7 @@ A layer widget that provides eye dropper (color picking) functionality.
 
 ## Usage
 
-// No examples found for eye_dropper
+No examples found for eye_dropper.
 
 ## Features
 - Responsive design

@@ -1,6 +1,6 @@
-# NavigationMenuTheme
+# NavigationMenu
 
-Theme configuration for [NavigationMenu] components.
+A horizontal navigation menu with dropdown content support.
 
 ## Usage
 
@@ -278,7 +278,6 @@ class NavigationMenuTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `surfaceOpacity` | `double?` | Opacity of the popover surface. |
-| `surfaceBlur` | `double?` | Blur amount of the popover surface. |
-| `margin` | `EdgeInsetsGeometry?` | Margin applied to the popover. |
-| `offset` | `Offset?` | Offset for the popover relative to the trigger. |
+| `surfaceOpacity` | `double?` | Opacity level for the popover surface background.  Controls the transparency of the dropdown content's background. Values range from 0.0 (fully transparent) to 1.0 (fully opaque). If not specified, uses the theme's default surface opacity. |
+| `surfaceBlur` | `double?` | Blur effect intensity for the popover surface.  Controls the backdrop blur effect applied behind the dropdown content. Higher values create more blur. If not specified, uses the theme's default surface blur setting. |
+| `children` | `List<Widget>` | The list of menu items to display in the navigation menu.  Each item should be a [NavigationMenuItem] that defines the menu's structure and behavior. Items can have content for dropdown functionality or simple press actions. |

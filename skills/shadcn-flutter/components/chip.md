@@ -1,6 +1,6 @@
-# ChipTheme
+# Chip
 
-Theme for [Chip].
+Compact interactive element for tags, labels, and selections.
 
 ## Usage
 
@@ -153,13 +153,19 @@ class ChipTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Compact design**: Space-efficient layout perfect for tags and labels
+- **Interactive elements**: Optional leading and trailing widgets (icons, buttons)
+- **Customizable styling**: Flexible button styling with theme integration
+- **Touch feedback**: Optional press handling with visual feedback
+- **Accessibility**: Full screen reader support and keyboard navigation
+- **Consistent theming**: Integrated with the component theme system
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `padding` | `EdgeInsetsGeometry?` | The padding inside the chip. |
-| `style` | `AbstractButtonStyle?` | The default [Button] style of the chip. |
+| `child` | `Widget` | The main content of the chip. |
+| `leading` | `Widget?` | Optional widget displayed before the child. |
+| `trailing` | `Widget?` | Optional widget displayed after the child. |
+| `onPressed` | `VoidCallback?` | Callback invoked when the chip is pressed. |
+| `style` | `AbstractButtonStyle?` | Custom button style for the chip. |

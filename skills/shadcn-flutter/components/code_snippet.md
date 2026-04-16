@@ -1,6 +1,6 @@
-# CodeSnippetTheme
+# CodeSnippet
 
-Theme configuration for [CodeSnippet] components.
+A syntax-highlighted code display widget with copy functionality.
 
 ## Usage
 
@@ -86,16 +86,17 @@ class CodeSnippetTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Syntax Highlighting**: Automatic language detection and coloring
+- **Copy to Clipboard**: Built-in copy button with toast confirmation
+- **Custom Actions**: Support for additional action buttons
+- **Responsive Design**: Horizontal and vertical scrolling for long code
+- **Theme Integration**: Automatic light/dark theme adaptation
+- **Loading States**: Smooth loading indicators during initialization
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `backgroundColor` | `Color?` | Background color of the code snippet container.  Type: `Color?`. Used as the background color for the code display area. If null, uses the theme's default muted background color. |
-| `borderColor` | `Color?` | Border color of the code snippet container.  Type: `Color?`. Color used for the container border outline. If null, uses the theme's default border color. |
-| `borderWidth` | `double?` | Border width of the code snippet container in logical pixels.  Type: `double?`. Thickness of the border around the code container. If null, uses the theme's default border width. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the code snippet container corners.  Type: `BorderRadiusGeometry?`. Controls corner rounding of the container. If null, uses the theme's default radius for code components. |
-| `padding` | `EdgeInsetsGeometry?` | Padding for the code content area.  Type: `EdgeInsetsGeometry?`. Internal spacing around the code text. If null, uses default padding appropriate for code display. |
+| `constraints` | `BoxConstraints?` | Optional constraints for the code display area.  Type: `BoxConstraints?`. Controls the maximum/minimum size of the scrollable code container. Useful for limiting height in layouts. |
+| `code` | `Widget` | The code widget to display (typically Text or RichText with syntax highlighting). |
+| `actions` | `List<Widget>` | Additional action widgets displayed in the top-right corner.  Type: `List<Widget>`. Custom action buttons shown alongside the default copy button. Useful for share, edit, or other operations. |

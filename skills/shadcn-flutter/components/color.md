@@ -4,7 +4,7 @@ An abstract base class representing a color that can be transformed between diff
 
 ## Usage
 
-// No examples found for color
+No examples found for color.
 
 ## Features
 - Responsive design

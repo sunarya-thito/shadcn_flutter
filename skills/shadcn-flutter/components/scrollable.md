@@ -4,7 +4,7 @@ Theme data for [ScrollableClient].
 
 ## Usage
 
-// No examples found for scrollable
+No examples found for scrollable.
 
 ## Features
 - Responsive design

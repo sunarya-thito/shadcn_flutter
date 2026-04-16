@@ -1,6 +1,6 @@
-# SwitchTheme
+# Switch
 
-Theme configuration for [Switch] widget styling and visual appearance.
+A Material Design switch for toggling boolean values.
 
 ## Usage
 
@@ -105,9 +105,14 @@ class SwitchTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `activeColor` | `Color?` | Color of the switch track when in the active/on state.  Applied as the background color of the switch track when toggled on. When null, uses the theme's primary color for visual consistency. |
-| `inactiveColor` | `Color?` | Color of the switch track when in the inactive/off state.  Applied as the background color of the switch track when toggled off. When null, uses the theme's muted color for visual hierarchy. |
-| `activeThumbColor` | `Color?` | Color of the switch thumb when in the active/on state.  Applied to the circular thumb element when the switch is toggled on. When null, uses the theme's primary foreground color for contrast. |
-| `inactiveThumbColor` | `Color?` | Color of the switch thumb when in the inactive/off state.  Applied to the circular thumb element when the switch is toggled off. When null, uses a contrasting color against the inactive track. |
-| `gap` | `double?` | Spacing between the switch and its leading/trailing widgets.  Applied on both sides of the switch when leading or trailing widgets are provided. When null, defaults to framework spacing standards. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius applied to the switch track corners.  Creates rounded corners on the switch track container. When null, uses a fully rounded appearance typical of toggle switches. |
+| `value` | `bool` | The current state of the switch. |
+| `onChanged` | `ValueChanged<bool>?` | Callback invoked when the switch state changes.  If `null`, the switch is disabled. |
+| `leading` | `Widget?` | Optional leading widget displayed before the switch.  Typically an icon or text label. |
+| `trailing` | `Widget?` | Optional trailing widget displayed after the switch.  Typically an icon or text label. |
+| `enabled` | `bool?` | Whether the switch is interactive.  When `false`, the switch is disabled. Defaults to `true`. |
+| `gap` | `double?` | Spacing between the switch and [leading]/[trailing] widgets.  If `null`, uses the default gap from the theme. |
+| `activeColor` | `Color?` | Color of the switch when in the active (on) state.  If `null`, uses the theme's primary color. |
+| `inactiveColor` | `Color?` | Color of the switch when in the inactive (off) state.  If `null`, uses a default inactive color from the theme. |
+| `activeThumbColor` | `Color?` | Color of the thumb (knob) when the switch is active.  If `null`, uses a default thumb color. |
+| `inactiveThumbColor` | `Color?` | Color of the thumb (knob) when the switch is inactive.  If `null`, uses a default thumb color. |
+| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the switch track.  If `null`, uses the default border radius from the theme. |

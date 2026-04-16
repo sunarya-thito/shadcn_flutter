@@ -4,7 +4,7 @@ A widget that displays multiple dots, commonly used for loading indicators or me
 
 ## Usage
 
-// No examples found for triple_dots
+No examples found for triple_dots.
 
 ## Features
 - Responsive design

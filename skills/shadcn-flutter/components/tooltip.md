@@ -1,6 +1,6 @@
-# TooltipTheme
+# Tooltip
 
-Theme data for customizing [TooltipContainer] widget appearance.
+An interactive tooltip widget that displays contextual information on hover.
 
 ## Usage
 
@@ -156,8 +156,10 @@ class TooltipTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `surfaceOpacity` | `double?` | Opacity applied to the tooltip surface color. |
-| `surfaceBlur` | `double?` | Blur amount for the tooltip surface. |
-| `padding` | `EdgeInsetsGeometry?` | Padding around the tooltip content. |
-| `backgroundColor` | `Color?` | Background color of the tooltip. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius of the tooltip container. |
+| `child` | `Widget` | The widget that triggers the tooltip on hover. |
+| `tooltip` | `WidgetBuilder` | Builder function for the tooltip content. |
+| `alignment` | `AlignmentGeometry` | Alignment of the tooltip relative to the anchor. |
+| `anchorAlignment` | `AlignmentGeometry` | Alignment point on the child widget where tooltip anchors. |
+| `waitDuration` | `Duration` | Time to wait before showing the tooltip on hover. |
+| `showDuration` | `Duration` | Duration of the tooltip show animation. |
+| `minDuration` | `Duration` | Minimum time the tooltip stays visible once shown. |

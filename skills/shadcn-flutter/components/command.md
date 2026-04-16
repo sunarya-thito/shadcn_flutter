@@ -1,6 +1,6 @@
-# CommandEmpty
+# Command
 
-A default widget displayed when command search returns no results.
+Interactive command palette with search functionality and dynamic results.
 
 ## Usage
 
@@ -119,12 +119,27 @@ class CommandTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Real-time search**: Dynamic filtering with configurable debounce timing
+- **Keyboard navigation**: Full arrow key and Enter/Escape support
+- **Async data loading**: Stream-based results with loading and error states
+- **Customizable states**: Custom builders for empty, loading, and error states
+- **Auto-focus**: Optional automatic focus on the search input
+- **Accessibility**: Screen reader friendly with proper focus management
+- Quick action selection (Cmd+K style interfaces)
+- Searchable option lists
+- Dynamic content filtering
+- Command-driven workflows
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-
+| `autofocus` | `bool` | Whether the search input should be auto-focused when the command palette opens.  Defaults to `true` for convenient keyboard-driven interaction. |
+| `builder` | `CommandBuilder` | Async builder function that provides search results based on the query.  Receives the current search query string and should return a stream of widget lists representing the filtered command results. |
+| `debounceDuration` | `Duration` | Debounce duration for search input to prevent excessive rebuilds.  The builder is called only after the user stops typing for this duration, reducing unnecessary API calls or computations. Defaults to 500ms. |
+| `emptyBuilder` | `WidgetBuilder?` | Custom widget builder for displaying empty search results.  If `null`, displays a default "No results" message via [CommandEmpty]. |
+| `errorBuilder` | `ErrorWidgetBuilder?` | Custom widget builder for displaying error states.  Receives the error object and stack trace for custom error presentation. |
+| `loadingBuilder` | `WidgetBuilder?` | Custom widget builder for displaying loading state while fetching results.  If `null`, displays a default loading spinner. |
+| `surfaceOpacity` | `double?` | Optional opacity override for the command palette surface.  When provided, overrides the theme's default surface opacity. |
+| `surfaceBlur` | `double?` | Optional blur amount override for the command palette surface backdrop.  When provided, overrides the theme's default surface blur. |
+| `searchPlaceholder` | `Widget?` | Optional custom placeholder widget for the search input field.  If `null`, displays default localized placeholder text. |

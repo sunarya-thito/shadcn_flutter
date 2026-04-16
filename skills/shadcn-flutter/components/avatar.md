@@ -1,6 +1,6 @@
-# AvatarTheme
+# Avatar
 
-Theme configuration for [Avatar] and related avatar components.
+A circular or rounded rectangular widget for displaying user profile images or initials.
 
 ## Usage
 
@@ -161,17 +161,22 @@ class AvatarTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Flexible Content**: Supports both images and text initials
+- **Automatic Fallback**: Falls back to initials when images fail to load
+- **Badge Support**: Optional badge overlay for status or notification indicators
+- **Network Images**: Built-in support for network images with caching
+- **Theming**: Comprehensive theming via [AvatarTheme]
+- **Group Integration**: Works with [AvatarGroup] for overlapping layouts
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `size` | `double?` | Default size for avatar components in logical pixels.  Controls the width and height of avatar containers. If null, defaults to 40 logical pixels scaled by theme scaling factor. |
-| `borderRadius` | `double?` | Border radius for avatar corners in logical pixels.  Creates rounded corners on avatar containers. If null, defaults to theme radius multiplied by avatar size for proportional rounding. |
-| `backgroundColor` | `Color?` | Background color for avatar containers when displaying initials.  Used as the background color when no image is provided or when image loading fails. If null, uses the muted color from theme color scheme. |
-| `badgeAlignment` | `AlignmentGeometry?` | Alignment of badge relative to the main avatar.  Controls where badges are positioned when attached to avatars. If null, badges are positioned at a calculated offset based on avatar size. |
-| `badgeGap` | `double?` | Spacing between avatar and badge components.  Controls the gap between the main avatar and any attached badges. If null, defaults to 4 logical pixels scaled by theme scaling factor. |
-| `textStyle` | `TextStyle?` | Text style for avatar initials display.  Applied to text when displaying user initials in avatar containers. If null, uses bold foreground color from theme. |
+| `initials` | `String` | User initials or text to display in the avatar.  Primary fallback content when no image is provided via [provider] or when image loading fails. Should typically contain user's initials or a short representative text. |
+| `backgroundColor` | `Color?` | Background color for the avatar when displaying initials.  Type: `Color?`. Used as the container background color when showing [initials]. If null, defaults to the theme's muted color. |
+| `size` | `double?` | Size of the avatar in logical pixels.  Type: `double?`. Controls both width and height of the avatar container. If null, defaults to theme.scaling * 40 pixels. |
+| `borderRadius` | `double?` | Border radius for avatar corners in logical pixels.  Type: `double?`. Creates rounded corners on the avatar container. If null, defaults to theme.radius * size for proportional rounding. |
+| `badge` | `AvatarWidget?` | Optional badge widget to overlay on the avatar.  Type: `AvatarWidget?`. Typically an [AvatarBadge] for status indicators. Positioned according to [badgeAlignment] with [badgeGap] spacing. |
+| `badgeAlignment` | `AlignmentGeometry?` | Position of the badge relative to the avatar.  Type: `AlignmentGeometry?`. Controls where the [badge] is positioned. If null, uses a calculated offset based on avatar and badge sizes. |
+| `badgeGap` | `double?` | Spacing between the avatar and badge in logical pixels.  Type: `double?`. Controls the gap between the avatar edge and badge edge. If null, defaults to theme.scaling * 4 pixels. |
+| `provider` | `ImageProvider?` | Image provider for displaying user photos.  Type: `ImageProvider?`. Can be any Flutter image provider (NetworkImage, AssetImage, etc.). If null or loading fails, shows [initials] instead. |

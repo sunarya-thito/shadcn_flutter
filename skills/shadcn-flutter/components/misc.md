@@ -4,7 +4,7 @@ Spacing gap between navigation items.
 
 ## Usage
 
-// No examples found for misc
+No examples found for misc.
 
 ## Features
 - Responsive design

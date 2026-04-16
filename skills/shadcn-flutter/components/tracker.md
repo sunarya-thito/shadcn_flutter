@@ -1,6 +1,6 @@
-# TrackerLevel
+# Tracker
 
-An abstract class that defines values for different Tracker levels.
+A widget that displays a tracker.
 
 ## Usage
 
@@ -111,15 +111,14 @@ class TrackerTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Status Visualization**: Color-coded segments based on [TrackerLevel]
+- **Interactive Tooltips**: Hover-activated tooltips with custom content
+- **Flexible Sizing**: Segments automatically expand to fill available width
+- **Theming**: Comprehensive styling via [TrackerTheme]
+- **Rounded Corners**: Configurable corner radius for modern appearance
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `fine` | `TrackerLevel` | Default values for the fine level.  [color] is set to `Colors.green` [name] is set to `"Fine"` |
-| `warning` | `TrackerLevel` | Default values for the warning level.  [color] is set to `Colors.orange` [name] is set to `"Warning"` |
-| `critical` | `TrackerLevel` | Default values for the critical level.  [color] is set to `Colors.red` [name] is set to `"Critical"` |
-| `unknown` | `TrackerLevel` | Default values for the unknown level.  [color] is set to `Colors.gray` [name] is set to `"Unknown"` |
+| `data` | `List<TrackerData>` | List of data points to display as tracker segments.  Type: `List<TrackerData>`. Each data point contains a status level for visual styling and tooltip content for user interaction. The segments are displayed in the order provided, each taking equal horizontal space. |

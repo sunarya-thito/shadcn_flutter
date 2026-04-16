@@ -4,7 +4,7 @@ A custom painter that draws a checkboard pattern for alpha/transparency visualiz
 
 ## Usage
 
-// No examples found for alpha
+No examples found for alpha.
 
 ## Features
 - Responsive design

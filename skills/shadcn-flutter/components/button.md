@@ -1,6 +1,6 @@
-# ToggleController
+# Button
 
-A controller for managing toggle state in toggle buttons and switches.
+A versatile, customizable button widget with comprehensive styling and interaction support.
 
 ## Usage
 
@@ -718,12 +718,48 @@ class ButtonTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Multiple Variants**: Primary, secondary, outline, ghost, link, text, destructive, and more
+- **Flexible Sizing**: From extra small to extra large with custom scaling
+- **Shape Options**: Rectangle and circle shapes with customizable borders
+- **Rich Interactions**: Hover, focus, press, and long press support
+- **Accessibility**: Full keyboard navigation and screen reader support
+- **Theming**: Deep integration with the design system theme
+- **Form Integration**: Works seamlessly with form validation and state management
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-
+| `enabled` | `bool?` | Whether the button is interactive.  If null, the button is enabled when [onPressed] is not null. When false, the button appears disabled and doesn't respond to user input or fire callbacks. |
+| `disableTransition` | `bool` | Whether to disable visual state transition animations.  When true, the button immediately snaps between visual states instead of smoothly animating. Useful for performance optimization in lists or when animations would be distracting. |
+| `leading` | `Widget?` | Widget displayed to the left of the main child content.  Commonly used for icons that provide additional context about the button's action. Automatically spaced from the [child] with appropriate gaps. |
+| `trailing` | `Widget?` | Widget displayed to the right of the main child content.  Often used for icons indicating direction (arrows) or additional actions. Automatically spaced from the [child] with appropriate gaps. |
+| `leadingGap` | `double?` | Custom gap between [leading] and [child].  When null, defaults to the scaled density gap. Set to override the default spacing between the leading widget and the main content. |
+| `trailingGap` | `double?` | Custom gap between [child] and [trailing].  When null, defaults to the scaled density gap. Set to override the default spacing between the main content and the trailing widget. |
+| `child` | `Widget` | The primary content displayed in the button.  Typically contains text, icons, or other widgets that describe the button's action. Automatically aligned according to [alignment] and styled according to the button's [style]. |
+| `onPressed` | `VoidCallback?` | Callback invoked when the button is pressed.  The primary interaction callback for the button. When null, the button becomes disabled unless [enabled] is explicitly set to true. The button automatically handles loading states, disabled states, and provides haptic feedback. |
+| `focusNode` | `FocusNode?` | Focus node for keyboard navigation and focus management.  If null, a focus node is automatically created. Useful for controlling focus programmatically or integrating with form focus traversal. |
+| `alignment` | `AlignmentGeometry?` | Alignment of the child content within the button.  Controls how the [child] is positioned within the button's bounds. Defaults to center alignment for most button types. When [leading] or [trailing] are provided, defaults to start alignment. |
+| `style` | `AbstractButtonStyle` | Visual styling configuration for the button.  Defines the button's appearance including colors, padding, borders, and text styles. The [AbstractButtonStyle] provides state-aware styling that responds to hover, press, focus, and disabled states. |
+| `onHover` | `ValueChanged<bool>?` | Callback invoked when the button's hover state changes.  Called with true when the pointer enters the button area and false when it leaves. Useful for implementing custom hover effects or updating external state. |
+| `onFocus` | `ValueChanged<bool>?` | Callback invoked when the button's focus state changes.  Called with true when the button gains focus and false when it loses focus. Useful for accessibility features or coordinating focus with other widgets. |
+| `enableFeedback` | `bool?` | Whether to enable haptic feedback on press.  If null, haptic feedback is automatically enabled on mobile platforms. When true, provides tactile feedback when the button is pressed. When false, no haptic feedback is provided regardless of platform. |
+| `onTapDown` | `GestureTapDownCallback?` | Callback invoked when a tap down gesture begins.  Provides the position and details of the initial touch/click. Useful for implementing custom press animations or tracking interaction start points. |
+| `onTapUp` | `GestureTapUpCallback?` | Callback invoked when a tap up gesture completes.  Called after a successful tap gesture, providing the position details. Note that [onPressed] is typically preferred for button actions. |
+| `onTapCancel` | `GestureTapCancelCallback?` | Callback invoked when a tap gesture is canceled.  Called when a tap gesture starts but is interrupted before completion, such as when the pointer moves outside the button area. |
+| `onSecondaryTapDown` | `GestureTapDownCallback?` | Callback invoked when a secondary button (right-click) tap down begins.  Useful for implementing context menus or alternative actions. |
+| `onSecondaryTapUp` | `GestureTapUpCallback?` | Callback invoked when a secondary button tap up completes. |
+| `onSecondaryTapCancel` | `GestureTapCancelCallback?` | Callback invoked when a secondary button tap is canceled. |
+| `onTertiaryTapDown` | `GestureTapDownCallback?` | Callback invoked when a tertiary button (middle-click) tap down begins. |
+| `onTertiaryTapUp` | `GestureTapUpCallback?` | Callback invoked when a tertiary button tap up completes. |
+| `onTertiaryTapCancel` | `GestureTapCancelCallback?` | Callback invoked when a tertiary button tap is canceled. |
+| `onLongPressStart` | `GestureLongPressStartCallback?` | Callback invoked when a long press gesture begins.  Provides the position where the long press started. Useful for implementing press-and-hold actions or showing additional options. |
+| `onLongPressUp` | `GestureLongPressUpCallback?` | Callback invoked when a long press gesture completes. |
+| `onLongPressMoveUpdate` | `GestureLongPressMoveUpdateCallback?` | Callback invoked when a long press gesture moves.  Provides position updates during an active long press. Useful for implementing drag-from-long-press behaviors. |
+| `onLongPressEnd` | `GestureLongPressEndCallback?` | Callback invoked when a long press gesture ends. |
+| `onSecondaryLongPress` | `GestureLongPressUpCallback?` | Callback invoked when a secondary button long press completes. |
+| `onTertiaryLongPress` | `GestureLongPressUpCallback?` | Callback invoked when a tertiary button long press completes. |
+| `disableHoverEffect` | `bool` | Whether to disable hover visual effects.  When true, the button doesn't show visual changes on hover, though [onHover] callbacks are still called. Useful for custom hover implementations. |
+| `statesController` | `WidgetStatesController?` | Controller for managing button widget states externally.  Allows external control over hover, pressed, focused, and other widget states. Useful for implementing custom state logic or coordinating with other widgets. |
+| `marginAlignment` | `AlignmentGeometry?` | Alignment for the button's margin within its allocated space.  Controls how the button positions itself within its parent's constraints when the button is smaller than the available space. |
+| `disableFocusOutline` | `bool` | Whether to disable the focus outline.  When true, removes the visual focus indicator that appears when the button is focused via keyboard navigation. Use carefully as this affects accessibility. |

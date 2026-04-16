@@ -1,6 +1,6 @@
-# OverflowMarqueeTheme
+# OverflowMarquee
 
-Theme configuration for [OverflowMarquee] scrolling text displays.
+Automatically scrolling widget for content that overflows its container.
 
 ## Usage
 
@@ -112,9 +112,10 @@ class OverflowMarqueeTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `direction` | `Axis?` | Scrolling direction of the marquee. |
-| `duration` | `Duration?` | Duration of one full scroll cycle. |
-| `delayDuration` | `Duration?` | Delay before scrolling starts again. |
-| `step` | `double?` | Step size used to compute scroll speed. |
-| `fadePortion` | `double?` | Portion of the child to fade at the edges. |
-| `curve` | `Curve?` | Animation curve of the scroll. |
+| `child` | `Widget` | The child widget to display and potentially scroll. |
+| `direction` | `Axis?` | Scroll direction (horizontal or vertical).  If `null`, uses theme default or [Axis.horizontal]. |
+| `duration` | `Duration?` | Total duration for one complete scroll cycle.  If `null`, uses theme default. |
+| `step` | `double?` | Distance to scroll per animation step.  If `null`, scrolls the entire overflow amount. |
+| `delayDuration` | `Duration?` | Pause duration between scroll cycles.  If `null`, uses theme default. |
+| `fadePortion` | `double?` | Portion of edges to apply fade effect (0.0 to 1.0).  For example, 0.15 fades 15% of each edge. If `null`, uses theme default. |
+| `curve` | `Curve?` | Animation curve for scroll motion.  If `null`, uses theme default or [Curves.linear]. |

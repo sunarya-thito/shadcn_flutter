@@ -1,6 +1,6 @@
-# PhoneNumber
+# PhoneInput
 
-Represents a phone number with country code information.
+A specialized input widget for entering international phone numbers.
 
 ## Usage
 
@@ -112,5 +112,13 @@ class PhoneInputTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `country` | `Country` | The country associated with this phone number. |
-| `number` | `String` | The phone number without the country code. |
+| `initialCountry` | `Country?` | The default country to display when no initial value is provided.  If both [initialCountry] and [initialValue] are null, defaults to United States. When [initialValue] is provided, its country takes precedence over this setting. |
+| `initialValue` | `PhoneNumber?` | The initial phone number value including country and number.  When provided, both the country selector and number field are initialized with the values from this phone number. Takes precedence over [initialCountry] for country selection. |
+| `onChanged` | `ValueChanged<PhoneNumber>?` | Callback invoked when the phone number changes.  Called whenever the user changes either the country selection or the phone number text. The callback receives a [PhoneNumber] object containing both the selected country and entered number. |
+| `controller` | `TextEditingController?` | Optional text editing controller for the number input field.  When provided, this controller manages the text content of the phone number input field. If null, an internal controller is created and managed. |
+| `filterPlusCode` | `bool` | Whether to filter out plus (+) symbols from input.  When true, plus symbols are automatically removed from user input since the country code already provides the international prefix. |
+| `filterZeroCode` | `bool` | Whether to filter out leading zeros from input.  When true, leading zeros are automatically removed from the phone number to normalize the input format according to international standards. |
+| `filterCountryCode` | `bool` | Whether to filter out country codes from input.  When true, prevents users from entering the country code digits manually since the country selector provides this information automatically. |
+| `onlyNumber` | `bool` | Whether to allow only numeric characters in the input.  When true, restricts input to numeric characters only, removing any letters, symbols, or formatting characters that users might enter. |
+| `countries` | `List<Country>?` | Optional list of countries to display in the country selector.  When provided, only these countries will be available for selection in the country picker popup. If null, all supported countries are available. |
+| `searchPlaceholder` | `Widget?` | Widget displayed as placeholder in the country search field.  Appears in the search input at the top of the country selector popup to guide users on how to search for countries. |

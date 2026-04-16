@@ -1,10 +1,10 @@
 # OutlinedContainer
 
-A container widget with an outlined surface style.
+A container widget with customizable border and surface effects.
 
 ## Usage
 
-// No examples found for OutlinedContainer
+No examples found for outlined_container.
 
 ## Features
 - Responsive design
@@ -15,6 +15,17 @@ A container widget with an outlined surface style.
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `child` | `Widget` | The child widget to display with blurred background. |
-| `surfaceBlur` | `double?` | The amount of blur to apply (sigma value for blur filter).  If `null` or `<= 0`, no blur is applied. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for clipping the blur effect.  If `null`, no rounding is applied. |
+| `child` | `Widget` | The child widget to display inside the container. |
+| `backgroundColor` | `Color?` | Background color of the container.  If `null`, uses theme default. |
+| `borderColor` | `Color?` | Color of the container's border.  If `null`, uses theme default. |
+| `clipBehavior` | `Clip` | How to clip the container's content.  Defaults to [Clip.antiAlias]. |
+| `borderRadius` | `BorderRadiusGeometry?` | Border radius for rounded corners.  If `null`, uses theme default. |
+| `borderStyle` | `BorderStyle?` | Style of the border.  If `null`, uses [BorderStyle.solid]. |
+| `borderWidth` | `double?` | Width of the border in logical pixels.  If `null`, uses theme default. |
+| `boxShadow` | `List<BoxShadow>?` | Box shadows for elevation effects.  If `null`, no shadows are applied. |
+| `padding` | `EdgeInsetsGeometry?` | Padding inside the container.  If `null`, uses theme default. |
+| `surfaceOpacity` | `double?` | Opacity for surface overlay effects.  If provided, modulates the background color's alpha. |
+| `surfaceBlur` | `double?` | Blur amount for surface backdrop effects.  If `null` or `<= 0`, no blur is applied. |
+| `width` | `double?` | Explicit width of the container.  If `null`, size is determined by child and padding. |
+| `height` | `double?` | Explicit height of the container.  If `null`, size is determined by child and padding. |
+| `duration` | `Duration?` | Duration for animating property changes.  If `null`, changes are applied immediately without animation. |

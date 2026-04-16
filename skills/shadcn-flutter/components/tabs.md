@@ -1,6 +1,6 @@
-# TabsTheme
+# Tabs
 
-Theme data for customizing [Tabs] widget appearance.
+A tabbed interface widget for organizing content into switchable panels.
 
 ## Usage
 
@@ -152,7 +152,8 @@ class TabsTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `containerPadding` | `EdgeInsetsGeometry?` | Padding around the entire tabs container.  Defines the outer spacing for the tabs widget. If `null`, uses the theme's default container padding. |
-| `tabPadding` | `EdgeInsetsGeometry?` | Padding inside individual tab headers.  Defines the spacing within each tab button. If `null`, uses the theme's default tab padding. |
-| `backgroundColor` | `Color?` | Background color for the tabs container.  Applied to the tabs bar background. If `null`, uses the theme's default background color. |
-| `borderRadius` | `BorderRadiusGeometry?` | Corner radius for the tabs container.  Defines rounded corners for the tabs widget. If `null`, uses the theme's default border radius. |
+| `index` | `int` | The index of the currently selected tab (0-indexed).  Must be between 0 and `children.length - 1` inclusive. |
+| `expand` | `bool` | Used to expand children horizontally |
+| `onChanged` | `ValueChanged<int>` | Callback invoked when the user selects a different tab.  Called with the new tab index when the user taps a tab header. |
+| `children` | `List<TabChild>` | List of tab children defining tab headers and content.  Each [TabChild] contains a tab header widget and the associated content panel widget. The list must not be empty. |
+| `padding` | `EdgeInsetsGeometry?` | Optional padding around individual tabs.  Overrides the theme's tab padding if provided. If `null`, uses the padding from [TabsTheme]. |

@@ -1,6 +1,6 @@
-# FormattedInputTheme
+# FormattedInput
 
-Theme configuration for [FormattedInput] widget styling.
+A controlled input widget for structured data entry with formatting.
 
 ## Usage
 
@@ -238,5 +238,10 @@ class FormattedInputTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `height` | `double?` | The height of the formatted input. |
-| `padding` | `EdgeInsetsGeometry?` | Internal padding for the formatted input. |
+| `initialValue` | `FormattedValue?` |  |
+| `onChanged` | `ValueChanged<FormattedValue>?` |  |
+| `enabled` | `bool` |  |
+| `controller` | `FormattedInputController?` |  |
+| `style` | `TextStyle?` | Text style applied to all input segments.  This style affects both static text and editable input fields within the formatted input. Using a monospace font family is recommended for consistent character spacing across segments. |
+| `leading` | `Widget?` | Widget displayed at the beginning of the input.  Commonly used for icons or labels that provide context for the input content, such as a phone icon for phone number inputs. |
+| `trailing` | `Widget?` | Widget displayed at the end of the input.  Can be used for action buttons, status indicators, or additional context related to the input content. |

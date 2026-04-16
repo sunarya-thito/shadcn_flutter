@@ -1,6 +1,6 @@
-# SelectTheme
+# Select
 
-Theme data for customizing [Select] widget appearance and behavior.
+A customizable dropdown selection widget for single-value selection.
 
 ## Usage
 
@@ -448,11 +448,25 @@ class SelectTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `popupConstraints` | `BoxConstraints?` | Constraints for the popup menu size. |
-| `popoverAlignment` | `AlignmentGeometry?` | Alignment of the popover relative to the anchor. |
-| `popoverAnchorAlignment` | `AlignmentGeometry?` | Anchor alignment for the popover. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for select items. |
-| `padding` | `EdgeInsetsGeometry?` | Padding inside select items. |
-| `disableHoverEffect` | `bool?` | Whether to disable hover effects on items. |
-| `canUnselect` | `bool?` | Whether the selected item can be unselected. |
-| `autoClosePopover` | `bool?` | Whether to automatically close the popover after selection. |
+| `kDefaultSelectMaxHeight` | `dynamic` | Default maximum height for select popups in logical pixels. |
+| `onChanged` | `ValueChanged<T?>?` |  |
+| `placeholder` | `Widget?` |  |
+| `filled` | `bool` |  |
+| `focusNode` | `FocusNode?` |  |
+| `constraints` | `BoxConstraints?` |  |
+| `popupConstraints` | `BoxConstraints?` |  |
+| `popupWidthConstraint` | `PopoverConstraint` |  |
+| `value` | `T?` | The currently selected value. |
+| `borderRadius` | `BorderRadiusGeometry?` |  |
+| `padding` | `EdgeInsetsGeometry?` |  |
+| `popoverAlignment` | `AlignmentGeometry` |  |
+| `popoverAnchorAlignment` | `AlignmentGeometry?` |  |
+| `disableHoverEffect` | `bool` |  |
+| `canUnselect` | `bool` |  |
+| `autoClosePopover` | `bool?` |  |
+| `enabled` | `bool?` | Whether the select is enabled for user interaction. |
+| `popup` | `SelectPopupBuilder` |  |
+| `itemBuilder` | `SelectValueBuilder<T>` |  |
+| `valueSelectionHandler` | `SelectValueSelectionHandler<T>?` |  |
+| `valueSelectionPredicate` | `SelectValueSelectionPredicate<T>?` |  |
+| `showValuePredicate` | `Predicate<T>?` |  |

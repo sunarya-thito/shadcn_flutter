@@ -1,6 +1,6 @@
-# ScaffoldTheme
+# Scaffold
 
-Theme data for customizing [Scaffold] widget appearance.
+A fundamental layout widget that provides the basic structure for screen layouts.
 
 ## Usage
 
@@ -216,8 +216,15 @@ class ScaffoldTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `backgroundColor` | `Color?` | Background color of the scaffold body. |
-| `headerBackgroundColor` | `Color?` | Background color of the header section. |
-| `footerBackgroundColor` | `Color?` | Background color of the footer section. |
-| `showLoadingSparks` | `bool?` | Whether to show loading sparks by default. |
-| `resizeToAvoidBottomInset` | `bool?` | Whether the scaffold should resize for the onscreen keyboard. |
+| `headers` | `List<Widget>` | Header widgets displayed at the top of the scaffold. |
+| `footers` | `List<Widget>` | Footer widgets displayed at the bottom of the scaffold. |
+| `child` | `Widget` | Main content widget. |
+| `loadingProgress` | `double?` | Loading progress value (0.0 to 1.0). |
+| `loadingProgressIndeterminate` | `bool` | Whether loading indicator shows indeterminate progress. |
+| `floatingHeader` | `bool` | Whether header floats above content (takes no layout space). |
+| `floatingFooter` | `bool` | Whether footer floats above content (takes no layout space). |
+| `headerBackgroundColor` | `Color?` | Background color for header section. |
+| `footerBackgroundColor` | `Color?` | Background color for footer section. |
+| `backgroundColor` | `Color?` | Background color for the scaffold. |
+| `showLoadingSparks` | `bool?` | Whether to show loading sparks effect. |
+| `resizeToAvoidBottomInset` | `bool?` | Whether to resize when keyboard appears. |

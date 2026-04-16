@@ -1,6 +1,6 @@
-# CarouselSizeConstraint
+# Carousel
 
-Size constraint for the carousel.
+Interactive carousel widget with automatic transitions and customizable layouts.
 
 ## Usage
 
@@ -382,12 +382,36 @@ class CarouselTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Multiple transition types**: Sliding and fading transitions with customizable timing
+- **Automatic progression**: Optional auto-play with configurable duration per item
+- **Manual navigation**: Programmatic control through [CarouselController]
+- **Flexible sizing**: Fixed or fractional size constraints for responsive layouts
+- **Interactive controls**: Pause on hover, wrap-around navigation, and touch gestures
+- **Flexible alignment**: Multiple alignment options for different layout needs
+- **Directional support**: Horizontal or vertical carousel orientation
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-
+| `transition` | `CarouselTransition` | The carousel transition. |
+| `itemBuilder` | `Widget Function(BuildContext context, int index)` | The item builder. |
+| `duration` | `Duration?` | The duration of the carousel. |
+| `durationBuilder` | `Duration? Function(int index)?` | The duration builder of the carousel. |
+| `itemCount` | `int?` | The item count of the carousel. |
+| `controller` | `CarouselController?` | The carousel controller. |
+| `alignment` | `CarouselAlignment` | The carousel alignment. |
+| `direction` | `Axis` | The carousel direction. |
+| `wrap` | `bool` | Whether the carousel should wrap. |
+| `pauseOnHover` | `bool` | Whether the carousel should pause on hover. |
+| `waitOnStart` | `bool` | Whether the carousel should wait the item duration on start. |
+| `autoplaySpeed` | `Duration?` | The autoplay speed of the carousel. |
+| `autoplayReverse` | `bool` | Whether the carousel should autoplay in reverse. |
+| `draggable` | `bool` | Whether the carousel is draggable. |
+| `reverse` | `bool` | Whether the carousel is reverse in layout direction. |
+| `sizeConstraint` | `CarouselSizeConstraint` | The size constraint of the carousel. |
+| `speed` | `Duration` | The speed of the carousel. |
+| `curve` | `Curve` | The curve of the carousel. |
+| `onIndexChanged` | `ValueChanged<int>?` | The index change callback. |
+| `disableOverheadScrolling` | `bool` | Whether to disable overhead scrolling. |
+| `disableDraggingVelocity` | `bool` | Whether to disable dragging velocity. |

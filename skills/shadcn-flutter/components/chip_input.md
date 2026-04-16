@@ -1,6 +1,6 @@
-# ChipInputTheme
+# ChipInput
 
-Theme configuration for [ChipInput] widget styling and behavior.
+A text input widget that supports inline chip elements.
 
 ## Usage
 
@@ -179,5 +179,9 @@ class ChipInputTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `useChips` | `bool?` | Whether to render selected items as interactive chip widgets by default.  When true, selected items appear as dismissible chip widgets with close buttons. When false, items appear as simple text tokens. Individual [ChipInput] widgets can override this default behavior. |
-| `spacing` | `double?` | The spacing between chips. |
+| `chipBuilder` | `ChipWidgetBuilder<T>` | Builder function for creating chip widgets. |
+| `onChipSubmitted` | `ChipSubmissionCallback<T>` | Callback to convert text into a chip object. |
+| `onChipsChanged` | `ValueChanged<List<T>>?` | Callback invoked when the list of chips changes. |
+| `useChips` | `bool?` | Whether to display items as visual chips (defaults to theme setting). |
+| `initialChips` | `List<T>?` | Initial chips to display in the input. |
+| `autoInsertSuggestion` | `bool` | Whether to automatically insert autocomplete suggestions as chips. |

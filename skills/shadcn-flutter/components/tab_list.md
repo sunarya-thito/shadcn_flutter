@@ -1,6 +1,6 @@
-# TabListTheme
+# TabList
 
-Theme configuration for [TabList] appearance and behavior.
+A horizontal tab list widget for selecting between multiple tab content areas.
 
 ## Usage
 
@@ -145,7 +145,6 @@ class TabListTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `borderColor` | `Color?` | Color of the bottom border line separating tabs from content.  Type: `Color?`. If null, uses the theme's border color. This creates visual separation between the tab bar and the content area. |
-| `borderWidth` | `double?` | Width of the bottom border line in logical pixels.  Type: `double?`. If null, uses 1 logical pixel scaled by theme scaling. The border provides structure and visual hierarchy to the tab interface. |
-| `indicatorColor` | `Color?` | Color of the active tab indicator line.  Type: `Color?`. If null, uses the theme's primary color. The indicator clearly shows which tab is currently active. |
-| `indicatorHeight` | `double?` | Height of the active tab indicator line in logical pixels.  Type: `double?`. If null, uses 2 logical pixels scaled by theme scaling. The indicator appears at the bottom of the active tab. |
+| `children` | `List<TabChild>` | List of tab child widgets to display in the tab list.  Type: `List<TabChild>`. Each TabChild represents one selectable tab with its own label and optional content. The tabs are displayed in the order provided in the list. |
+| `index` | `int` | Index of the currently active/selected tab.  Type: `int`. Zero-based index indicating which tab is currently active. Must be within the bounds of the [children] list. The active tab receives special styling and the indicator line. |
+| `onChanged` | `ValueChanged<int>?` | Callback invoked when a tab is selected.  Type: `ValueChanged<int>?`. Called with the index of the newly selected tab when the user taps on a tab button. If null, tabs are not interactive. |

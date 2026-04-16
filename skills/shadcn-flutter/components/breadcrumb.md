@@ -1,6 +1,6 @@
-# BreadcrumbTheme
+# Breadcrumb
 
-Theme for [Breadcrumb].
+Navigation breadcrumb trail showing hierarchical path with customizable separators.
 
 ## Usage
 
@@ -102,13 +102,19 @@ class BreadcrumbTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Hierarchical navigation**: Clear visual representation of path structure
+- **Customizable separators**: Built-in arrow and slash separators or custom widgets
+- **Overflow handling**: Horizontal scrolling when content exceeds available width
+- **Touch-optimized**: Mobile-friendly scrolling behavior
+- **Theming support**: Consistent styling through theme system
+- **Responsive**: Automatically adapts to different screen sizes
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `separator` | `Widget?` | Separator widget between breadcrumb items. |
-| `padding` | `EdgeInsetsGeometry?` | Padding around the breadcrumb row. |
+| `arrowSeparator` | `Widget` | Default arrow separator widget (>).  Can be used as the [separator] parameter for arrow-style navigation. |
+| `slashSeparator` | `Widget` | Default slash separator widget (/).  Can be used as the [separator] parameter for slash-style navigation. |
+| `children` | `List<Widget>` | The list of breadcrumb navigation items.  Each widget represents a step in the navigation trail, from root to current location. The last item is styled as the current page. |
+| `separator` | `Widget?` | Widget displayed between breadcrumb items.  If `null`, uses the default separator from the theme. |
+| `padding` | `EdgeInsetsGeometry?` | Padding around the entire breadcrumb widget.  If `null`, uses default padding from the theme. |

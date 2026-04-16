@@ -4,7 +4,7 @@ A widget that displays validation feedback for form entries.
 
 ## Usage
 
-// No examples found for validated
+No examples found for validated.
 
 ## Features
 - Responsive design

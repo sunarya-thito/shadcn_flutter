@@ -1,6 +1,6 @@
-# CardTheme
+# Card
 
-Theme data for customizing [Card] and [SurfaceCard] widget appearance.
+A versatile container widget that provides a card-like appearance with comprehensive styling options.
 
 ## Usage
 
@@ -121,14 +121,15 @@ class CardTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `padding` | `EdgeInsetsGeometry?` | Padding inside the card. |
-| `filled` | `bool?` | Whether the card is filled. |
-| `fillColor` | `Color?` | The fill color when [filled] is true. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius of the card. |
-| `borderColor` | `Color?` | Border color of the card. |
-| `borderWidth` | `double?` | Border width of the card. |
-| `clipBehavior` | `Clip?` | Clip behavior of the card. |
-| `boxShadow` | `List<BoxShadow>?` | Box shadow of the card. |
-| `surfaceOpacity` | `double?` | Surface opacity for blurred background. |
-| `surfaceBlur` | `double?` | Surface blur for blurred background. |
-| `duration` | `Duration?` | Animation duration for transitions. |
+| `child` | `Widget` | The child widget to display within the card. |
+| `padding` | `EdgeInsetsGeometry?` | Padding inside the card around the [child].  If `null`, uses default padding from the theme. |
+| `filled` | `bool?` | Whether the card has a filled background.  When `true`, the card has a solid background color. When `false` or `null`, uses theme defaults. |
+| `fillColor` | `Color?` | The background fill color of the card.  Only applies when [filled] is `true`. If `null`, uses theme default. |
+| `borderRadius` | `BorderRadiusGeometry?` | Border radius for rounded corners on the card.  If `null`, uses default border radius from the theme. |
+| `borderColor` | `Color?` | Color of the card's border.  If `null`, uses default border color from the theme. |
+| `borderWidth` | `double?` | Width of the card's border in logical pixels.  If `null`, uses default border width from the theme. |
+| `clipBehavior` | `Clip?` | How to clip the card's content.  Controls overflow clipping behavior. If `null`, uses [Clip.none]. |
+| `boxShadow` | `List<BoxShadow>?` | Box shadows to apply to the card.  Creates elevation and depth effects. If `null`, no shadows are applied. |
+| `surfaceOpacity` | `double?` | Opacity of the card's surface effect.  Controls the transparency of surface overlays. If `null`, uses theme default. |
+| `surfaceBlur` | `double?` | Blur amount for the card's surface effect.  Creates a frosted glass or blur effect. If `null`, no blur is applied. |
+| `duration` | `Duration?` | Duration for card appearance animations.  Controls how long transitions take when card properties change. If `null`, uses default animation duration. |

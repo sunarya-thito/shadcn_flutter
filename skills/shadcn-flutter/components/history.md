@@ -4,7 +4,7 @@ A grid widget that displays a history of previously used colors.
 
 ## Usage
 
-// No examples found for history
+No examples found for history.
 
 ## Features
 - Responsive design

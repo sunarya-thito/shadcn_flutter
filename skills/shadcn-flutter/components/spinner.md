@@ -1,10 +1,10 @@
-# SpinnerTheme
+# Spinner
 
-Theme configuration for spinner widgets.
+Abstract base class for all spinner widgets.
 
 ## Usage
 
-// No examples found for spinner
+No examples found for spinner.
 
 ## Features
 - Responsive design
@@ -15,5 +15,5 @@ Theme configuration for spinner widgets.
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `color` | `Color?` | Color of the spinner elements. |
-| `size` | `double?` | Size of the spinner widget. |
+| `color` | `Color?` | Optional color override for the spinner.  If `null`, uses theme's spinner color or default foreground color. |
+| `size` | `double?` | Optional size override for the spinner in logical pixels.  If `null`, uses theme's spinner size or a default size. |

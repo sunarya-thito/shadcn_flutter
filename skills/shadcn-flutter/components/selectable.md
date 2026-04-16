@@ -6,7 +6,7 @@ Theme data for [SelectableText] to customize cursor and selection behavior.
 
 ## Usage
 
-// No examples found for selectable
+No examples found for selectable.
 
 ## Features
 - Responsive design

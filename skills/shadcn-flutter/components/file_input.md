@@ -4,7 +4,7 @@ Provides customizable file icons in the widget tree.
 
 ## Usage
 
-// No examples found for file_input
+No examples found for file_input.
 
 ## Features
 - Responsive design

@@ -1,10 +1,10 @@
-# TextFieldTheme
+# TextField
 
-Theme data for customizing [TextField] appearance.
+A highly customizable single-line text input widget with extensive feature support.
 
 ## Usage
 
-// No examples found for text_field
+No examples found for text_field.
 
 ## Features
 - Responsive design
@@ -15,7 +15,4 @@ Theme data for customizing [TextField] appearance.
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for text field corners.  If `null`, uses default border radius from the theme. |
-| `filled` | `bool?` | Whether the text field has a filled background.  When `true`, applies a background fill color. |
-| `padding` | `EdgeInsetsGeometry?` | Padding inside the text field.  If `null`, uses default padding from the theme. |
-| `border` | `Border?` | Border style for the text field.  If `null`, uses default border from the theme. |
+

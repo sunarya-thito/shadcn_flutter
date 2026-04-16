@@ -1,12 +1,10 @@
-# TabContainerTheme
+# TabContainer
 
-{@template tab_container_theme}
-Theme data for [TabContainer] providing default builders.
-{@endtemplate}
+Container widget for managing multiple tabs.
 
 ## Usage
 
-// No examples found for tab_container
+No examples found for tab_container.
 
 ## Features
 - Responsive design
@@ -17,5 +15,8 @@ Theme data for [TabContainer] providing default builders.
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `builder` | `TabBuilder?` | Default builder for laying out tab children. |
-| `childBuilder` | `TabChildBuilder?` | Default builder for wrapping each tab child. |
+| `selected` | `int` | Currently selected tab index. |
+| `onSelect` | `ValueChanged<int>?` | Callback when tab selection changes. |
+| `children` | `List<TabChild>` | List of tab children to display. |
+| `builder` | `TabBuilder?` | Optional custom tab layout builder. |
+| `childBuilder` | `TabChildBuilder?` | Optional custom child widget builder. |

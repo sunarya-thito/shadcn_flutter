@@ -1,6 +1,6 @@
-# CardImageTheme
+# CardImage
 
-Theme configuration for [CardImage] components.
+Interactive card component with an image and optional text content.
 
 ## Usage
 
@@ -201,9 +201,16 @@ class CardImageTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `style` | `AbstractButtonStyle?` | Button style for the card. |
-| `direction` | `Axis?` | Layout direction for title/subtitle relative to the image. |
-| `hoverScale` | `double?` | Scale factor when hovering over the image. |
+| `image` | `Widget` | The primary image widget to display. |
+| `title` | `Widget?` | Optional title widget displayed with the image. |
+| `subtitle` | `Widget?` | Optional subtitle widget displayed below the title. |
+| `trailing` | `Widget?` | Optional trailing widget (e.g., action buttons). |
+| `leading` | `Widget?` | Optional leading widget (e.g., icon). |
+| `onPressed` | `VoidCallback?` | Callback invoked when the card is pressed. |
+| `enabled` | `bool?` | Whether the card is enabled for interaction. |
+| `style` | `AbstractButtonStyle?` | Custom button style for the card. |
+| `direction` | `Axis?` | Layout direction for content relative to image. |
+| `hoverScale` | `double?` | Scale factor applied to image on hover. |
 | `normalScale` | `double?` | Normal scale factor for the image. |
 | `backgroundColor` | `Color?` | Background color for the image container. |
 | `borderColor` | `Color?` | Border color for the image container. |

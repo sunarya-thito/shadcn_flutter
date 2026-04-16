@@ -1,6 +1,6 @@
-# RadioTheme
+# RadioGroup
 
-Theme data for customizing [Radio] widget appearance.
+A group of radio buttons for single-selection input.
 
 ## Usage
 
@@ -150,7 +150,7 @@ class RadioGroupTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `activeColor` | `Color?` | Color of the radio indicator when selected. |
-| `borderColor` | `Color?` | Border color of the radio button. |
-| `backgroundColor` | `Color?` | Background color of the radio button. |
-| `size` | `double?` | Size of the radio button. |
+| `child` | `Widget` | The child widget containing radio items. |
+| `value` | `T?` | The currently selected value. |
+| `onChanged` | `ValueChanged<T>?` | Callback invoked when the selection changes. |
+| `enabled` | `bool?` | Whether the radio group is enabled. |

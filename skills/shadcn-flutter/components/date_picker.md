@@ -1,6 +1,6 @@
-# DatePickerTheme
+# DatePicker
 
-Theme configuration for [DatePicker] widget styling and behavior.
+A date picker widget for selecting dates.
 
 ## Usage
 
@@ -189,9 +189,15 @@ class DatePickerTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `mode` | `PromptMode?` | Default interaction mode for date picker triggers.  Determines whether date selection opens a popover or modal dialog. When null, uses framework default prompt mode behavior. |
-| `initialView` | `CalendarView?` | Initial calendar view to display when date picker opens.  Specifies the default time period view (month, year, decade, etc.) shown when the calendar interface first appears. When null, uses framework default initial view. |
-| `initialViewType` | `CalendarViewType?` | Initial calendar view type for date picker interface.  Determines the layout style and interaction pattern of the calendar (grid, list, compact, etc.). When null, uses framework default view type. |
-| `popoverAlignment` | `AlignmentGeometry?` | Alignment point on the popover for anchor attachment.  Determines where the date picker popover positions itself relative to the anchor widget. When null, uses framework default alignment. |
-| `popoverAnchorAlignment` | `AlignmentGeometry?` | Alignment point on the anchor widget for popover positioning.  Specifies which part of the trigger widget the popover should align to. When null, uses framework default anchor alignment. |
-| `popoverPadding` | `EdgeInsetsGeometry?` | Internal padding applied to the date picker popover content.  Controls spacing around the calendar interface within the popover container. When null, uses framework default padding. |
+| `value` | `DateTime?` | The currently selected date value. |
+| `onChanged` | `ValueChanged<DateTime?>?` | Callback invoked when the selected date changes. |
+| `placeholder` | `Widget?` | Placeholder widget shown when no date is selected. |
+| `mode` | `PromptMode?` | The display mode for the date picker (popover or dialog). |
+| `initialView` | `CalendarView?` | The initial calendar view to display. |
+| `popoverAlignment` | `AlignmentGeometry?` | Alignment of the popover relative to the anchor. |
+| `popoverAnchorAlignment` | `AlignmentGeometry?` | Anchor alignment for the popover. |
+| `popoverPadding` | `EdgeInsetsGeometry?` | Padding inside the popover. |
+| `dialogTitle` | `Widget?` | Title widget for the dialog mode. |
+| `initialViewType` | `CalendarViewType?` | The initial calendar view type (date, month, or year). |
+| `stateBuilder` | `DateStateBuilder?` | Builder function to determine the state of each date. |
+| `enabled` | `bool?` | Whether the date picker is enabled. |

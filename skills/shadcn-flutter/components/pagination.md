@@ -1,6 +1,6 @@
-# PaginationTheme
+# Pagination
 
-Theme data for customizing [Pagination] widget appearance.
+A navigation widget for paginated content with comprehensive page controls.
 
 ## Usage
 
@@ -111,5 +111,13 @@ class PaginationTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `gap` | `double?` | The spacing between pagination controls. |
-| `showLabel` | `bool?` | Whether to show the previous/next labels. |
+| `page` | `int` | The current active page number (1-indexed).  Must be between 1 and [totalPages] inclusive. |
+| `totalPages` | `int` | The total number of pages available.  Must be >= 1. |
+| `onPageChanged` | `ValueChanged<int>` | Callback invoked when the page changes.  Called with the new page number (1-indexed) when user navigates. |
+| `maxPages` | `int` | The maximum number of page buttons to show.  When total pages exceed this number, pagination shows a subset centered around the current page. Defaults to 3. |
+| `showSkipToFirstPage` | `bool` | Whether to show a button to skip to the first page.  Displays a "first page" button when `true`. Defaults to `true`. |
+| `showSkipToLastPage` | `bool` | Whether to show a button to skip to the last page.  Displays a "last page" button when `true`. Defaults to `true`. |
+| `hidePreviousOnFirstPage` | `bool` | Whether to hide the previous button on the first page.  When `true`, hides the "previous" button when [page] is 1. Defaults to `false`. |
+| `hideNextOnLastPage` | `bool` | Whether to hide the next button on the last page.  When `true`, hides the "next" button when [page] equals [totalPages]. Defaults to `false`. |
+| `showLabel` | `bool?` | Whether to show text labels on previous/next buttons.  When `true`, shows "Previous" and "Next" text along with icons. When `false`, shows only icons. If `null`, uses theme default. |
+| `gap` | `double?` | Spacing between pagination controls in logical pixels.  If `null`, uses theme default spacing. |

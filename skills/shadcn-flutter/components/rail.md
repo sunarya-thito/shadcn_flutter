@@ -4,7 +4,7 @@ A standard navigation rail component for sidebar-style navigation.
 
 ## Usage
 
-// No examples found for rail
+No examples found for rail.
 
 ## Features
 - Responsive design

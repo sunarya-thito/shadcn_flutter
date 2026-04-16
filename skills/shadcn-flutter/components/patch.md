@@ -4,7 +4,7 @@ Details about a click event, including the click count.
 
 ## Usage
 
-// No examples found for patch
+No examples found for patch.
 
 ## Features
 - Responsive design

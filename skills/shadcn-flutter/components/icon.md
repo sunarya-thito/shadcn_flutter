@@ -4,7 +4,7 @@ A widget that wraps an icon with custom theme data.
 
 ## Usage
 
-// No examples found for icon
+No examples found for icon.
 
 ## Features
 - Responsive design

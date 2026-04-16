@@ -1,6 +1,6 @@
-# RefreshTriggerTheme
+# RefreshTrigger
 
-Theme configuration for [RefreshTrigger].
+A widget that provides pull-to-refresh functionality.
 
 ## Usage
 
@@ -225,8 +225,12 @@ class RefreshTriggerTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `minExtent` | `double?` | Minimum pull extent required to trigger refresh. |
-| `maxExtent` | `double?` | Maximum pull extent allowed. |
-| `indicatorBuilder` | `RefreshIndicatorBuilder?` | Builder for the refresh indicator. |
-| `curve` | `Curve?` | Animation curve for the refresh trigger. |
-| `completeDuration` | `Duration?` | Duration for the completion animation. |
+| `minExtent` | `double?` | Minimum pull extent required to trigger refresh.  Pull distance must exceed this value to activate the refresh callback. If null, uses theme or default value. |
+| `maxExtent` | `double?` | Maximum pull extent allowed.  Limits how far the user can pull to prevent excessive stretching. If null, uses theme or default value. |
+| `onRefresh` | `FutureVoidCallback?` | Callback invoked when refresh is triggered.  Should return a Future that completes when the refresh operation finishes. While the Future is pending, the refresh indicator shows loading state. |
+| `child` | `Widget` | The scrollable child widget being refreshed. |
+| `direction` | `Axis` | Direction of the pull gesture.  Defaults to [Axis.vertical] for standard top-down pull-to-refresh. |
+| `reverse` | `bool` | Whether to reverse the pull direction.  If true, pull gesture is inverted (e.g., pull down instead of up). |
+| `indicatorBuilder` | `RefreshIndicatorBuilder?` | Custom builder for the refresh indicator.  If null, uses [defaultIndicatorBuilder]. |
+| `curve` | `Curve?` | Animation curve for extent changes.  Controls how the pull extent animates during interactions. |
+| `completeDuration` | `Duration?` | Duration for the completion animation.  Time to display the completion state before hiding the indicator. |

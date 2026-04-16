@@ -4,7 +4,7 @@ A concrete implementation of [ComponentController] that manages a single value.
 
 ## Usage
 
-// No examples found for control
+No examples found for control.
 
 ## Features
 - Responsive design

@@ -4,7 +4,7 @@ Configuration for file size unit formatting.
 
 ## Usage
 
-// No examples found for locale_utils
+No examples found for locale_utils.
 
 ## Features
 - Responsive design

@@ -4,7 +4,7 @@ A slider widget for adjusting HSV color components.
 
 ## Usage
 
-// No examples found for hsv
+No examples found for hsv.
 
 ## Features
 - Responsive design

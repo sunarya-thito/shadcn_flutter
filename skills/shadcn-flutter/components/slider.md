@@ -1,6 +1,6 @@
-# SliderController
+# Slider
 
-Reactive controller for managing slider state with value operations.
+A Material Design slider widget for selecting values or ranges.
 
 ## Usage
 
@@ -193,4 +193,14 @@ class SliderTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-
+| `value` | `SliderValue` | The current value of the slider.  Can be either a single value or a range. The slider's visual state reflects this value. |
+| `onChanged` | `ValueChanged<SliderValue>?` | Callback invoked when the slider value changes.  Called repeatedly during slider interaction as the user drags the thumb or clicks the track. Receives the new [SliderValue]. |
+| `onChangeStart` | `ValueChanged<SliderValue>?` | Callback invoked when the user starts changing the slider value.  Called once when interaction begins. Receives the initial [SliderValue]. |
+| `onChangeEnd` | `ValueChanged<SliderValue>?` | Callback invoked when the user finishes changing the slider value.  Called once when interaction ends. Receives the final [SliderValue]. |
+| `min` | `double` | The minimum value the slider can represent.  Defaults to `0`. Must be less than [max]. |
+| `max` | `double` | The maximum value the slider can represent.  Defaults to `1`. Must be greater than [min]. |
+| `divisions` | `int?` | The number of discrete divisions the slider range is divided into.  If `null`, the slider is continuous. If specified, the slider snaps to discrete values. |
+| `hintValue` | `SliderValue?` | An optional hint value displayed on the slider track.  Renders as a visual marker showing a target or reference position. |
+| `increaseStep` | `double?` | The step size for keyboard increment actions.  Used when the user triggers increase actions via keyboard. If `null`, a default step is calculated based on the slider range. |
+| `decreaseStep` | `double?` | The step size for keyboard decrement actions.  Used when the user triggers decrease actions via keyboard. If `null`, a default step is calculated based on the slider range. |
+| `enabled` | `bool?` | Whether the slider is interactive.  When `false` or `null` with no [onChanged] callback, the slider is displayed in a disabled state and does not respond to user input. |

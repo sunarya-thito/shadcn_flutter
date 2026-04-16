@@ -1,6 +1,6 @@
-# PopoverOverlayHandler
+# Popover
 
-Handles overlay presentation for popover components.
+A comprehensive popover overlay system for displaying contextual content.
 
 ## Usage
 
@@ -184,4 +184,5 @@ class PopoverTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-
+| `key` | `GlobalKey<OverlayHandlerStateMixin>` | Global key for accessing the overlay handler state. |
+| `entry` | `OverlayCompleter` | The overlay completer that manages this popover's lifecycle. |

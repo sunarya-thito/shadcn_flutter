@@ -1,6 +1,6 @@
-# ProgressTheme
+# Progress
 
-Theme configuration for [Progress] components.
+A linear progress indicator that visually represents task completion.
 
 ## Usage
 
@@ -151,7 +151,9 @@ class ProgressTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `color` | `Color?` | The foreground color of the progress indicator.  Type: `Color?`. If null, uses the default progress color from theme. Applied to the filled portion that shows completion progress. |
-| `backgroundColor` | `Color?` | The background color behind the progress indicator.  Type: `Color?`. If null, uses a semi-transparent version of the progress color. Visible in the unfilled portion of the progress track. |
-| `borderRadius` | `BorderRadiusGeometry?` | The border radius of the progress indicator container.  Type: `BorderRadiusGeometry?`. If null, uses theme's small border radius. Applied to both the track and the progress fill for consistent styling. |
-| `minHeight` | `double?` | The minimum height of the progress indicator.  Type: `double?`. If null, defaults to 8.0 scaled by theme scaling factor. Ensures adequate visual presence while maintaining proportional sizing. |
+| `progress` | `double?` | The current progress value within the specified range.  Type: `double?`. If null, displays indeterminate progress animation. Must be between [min] and [max] values when provided. The widget automatically normalizes this value for display. |
+| `min` | `double` | The minimum value of the progress range.  Type: `double`, default: `0.0`. Defines the starting point for progress calculation. Must be less than [max]. |
+| `max` | `double` | The maximum value of the progress range.  Type: `double`, default: `1.0`. Defines the completion point for progress calculation. Must be greater than [min]. |
+| `disableAnimation` | `bool` | Whether to disable progress fill animations.  Type: `bool`, default: `false`. When true, progress changes immediately without smooth transitions. Useful for performance optimization. |
+| `color` | `Color?` | The color of the progress indicator fill.  Type: `Color?`. If null, uses the theme's progress color or the color specified in [ProgressTheme]. Overrides theme values. |
+| `backgroundColor` | `Color?` | The background color of the progress track.  Type: `Color?`. If null, uses the theme's background color or a semi-transparent version of the progress color. Overrides theme values. |

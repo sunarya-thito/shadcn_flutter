@@ -4,7 +4,7 @@ Theme data for customizing [NavigationBar] widget appearance.
 
 ## Usage
 
-// No examples found for theme
+No examples found for theme.
 
 ## Features
 - Responsive design

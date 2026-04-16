@@ -1,6 +1,6 @@
-# ModalBackdropTheme
+# DialogRoute
 
-Theme configuration for modal backdrop appearance and behavior.
+Custom route implementation for shadcn_flutter dialogs.
 
 ## Usage
 
@@ -183,8 +183,6 @@ class DialogTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius applied to the modal surface. |
-| `padding` | `EdgeInsetsGeometry?` | Padding around the modal content area. |
-| `barrierColor` | `Color?` | Color of the barrier that appears behind the modal. |
-| `modal` | `bool?` | Whether the backdrop behaves as a modal (blocking interaction). |
-| `surfaceClip` | `bool?` | Whether to clip the surface for visual effects. |
+| `data` | `CapturedData?` | Captured data from the launching context. |
+| `alignment` | `AlignmentGeometry` | Alignment for positioning the dialog. |
+| `fullScreen` | `bool` | Whether the dialog should display in full-screen mode. |

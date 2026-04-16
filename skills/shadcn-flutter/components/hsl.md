@@ -4,7 +4,7 @@ A slider widget for adjusting HSL color components.
 
 ## Usage
 
-// No examples found for hsl
+No examples found for hsl.
 
 ## Features
 - Responsive design

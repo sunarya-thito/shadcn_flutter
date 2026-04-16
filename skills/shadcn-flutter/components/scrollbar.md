@@ -1,10 +1,10 @@
-# ScrollbarTheme
+# Scrollbar
 
-Theme configuration for [Scrollbar].
+A customizable scrollbar widget for shadcn_flutter.
 
 ## Usage
 
-// No examples found for scrollbar
+No examples found for scrollbar.
 
 ## Features
 - Responsive design
@@ -15,6 +15,13 @@ Theme configuration for [Scrollbar].
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `color` | `Color?` | Color of the scrollbar thumb. |
-| `thickness` | `double?` | Thickness of the scrollbar thumb. |
-| `radius` | `Radius?` | Radius of the scrollbar thumb. |
+| `child` | `Widget` | The scrollable widget to attach the scrollbar to. |
+| `controller` | `ScrollController?` | Optional scroll controller for the scrollable content.  If not provided, the scrollbar will use the nearest [Scrollable]'s controller. |
+| `thumbVisibility` | `bool?` | Whether the scrollbar thumb is always visible.  When `true`, the thumb remains visible even when not scrolling. When `false` or `null`, the thumb fades out after scrolling stops. |
+| `trackVisibility` | `bool?` | Whether the scrollbar track is always visible.  When `true`, the track (background) remains visible. When `false` or `null`, only the thumb is shown. |
+| `thickness` | `double?` | The thickness of the scrollbar in logical pixels. |
+| `radius` | `Radius?` | The border radius of the scrollbar thumb. |
+| `color` | `Color?` | The color of the scrollbar thumb. |
+| `interactive` | `bool?` | Whether the scrollbar can be dragged to scroll.  When `true`, users can click and drag the scrollbar thumb to scroll. |
+| `notificationPredicate` | `ScrollNotificationPredicate?` | Predicate to determine which scroll notifications trigger scrollbar updates. |
+| `scrollbarOrientation` | `ScrollbarOrientation?` | The orientation of the scrollbar (vertical or horizontal). |

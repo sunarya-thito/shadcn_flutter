@@ -1,6 +1,6 @@
-# DropdownMenuData
+# DropdownMenu
 
-Internal data class for dropdown menu context.
+A dropdown menu widget that displays a list of menu items in a popup.
 
 ## Usage
 
@@ -265,4 +265,6 @@ class DropdownMenuTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `key` | `GlobalKey` | Unique key identifying this dropdown menu instance.  Used for coordinating overlays and region-based interactions. |
+| `surfaceOpacity` | `double?` | Opacity of the surface blur effect.  If `null`, uses theme default. |
+| `surfaceBlur` | `double?` | Amount of blur to apply to the surface.  If `null`, uses theme default. |
+| `children` | `List<MenuItem>` | Menu items to display in the dropdown.  Each item should be a [MenuItem] or similar menu component. |

@@ -1,6 +1,6 @@
-# AlertTheme
+# Alert
 
-Theme configuration for [Alert] components.
+A versatile alert component for displaying important messages or notifications.
 
 ## Usage
 
@@ -134,6 +134,8 @@ class AlertTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `padding` | `EdgeInsetsGeometry?` | The internal padding around the alert content.  Type: `EdgeInsetsGeometry?`. If null, uses default padding based on scaling. Controls the spacing between the alert border and its content elements. |
-| `backgroundColor` | `Color?` | The background color of the alert container.  Type: `Color?`. If null, uses [ColorScheme.card] from the current theme. Applied to the [OutlinedContainer] that wraps the alert content. |
-| `borderColor` | `Color?` | The border color of the alert outline.  Type: `Color?`. If null, uses the default border color from [OutlinedContainer]. Defines the visual boundary around the alert. |
+| `leading` | `Widget?` | Optional leading widget, typically an icon.  Type: `Widget?`. Displayed at the start of the alert layout. In destructive mode, inherits the destructive color from the theme. |
+| `title` | `Widget?` | Optional title widget for the alert header.  Type: `Widget?`. Usually contains the main alert message or heading. Positioned after the leading widget in the layout flow. |
+| `content` | `Widget?` | Optional content widget for detailed alert information.  Type: `Widget?`. Provides additional context or description below the title. Can contain longer text or complex content layouts. |
+| `trailing` | `Widget?` | Optional trailing widget, typically for actions or dismissal.  Type: `Widget?`. Displayed at the end of the alert layout. Common use cases include close buttons or action controls. |
+| `destructive` | `bool` | Whether to apply destructive styling to the alert.  Type: `bool`, default: `false`. When true, applies destructive color scheme to text and icons for error or warning messages. |

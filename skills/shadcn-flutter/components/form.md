@@ -1,6 +1,6 @@
-# Validator
+# Form
 
-Abstract base class for implementing form field validation logic.
+A widget that provides form management capabilities for collecting and validating user input.
 
 ## Usage
 
@@ -1569,4 +1569,6 @@ class FormTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-
+| `controller` | `FormController?` | Optional controller for programmatic form management.  When provided, this controller manages form state externally and allows programmatic access to form values, validation states, and submission. If null, the Form creates and manages its own internal controller. |
+| `child` | `Widget` | The widget subtree containing form fields.  This child widget should contain the form fields and other UI elements that participate in the form. Form fields within this subtree automatically register with this Form instance. |
+| `onSubmit` | `FormSubmitCallback?` | Callback invoked when the form is submitted.  This callback receives a map of form values keyed by their [FormKey] identifiers. It is called when [FormController.submit] is invoked and all form validations pass successfully.  The callback can return a Future for asynchronous submission processing. |

@@ -1,6 +1,6 @@
-# StarRatingTheme
+# StarRating
 
-Theme data for customizing [StarRating] widget appearance.
+An interactive star rating widget for collecting user feedback and ratings.
 
 ## Usage
 
@@ -116,7 +116,19 @@ class StarRatingTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `activeColor` | `Color?` | The color of the filled portion of the stars. |
-| `backgroundColor` | `Color?` | The color of the unfilled portion of the stars. |
-| `starSize` | `double?` | The size of each star. |
-| `starSpacing` | `double?` | The spacing between stars. |
+| `value` | `double` | The current rating value.  Should be between `0` and [max]. Fractional values are supported. |
+| `onChanged` | `ValueChanged<double>?` | Callback invoked when the rating changes.  If `null`, the widget is in read-only mode. |
+| `step` | `double` | The minimum increment for rating changes.  When a user interacts with the stars, the value will snap to multiples of this step. Defaults to `0.5` for half-star precision. |
+| `direction` | `Axis` | The layout direction of the stars.  Can be [Axis.horizontal] or [Axis.vertical]. Defaults to horizontal. |
+| `max` | `double` | The maximum rating value.  Determines how many stars are displayed. Defaults to `5.0`. |
+| `activeColor` | `Color?` | The color of filled star portions.  If `null`, uses the theme's primary color. |
+| `backgroundColor` | `Color?` | The color of unfilled star portions.  If `null`, uses a default background color from the theme. |
+| `starPoints` | `double` | The number of points per star.  Defaults to `5` for traditional five-pointed stars. |
+| `starSize` | `double?` | Override size of each star.  If `null`, uses the default size from the theme. |
+| `starSpacing` | `double?` | Override spacing between stars.  If `null`, uses the default spacing from the theme. |
+| `starPointRounding` | `double?` | Rounding radius for star points.  Controls how rounded the tips of the star points appear. If `null`, uses sharp points. |
+| `starValleyRounding` | `double?` | Rounding radius for star valleys.  Controls how rounded the inner valleys between star points appear. If `null`, uses sharp valleys. |
+| `starSquash` | `double?` | Vertical compression factor for stars.  Values less than `1.0` make stars appear squashed. If `null`, stars maintain their natural proportions. |
+| `starInnerRadiusRatio` | `double?` | Inner to outer radius ratio for stars.  Controls the depth of star valleys. Lower values create deeper valleys. If `null`, uses a default ratio. |
+| `starRotation` | `double?` | Rotation angle for stars in radians.  Rotates each star by this angle. If `null`, stars are not rotated. |
+| `enabled` | `bool?` | Whether the star rating is interactive.  When `false`, the widget is in read-only mode. Defaults to `true` if [onChanged] is provided. |

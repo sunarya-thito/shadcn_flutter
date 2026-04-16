@@ -4,7 +4,7 @@ Data class containing navigation control configuration and state.
 
 ## Usage
 
-// No examples found for data
+No examples found for data.
 
 ## Features
 - Responsive design

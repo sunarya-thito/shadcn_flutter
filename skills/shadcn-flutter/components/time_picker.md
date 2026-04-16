@@ -1,6 +1,6 @@
-# TimePickerTheme
+# TimePicker
 
-Theme configuration for [TimePicker] widget appearance and behavior.
+A time picker widget for selecting time values.
 
 ## Usage
 
@@ -125,10 +125,14 @@ class TimePickerTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `mode` | `PromptMode?` | Mode for displaying the time picker (popover or dialog). |
-| `popoverAlignment` | `AlignmentGeometry?` | Alignment of the popover relative to its anchor. |
-| `popoverAnchorAlignment` | `AlignmentGeometry?` | Alignment point on the anchor widget for popover positioning. |
+| `value` | `TimeOfDay?` | The currently selected time value. |
+| `onChanged` | `ValueChanged<TimeOfDay?>?` | Callback invoked when the selected time changes. |
+| `mode` | `PromptMode` | The display mode for the time picker (popover or dialog). |
+| `placeholder` | `Widget?` | Placeholder widget shown when no time is selected. |
+| `popoverAlignment` | `AlignmentGeometry?` | Alignment of the popover relative to the anchor. |
+| `popoverAnchorAlignment` | `AlignmentGeometry?` | Anchor alignment for the popover. |
 | `popoverPadding` | `EdgeInsetsGeometry?` | Padding inside the popover. |
-| `use24HourFormat` | `bool?` | Whether to use 24-hour time format. |
-| `showSeconds` | `bool?` | Whether to show seconds picker. |
-| `dialogTitle` | `Widget?` | Custom title widget for the time picker dialog. |
+| `use24HourFormat` | `bool?` | Whether to use 24-hour format. |
+| `showSeconds` | `bool` | Whether to show seconds selection. |
+| `dialogTitle` | `Widget?` | Title widget for the dialog mode. |
+| `enabled` | `bool?` | Whether the time picker is enabled. |

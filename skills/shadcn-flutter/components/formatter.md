@@ -4,7 +4,7 @@ Provides factory methods for common text input formatters.
 
 ## Usage
 
-// No examples found for formatter
+No examples found for formatter.
 
 ## Features
 - Responsive design

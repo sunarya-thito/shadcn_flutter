@@ -4,7 +4,7 @@ A full-width navigation sidebar component for comprehensive navigation.
 
 ## Usage
 
-// No examples found for sidebar
+No examples found for sidebar.
 
 ## Features
 - Responsive design

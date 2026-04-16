@@ -1,6 +1,6 @@
-# TableTheme
+# Table
 
-Theme configuration for [Table] components.
+A flexible table widget with support for spanning, scrolling, and interactive features.
 
 ## Usage
 
@@ -697,15 +697,25 @@ class TableTile extends StatelessWidget implements IComponentPage {
 
 
 ## Features
-- Responsive design
-- Customizable styling
-- Accessibility support
+- **Cell Spanning**: Support for colspan and rowspan across multiple cells
+- **Flexible Sizing**: Multiple sizing strategies (fixed, flex, intrinsic) for columns/rows
+- **Frozen Cells**: Ability to freeze specific cells during scrolling
+- **Interactive States**: Hover effects and selection states with visual feedback
+- **Scrolling**: Optional horizontal and vertical scrolling with viewport control
+- **Theming**: Comprehensive theming system for visual customization
 
 ## Properties
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `border` | `Border?` | Border configuration for the entire table.  Type: `Border?`. Defines the outer border of the table container. If null, uses the default theme border or no border. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the table corners.  Type: `BorderRadiusGeometry?`. Controls corner rounding of the table container. If null, uses the theme's default radius. |
-| `backgroundColor` | `Color?` | Background color for the table container.  Type: `Color?`. Used as the background color behind all table content. If null, uses the theme's default background color. |
-| `cellTheme` | `TableCellTheme?` | Default theme for all table cells.  Type: `TableCellTheme?`. Provides default styling for table cells including padding, borders, and text styles. Individual cells can override this theme. |
+| `rows` | `List<TableRow>` | List of rows to display in the table.  Type: `List<TableRow>`. Contains the table data organized as rows. Can include [TableRow], [TableHeader], and [TableFooter] instances. Each row contains a list of [TableCell] widgets. |
+| `defaultColumnWidth` | `TableSize` | Default sizing strategy for all columns.  Type: `TableSize`. Used when no specific width is provided in [columnWidths]. Defaults to [FlexTableSize] for proportional sizing. |
+| `defaultRowHeight` | `TableSize` | Default sizing strategy for all rows.  Type: `TableSize`. Used when no specific height is provided in [rowHeights]. Defaults to [IntrinsicTableSize] for content-based sizing. |
+| `columnWidths` | `Map<int, TableSize>?` | Specific column width overrides.  Type: `Map<int, TableSize>?`. Maps column indices to specific sizing strategies. Overrides [defaultColumnWidth] for specified columns. |
+| `rowHeights` | `Map<int, TableSize>?` | Specific row height overrides.  Type: `Map<int, TableSize>?`. Maps row indices to specific sizing strategies. Overrides [defaultRowHeight] for specified rows. |
+| `clipBehavior` | `Clip` | Clipping behavior for the table content.  Type: `Clip`. Controls how content is clipped at table boundaries. Defaults to [Clip.hardEdge] for clean boundaries. |
+| `theme` | `TableTheme?` | Theme configuration for the table appearance.  Type: `TableTheme?`. Controls borders, colors, and overall styling. If null, uses the default theme from [ComponentTheme]. |
+| `frozenCells` | `FrozenTableData?` | Configuration for frozen cells during scrolling.  Type: `FrozenTableData?`. Specifies which cells remain visible during horizontal or vertical scrolling. Useful for headers/footers. |
+| `horizontalOffset` | `double?` | Horizontal scroll offset for the table viewport.  Type: `double?`. Controls horizontal scrolling position. If provided, the table displays within a scrollable viewport. |
+| `verticalOffset` | `double?` | Vertical scroll offset for the table viewport.  Type: `double?`. Controls vertical scrolling position. If provided, the table displays within a scrollable viewport. |
+| `viewportSize` | `Size?` | Size constraints for the table viewport.  Type: `Size?`. When provided with scroll offsets, constrains the visible area of the table. Essential for scrolling behavior. |

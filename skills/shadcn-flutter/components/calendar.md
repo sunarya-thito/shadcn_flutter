@@ -1,6 +1,6 @@
-# CalendarTheme
+# Calendar
 
-Theme configuration for calendar widgets.
+A highly customizable calendar widget supporting multiple selection modes.
 
 ## Usage
 
@@ -393,4 +393,10 @@ class CalendarTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `arrowIconColor` | `Color?` | Color of navigation arrow icons. |
+| `now` | `DateTime?` | The current date for highlighting purposes (defaults to DateTime.now()). |
+| `value` | `CalendarValue?` | The currently selected date value(s). |
+| `view` | `CalendarView` | The month and year view to display in the calendar. |
+| `selectionMode` | `CalendarSelectionMode` | The selection mode determining how dates can be selected. |
+| `onChanged` | `ValueChanged<CalendarValue?>?` | Callback invoked when the selected date(s) change. |
+| `isDateEnabled` | `bool Function(DateTime date)?` | Legacy function to determine if a date should be enabled. |
+| `stateBuilder` | `DateStateBuilder?` | Builder function to determine the state of each date. |

@@ -4,7 +4,7 @@ Widget that intercepts scroll events to simulate middle-button drag scrolling.
 
 ## Usage
 
-// No examples found for scrollview
+No examples found for scrollview.
 
 ## Features
 - Responsive design

@@ -1,6 +1,6 @@
-# SwiperTheme
+# Swiper
 
-Theme configuration for swiper overlay behavior and appearance.
+A gesture-responsive widget that triggers overlay content through swiping.
 
 ## Usage
 
@@ -295,16 +295,21 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `expands` | `bool?` | Whether the swiper should expand to fill available space. |
-| `draggable` | `bool?` | Whether the swiper can be dragged to dismiss. |
-| `barrierDismissible` | `bool?` | Whether tapping the barrier dismisses the swiper. |
+| `enabled` | `bool` | Whether swipe gestures are enabled. |
+| `position` | `OverlayPosition` | Position from which the overlay should appear. |
+| `builder` | `WidgetBuilder` | Builder function that creates the overlay content. |
+| `handler` | `SwiperHandler` | Handler that defines the overlay behavior (drawer or sheet). |
+| `expands` | `bool?` | Whether the overlay should expand to fill available space. |
+| `draggable` | `bool?` | Whether the overlay can be dragged to dismiss. |
+| `barrierDismissible` | `bool?` | Whether tapping the barrier dismisses the overlay. |
 | `backdropBuilder` | `WidgetBuilder?` | Builder for custom backdrop content. |
 | `useSafeArea` | `bool?` | Whether to respect device safe areas. |
 | `showDragHandle` | `bool?` | Whether to show the drag handle. |
-| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the swiper container. |
+| `borderRadius` | `BorderRadiusGeometry?` | Border radius for the overlay container. |
 | `dragHandleSize` | `Size?` | Size of the drag handle when displayed. |
 | `transformBackdrop` | `bool?` | Whether to transform the backdrop when shown. |
 | `surfaceOpacity` | `double?` | Opacity for surface effects. |
 | `surfaceBlur` | `double?` | Blur intensity for surface effects. |
 | `barrierColor` | `Color?` | Color of the modal barrier. |
+| `child` | `Widget` | The child widget that responds to swipe gestures. |
 | `behavior` | `HitTestBehavior?` | Hit test behavior for gesture detection. |

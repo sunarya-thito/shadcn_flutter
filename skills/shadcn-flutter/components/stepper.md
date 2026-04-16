@@ -1,6 +1,6 @@
-# StepperTheme
+# Stepper
 
-Theme configuration for [Stepper] components.
+A multi-step navigation component with visual progress indication.
 
 ## Usage
 
@@ -818,6 +818,8 @@ class StepperTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `direction` | `Axis?` | Layout direction for the stepper. |
+| `controller` | `StepperController` | Controller for managing stepper state and navigation. |
+| `steps` | `List<Step>` | List of steps to display in the stepper. |
+| `direction` | `Axis?` | Layout direction (horizontal or vertical). |
 | `size` | `StepSize?` | Size variant for step indicators. |
 | `variant` | `StepVariant?` | Visual variant for step presentation. |
