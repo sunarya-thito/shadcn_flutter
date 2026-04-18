@@ -724,14 +724,13 @@ class DensityWrap extends StatelessWidget {
     this.spacing = 0,
     this.runSpacing = 0,
     this.children = const [],
-    this.alignment = .start,
-    this.crossAxisAlignment = .start,
-    this.runAlignment = .start,
-
-    this.direction = .horizontal,
+    this.alignment = WrapAlignment.start,
+    this.crossAxisAlignment = WrapCrossAlignment.start,
+    this.runAlignment = WrapAlignment.start,
+    this.direction = Axis.horizontal,
     this.textDirection,
-    this.clipBehavior = .none,
-    this.verticalDirection = .down,
+    this.clipBehavior = Clip.none,
+    this.verticalDirection = VerticalDirection.down,
   });
 
   /// The direction to use as the main axis.
