@@ -756,17 +756,7 @@ class DensityWrap extends StatelessWidget {
   ///    are placed relative to each other in the cross axis.
   final WrapAlignment alignment;
 
-  /// How much space to place between children in a run in the main axis.
-  ///
-  /// For example, if [spacing] is 10.0, the children will be spaced at least
-  /// 10.0 logical pixels apart in the main axis.
-  ///
-  /// If there is additional free space in a run (e.g., because the wrap has a
-  /// minimum size that is not filled or because some runs are longer than
-  /// others), the additional free space will be allocated according to the
-  /// [alignment].
-  ///
-  /// Defaults to 0.0.
+  /// The spacing multiplier between children in the main axis.
   final double spacing;
 
   /// How the runs themselves should be placed in the cross axis.
@@ -784,16 +774,7 @@ class DensityWrap extends StatelessWidget {
   ///    are placed relative to each other in the cross axis.
   final WrapAlignment runAlignment;
 
-  /// How much space to place between the runs themselves in the cross axis.
-  ///
-  /// For example, if [runSpacing] is 10.0, the runs will be spaced at least
-  /// 10.0 logical pixels apart in the cross axis.
-  ///
-  /// If there is additional free space in the overall [Wrap] (e.g., because
-  /// the wrap has a minimum size that is not filled), the additional free space
-  /// will be allocated according to the [runAlignment].
-  ///
-  /// Defaults to 0.0.
+  /// The spacing multiplier between children in cross axis (between runs).
   final double runSpacing;
 
   /// How the children within a run should be aligned relative to each other in
@@ -926,10 +907,12 @@ class DensityWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Wrap(
-      spacing: spacing * context.theme.density.baseGap * context.theme.scaling,
+      spacing: spacing * theme.density.baseGap * theme.scaling,
       runSpacing:
-          runSpacing * context.theme.density.baseGap * context.theme.scaling,
+          runSpacing * theme.density.baseGap * theme.scaling,
       alignment: alignment,
       crossAxisAlignment: crossAxisAlignment,
       runAlignment: runAlignment,
