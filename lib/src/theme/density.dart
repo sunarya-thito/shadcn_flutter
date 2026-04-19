@@ -723,7 +723,7 @@ class DensityWrap extends StatelessWidget {
     super.key,
     this.spacing = 0,
     this.runSpacing = 0,
-    this.children = const [],
+    required this.children,
     this.alignment = WrapAlignment.start,
     this.crossAxisAlignment = WrapCrossAlignment.start,
     this.runAlignment = WrapAlignment.start,
@@ -737,7 +737,7 @@ class DensityWrap extends StatelessWidget {
   ///
   /// For example, if [direction] is [Axis.horizontal], the default, the
   /// children are placed adjacent to one another in a horizontal run until the
-  /// available horizontal space is consumed, at which point a subsequent
+  /// available horizontal space is consumed, at which point subsequent
   /// children are placed in a new run vertically adjacent to the previous run.
   final Axis direction;
 
