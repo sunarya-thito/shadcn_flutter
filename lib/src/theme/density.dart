@@ -877,7 +877,7 @@ class DensityWrap extends StatelessWidget {
   ///   @override
   ///   Widget build(BuildContext context) {
   ///     // Reusing `List<Widget> _children` here is problematic.
-  ///     return Row(children: _children);
+  ///     return Wrap(children: _children);
   ///   }
   /// }
   /// ```
@@ -899,7 +899,7 @@ class DensityWrap extends StatelessWidget {
   ///   @override
   ///   Widget build(BuildContext context) {
   ///     // Always create a new list of children as a Widget is immutable.
-  ///     return Row(children: _children.toList());
+  ///     return Wrap(children: _children.toList());
   ///   }
   /// }
   /// ```
