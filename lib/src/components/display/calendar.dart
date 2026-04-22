@@ -62,7 +62,7 @@ enum DateState {
 /// Takes a [DateTime] and [CalendarViewType] and returns a [DateState] to control whether
 /// that date should be enabled or disabled for user interaction.
 typedef DateStateBuilder = DateState Function(
-    DateTime date, CalendarViewType? viewType);
+    DateTime date, CalendarViewType viewType);
 
 /// Selection modes available for calendar components.
 ///
@@ -146,7 +146,7 @@ class DatePickerDialog extends StatefulWidget {
   ///   initialViewType: CalendarViewType.date,
   ///   selectionMode: CalendarSelectionMode.range,
   ///   onChanged: (value) => handleDateChange(value),
-  ///   stateBuilder: (date) => date.isBefore(DateTime.now())
+  ///   stateBuilder: (date, viewType) => date.isBefore(DateTime.now())
   ///     ? DateState.disabled
   ///     : DateState.enabled,
   /// )
