@@ -61,7 +61,8 @@ enum DateState {
 ///
 /// Takes a [DateTime] and [CalendarViewType] and returns a [DateState] to control whether
 /// that date should be enabled or disabled for user interaction.
-typedef DateStateBuilder = DateState Function(DateTime date, CalendarViewType? viewType);
+typedef DateStateBuilder = DateState Function(
+    DateTime date, CalendarViewType? viewType);
 
 /// Selection modes available for calendar components.
 ///
@@ -1279,7 +1280,8 @@ class _CalendarState extends State<Calendar> {
           onTap: () {
             _handleTap(date);
           },
-          state: widget.stateBuilder?.call(date, _viewType) ?? DateState.enabled,
+          state: widget.stateBuilder?.call(date, CalendarViewType.date) ??
+              DateState.enabled,
           child: Text('${date.day}'),
         );
         if (item.fromAnotherMonth) {
@@ -1373,7 +1375,8 @@ class MonthCalendar extends StatelessWidget {
             onChanged(value.copyWith(month: () => i));
           },
           width: theme.scaling * 56,
-          state: stateBuilder?.call(date, CalendarViewType.month) ?? DateState.enabled,
+          state: stateBuilder?.call(date, CalendarViewType.month) ??
+              DateState.enabled,
           child: Text(localizations.getAbbreviatedMonth(i)),
         ),
       );
@@ -1471,7 +1474,8 @@ class YearCalendar extends StatelessWidget {
             onChanged(i);
           },
           width: theme.scaling * 56,
-          state: stateBuilder?.call(date) ?? DateState.enabled,
+          state: stateBuilder?.call(date, CalendarViewType.year) ??
+              DateState.enabled,
           child: Text('$i'),
         ),
       );
