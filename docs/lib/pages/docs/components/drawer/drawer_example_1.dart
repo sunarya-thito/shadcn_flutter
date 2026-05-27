@@ -23,38 +23,43 @@ class _DrawerExample1State extends State<DrawerExample1> {
     OverlayPosition.start,
     OverlayPosition.start,
   ];
+
   // Open a drawer and optionally open another from within it.
-  void open(BuildContext context, int count) {
+  void open(int count) {
+    final Symbol currentAnchor = Symbol('drawer_anchor_$count');
     openDrawer(
-      context: context,
+      anchor: count == 0 ? #outerDrawerButton : Symbol('drawer_anchor_${count - 1}'),
       expands: true,
       builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(48),
-          child: IntrinsicWidth(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                    'Drawer ${count + 1} at ${positions[count % positions.length].name}'),
-                const Gap(16),
-                PrimaryButton(
-                  onPressed: () {
-                    // Open another drawer on top.
-                    open(context, count + 1);
-                  },
-                  child: const Text('Open Another Drawer'),
-                ),
-                const Gap(8),
-                SecondaryButton(
-                  onPressed: () {
-                    // Close the current top-most overlay.
-                    closeOverlay(context);
-                  },
-                  child: const Text('Close Drawer'),
-                ),
-              ],
+        return OverlayAnchor(
+          anchor: currentAnchor,
+          child: Container(
+            padding: const EdgeInsets.all(48),
+            child: IntrinsicWidth(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                      'Drawer ${count + 1} at ${positions[count % positions.length].name}'),
+                  const Gap(16),
+                  PrimaryButton(
+                    onPressed: () {
+                      // Open another drawer on top.
+                      open(count + 1);
+                    },
+                    child: const Text('Open Another Drawer'),
+                  ),
+                  const Gap(8),
+                  SecondaryButton(
+                    onPressed: () {
+                      // Close the current top-most overlay.
+                      closeOverlay(context);
+                    },
+                    child: const Text('Close Drawer'),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -65,11 +70,14 @@ class _DrawerExample1State extends State<DrawerExample1> {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {
-        open(context, 0);
-      },
-      child: const Text('Open Drawer'),
+    return OverlayAnchor(
+      anchor: #outerDrawerButton,
+      child: PrimaryButton(
+        onPressed: () {
+          open(0);
+        },
+        child: const Text('Open Drawer'),
+      ),
     );
   }
 }

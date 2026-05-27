@@ -59,45 +59,51 @@ class CounterPageState extends State<CounterPage> {
           title: const Text('Counter App'),
           subtitle: const Text('A simple counter app'),
           leading: [
-            GhostButton(
-              onPressed: () {
-                openDrawer(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      alignment: Alignment.center,
-                      constraints: const BoxConstraints(
-                        maxWidth: 300,
-                      ),
-                      child: const Text('Drawer'),
-                    );
-                  },
-                  position: OverlayPosition.left,
-                );
-              },
-              density: ButtonDensity.icon,
-              child: const Icon(Icons.menu),
+            OverlayAnchor(
+              anchor: #menuDrawer,
+              child: GhostButton(
+                onPressed: () {
+                  openDrawer(
+                    anchor: #menuDrawer,
+                    builder: (context) {
+                      return Container(
+                        alignment: Alignment.center,
+                        constraints: const BoxConstraints(
+                          maxWidth: 300,
+                        ),
+                        child: const Text('Drawer'),
+                      );
+                    },
+                    position: OverlayPosition.left,
+                  );
+                },
+                density: ButtonDensity.icon,
+                child: const Icon(Icons.menu),
+              ),
             ),
           ],
           trailing: [
-            GhostButton(
-              density: ButtonDensity.icon,
-              onPressed: () {
-                openSheet(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      alignment: Alignment.center,
-                      constraints: const BoxConstraints(
-                        maxWidth: 200,
-                      ),
-                      child: const Text('Sheet'),
-                    );
-                  },
-                  position: OverlayPosition.right,
-                );
-              },
-              child: const Icon(Icons.search),
+            OverlayAnchor(
+              anchor: #searchSheet,
+              child: GhostButton(
+                density: ButtonDensity.icon,
+                onPressed: () {
+                  openSheet(
+                    anchor: #searchSheet,
+                    builder: (context) {
+                      return Container(
+                        alignment: Alignment.center,
+                        constraints: const BoxConstraints(
+                          maxWidth: 200,
+                        ),
+                        child: const Text('Sheet'),
+                      );
+                    },
+                    position: OverlayPosition.right,
+                  );
+                },
+                child: const Icon(Icons.search),
+              ),
             ),
           ],
         ),

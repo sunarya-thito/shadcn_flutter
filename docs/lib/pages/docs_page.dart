@@ -548,12 +548,15 @@ class DocsPageState extends State<DocsPage> {
                                 horizontal: 18 * theme.scaling,
                               ),
                               leading: [
-                                GhostButton(
-                                  density: ButtonDensity.icon,
-                                  onPressed: () {
-                                    _openDrawer(context);
-                                  },
-                                  child: const Icon(Icons.menu),
+                                OverlayAnchor(
+                                  anchor: #menuDrawer,
+                                  child: GhostButton(
+                                    density: ButtonDensity.icon,
+                                    onPressed: () {
+                                      _openDrawer(context);
+                                    },
+                                    child: const Icon(Icons.menu),
+                                  ),
                                 ),
                               ],
                               trailing: [
@@ -872,7 +875,7 @@ class DocsPageState extends State<DocsPage> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     openSheet(
-      context: context,
+      anchor: #menuDrawer,
       builder: (context) {
         return Container(
           constraints: const BoxConstraints(maxWidth: 400) * scaling,

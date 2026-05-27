@@ -142,7 +142,8 @@ class DrawerTheme extends ComponentThemeData {
 /// - Dismissible barriers and custom backdrop builders
 ///
 /// Parameters:
-/// - [context] (BuildContext, required): build context for overlay creation
+/// - [context] (BuildContext, optional): build context for overlay creation
+/// - [anchor] (Symbol, optional): Symbol key representing the [OverlayAnchor]
 /// - [builder] (WidgetBuilder, required): function that builds drawer content
 /// - [position] (OverlayPosition, required): side from which drawer slides in
 /// - [expands] (bool, default: false): whether drawer should expand to fill available space
@@ -168,7 +169,7 @@ class DrawerTheme extends ComponentThemeData {
 /// Example:
 /// ```dart
 /// final completer = openDrawerOverlay<String>(
-///   context: context,
+///   anchor: #myAnchor,
 ///   position: OverlayPosition.left,
 ///   builder: (context) => DrawerContent(),
 ///   draggable: true,
@@ -177,7 +178,8 @@ class DrawerTheme extends ComponentThemeData {
 /// final result = await completer.future;
 /// ```
 DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
-  required BuildContext context,
+  @Deprecated('Use anchor instead') BuildContext? context,
+  Symbol? anchor,
   required WidgetBuilder builder,
   required OverlayPosition position,
   bool expands = false,
@@ -197,7 +199,20 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
-  final theme = ComponentTheme.maybeOf<DrawerTheme>(context);
+  BuildContext? resolvedContext = context;
+  if (anchor != null) {
+    final entry = OverlayAnchorRegistry.find(anchor);
+    if (entry == null) {
+      throw FlutterError(
+          'No OverlayAnchor found for the given symbol: $anchor');
+    }
+    resolvedContext = entry.context;
+  }
+  if (resolvedContext == null) {
+    throw FlutterError('Either context or anchor must be provided.');
+  }
+
+  final theme = ComponentTheme.maybeOf<DrawerTheme>(resolvedContext);
   showDragHandle ??= theme?.showDragHandle ?? true;
   surfaceOpacity ??= theme?.surfaceOpacity;
   surfaceBlur ??= theme?.surfaceBlur;
@@ -205,6 +220,7 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   dragHandleSize ??= theme?.dragHandleSize;
   return openRawDrawer<T>(
     context: context,
+    anchor: anchor,
     barrierDismissible: barrierDismissible,
     backdropBuilder: backdropBuilder,
     useSafeArea: useSafeArea,
@@ -251,7 +267,8 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
 /// - Barrier dismissal support
 ///
 /// Parameters:
-/// - [context] (BuildContext, required): build context for overlay creation
+/// - [context] (BuildContext, optional): build context for overlay creation
+/// - [anchor] (Symbol, optional): Symbol key representing the [OverlayAnchor]
 /// - [builder] (WidgetBuilder, required): function that builds sheet content
 /// - [position] (OverlayPosition, required): side from which sheet slides in
 /// - [barrierDismissible] (bool, default: true): whether tapping barrier dismisses sheet
@@ -270,14 +287,15 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
 /// Example:
 /// ```dart
 /// final completer = openSheetOverlay<bool>(
-///   context: context,
+///   anchor: #myAnchor,
 ///   position: OverlayPosition.bottom,
 ///   builder: (context) => BottomSheetContent(),
 ///   draggable: true,
 /// );
 /// ```
 DrawerOverlayCompleter<T?> openSheetOverlay<T>({
-  required BuildContext context,
+  @Deprecated('Use anchor instead') BuildContext? context,
+  Symbol? anchor,
   required WidgetBuilder builder,
   required OverlayPosition position,
   bool barrierDismissible = true,
@@ -290,10 +308,24 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
-  final theme = ComponentTheme.maybeOf<DrawerTheme>(context);
+  BuildContext? resolvedContext = context;
+  if (anchor != null) {
+    final entry = OverlayAnchorRegistry.find(anchor);
+    if (entry == null) {
+      throw FlutterError(
+          'No OverlayAnchor found for the given symbol: $anchor');
+    }
+    resolvedContext = entry.context;
+  }
+  if (resolvedContext == null) {
+    throw FlutterError('Either context or anchor must be provided.');
+  }
+
+  final theme = ComponentTheme.maybeOf<DrawerTheme>(resolvedContext);
   barrierColor ??= theme?.barrierColor;
   return openRawDrawer<T>(
     context: context,
+    anchor: anchor,
     transformBackdrop: transformBackdrop,
     barrierDismissible: barrierDismissible,
     useSafeArea: false, // handled by the sheet itself
@@ -332,13 +364,14 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
 /// Example:
 /// ```dart
 /// final result = await openDrawer<String>(
-///   context: context,
+///   anchor: #myAnchor,
 ///   position: OverlayPosition.left,
 ///   builder: (context) => MyDrawerContent(),
 /// );
 /// ```
 Future<T?> openDrawer<T>({
-  required BuildContext context,
+  @Deprecated('Use anchor instead') BuildContext? context,
+  Symbol? anchor,
   required WidgetBuilder builder,
   required OverlayPosition position,
   bool expands = false,
@@ -359,6 +392,7 @@ Future<T?> openDrawer<T>({
 }) {
   return openDrawerOverlay<T>(
     context: context,
+    anchor: anchor,
     builder: builder,
     position: position,
     expands: expands,
@@ -390,13 +424,14 @@ Future<T?> openDrawer<T>({
 /// Example:
 /// ```dart
 /// final accepted = await openSheet<bool>(
-///   context: context,
+///   anchor: #myAnchor,
 ///   position: OverlayPosition.bottom,
 ///   builder: (context) => ConfirmationSheet(),
 /// );
 /// ```
 Future<T?> openSheet<T>({
-  required BuildContext context,
+  @Deprecated('Use anchor instead') BuildContext? context,
+  Symbol? anchor,
   required WidgetBuilder builder,
   required OverlayPosition position,
   bool barrierDismissible = true,
@@ -410,6 +445,7 @@ Future<T?> openSheet<T>({
 }) {
   return openSheetOverlay<T>(
     context: context,
+    anchor: anchor,
     builder: builder,
     position: position,
     barrierDismissible: barrierDismissible,
@@ -1297,7 +1333,8 @@ class _DrawerOverlayWrapperState extends State<_DrawerOverlayWrapper>
 ///
 /// Parameters:
 /// - [key] (`Key?`, optional): Widget key.
-/// - [context] (`BuildContext`, required): Build context.
+/// - [context] (`BuildContext`, optional): Build context.
+/// - [anchor] (`Symbol`, optional): Symbol key representing the [OverlayAnchor].
 /// - [builder] (`DrawerBuilder`, required): Drawer content builder.
 /// - [position] (`OverlayPosition`, required): Drawer position on screen.
 /// - [transformBackdrop] (`bool`, default: `true`): Whether to transform backdrop.
@@ -1315,7 +1352,8 @@ class _DrawerOverlayWrapperState extends State<_DrawerOverlayWrapper>
 /// Returns: `DrawerOverlayCompleter<T?>` for managing the drawer lifecycle.
 DrawerOverlayCompleter<T?> openRawDrawer<T>({
   Key? key,
-  required BuildContext context,
+  @Deprecated('Use anchor instead') BuildContext? context,
+  Symbol? anchor,
   required DrawerBuilder builder,
   required OverlayPosition position,
   bool transformBackdrop = true,
@@ -1330,17 +1368,31 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
+  BuildContext? resolvedContext = context;
+  if (anchor != null) {
+    final entry = OverlayAnchorRegistry.find(anchor);
+    if (entry == null) {
+      throw FlutterError(
+          'No OverlayAnchor found for the given symbol: $anchor');
+    }
+    resolvedContext = entry.context;
+  }
+  if (resolvedContext == null) {
+    throw FlutterError(
+        'Either context or anchor must be provided to openRawDrawer.');
+  }
+
   DrawerLayerData? parentLayer =
-      DrawerOverlay.maybeFind(context, useRootDrawerOverlay);
+      DrawerOverlay.maybeFind(resolvedContext, useRootDrawerOverlay);
   CapturedThemes? themes;
   CapturedData? data;
   if (parentLayer != null) {
-    themes =
-        InheritedTheme.capture(from: context, to: parentLayer.overlay.context);
-    data = Data.capture(from: context, to: parentLayer.overlay.context);
+    themes = InheritedTheme.capture(
+        from: resolvedContext, to: parentLayer.overlay.context);
+    data = Data.capture(from: resolvedContext, to: parentLayer.overlay.context);
   } else {
     parentLayer =
-        DrawerOverlay.maybeFindMessenger(context, useRootDrawerOverlay);
+        DrawerOverlay.maybeFindMessenger(resolvedContext, useRootDrawerOverlay);
   }
   assert(parentLayer != null, 'No DrawerOverlay found in the widget tree');
   final completer = Completer<T?>();

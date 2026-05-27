@@ -153,6 +153,7 @@ class ColorsPageState extends State<ColorsPage> {
     var shadeValues = ColorShades.shadeValues;
     for (int i = 0; i < shadeValues.length; i++) {
       final shade = shadeValues[i];
+      final Symbol anchorKey = Symbol('colors_shade_${name}_$shade');
       children.add(
         Expanded(
           child: Column(
@@ -160,13 +161,14 @@ class ColorsPageState extends State<ColorsPage> {
             children: [
               AspectRatio(
                 aspectRatio: 16 / 19,
-                child: Builder(builder: (context) {
-                  return Clickable(
+                child: OverlayAnchor(
+                  anchor: anchorKey,
+                  child: Clickable(
                     mouseCursor:
                         const WidgetStatePropertyAll(SystemMouseCursors.click),
                     onPressed: () {
                       showPopover(
-                        context: context,
+                        anchor: anchorKey,
                         alignment: Alignment.topCenter,
                         anchorAlignment: Alignment.bottomCenter,
                         offset: const Offset(0, 8),
@@ -224,8 +226,8 @@ class ColorsPageState extends State<ColorsPage> {
                         ),
                       ),
                     ),
-                  );
-                }),
+                  ),
+                ),
               ),
               const Gap(8),
               Text(
@@ -346,6 +348,7 @@ class ColorsPageState extends State<ColorsPage> {
             ],
           ),
           const Gap(12),
+          const Spacer(),
           Offstage(
             offstage: _tabIndex != 0,
             child: Column(

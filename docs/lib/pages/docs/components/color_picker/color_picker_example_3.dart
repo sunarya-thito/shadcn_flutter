@@ -16,12 +16,13 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Builder(builder: (context) {
-          return PrimaryButton(
+        OverlayAnchor(
+          anchor: #colorPickerButton,
+          child: PrimaryButton(
             onPressed: () {
               // Show the color picker as a popover anchored to the button.
               showPopover(
-                context: context,
+                anchor: #colorPickerButton,
                 alignment: Alignment.topCenter,
                 anchorAlignment: Alignment.bottomCenter,
                 widthConstraint: PopoverConstraint.intrinsic,
@@ -48,8 +49,8 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
               );
             },
             child: const Text('Open Color Picker Popover'),
-          );
-        }),
+          ),
+        ),
         const Gap(16),
         PrimaryButton(
           onPressed: () {

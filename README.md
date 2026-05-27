@@ -8,7 +8,6 @@ tooling—ready to ditch Material and Cupertino**
 [![Pub Likes](https://img.shields.io/pub/likes/shadcn_flutter?style=for-the-badge&logo=dart&logoColor=white)](https://pub.dev/packages/shadcn_flutter)
 [![Pub Points](https://img.shields.io/pub/points/shadcn_flutter?style=for-the-badge&logo=dart&logoColor=white)](https://pub.dev/packages/shadcn_flutter)
 [![Pub Version](https://img.shields.io/pub/v/shadcn_flutter?style=for-the-badge&logo=dart&logoColor=white)](https://pub.dev/packages/shadcn_flutter)
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/sunarya-thito?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/sunarya-thito)
 [![GitHub Repo stars](https://img.shields.io/github/stars/sunarya-thito/shadcn_flutter?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sunarya-thito/shadcn_flutter)
 
 **[📚 Widget Catalog](https://sunarya-thito.github.io/shadcn_flutter/)** •

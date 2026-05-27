@@ -796,7 +796,8 @@ class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
 /// Displays a popover overlay with specified alignment and behavior.
 ///
 /// Parameters:
-/// - [context] (`BuildContext`, required): Widget context.
+/// - [context] (`BuildContext`, optional): Widget context.
+/// - [anchor] (`Symbol`, optional): The anchor key registered via [OverlayAnchor].
 /// - [alignment] (`AlignmentGeometry`, required): Popover alignment relative to anchor.
 /// - [builder] (`WidgetBuilder`, required): Builds popover content.
 /// - [position] (`Offset?`, optional): Explicit position.
@@ -828,13 +829,14 @@ class OverlayPopoverEntry<T> implements OverlayCompleter<T> {
 /// Example:
 /// ```dart
 /// showPopover(
-///   context: context,
+///   anchor: #myAnchor,
 ///   alignment: Alignment.bottomCenter,
 ///   builder: (context) => Text('Popover content'),
 /// );
 /// ```
 OverlayCompleter<T?> showPopover<T>({
-  required BuildContext context,
+  @Deprecated('Use anchor instead') BuildContext? context,
+  Symbol? anchor,
   required AlignmentGeometry alignment,
   required WidgetBuilder builder,
   Offset? position,
@@ -861,9 +863,23 @@ OverlayCompleter<T?> showPopover<T>({
   OverlayBarrier? overlayBarrier,
   OverlayHandler? handler,
 }) {
-  handler ??= OverlayManager.of(context);
+  BuildContext? resolvedContext = context;
+  if (anchor != null) {
+    final entry = OverlayAnchorRegistry.find(anchor);
+    if (entry == null) {
+      throw FlutterError(
+          'No OverlayAnchor found for the given symbol: $anchor');
+    }
+    resolvedContext = entry.context;
+  }
+  if (resolvedContext == null) {
+    throw FlutterError(
+        'Either context or anchor must be provided to showPopover.');
+  }
+
+  handler ??= OverlayManager.of(resolvedContext);
   return handler.show<T>(
-    context: context,
+    context: resolvedContext,
     alignment: alignment,
     builder: builder,
     position: position,
@@ -927,7 +943,7 @@ OverlayCompleter<T?> showPopover<T>({
 ///
 /// // Show a popover
 /// final popover = await controller.show<String>(
-///   context: context,
+///   anchor: #myAnchor,
 ///   alignment: Alignment.bottomStart,
 ///   anchorAlignment: Alignment.topStart,
 ///   builder: (context) => PopoverMenu(
@@ -1042,7 +1058,7 @@ class Popover {
 ///
 ///   void _showMenu() async {
 ///     await _popoverController.show(
-///       context: context,
+///       anchor: #myAnchor,
 ///       alignment: Alignment.bottomStart,
 ///       builder: (context) => MyPopoverContent(),
 ///     );
@@ -1079,7 +1095,8 @@ class PopoverController extends ChangeNotifier {
   /// If [closeOthers] is true, closes existing popovers before showing the new one.
   ///
   /// Parameters:
-  /// - [context] (BuildContext, required): Build context
+  /// - [context] (BuildContext, optional): Build context
+  /// - [anchor] (Symbol, optional): The anchor key registered via [OverlayAnchor]
   /// - [builder] (WidgetBuilder, required): Popover content builder
   /// - [alignment] (AlignmentGeometry, required): Popover alignment
   /// - [anchorAlignment] (AlignmentGeometry?): Anchor alignment
@@ -1105,7 +1122,8 @@ class PopoverController extends ChangeNotifier {
   ///
   /// Returns a [Future] that completes with the popover result when dismissed.
   Future<T?> show<T>({
-    required BuildContext context,
+    @Deprecated('Use anchor instead') BuildContext? context,
+    Symbol? anchor,
     required WidgetBuilder builder,
     required AlignmentGeometry alignment,
     AlignmentGeometry? anchorAlignment,
@@ -1137,6 +1155,7 @@ class PopoverController extends ChangeNotifier {
 
     OverlayCompleter<T?> res = showPopover<T>(
       context: context,
+      anchor: anchor,
       alignment: alignment,
       anchorAlignment: anchorAlignment,
       builder: builder,

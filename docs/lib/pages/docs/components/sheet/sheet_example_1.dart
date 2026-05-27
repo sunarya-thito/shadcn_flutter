@@ -71,7 +71,7 @@ class _SheetExample1State extends State<SheetExample1> {
                   validator:
                       const NotEmptyValidator() & const LengthValidator(min: 4),
                   child: const TextField(
-                    initialValue: 'Thito Yalasatria Sunarya',
+                     initialValue: 'Thito Yalasatria Sunarya',
                     placeholder: Text('Your fullname'),
                   ),
                 ),
@@ -124,19 +124,22 @@ class _SheetExample1State extends State<SheetExample1> {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {
-        openSheet(
-          context: context,
-          builder: (context) {
-            // Build the sheet content; keep it small and focused on the form.
-            return buildSheet(context);
-          },
-          // Slide in from the end (right on LTR).
-          position: OverlayPosition.end,
-        );
-      },
-      child: const Text('Open Sheet'),
+    return OverlayAnchor(
+      anchor: #openSheetButton,
+      child: PrimaryButton(
+        onPressed: () {
+          openSheet(
+            anchor: #openSheetButton,
+            builder: (context) {
+              // Build the sheet content; keep it small and focused on the form.
+              return buildSheet(context);
+            },
+            // Slide in from the end (right on LTR).
+            position: OverlayPosition.end,
+          );
+        },
+        child: const Text('Open Sheet'),
+      ),
     );
   }
 }

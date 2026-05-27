@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:flutter/rendering.dart';
 
 /// Closes the currently active overlay with an optional result value.
 ///
@@ -562,5 +563,127 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       overlayBarrier: overlayBarrier,
       layerLink: layerLink,
     );
+  }
+}
+
+/// The registry entry representing a registered [OverlayAnchor].
+class OverlayAnchorEntry {
+  /// The [RenderBox] of the registered anchor.
+  final RenderBox renderBox;
+
+  /// The [BuildContext] (Element) of the registered anchor.
+  final BuildContext context;
+
+  /// Creates an [OverlayAnchorEntry].
+  const OverlayAnchorEntry({
+    required this.renderBox,
+    required this.context,
+  });
+}
+
+/// Global registry for all [OverlayAnchor] widgets.
+class OverlayAnchorRegistry {
+  static final Map<Symbol, OverlayAnchorEntry> _anchors = {};
+
+  /// Registers an [OverlayAnchorEntry] with the given key.
+  static void register(Symbol key, OverlayAnchorEntry entry) {
+    _anchors[key] = entry;
+  }
+
+  /// Unregisters the entry for the given key.
+  static void unregister(Symbol key) {
+    _anchors.remove(key);
+  }
+
+  /// Finds the registered entry for the given key.
+  static OverlayAnchorEntry? find(Symbol key) {
+    return _anchors[key];
+  }
+}
+
+/// A widget that acts as a generalized anchor for overlays.
+///
+/// It registers its [RenderBox] and [BuildContext] dynamically in the global
+/// [OverlayAnchorRegistry] using a Dart [Symbol] key.
+class OverlayAnchor extends SingleChildRenderObjectWidget {
+  /// The unique Symbol key representing this anchor.
+  final Symbol anchor;
+
+  /// Creates an [OverlayAnchor].
+  const OverlayAnchor({
+    super.key,
+    required this.anchor,
+    required Widget super.child,
+  });
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return RenderOverlayAnchor(
+      anchor: anchor,
+      anchorContext: context,
+    );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, covariant RenderOverlayAnchor renderObject) {
+    renderObject.update(
+      anchor: anchor,
+      anchorContext: context,
+    );
+  }
+}
+
+/// The render object for [OverlayAnchor].
+///
+/// Handles construction, updates, and automatic unregistration when detached.
+class RenderOverlayAnchor extends RenderProxyBox {
+  Symbol _anchor;
+  BuildContext _anchorContext;
+
+  /// Creates a [RenderOverlayAnchor].
+  RenderOverlayAnchor({
+    required Symbol anchor,
+    required BuildContext anchorContext,
+    RenderBox? child,
+  })  : _anchor = anchor,
+        _anchorContext = anchorContext,
+        super(child);
+
+  /// Updates properties and registry.
+  void update({
+    required Symbol anchor,
+    required BuildContext anchorContext,
+  }) {
+    if (_anchor != anchor) {
+      OverlayAnchorRegistry.unregister(_anchor);
+      _anchor = anchor;
+    }
+    _anchorContext = anchorContext;
+    if (attached) {
+      _register();
+    }
+  }
+
+  void _register() {
+    OverlayAnchorRegistry.register(
+      _anchor,
+      OverlayAnchorEntry(
+        renderBox: this,
+        context: _anchorContext,
+      ),
+    );
+  }
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    _register();
+  }
+
+  @override
+  void detach() {
+    OverlayAnchorRegistry.unregister(_anchor);
+    super.detach();
   }
 }

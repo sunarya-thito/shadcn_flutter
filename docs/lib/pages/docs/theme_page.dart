@@ -251,12 +251,15 @@ class _ThemePageState extends State<ThemePage> {
                             horizontal: 18 * Theme.of(context).scaling,
                           ),
                           leading: [
-                            GhostButton(
-                              density: ButtonDensity.icon,
-                              onPressed: () {
-                                _openDrawer(context);
-                              },
-                              child: const Icon(Icons.menu),
+                            OverlayAnchor(
+                              anchor: #themeMenuDrawer,
+                              child: GhostButton(
+                                density: ButtonDensity.icon,
+                                onPressed: () {
+                                  _openDrawer(context);
+                                },
+                                child: const Icon(Icons.menu),
+                              ),
                             ),
                           ],
                           trailing: _appBarActions(context),
@@ -1158,7 +1161,7 @@ class _ThemePageState extends State<ThemePage> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     openSheet(
-      context: context,
+      anchor: #themeMenuDrawer,
       builder: (context) {
         return Container(
           constraints: const BoxConstraints(maxWidth: 400) * scaling,
