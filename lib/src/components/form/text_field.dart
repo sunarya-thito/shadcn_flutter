@@ -2536,6 +2536,10 @@ class TextFieldState extends State<TextField>
     }
   }
 
+  /// Changes the text of the text field.
+  ///
+  /// [value] The new text for the text field.
+  /// [submit] Whether to submit the text field after changing the text.
   void changeText(String value, {bool submit = false}) {
     _onChanged(value);
     if (submit) {

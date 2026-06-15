@@ -302,7 +302,6 @@ class ScrollableClientViewport extends TwoDimensionalViewport {
     required super.horizontalAxisDirection,
     required super.delegate,
     required super.mainAxis,
-    super.cacheExtent,
     super.clipBehavior = Clip.hardEdge,
     required this.overscroll,
   });
@@ -317,7 +316,6 @@ class ScrollableClientViewport extends TwoDimensionalViewport {
       delegate: delegate,
       mainAxis: mainAxis,
       childManager: context as TwoDimensionalChildManager,
-      cacheExtent: cacheExtent,
       clipBehavior: clipBehavior,
       overscroll: overscroll,
     );
