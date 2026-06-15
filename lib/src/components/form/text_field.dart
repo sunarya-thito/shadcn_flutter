@@ -2170,10 +2170,7 @@ class TextFieldState extends State<TextField>
   }
 
   void _handleControllerChanged() {
-    _effectiveText.value = effectiveController.text;
-    _effectiveSelection.value = effectiveController.selection;
-    formValue =
-        effectiveController.text.isEmpty ? null : effectiveController.text;
+    _onChanged(effectiveController.text);
   }
 
   void _createLocalController([TextEditingValue? value]) {
@@ -2541,7 +2538,7 @@ class TextFieldState extends State<TextField>
   /// [value] The new text for the text field.
   /// [submit] Whether to submit the text field after changing the text.
   void changeText(String value, {bool submit = false}) {
-    _onChanged(value);
+    effectiveController.text = value;
     if (submit) {
       widget.onSubmitted?.call(value);
     }
