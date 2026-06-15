@@ -17,6 +17,9 @@
 - Deprecated direct `BuildContext context` parameter across all overlay/popup
   functions (such as `showPopover`, `openDrawer`, `openSheet`, etc.) in favor of
   `anchor` (`Symbol?`).
+- Simplified PhoneInput component. Dial code is now mandatory and
+  filterPlusCode, filterZeroCode, and filterCountryCode are now marked as
+  deprecated.
 
 ### Fixed
 
