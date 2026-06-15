@@ -324,7 +324,7 @@ class InputClearFeature extends InputFeature {
 
 class _InputClearFeatureState extends InputFeatureState<InputClearFeature> {
   void _clear() {
-    controller.text = '';
+    changeText('');
   }
 
   @override
@@ -678,8 +678,7 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
     var text = controller.text;
     var newText = replacer(text);
     if (newText != text) {
-      controller.text = newText;
-      input.onChanged?.call(newText);
+      changeText(newText);
     }
   }
 
@@ -899,8 +898,7 @@ class _InputStepperButtonFeatureState
     var text = controller.text;
     var newText = replacer(text);
     if (newText != text) {
-      controller.text = newText;
-      input.onChanged?.call(newText);
+      changeText(newText);
     }
   }
 
