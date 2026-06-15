@@ -14,39 +14,53 @@ class InputExample5 extends StatelessWidget {
       children: [
         ButtonGroup(children: [
           // Its important to set width constraints on the TextFields
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Red')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Red')),
+            ),
           ),
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Green')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Green')),
+            ),
           ),
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Blue')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Blue')),
+            ),
           ),
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Alpha')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Alpha')),
+            ),
           ),
         ]),
         ButtonGroup.vertical(
           children: [
             // Its important to set width constraints on the TextFields
-            SizedBox(
-              width: 200,
-              child: TextField(placeholder: Text('First Name')),
+            ButtonGroupItem(
+              child: SizedBox(
+                width: 200,
+                child: TextField(placeholder: Text('First Name')),
+              ),
             ),
             ButtonGroup.horizontal(
               children: [
-                SizedBox(
-                  width: 100,
-                  child: TextField(placeholder: Text('Middle Name')),
+                ButtonGroupItem(
+                  child: SizedBox(
+                    width: 100,
+                    child: TextField(placeholder: Text('Middle Name')),
+                  ),
                 ),
-                SizedBox(
-                  width: 100,
-                  child: TextField(placeholder: Text('Last Name')),
+                ButtonGroupItem(
+                  child: SizedBox(
+                    width: 100,
+                    child: TextField(placeholder: Text('Last Name')),
+                  ),
                 ),
               ],
             )

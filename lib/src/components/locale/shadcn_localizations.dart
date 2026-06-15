@@ -136,6 +136,18 @@ abstract class ShadcnLocalizations {
   /// **'Must be less than or equal to {value}'**
   String formLessThanOrEqualTo(double value);
 
+  /// No description provided for @formPhoneNumberInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is invalid'**
+  String get formPhoneNumberInvalid;
+
+  /// No description provided for @formPhoneNumberEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get formPhoneNumberEmpty;
+
   /// No description provided for @formGreaterThanOrEqualTo.
   ///
   /// In en, this message translates to:

@@ -48,6 +48,12 @@ class ShadcnLocalizationsEn extends ShadcnLocalizations {
   }
 
   @override
+  String get formPhoneNumberInvalid => 'Phone number is invalid';
+
+  @override
+  String get formPhoneNumberEmpty => 'Phone number is required';
+
+  @override
   String formGreaterThanOrEqualTo(double value) {
     final intl.NumberFormat valueNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);

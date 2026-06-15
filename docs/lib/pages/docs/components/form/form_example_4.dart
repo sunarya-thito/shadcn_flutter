@@ -12,12 +12,21 @@ class FormExample4 extends StatefulWidget {
   State<FormExample4> createState() => _FormExample4State();
 }
 
+enum Gender {
+  male('Male'),
+  female('Female'),
+  other('Other');
+
+  final String displayName;
+  const Gender(this.displayName);
+}
+
 class _FormExample4State extends State<FormExample4> {
-  // ✅ Each key uses the correct typed alias for the widget it pairs with.
-  //    Always use const to preserve key identity across rebuilds.
   final _nameKey = const TextFieldKey('name'); // TextField → String
   final _agreeKey = const CheckboxKey('agree'); // Checkbox → CheckboxState
   final _birthdayKey = const DatePickerKey('birthday'); // DatePicker → DateTime
+  final _genderKey =
+      const SelectKey<Gender>('gender'); // Select → T (Gender in this case)
   final _notifyKey = const SwitchKey('notify'); // Switch → bool
 
   CheckboxState _agreeState = CheckboxState.unchecked;
@@ -33,6 +42,7 @@ class _FormExample4State extends State<FormExample4> {
           String? name = _nameKey[values];
           CheckboxState? agree = _agreeKey[values];
           DateTime? birthday = _birthdayKey[values];
+          Gender? gender = _genderKey[values];
           bool? notify = _notifyKey[values];
           showDialog(
             context: context,
@@ -46,6 +56,7 @@ class _FormExample4State extends State<FormExample4> {
                     Text('Name: $name'),
                     Text('Agree: $agree'),
                     Text('Birthday: $birthday'),
+                    Text('Gender: $gender'),
                     Text('Notify: $notify'),
                   ],
                 ),
@@ -97,6 +108,26 @@ class _FormExample4State extends State<FormExample4> {
                   validator:
                       const NonNullValidator(message: 'Please select a date'),
                   child: const ControlledDatePicker(),
+                ),
+                FormField<Gender>(
+                  key: _genderKey,
+                  label: const Text('Gender'),
+                  validator:
+                      const NonNullValidator(message: 'Please select a gender'),
+                  child: ControlledSelect<Gender>(
+                    popup: SelectPopup(
+                      items: SelectItemList(children: [
+                        for (var gender in Gender.values)
+                          SelectItemButton(
+                            value: gender,
+                            child: Text(gender.displayName),
+                          ),
+                      ]),
+                    ),
+                    itemBuilder: (BuildContext context, Gender value) {
+                      return Text(value.displayName);
+                    },
+                  ),
                 ),
                 FormInline<bool>(
                   key: _notifyKey,

@@ -14,14 +14,17 @@ class _PhoneInputExample1State extends State<PhoneInputExample1> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        PhoneInput(
-          // Preselect a country; phone parsing/formatting adapt accordingly.
-          initialCountry: Country.indonesia,
-          onChanged: (value) {
-            setState(() {
-              _phoneNumber = value;
-            });
-          },
+        SizedBox(
+          width: 300,
+          child: PhoneInput(
+            // Preselect a country; phone parsing/formatting adapt accordingly.
+            initialCountry: Country.indonesia,
+            onChanged: (value) {
+              setState(() {
+                _phoneNumber = value;
+              });
+            },
+          ),
         ),
         const Gap(24),
         Text(

@@ -1,7 +1,53 @@
+import 'dart:async';
+
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/services.dart';
 
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+/// [Validator] for validating a [PhoneNumber] input value.
+///
+/// Provides customizable error messages for invalid and empty phone numbers, and can be used with the form validation system to ensure that user input meets the required phone number format and completeness criteria.
+class PhoneNumberValid extends Validator<PhoneNumber> {
+  /// Custom error message for invalid phone numbers.
+  final String? invalidMessage;
+
+  /// Custom error message for empty phone number input.
+  final String? emptyMessage;
+
+  /// Creates a [PhoneNumberValid] validator with optional custom error messages.
+  const PhoneNumberValid({
+    this.invalidMessage,
+    this.emptyMessage,
+  });
+
+  @override
+  FutureOr<ValidationResult?> validate(
+      BuildContext context, PhoneNumber? value, FormValidationMode lifecycle) {
+    if (value == null) {
+      var localizations = Localizations.of(context, ShadcnLocalizations);
+      return InvalidResult(emptyMessage ?? localizations.formPhoneNumberEmpty,
+          state: lifecycle);
+    }
+    if (value.country == null || value.number.isEmpty) {
+      var localizations = Localizations.of(context, ShadcnLocalizations);
+      return InvalidResult(
+          invalidMessage ?? localizations.formPhoneNumberInvalid,
+          state: lifecycle);
+    }
+    return null;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PhoneNumberValid &&
+        other.emptyMessage == emptyMessage &&
+        other.invalidMessage == invalidMessage;
+  }
+
+  @override
+  int get hashCode => Object.hash(emptyMessage, invalidMessage);
+}
 
 /// Represents a phone number with country code information.
 ///
@@ -18,7 +64,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// ```
 class PhoneNumber {
   /// The country associated with this phone number.
-  final Country country;
+  final Country? country;
 
   /// The phone number without the country code.
   final String number; // without country code
@@ -26,11 +72,21 @@ class PhoneNumber {
   /// Creates a [PhoneNumber] with the specified country and number.
   const PhoneNumber(this.country, this.number);
 
+  /// Creates a copy with a new country
+  PhoneNumber withCountry(Country? country) {
+    return PhoneNumber(country, number);
+  }
+
   /// Gets the complete phone number including country code.
-  String get fullNumber => '${country.dialCode}$number';
+  String get fullNumber =>
+      country != null ? '${country!.dialCode}$number' : number;
+
+  /// Gets the complete phone number with a plus sign prefix.
+  String get fullCodeNumber =>
+      country != null ? '+${country!.dialCode}$number' : number;
 
   /// Gets the full number or null if the number is empty.
-  String? get value => number.isEmpty ? null : fullNumber;
+  String? get value => number.isEmpty || country == null ? null : fullNumber;
 
   @override
   String toString() {
@@ -198,7 +254,7 @@ class PhoneInput extends StatefulWidget {
   /// Called whenever the user changes either the country selection or
   /// the phone number text. The callback receives a [PhoneNumber] object
   /// containing both the selected country and entered number.
-  final ValueChanged<PhoneNumber>? onChanged;
+  final ValueChanged<PhoneNumber?>? onChanged;
 
   /// Optional text editing controller for the number input field.
   ///
@@ -210,18 +266,21 @@ class PhoneInput extends StatefulWidget {
   ///
   /// When true, plus symbols are automatically removed from user input
   /// since the country code already provides the international prefix.
+  @Deprecated('Plus code is now mandatory')
   final bool filterPlusCode;
 
   /// Whether to filter out leading zeros from input.
   ///
   /// When true, leading zeros are automatically removed from the phone number
   /// to normalize the input format according to international standards.
+  @Deprecated('Plus code is now mandatory, leading zero is not a valid format')
   final bool filterZeroCode;
 
   /// Whether to filter out country codes from input.
   ///
   /// When true, prevents users from entering the country code digits manually
   /// since the country selector provides this information automatically.
+  @Deprecated('Country code is now determined from input')
   final bool filterCountryCode;
 
   /// Whether to allow only numeric characters in the input.
@@ -274,8 +333,11 @@ class PhoneInput extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.controller,
-    this.filterPlusCode = true,
+    @Deprecated('Plus code is now mandatory') this.filterPlusCode = true,
+    @Deprecated(
+        'Plus code is now mandatory, leading zero is not a valid format')
     this.filterZeroCode = true,
+    @Deprecated('Country code is now determined from input')
     this.filterCountryCode = true,
     this.onlyNumber = true,
     this.countries,
@@ -288,19 +350,77 @@ class PhoneInput extends StatefulWidget {
 
 class _PhoneInputState extends State<PhoneInput>
     with FormValueSupplier<PhoneNumber, PhoneInput> {
-  late Country _country;
   late TextEditingController _controller;
+  late bool _updatingPhone = false;
+  late Country _lastValidCountry;
 
   @override
   void initState() {
     super.initState();
-    _country = widget.initialCountry ??
-        widget.initialValue?.country ??
-        Country.unitedStates;
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue?.number);
+    _lastValidCountry = widget.initialValue?.country ??
+        widget.initialCountry ??
+        Country.unitedStates;
+    _updateCountry(_lastValidCountry);
     formValue = value;
     _controller.addListener(_dispatchChanged);
+  }
+
+  void _updateCountry(Country country) {
+    if (_updatingPhone) return;
+    _updatingPhone = true;
+    final textValue = _controller.value;
+    var selection = textValue.selection;
+    // get the plain number
+    String number = textValue.text;
+    String expectedDialCode = _lastValidCountry.dialCode;
+    if (number.startsWith(expectedDialCode)) {
+      number = number.substring(expectedDialCode.length);
+      selection = selection.copyWith(
+        baseOffset: selection.baseOffset - expectedDialCode.length,
+        extentOffset: selection.extentOffset - expectedDialCode.length,
+      );
+    } else if (number.startsWith('+')) {
+      // unknown code, but lets remove the + first
+      number = number.substring(1);
+      selection = selection.copyWith(
+        baseOffset: selection.baseOffset - 1,
+        extentOffset: selection.extentOffset - 1,
+      );
+    }
+    String newDialCode = country.dialCode;
+    number = '$newDialCode$number';
+    selection = selection.copyWith(
+      baseOffset: selection.baseOffset + newDialCode.length,
+      extentOffset: selection.extentOffset + newDialCode.length,
+    );
+    _controller.value = TextEditingValue(
+      text: number,
+      selection: selection,
+    );
+    _lastValidCountry = country;
+    _updatingPhone = false;
+  }
+
+  Country? _findByCode(String phone) {
+    if (phone.startsWith('+')) {
+      phone = phone.substring(1);
+    }
+    List<Country> sortedCountries = Country.values.toList()
+      ..sort((a, b) => b.dialCode.length.compareTo(a.dialCode.length));
+    // Sort countries by dial code length in descending order to ensure the longest match is found first
+    for (final country in sortedCountries) {
+      var dialCode = country.dialCode;
+      // sanitize
+      if (dialCode.startsWith('+')) {
+        dialCode = dialCode.substring(1);
+      }
+      if (phone.startsWith(dialCode)) {
+        return country;
+      }
+    }
+    return null;
   }
 
   @override
@@ -314,24 +434,30 @@ class _PhoneInputState extends State<PhoneInput>
   }
 
   void _dispatchChanged() {
-    widget.onChanged?.call(value);
-    formValue = value;
+    setState(() {
+      Country? detectedCountry = _findByCode(_controller.text);
+      if (detectedCountry != null) {
+        final validCountry = detectedCountry;
+        if (validCountry.dialCode != _lastValidCountry.dialCode) {
+          // some country have same dialCode (e.g. US and Canada),
+          // so we use the preferred country
+          _lastValidCountry = validCountry;
+        } else {
+          detectedCountry = _lastValidCountry;
+        }
+      }
+      widget.onChanged?.call(value?.withCountry(detectedCountry));
+      formValue = value;
+    });
   }
 
-  PhoneNumber get value {
+  PhoneNumber? get value {
     var text = _controller.text;
-    if (widget.filterPlusCode && text.startsWith(_country.dialCode)) {
-      text = text.substring(_country.dialCode.length);
-    } else if (widget.filterPlusCode && text.startsWith('+')) {
-      text = text.substring(1);
-    } else if (widget.filterZeroCode && text.startsWith('0')) {
-      text = text.substring(1);
-    } else if (widget.filterCountryCode &&
-        text.startsWith(_country.dialCode.substring(1))) {
-      // e.g. 628123456788 (indonesia) would be 8123456788
-      text = text.substring(_country.dialCode.length - 1);
+    String dialCode = _lastValidCountry.dialCode;
+    if (text.startsWith(dialCode)) {
+      text = text.substring(dialCode.length);
     }
-    return PhoneNumber(_country, text);
+    return PhoneNumber(_lastValidCountry, text);
   }
 
   bool _filterCountryCode(Country country, String text) {
@@ -345,158 +471,120 @@ class _PhoneInputState extends State<PhoneInput>
     final theme = Theme.of(context);
     final componentTheme = ComponentTheme.maybeOf<PhoneInputTheme>(context);
     return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
+      child: ButtonGroup.horizontal(
         children: [
-          Select<Country>(
-            padding: styleValue(
-              defaultValue: EdgeInsets.only(
-                  top: theme.scaling * 8,
-                  left: theme.scaling * 8,
-                  bottom: theme.scaling * 8,
-                  right: theme.scaling * 4),
-              themeValue: componentTheme?.padding,
-            ),
-            // searchPlaceholder: widget.searchPlaceholder ??
-            //     Text(localization.searchPlaceholderCountry),
-            // searchFilter: (item, query) {
-            //   query = query.toLowerCase();
-            //   var searchScore = item.name.toLowerCase().contains(query) ||
-            //           item.dialCode.contains(query) ||
-            //           item.code.toLowerCase().contains(query)
-            //       ? 1
-            //       : 0;
-            //   return searchScore;
-            // },
-            // emptyBuilder: (context) {
-            //   return Container(
-            //     padding: EdgeInsets.all(theme.scaling * 16),
-            //     child: Text(
-            //       localization.emptyCountryList,
-            //       textAlign: TextAlign.center,
-            //     ).small().muted(),
-            //   );
-            // },
-            value: _country,
-            borderRadius: styleValue(
-              defaultValue: BorderRadius.only(
-                topLeft: theme.radiusMdRadius,
-                bottomLeft: theme.radiusMdRadius,
+          ButtonGroupItem(
+            child: Select<Country>(
+              padding: styleValue(
+                defaultValue: EdgeInsets.all(theme.scaling * 8),
+                themeValue: componentTheme?.padding,
               ),
-              themeValue: componentTheme?.borderRadius,
-            ),
-            popoverAlignment: Alignment.topLeft,
-            popoverAnchorAlignment: Alignment.bottomLeft,
-            popupWidthConstraint: PopoverConstraint.flexible,
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _country = value;
-                  _dispatchChanged();
-                });
-              }
-            },
-            itemBuilder: (context, item) {
-              return Row(
-                children: [
-                  CountryFlag.fromCountryCode(
-                    item.code,
-                    theme: ImageTheme(
-                      shape: styleValue(
-                        defaultValue: RoundedRectangle(
-                          theme.radiusSm,
-                        ),
-                        themeValue: componentTheme?.flagShape,
-                      ),
-                      height: styleValue(
-                        defaultValue: theme.scaling * 18,
-                        themeValue: componentTheme?.flagHeight,
-                      ),
-                      width: styleValue(
-                        defaultValue: theme.scaling * 24,
-                        themeValue: componentTheme?.flagWidth,
-                      ),
-                    ),
-                  ),
-                  Gap(
-                    styleValue(
-                      defaultValue: theme.scaling * 8,
-                      themeValue: componentTheme?.flagGap,
-                    ),
-                  ),
-                  Text(item.dialCode),
-                ],
-              );
-            },
-            popupConstraints: styleValue(
-              defaultValue: BoxConstraints(
-                maxWidth: 250 * theme.scaling,
-                maxHeight: 300 * theme.scaling,
+              expandIcon: null,
+              value: _lastValidCountry,
+              borderRadius: styleValue(
+                defaultValue: BorderRadius.only(
+                  topLeft: theme.radiusMdRadius,
+                  bottomLeft: theme.radiusMdRadius,
+                ),
+                themeValue: componentTheme?.borderRadius,
               ),
-              themeValue: componentTheme?.popupConstraints,
-            ),
-            popup: SelectPopup.builder(
-              builder: (context, searchQuery) {
-                return SelectItemList(children: [
-                  for (final country in widget.countries ?? Country.values)
-                    if (searchQuery == null ||
-                        _filterCountryCode(country, searchQuery))
-                      SelectItemButton(
-                        value: country,
-                        child: Row(
-                          children: [
-                            CountryFlag.fromCountryCode(
-                              country.code,
-                              theme: ImageTheme(
-                                shape: styleValue(
-                                  defaultValue: RoundedRectangle(
-                                    theme.radiusSm,
-                                  ),
-                                  themeValue: componentTheme?.flagShape,
-                                ),
-                                height: styleValue(
-                                  defaultValue: theme.scaling * 18,
-                                  themeValue: componentTheme?.flagHeight,
-                                ),
-                                width: styleValue(
-                                  defaultValue: theme.scaling * 24,
-                                  themeValue: componentTheme?.flagWidth,
-                                ),
-                              ),
-                            ),
-                            Gap(
-                              styleValue(
-                                defaultValue: theme.scaling * 8,
-                                themeValue: componentTheme?.flagGap,
-                              ),
-                            ),
-                            Expanded(child: Text(country.name)),
-                            Gap(
-                              styleValue(
-                                defaultValue: 16 * theme.scaling,
-                                themeValue: componentTheme?.countryGap,
-                              ),
-                            ),
-                            Text(country.dialCode).muted(),
-                          ],
-                        ),
-                      ),
-                ]);
+              popoverAlignment: Alignment.topLeft,
+              popoverAnchorAlignment: Alignment.bottomLeft,
+              popupWidthConstraint: PopoverConstraint.flexible,
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    _updateCountry(value);
+                  });
+                }
               },
-            ).asBuilder,
-          ),
-          LimitedBox(
-            maxWidth: styleValue(
-              defaultValue: 200 * theme.scaling,
-              themeValue: componentTheme?.maxWidth,
+              itemBuilder: (context, item) {
+                return CountryFlag.fromCountryCode(
+                  item.code,
+                  theme: ImageTheme(
+                    shape: styleValue(
+                      defaultValue: RoundedRectangle(
+                        theme.radiusSm,
+                      ),
+                      themeValue: componentTheme?.flagShape,
+                    ),
+                    height: styleValue(
+                      defaultValue: theme.scaling * 18,
+                      themeValue: componentTheme?.flagHeight,
+                    ),
+                    width: styleValue(
+                      defaultValue: theme.scaling * 24,
+                      themeValue: componentTheme?.flagWidth,
+                    ),
+                  ),
+                );
+              },
+              popupConstraints: styleValue(
+                defaultValue: BoxConstraints(
+                  maxWidth: 250 * theme.scaling,
+                  maxHeight: 300 * theme.scaling,
+                ),
+                themeValue: componentTheme?.popupConstraints,
+              ),
+              popup: SelectPopup.builder(
+                builder: (context, searchQuery) {
+                  return SelectItemList(children: [
+                    for (final country in widget.countries ?? Country.values)
+                      if (searchQuery == null ||
+                          _filterCountryCode(country, searchQuery))
+                        SelectItemButton(
+                          value: country,
+                          child: Row(
+                            children: [
+                              CountryFlag.fromCountryCode(
+                                country.code,
+                                theme: ImageTheme(
+                                  shape: styleValue(
+                                    defaultValue: RoundedRectangle(
+                                      theme.radiusSm,
+                                    ),
+                                    themeValue: componentTheme?.flagShape,
+                                  ),
+                                  height: styleValue(
+                                    defaultValue: theme.scaling * 18,
+                                    themeValue: componentTheme?.flagHeight,
+                                  ),
+                                  width: styleValue(
+                                    defaultValue: theme.scaling * 24,
+                                    themeValue: componentTheme?.flagWidth,
+                                  ),
+                                ),
+                              ),
+                              Gap(
+                                styleValue(
+                                  defaultValue: theme.scaling * 8,
+                                  themeValue: componentTheme?.flagGap,
+                                ),
+                              ),
+                              Expanded(child: Text(country.name)),
+                              Gap(
+                                styleValue(
+                                  defaultValue: 16 * theme.scaling,
+                                  themeValue: componentTheme?.countryGap,
+                                ),
+                              ),
+                              Text(country.dialCode).muted(),
+                            ],
+                          ),
+                        ),
+                  ]);
+                },
+              ).asBuilder,
             ),
+          ),
+          ButtonGroupFlexible(
             child: TextField(
               controller: _controller,
               autofillHints: const [AutofillHints.telephoneNumber],
               keyboardType: widget.onlyNumber ? TextInputType.phone : null,
               inputFormatters: [
                 if (widget.onlyNumber) FilteringTextInputFormatter.digitsOnly,
+                _AlwaysPrefixedPlus(),
               ],
               borderRadius: styleValue(
                 defaultValue: BorderRadius.only(
@@ -516,5 +604,24 @@ class _PhoneInputState extends State<PhoneInput>
   @override
   void didReplaceFormValue(PhoneNumber value) {
     _controller.text = value.toString();
+  }
+}
+
+class _AlwaysPrefixedPlus extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text;
+    if (text.startsWith('+')) {
+      return newValue;
+    } else {
+      return TextEditingValue(
+        text: '+$text',
+        selection: newValue.selection.copyWith(
+          baseOffset: newValue.selection.baseOffset + 1,
+          extentOffset: newValue.selection.extentOffset + 1,
+        ),
+      );
+    }
   }
 }

@@ -221,6 +221,8 @@ class ControlledSelect<T> extends StatelessWidget
   final SelectValueSelectionPredicate<T>? valueSelectionPredicate;
   @override
   final Predicate<T>? showValuePredicate;
+  @override
+  final Widget? expandIcon;
 
   /// Creates a [ControlledSelect].
   ///
@@ -251,6 +253,7 @@ class ControlledSelect<T> extends StatelessWidget
   /// - [valueSelectionHandler] (`SelectValueSelectionHandler<T>?`, optional): custom selection logic
   /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<T>?`, optional): selection validation
   /// - [showValuePredicate] (`Predicate<T>?`, optional): visibility filter for values
+  /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
   ///
   /// Example:
   /// ```dart
@@ -280,6 +283,7 @@ class ControlledSelect<T> extends StatelessWidget
     this.disableHoverEffect = false,
     this.canUnselect = false,
     this.autoClosePopover = true,
+    this.expandIcon = const SelectExpandIcon(),
     required this.popup,
     required this.itemBuilder,
     this.valueSelectionHandler,
@@ -445,6 +449,8 @@ class ControlledMultiSelect<T> extends StatelessWidget
   final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
   @override
   final Predicate<Iterable<T>>? showValuePredicate;
+  @override
+  final Widget? expandIcon;
 
   /// Builder for rendering individual items in multi-select mode.
   final SelectValueBuilder<T> multiItemBuilder;
@@ -479,6 +485,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
   /// - [valueSelectionHandler] (`SelectValueSelectionHandler<Iterable<T>>?`, optional): custom selection logic
   /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<Iterable<T>>?`, optional): selection validation
   /// - [showValuePredicate] (`Predicate<Iterable<T>>?`, optional): visibility filter for values
+  /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
   ///
   /// Example:
   /// ```dart
@@ -514,6 +521,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
     this.canUnselect = true,
     this.autoClosePopover = false,
     this.showValuePredicate,
+    this.expandIcon = const SelectExpandIcon(),
     required this.popup,
     required SelectValueBuilder<T> itemBuilder,
     this.valueSelectionHandler,
@@ -877,6 +885,20 @@ mixin SelectBase<T> {
 
   /// Predicate for showing value in trigger.
   Predicate<T>? get showValuePredicate;
+
+  /// Expand icon for the select
+  Widget? get expandIcon;
+}
+
+/// The default icon for Select expandIcon
+class SelectExpandIcon extends StatelessWidget {
+  /// Create SelectExpandIcon
+  const SelectExpandIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Icon(LucideIcons.chevronsUpDown).iconSmall();
+  }
 }
 
 /// A customizable dropdown selection widget for single-value selection.
@@ -972,6 +994,8 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   final SelectValueSelectionPredicate<T>? valueSelectionPredicate;
   @override
   final Predicate<T>? showValuePredicate;
+  @override
+  final Widget? expandIcon;
 
   /// Creates a single-selection dropdown widget.
   ///
@@ -1001,6 +1025,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   /// - [showValuePredicate] (`Predicate<T>?`): Predicate for showing items
   /// - [popup] (SelectPopupBuilder): Required builder for popup content
   /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for selected value display
+  /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
   const Select({
     super.key,
     this.onChanged,
@@ -1022,6 +1047,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
     this.valueSelectionHandler,
     this.valueSelectionPredicate,
     this.showValuePredicate,
+    this.expandIcon = const SelectExpandIcon(),
     required this.popup,
     required this.itemBuilder,
   });
@@ -1252,6 +1278,7 @@ class SelectState<T> extends State<Select<T>>
                                   isSelected: _isSelected,
                                   onChanged: _onChanged,
                                   hasSelection: widget.value != null,
+                                  expandIcon: widget.expandIcon,
                                 ),
                                 child: Builder(
                                   key: popupKey,
@@ -1270,18 +1297,55 @@ class SelectState<T> extends State<Select<T>>
                     });
                   },
             child: WidgetStatesProvider.boundary(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Data.inherit(
-                    data: SelectData(
-                      enabled: enabled,
-                      autoClose: _autoClosePopover,
-                      isSelected: _isSelected,
-                      onChanged: _onChanged,
-                      hasSelection: widget.value != null,
-                    ),
-                    child: Expanded(
+              child: widget.expandIcon != null
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Data.inherit(
+                          data: SelectData(
+                            enabled: enabled,
+                            autoClose: _autoClosePopover,
+                            isSelected: _isSelected,
+                            onChanged: _onChanged,
+                            hasSelection: widget.value != null,
+                            expandIcon: widget.expandIcon,
+                          ),
+                          child: Expanded(
+                            child: widget.value != null &&
+                                    (widget.showValuePredicate?.call(
+                                          widget.value as T,
+                                        ) ??
+                                        true)
+                                ? Builder(
+                                    builder: (context) {
+                                      return widget.itemBuilder(
+                                        context,
+                                        widget.value as T,
+                                      );
+                                    },
+                                  )
+                                : _placeholder,
+                          ),
+                        ),
+                        SizedBox(width: 8 * scaling),
+                        IconTheme.merge(
+                          data: IconThemeData(
+                            color: theme.colorScheme.foreground,
+                            opacity: 0.5,
+                          ),
+                          child: widget.expandIcon!,
+                        ),
+                      ],
+                    )
+                  : Data.inherit(
+                      data: SelectData(
+                        enabled: enabled,
+                        autoClose: _autoClosePopover,
+                        isSelected: _isSelected,
+                        onChanged: _onChanged,
+                        hasSelection: widget.value != null,
+                        expandIcon: widget.expandIcon,
+                      ),
                       child: widget.value != null &&
                               (widget.showValuePredicate?.call(
                                     widget.value as T,
@@ -1297,17 +1361,6 @@ class SelectState<T> extends State<Select<T>>
                             )
                           : _placeholder,
                     ),
-                  ),
-                  SizedBox(width: 8 * scaling),
-                  IconTheme.merge(
-                    data: IconThemeData(
-                      color: theme.colorScheme.foreground,
-                      opacity: 0.5,
-                    ),
-                    child: const Icon(LucideIcons.chevronsUpDown).iconSmall(),
-                  ),
-                ],
-              ),
             ),
           ),
         ),
@@ -1452,6 +1505,9 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final bool? enabled;
 
   @override
+  final Widget? expandIcon;
+
+  @override
   final SelectPopupBuilder popup;
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
@@ -1496,6 +1552,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   /// - [showValuePredicate] (`Predicate<Iterable<T>>?`): Predicate for showing items
   /// - [popup] (SelectPopupBuilder): Required builder for popup content
   /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for individual chip items
+  /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
   const MultiSelect({
     super.key,
     this.onChanged,
@@ -1517,6 +1574,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
     this.valueSelectionHandler,
     this.valueSelectionPredicate,
     this.showValuePredicate,
+    this.expandIcon = const SelectExpandIcon(),
     required this.popup,
     required SelectValueBuilder<T> itemBuilder,
   }) : multiItemBuilder = itemBuilder;
@@ -1593,6 +1651,9 @@ class SelectData {
   /// Whether the select is enabled for interaction.
   final bool enabled;
 
+  /// The expand icon for the select
+  final Widget? expandIcon;
+
   /// Creates select data.
   const SelectData({
     required this.autoClose,
@@ -1600,6 +1661,7 @@ class SelectData {
     required this.onChanged,
     required this.hasSelection,
     required this.enabled,
+    required this.expandIcon,
   });
 
   @override
@@ -1610,12 +1672,13 @@ class SelectData {
         other.onChanged == onChanged &&
         other.hasSelection == hasSelection &&
         other.autoClose == autoClose &&
-        other.enabled == enabled;
+        other.enabled == enabled &&
+        other.expandIcon == expandIcon;
   }
 
   @override
-  int get hashCode =>
-      Object.hash(isSelected, onChanged, autoClose, hasSelection, enabled);
+  int get hashCode => Object.hash(
+      isSelected, onChanged, autoClose, hasSelection, enabled, expandIcon);
 }
 
 /// Builder function type for creating select item delegates.
@@ -1885,7 +1948,7 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                               const Icon(
                                 LucideIcons.search,
                               ).iconSmall().iconMutedForeground(),
-                            ),
+                            )
                           ],
                           autofocus: true,
                           placeholder: widget.searchPlaceholder,

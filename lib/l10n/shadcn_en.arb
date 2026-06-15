@@ -31,6 +31,8 @@
       }
     }
   },
+  "formPhoneNumberInvalid": "Phone number is invalid",
+  "formPhoneNumberEmpty": "Phone number is required",
   "formGreaterThanOrEqualTo": "Must be greater than or equal to {value}",
   "@formGreaterThanOrEqualTo": {
     "placeholders": {
