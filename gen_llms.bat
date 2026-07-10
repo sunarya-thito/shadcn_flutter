@@ -1,1 +1,1 @@
-dart run gen/bin/llms_gen.dart
+dart run packages/gen/bin/llms_gen.dart

@@ -37,6 +37,6 @@ jobs:
 
     - name: Build docs
       run: |
-        cd docs
+        cd packages/docs
         flutter pub get
         flutter build web

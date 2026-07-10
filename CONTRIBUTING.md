@@ -23,45 +23,52 @@ PRs that do not follow this process may be closed if the solution is not aligned
 ## Quick start
 
 - Flutter: >= 3.32.3
-- Dart SDK: >= 3.3.0 < 4.0.0
+- Dart SDK: >= 3.6.0 < 4.0.0
 - Platforms: mobile, desktop, and web (docs run on web)
 
 Windows PowerShell quickstart:
 
 ```powershell
-# From repository root
+# From repository root - resolves dependencies for every package in the workspace
 flutter --version
 flutter pub get
 
 # Run the example app
-cd example
-flutter pub get
+cd packages/shadcn_flutter/example
 flutter run
 
 # Run the docs app in Chrome with web semantics (recommended for a11y checks)
-cd ..
+cd ../../..
 ./run_docs_web_semantics.bat
 ```
 
 ## Project layout (high level)
 
-- `lib/` – Public package code
-  - `shadcn_flutter.dart` – Barrel exports for the public API
-  - `src/` – Implementation details
-    - `components/` – Components grouped by domain (form, layout, overlay, etc.)
-    - `theme/` – Tokens, generated themes, typography, color schemes
-    - `icons/` – Icon primitives (wired to fonts configured in `pubspec.yaml`)
-    - `util.dart`, `animation.dart`, `collection.dart` – Shared utilities
-- `docs/` – Flutter Web docs application (component gallery, usage examples)
-- `docs_images/` – Images used in README/docs
-- `example/` – Minimal consumer app wired to the local package path
-- `gen/` – Developer tools and generators (icons, styles, LLM docs, analyzer
+- `packages/shadcn_flutter/` – The published library package
+  - `lib/` – Public package code
+    - `shadcn_flutter.dart` – Barrel exports for the public API
+    - `src/` – Implementation details
+      - `components/` – Components grouped by domain (form, layout, overlay, etc.)
+      - `theme/` – Tokens, generated themes, typography, color schemes
+      - `icons/` – Icon primitives (wired to fonts configured in `pubspec.yaml`)
+      - `util.dart`, `animation.dart`, `collection.dart` – Shared utilities
+  - `test/` – Widget/unit tests for the library
+  - `icons/` – Source icon sets and licenses
+  - `colors/` – CSS sources used by style transpilers (for docs/themes)
+  - `docs_images/` – Images used in the package README
+- `packages/docs/` – Flutter Web docs application (component gallery, usage examples)
+- `packages/shadcn_flutter/example/` – Minimal consumer app, nested inside the
+  library package so it's included in the pub.dev "Example" tab on publish
+- `packages/gen/` – Developer tools and generators (icons, styles, LLM docs, analyzer
   helpers)
   - `bin/` – Entrypoints (e.g. `docs_divide.dart`, `llms_gen.dart`,
     `style_transpiler_v4.dart`)
   - `log/` – Analyzer outputs and derived task lists
-- `icons/` – Source icon sets and licenses
-- `colors/` – CSS sources used by style transpilers (for docs/themes)
+- `packages/shadcn_flutter_genui/` – GenUI catalog that renders AI-generated
+  interfaces using shadcn_flutter widgets
+- `web_loaders/` – Standalone JS loader served via CDN at a fixed public URL
+  (`cdn.jsdelivr.net/gh/sunarya-thito/shadcn_flutter@latest/web_loaders/...`);
+  intentionally kept at the repo root and must not be moved.
 
 ## Contribution types
 
@@ -74,8 +81,8 @@ cd ..
 
 ## Standards and expectations
 
-- Code style: follow the repo lints (`analysis_options.yaml`). Public members
-  must have API docs (`public_member_api_docs`).
+- Code style: follow the repo lints (`packages/shadcn_flutter/analysis_options.yaml`).
+  Public members must have API docs (`public_member_api_docs`).
 - Null-safety: all code must be null-safe.
 - API design: favor composition over inheritance, keep widgets small and
   testable, avoid breaking changes without discussion.
@@ -98,26 +105,24 @@ cd ..
 ## Local development
 
 - Install tooling once:
-  - Flutter 3.32.3+ and Dart 3.3+
+  - Flutter 3.32.3+ and Dart 3.6+
   - Chrome for web docs
 
 - Typical workflow:
 
 ```powershell
-# 1) Get packages (root and the sub-app you work on)
+# 1) Get packages (resolves the whole workspace in one shared pubspec.lock)
 flutter pub get
-cd docs; flutter pub get; cd ..
-cd example; flutter pub get; cd ..
 
-# 2) Run analyzer (root)
+# 2) Run analyzer (root; analyzes every workspace package)
 flutter analyze
 
 # 3) Run example app while iterating on widgets
-cd example
+cd packages/shadcn_flutter/example
 flutter run
 
 # 4) Run docs with web semantics to check a11y/keyboard behavior
-cd ..
+cd ../../..
 ./run_docs_web_semantics.bat
 ```
 
@@ -141,15 +146,15 @@ flutter pub get
 flutter analyze
 
 # Run tests (example and test_widget projects, if applicable)
-cd example; flutter test; cd ..
+cd packages/shadcn_flutter/example; flutter test; cd ../../..
 cd test_widget; flutter test; cd ..
 
 # Optional: rebuild LLM/docs helper files when relevant
 ./gen_dotguides.bat
 
 # Optional: generate analyzer task parts after heavy changes
-# Produces checklists under gen/log/analyze_parts/
-dart run gen/bin/docs_divide.dart
+# Produces checklists under packages/gen/log/analyze_parts/
+dart run packages/gen/bin/docs_divide.dart
 ```
 
 5. Push and open a pull request. Include:
@@ -164,9 +169,9 @@ dart run gen/bin/docs_divide.dart
 
 Where:
 
-- `lib/src/components/<domain>/...` for implementation
-- Export from `lib/shadcn_flutter.dart` to make the component public
-- Add docs examples under `docs/lib/pages/docs/components/<component>/...`
+- `packages/shadcn_flutter/lib/src/components/<domain>/...` for implementation
+- Export from `packages/shadcn_flutter/lib/shadcn_flutter.dart` to make the component public
+- Add docs examples under `packages/docs/lib/pages/docs/components/<component>/...`
 
 Checklist:
 
@@ -177,11 +182,11 @@ Checklist:
 - Accessibility: verify focus order, keyboard navigation, and semantics. Use
   `./run_docs_web_semantics.bat` to run docs with `ENABLE_WEB_SEMANTICS`.
 - Layout: ensure responsiveness; test in narrow and wide layouts.
-- Exports: update `lib/shadcn_flutter.dart` to export your widget(s) in the
+- Exports: update `packages/shadcn_flutter/lib/shadcn_flutter.dart` to export your widget(s) in the
   appropriate section.
 - Docs: add at least one runnable example and a short explanation. If images are
-  needed for README, place them in `docs_images/`.
-- Tests: add widget tests in `example/test` or `test_widget/test` (pick the
+  needed for README, place them in `packages/shadcn_flutter/docs_images/`.
+- Tests: add widget tests in `packages/shadcn_flutter/example/test` or `test_widget/test` (pick the
   closest target).
 
 Suggested structure:
@@ -194,8 +199,9 @@ Suggested structure:
 
 Where:
 
-- `lib/src/util.dart`, `lib/src/animation.dart`, `lib/src/collection.dart`, or a
-  new file under `lib/src/`
+- `packages/shadcn_flutter/lib/src/util.dart`, `packages/shadcn_flutter/lib/src/animation.dart`,
+  `packages/shadcn_flutter/lib/src/collection.dart`, or a new file under
+  `packages/shadcn_flutter/lib/src/`
 
 Guidelines:
 
@@ -209,66 +215,67 @@ Guidelines:
 
 Sources & assets:
 
-- Icon sources live under `/icons/` (e.g., `icons/bootstrap`, `icons/lucide`,
-  `icons/radix`) with licenses included.
-- Packaged fonts are registered in `pubspec.yaml` under `flutter/fonts` and
-  stored in `lib/icons/`.
+- Icon sources live under `packages/shadcn_flutter/icons/` (e.g.,
+  `packages/shadcn_flutter/icons/bootstrap`, `packages/shadcn_flutter/icons/lucide`,
+  `packages/shadcn_flutter/icons/radix`) with licenses included.
+- Packaged fonts are registered in `packages/shadcn_flutter/pubspec.yaml` under
+  `flutter/fonts` and stored in `packages/shadcn_flutter/lib/icons/`.
 
 Generators:
 
-- Bootstrap: `gen/bin/bootstrap_icon_generator.dart`
-- Lucide: `gen/bin/lucide_icons_generator.dart`
-- Radix: `gen/bin/radix_icon_generator.dart`
-- Convert WOFF2 → OTF: `gen/bin/woff2otf.dart`
+- Bootstrap: `packages/gen/bin/bootstrap_icon_generator.dart`
+- Lucide: `packages/gen/bin/lucide_icons_generator.dart`
+- Radix: `packages/gen/bin/radix_icon_generator.dart`
+- Convert WOFF2 → OTF: `packages/gen/bin/woff2otf.dart`
 
-Typical flow:
+Typical flow (run from the repo root):
 
 ```powershell
-# After updating sources under /icons, regenerate the Dart bindings/fonts as needed
-dart run gen/bin/bootstrap_icon_generator.dart
-dart run gen/bin/lucide_icons_generator.dart
-dart run gen/bin/radix_icon_generator.dart
+# After updating sources under packages/shadcn_flutter/icons, regenerate the Dart bindings/fonts as needed
+dart run packages/gen/bin/bootstrap_icon_generator.dart
+dart run packages/gen/bin/lucide_icons_generator.dart
+dart run packages/gen/bin/radix_icon_generator.dart
 
-# If you add new font files, ensure pubspec.yaml has matching entries under flutter/fonts
+# If you add new font files, ensure packages/shadcn_flutter/pubspec.yaml has matching entries under flutter/fonts
 ```
 
 Docs:
 
-- Update icon showcase pages in `docs/lib/pages/docs/icons_page.dart` if new
+- Update icon showcase pages in `packages/docs/lib/pages/docs/icons_page.dart` if new
   sets are added.
 
 ### 4) Translations
 
-- Localization files are located in `lib/l10n/`.
+- Localization files are located in `packages/shadcn_flutter/lib/l10n/`.
 - The source of truth is `shadcn_en.arb`.
 
 To add a new language:
 
-1. Create a new ARB file in `lib/l10n/` (e.g., `shadcn_es.arb` for Spanish).
+1. Create a new ARB file in `packages/shadcn_flutter/lib/l10n/` (e.g., `shadcn_es.arb` for Spanish).
 2. Copy the content from `shadcn_en.arb` to the new file.
 3. Update the `@@locale` key to the new locale code (e.g., `"@@locale": "es"`).
 4. Translate the values.
-5. Run `flutter gen-l10n` to generate the Dart code.
+5. Run `flutter gen-l10n` (from `packages/shadcn_flutter/`) to generate the Dart code.
 
 To update existing translations:
 
-1. Modify the relevant ARB file in `lib/l10n/`.
-2. Run `flutter gen-l10n` to regenerate the Dart code.
+1. Modify the relevant ARB file in `packages/shadcn_flutter/lib/l10n/`.
+2. Run `flutter gen-l10n` (from `packages/shadcn_flutter/`) to regenerate the Dart code.
 
 ### 5) Theming and colors
 
-- Theme tokens and generated themes live under `lib/src/theme/`.
-- If you change color sources in `/colors/`, use the style transpilers to
-  regenerate Dart styles:
+- Theme tokens and generated themes live under `packages/shadcn_flutter/lib/src/theme/`.
+- If you change color sources in `packages/shadcn_flutter/colors/`, use the style transpilers to
+  regenerate Dart styles (run from the repo root):
 
 ```powershell
 # Transpile styles (versioned)
-dart run gen/bin/style_transpiler_v4.dart
+dart run packages/gen/bin/style_transpiler_v4.dart
 # or
-dart run gen/bin/style_transpiler.dart
+dart run packages/gen/bin/style_transpiler.dart
 
 # Generate color helpers if needed
-dart run gen/bin/color_generator.dart
+dart run packages/gen/bin/color_generator.dart
 ```
 
 - Validate changes visually in the docs app (light/dark + multiple color
@@ -283,46 +290,46 @@ Run locally:
 ./run_docs_web_semantics.bat
 
 # Manual
-cd docs
+cd packages/docs
 flutter run -d chrome --dart-define=ENABLE_WEB_SEMANTICS=true
 ```
 
 Add docs:
 
 - New component page: add an example directory under
-  `docs/lib/pages/docs/components/<component>/` and register in the component
+  `packages/docs/lib/pages/docs/components/<component>/` and register in the component
   pages where needed.
 - Global docs (installation, theme, typography, etc.): see
-  `docs/lib/pages/docs/*`.
-- Sidebar/nav: `docs/lib/pages/docs/sidebar_nav.dart` and related pages.
+  `packages/docs/lib/pages/docs/*`.
+- Sidebar/nav: `packages/docs/lib/pages/docs/sidebar_nav.dart` and related pages.
 
 LLMs and guides:
 
-- Generate machine‑readable references after component changes:
+- Generate machine‑readable references after component changes (run from the repo root):
 
 ```powershell
-./gen_llms.bat         # runs: dart run gen/bin/llms_gen.dart
-./gen_dotguides.bat    # runs: dart run gen/bin/dotguides_gen.dart
+./gen_llms.bat         # runs: dart run packages/gen/bin/llms_gen.dart
+./gen_dotguides.bat    # runs: dart run packages/gen/bin/dotguides_gen.dart
 ```
 
 Analyzer task lists for docs reviews:
 
 ```powershell
-dart run gen/bin/docs_divide.dart
-# Outputs checklists under gen/log/analyze_parts/
+dart run packages/gen/bin/docs_divide.dart
+# Outputs checklists under packages/gen/log/analyze_parts/
 ```
 
 ## Testing
 
 - Prefer adding a minimal widget test when changing behavior.
 - Places to put tests:
-  - `example/test/` – runs against the example app
+  - `packages/shadcn_flutter/example/test/` – runs against the example app
   - `test_widget/` – separate test harness project
 
 Run tests:
 
 ```powershell
-cd example; flutter test; cd ..
+cd packages/shadcn_flutter/example; flutter test; cd ../../..
 cd test_widget; flutter test; cd ..
 ```
 
@@ -340,7 +347,7 @@ PR checklist:
 - [ ] Tests added/updated and passing (`flutter test` where applicable)
 - [ ] Public API documented (`public_member_api_docs`)
 - [ ] Docs/examples updated (docs pages or README images if needed)
-- [ ] Exports updated in `lib/shadcn_flutter.dart` (for new public widgets)
+- [ ] Exports updated in `packages/shadcn_flutter/lib/shadcn_flutter.dart` (for new public widgets)
 - [ ] Generators run (icons/styles/LLMs) when relevant
 
 ## Issue reporting

@@ -36,35 +36,35 @@ jobs:
 
     - name: Enable Flutter Web
       run: flutter config --enable-web
-      working-directory: './docs'
+      working-directory: './packages/docs'
 
     - name: Build Release Version
       run: "flutter build web --wasm --base-href \"/shadcn_flutter/\""
-      working-directory: './docs'
+      working-directory: './packages/docs'
 
     - name: Copy to web build directory
-      run: cp -r ./docs/build/web ./docs/public
+      run: cp -r ./packages/docs/build/web ./packages/docs/public
       working-directory: './'
 
-    - name: Copy release version config file # from ./docs/config/docs-release.json to ./docs/public/assets/docs.json
-      run: cp -r ./docs/config/docs-dev.json ./docs/public/assets/docs.json
+    - name: Copy release version config file # from ./packages/docs/config/docs-release.json to ./packages/docs/public/assets/docs.json
+      run: cp -r ./packages/docs/config/docs-dev.json ./packages/docs/public/assets/docs.json
       working-directory: './'
 
-    - name: Prepare gen dependencies
+    - name: Prepare workspace dependencies
       run: |
         dart pub get
-      working-directory: './gen'
+      working-directory: './'
 
     - name: Generate LLMs Documentation
       run: |
-        dart gen/bin/llms_gen.dart
+        dart packages/gen/bin/llms_gen.dart
       working-directory: './'
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: './docs/public'
+        publish_dir: './packages/docs/public'
         force_orphan: true
         user_name: 'github-ci[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'

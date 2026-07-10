@@ -1,1 +1,1 @@
-dart run gen/bin/dotguides_gen.dart
+dart run packages/gen/bin/dotguides_gen.dart
