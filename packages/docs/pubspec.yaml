@@ -69,4 +69,3 @@ flutter:
   uses-material-design: true
   assets:
     - docs.json
-    - ../../pubspec.lock

@@ -10,73 +10,87 @@
             "type": "dart"
         },
         {
-            "name": "shadcn_flutter (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "shadcn_flutter (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
             "name": "docs",
-            "cwd": "docs",
+            "cwd": "packages\\docs",
             "request": "launch",
             "type": "dart"
         },
         {
             "name": "docs (profile mode)",
-            "cwd": "docs",
+            "cwd": "packages\\docs",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
             "name": "docs (release mode)",
-            "cwd": "docs",
+            "cwd": "packages\\docs",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "gen",
+            "cwd": "packages\\gen",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shadcn_flutter",
+            "cwd": "packages\\shadcn_flutter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shadcn_flutter (profile mode)",
+            "cwd": "packages\\shadcn_flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shadcn_flutter (release mode)",
+            "cwd": "packages\\shadcn_flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "shadcn_flutter_genui",
+            "cwd": "packages\\shadcn_flutter_genui",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shadcn_flutter_genui (profile mode)",
+            "cwd": "packages\\shadcn_flutter_genui",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shadcn_flutter_genui (release mode)",
+            "cwd": "packages\\shadcn_flutter_genui",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
         },
         {
             "name": "example",
-            "cwd": "example",
+            "cwd": "packages\\shadcn_flutter\\example",
             "request": "launch",
             "type": "dart"
         },
         {
             "name": "example (profile mode)",
-            "cwd": "example",
+            "cwd": "packages\\shadcn_flutter\\example",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
             "name": "example (release mode)",
-            "cwd": "example",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "test_widget",
-            "cwd": "test_widget",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "test_widget (profile mode)",
-            "cwd": "test_widget",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "test_widget (release mode)",
-            "cwd": "test_widget",
+            "cwd": "packages\\shadcn_flutter\\example",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

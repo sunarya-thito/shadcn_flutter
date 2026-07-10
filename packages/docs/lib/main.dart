@@ -142,8 +142,10 @@ void main() async {
     SemanticsBinding.instance.ensureSemantics();
   }
   _docs = jsonDecode(await rootBundle.loadString('docs.json'));
-  String pubspecYml = await rootBundle.loadString('../../pubspec.lock');
-  var dep = loadYaml(pubspecYml)['packages']['shadcn_flutter']['version'];
+  String pubspecYml = await rootBundle.loadString(
+    'packages/shadcn_flutter/pubspec.yaml',
+  );
+  var dep = loadYaml(pubspecYml)['version'];
   if (dep is String) {
     _packageLatestVersion = dep;
   }
