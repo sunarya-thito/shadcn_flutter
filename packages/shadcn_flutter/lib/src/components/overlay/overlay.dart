@@ -1,6 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 
 /// Closes the currently active overlay with an optional result value.
 ///
@@ -540,13 +539,6 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
   }
 }
 
-/// A [ChangeNotifier] with a public [notify] method, since [notifyListeners]
-/// itself is `@protected` and can't be called from an object holding a
-/// [ChangeNotifier] as a field rather than extending it.
-class _AnchorRepaintNotifier extends ChangeNotifier {
-  void notify() => notifyListeners();
-}
-
 /// The registry entry representing a registered [OverlayAnchor].
 class OverlayAnchorEntry {
   /// The [RenderBox] of the registered anchor.
@@ -618,15 +610,12 @@ class OverlayAnchor extends SingleChildRenderObjectWidget {
 /// The render object for [OverlayAnchor].
 ///
 /// Handles construction, updates, and automatic unregistration when detached.
-/// Implements [Listenable] directly (backed by a private [ChangeNotifier])
-/// so [LinkedAnchor] subscriptions can listen for repaints without an extra
-/// indirection; notified whenever this render object repaints (see
-/// [markNeedsPaint]) or is removed from the tree (see [detach]).
-class RenderOverlayAnchor extends RenderProxyBox implements Listenable {
+/// Overlays anchored to it read its live on-screen position directly through
+/// [RenderObject.getTransformTo] during compositing — see the movement detector
+/// in `anchor.dart` — so it needs no special layer of its own.
+class RenderOverlayAnchor extends RenderProxyBox {
   Object _anchor;
   BuildContext _anchorContext;
-  final _AnchorRepaintNotifier _notifier = _AnchorRepaintNotifier();
-  bool _notifierDisposed = false;
 
   /// Creates a [RenderOverlayAnchor].
   RenderOverlayAnchor({
@@ -636,19 +625,6 @@ class RenderOverlayAnchor extends RenderProxyBox implements Listenable {
   })  : _anchor = anchor,
         _anchorContext = anchorContext,
         super(child);
-
-  @override
-  void addListener(VoidCallback listener) => _notifier.addListener(listener);
-
-  @override
-  void removeListener(VoidCallback listener) =>
-      _notifier.removeListener(listener);
-
-  @override
-  void markNeedsPaint() {
-    super.markNeedsPaint();
-    if (!_notifierDisposed) _notifier.notify();
-  }
 
   /// Updates properties and registry.
   void update({
@@ -684,18 +660,6 @@ class RenderOverlayAnchor extends RenderProxyBox implements Listenable {
   @override
   void detach() {
     OverlayAnchorRegistry.unregister(_anchor);
-    // Deferred past this frame's build/layout/paint: detach() runs during
-    // tree teardown, and a listener reacting synchronously would trip
-    // Flutter's "build scheduled during build" assertion. dispose() runs
-    // synchronously right after detach(), so _notifier is disposed here
-    // (once the detach is confirmed permanent) instead of in dispose().
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _notifier.notify();
-      if (!attached) {
-        _notifierDisposed = true;
-        _notifier.dispose();
-      }
-    });
     super.detach();
   }
 }

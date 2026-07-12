@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// Handles overlay presentation for popover components.
@@ -602,8 +603,17 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget> {
     final renderObject = context.findRenderObject();
     if (renderObject == null) return;
     final transform = _subscription.computeTransform(renderObject);
-    final newPos = MatrixUtils.transformPoint(transform, Offset.zero);
     final newAnchorSize = _subscription.anchorSize;
+    // Map the anchor-alignment point into the overlay's coordinate space,
+    // not the anchor's top-left corner. This mirrors how the initial position
+    // is computed in PopoverOverlayHandler.show (pos + anchorSize/2 * (1 +
+    // anchorAlignment)), which is exactly the alignment point measured from
+    // the anchor's local origin. Transforming Offset.zero instead would drop
+    // the anchor-alignment offset and snap every overlay to the anchor corner.
+    final localAnchorPoint = newAnchorSize != null
+        ? _anchorAlignment.optionallyResolve(context).alongSize(newAnchorSize)
+        : Offset.zero;
+    final newPos = MatrixUtils.transformPoint(transform, localAnchorPoint);
     if (_position != newPos || _anchorSize != newAnchorSize) {
       setState(() {
         _anchorSize = newAnchorSize;
@@ -611,6 +621,18 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget> {
         widget.onTickFollow?.call(this);
       });
     }
+  }
+
+  /// Whether this popover positions itself against the anchor's live position
+  /// through the compositing pipeline (zero lag, margin/invert re-evaluated
+  /// during scroll) instead of the per-frame ticker + re-layout path. Enabled
+  /// for anchors that support it (e.g. [LinkedAnchor]) while following.
+  bool get _useCompositeTracking =>
+      _follow && _subscription.supportsCompositeTracking;
+
+  void _handleAnchorLost() {
+    if (!mounted) return;
+    widget.onClose?.call();
   }
 
   @override
@@ -650,6 +672,9 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget> {
                   .optionallyResolve(context),
               allowInvertVertical: _allowInvertVertical,
               allowInvertHorizontal: _allowInvertHorizontal,
+              liveAnchor:
+                  _useCompositeTracking ? () => _subscription.currentAnchorBox : null,
+              onAnchorLost: _useCompositeTracking ? _handleAnchorLost : null,
               child: child!,
             );
           },
@@ -828,6 +853,16 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
   /// Whether to allow vertical position inversion.
   final bool allowInvertVertical;
 
+  /// Resolver for the anchor's live [RenderBox], enabling composite-time
+  /// tracking. When non-null, the popover re-measures the anchor's position on
+  /// every scene build and re-applies margin/invert live (see
+  /// [PopoverLayoutRender]); when null it uses the static [position].
+  final RenderBox? Function()? liveAnchor;
+
+  /// Called (post-frame) when [liveAnchor] can no longer be resolved — i.e. the
+  /// anchor was removed — so the popover can close.
+  final VoidCallback? onAnchorLost;
+
   /// Creates a popover layout widget.
   const PopoverLayout({
     super.key,
@@ -845,6 +880,8 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
     this.filterQuality,
     this.allowInvertHorizontal = true,
     this.allowInvertVertical = true,
+    this.liveAnchor,
+    this.onAnchorLost,
   });
 
   @override
@@ -863,6 +900,8 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
       filterQuality: filterQuality,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
+      liveAnchor: liveAnchor,
+      onAnchorLost: onAnchorLost,
     );
   }
 
@@ -922,6 +961,8 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
       renderObject._allowInvertVertical = allowInvertVertical;
       hasChanged = true;
     }
+    renderObject.liveAnchor = liveAnchor;
+    renderObject.onAnchorLost = onAnchorLost;
     if (hasChanged) {
       renderObject.markNeedsLayout();
     }
@@ -947,9 +988,34 @@ class PopoverLayoutRender extends RenderShiftedBox {
   FilterQuality? _filterQuality;
   bool _allowInvertHorizontal;
   bool _allowInvertVertical;
+  RenderBox? Function()? _liveAnchor;
+  VoidCallback? _onAnchorLost;
 
   bool _invertX = false;
   bool _invertY = false;
+
+  // Live-tracking state, updated at composite time (see [_composeLiveTransform]).
+  Offset? _liveOffset;
+  bool _liveInvertX = false;
+  bool _liveInvertY = false;
+  bool _anchorLostScheduled = false;
+  final LayerHandle<_PopoverTrackingLayer> _trackingLayer =
+      LayerHandle<_PopoverTrackingLayer>();
+
+  /// Whether composite-time anchor tracking is active.
+  bool get _isLiveTracking => _liveAnchor != null;
+
+  set liveAnchor(RenderBox? Function()? value) {
+    final bool wasTracking = _liveAnchor != null;
+    _liveAnchor = value;
+    if (wasTracking != (value != null)) {
+      // Toggling tracking changes the paint/compositing path.
+      markNeedsCompositingBitsUpdate();
+      markNeedsPaint();
+    }
+  }
+
+  set onAnchorLost(VoidCallback? value) => _onAnchorLost = value;
 
   /// Creates a popover layout render object.
   ///
@@ -970,6 +1036,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
     FilterQuality? filterQuality,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
+    RenderBox? Function()? liveAnchor,
+    VoidCallback? onAnchorLost,
   })  : _alignment = alignment,
         _position = position,
         _anchorAlignment = anchorAlignment,
@@ -977,6 +1045,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
         _heightConstraint = heightConstraint,
         _anchorSize = anchorSize,
         _offset = offset,
+        _liveAnchor = liveAnchor,
+        _onAnchorLost = onAnchorLost,
         _margin = margin,
         _scale = scale,
         _scaleAlignment = scaleAlignment,
@@ -995,26 +1065,47 @@ class PopoverLayoutRender extends RenderShiftedBox {
     return hitTestChildren(result, position: position);
   }
 
-  Matrix4 get _effectiveTransform {
+  /// Builds the paint transform that moves the child from where it was laid out
+  /// ([paintedOffset], i.e. its parent-data offset) to [targetOffset] and scales
+  /// it around [targetOffset] plus the (invert-adjusted) scale alignment point.
+  ///
+  /// For the static path both offsets are equal, so it reduces to the plain
+  /// scale-in-place transform. For live tracking [targetOffset] is the popover's
+  /// freshly-computed placement for the anchor's current position.
+  Matrix4 _buildTransform(
+      Offset paintedOffset, Offset targetOffset, bool invertX, bool invertY) {
     Size childSize = child!.size;
-    Offset childOffset = (child!.parentData as BoxParentData).offset;
     var scaleAlignment = _scaleAlignment;
-    if (_invertX || _invertY) {
+    if (invertX || invertY) {
       scaleAlignment = Alignment(
-        _invertX ? -scaleAlignment.x : scaleAlignment.x,
-        _invertY ? -scaleAlignment.y : scaleAlignment.y,
+        invertX ? -scaleAlignment.x : scaleAlignment.x,
+        invertY ? -scaleAlignment.y : scaleAlignment.y,
       );
     }
+    final Offset delta = targetOffset - paintedOffset;
     Matrix4 transform = Matrix4.identity();
     Offset alignmentTranslation = scaleAlignment.alongSize(childSize);
-    transform.translateByDouble(childOffset.dx, childOffset.dy, 0, 1);
+    transform.translateByDouble(targetOffset.dx, targetOffset.dy, 0, 1);
     transform.translateByDouble(
         alignmentTranslation.dx, alignmentTranslation.dy, 0, 1);
     transform.scaleByDouble(_scale, _scale, 1, 1);
     transform.translateByDouble(
         -alignmentTranslation.dx, -alignmentTranslation.dy, 0, 1);
-    transform.translateByDouble(-childOffset.dx, -childOffset.dy, 0, 1);
+    transform.translateByDouble(-targetOffset.dx, -targetOffset.dy, 0, 1);
+    // Innermost: shift the child from its laid-out spot to the live target.
+    transform.translateByDouble(delta.dx, delta.dy, 0, 1);
     return transform;
+  }
+
+  Matrix4 get _effectiveTransform {
+    final Offset baseOffset = (child!.parentData as BoxParentData).offset;
+    if (_isLiveTracking) {
+      // Use the placement computed on the last scene build so hit-testing and
+      // ancestor transforms follow where the popover is actually drawn.
+      return _buildTransform(
+          baseOffset, _liveOffset ?? baseOffset, _liveInvertX, _liveInvertY);
+    }
+    return _buildTransform(baseOffset, baseOffset, _invertX, _invertY);
   }
 
   @override
@@ -1036,10 +1127,31 @@ class PopoverLayoutRender extends RenderShiftedBox {
   }
 
   @override
-  bool get alwaysNeedsCompositing => child != null && _filterQuality != null;
+  bool get alwaysNeedsCompositing =>
+      child != null && (_filterQuality != null || _isLiveTracking);
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    if (child == null) return;
+    if (_isLiveTracking && _filterQuality == null) {
+      // Live tracking: push a layer that re-evaluates the popover's placement
+      // against the anchor's live position on every scene build (including page
+      // scrolls that never repaint this subtree). The child is painted at its
+      // laid-out offset; the layer's transform moves/scales it to the live spot.
+      // Drop any transform layer cached by the static paint path.
+      layer = null;
+      var trackingLayer = _trackingLayer.layer;
+      if (trackingLayer == null) {
+        trackingLayer = _PopoverTrackingLayer(this);
+        _trackingLayer.layer = trackingLayer;
+      } else {
+        trackingLayer.render = this;
+        trackingLayer.remove();
+      }
+      trackingLayer.paintOffset = offset;
+      context.pushLayer(trackingLayer, super.paint, offset);
+      return;
+    }
     if (child != null) {
       final Matrix4 transform = _effectiveTransform;
       if (_filterQuality == null) {
@@ -1143,14 +1255,19 @@ class PopoverLayoutRender extends RenderShiftedBox {
     );
   }
 
-  @override
-  void performLayout() {
-    child!.layout(getConstraintsForChild(constraints), parentUsesSize: true);
-    size = constraints.biggest;
-    Size childSize = child!.size;
+  /// Pure placement computation: given an anchor point [position] (in this
+  /// render object's coordinate space), the laid-out [childSize], and the
+  /// [anchorSize], returns the child's offset plus whether it was inverted on
+  /// each axis. Applies alignment, the offset, auto-invert (only when it reduces
+  /// off-screen overflow), and edge clamping against [size].
+  ///
+  /// Extracted so it can be evaluated both at layout time (against the static
+  /// [_position]) and at composite time (against the anchor's live position),
+  /// keeping the two perfectly consistent.
+  ({Offset offset, bool invertX, bool invertY}) _computePlacement(
+      Offset? position, Size childSize, Size? anchorSize) {
     double offsetX = _offset?.dx ?? 0;
     double offsetY = _offset?.dy ?? 0;
-    var position = _position;
     position ??= Offset(
       size.width / 2 + size.width / 2 * _anchorAlignment.x,
       size.height / 2 + size.height / 2 * _anchorAlignment.y,
@@ -1165,33 +1282,55 @@ class PopoverLayoutRender extends RenderShiftedBox {
     double top = y - _margin.top;
     double right = x + childSize.width + _margin.right;
     double bottom = y + childSize.height + _margin.bottom;
+    bool invertX = false;
+    bool invertY = false;
     if ((left < 0 || right > size.width) && _allowInvertHorizontal) {
-      x = position.dx -
+      double invertedX = position.dx -
           childSize.width / 2 -
           (childSize.width / 2 * -_alignment.x);
-      if (_anchorSize != null) {
-        x -= _anchorSize!.width * _anchorAlignment.x;
+      if (anchorSize != null) {
+        invertedX -= anchorSize.width * _anchorAlignment.x;
       }
-      left = x - _margin.left;
-      right = x + childSize.width + _margin.right;
-      offsetX *= -1;
-      _invertX = true;
-    } else {
-      _invertX = false;
+      final double invertedLeft = invertedX - _margin.left;
+      final double invertedRight = invertedX + childSize.width + _margin.right;
+      // Only flip to the opposite side when doing so actually reduces how far
+      // the popover spills off-screen. Inverting a popover that overflows on
+      // either side would fling it across the screen (e.g. snapping to the top
+      // edge) once it merely touched the margin — a gentle clamp on the
+      // original side keeps it anchored instead.
+      final double originalOverflow =
+          max(0.0, -left) + max(0.0, right - size.width);
+      final double invertedOverflow =
+          max(0.0, -invertedLeft) + max(0.0, invertedRight - size.width);
+      if (invertedOverflow < originalOverflow) {
+        x = invertedX;
+        left = invertedLeft;
+        right = invertedRight;
+        offsetX *= -1;
+        invertX = true;
+      }
     }
     if ((top < 0 || bottom > size.height) && _allowInvertVertical) {
-      y = position.dy -
+      double invertedY = position.dy -
           childSize.height / 2 -
           (childSize.height / 2 * -_alignment.y);
-      if (_anchorSize != null) {
-        y -= _anchorSize!.height * _anchorAlignment.y;
+      if (anchorSize != null) {
+        invertedY -= anchorSize.height * _anchorAlignment.y;
       }
-      top = y - _margin.top;
-      bottom = y + childSize.height + _margin.bottom;
-      offsetY *= -1;
-      _invertY = true;
-    } else {
-      _invertY = false;
+      final double invertedTop = invertedY - _margin.top;
+      final double invertedBottom =
+          invertedY + childSize.height + _margin.bottom;
+      final double originalOverflow =
+          max(0.0, -top) + max(0.0, bottom - size.height);
+      final double invertedOverflow =
+          max(0.0, -invertedTop) + max(0.0, invertedBottom - size.height);
+      if (invertedOverflow < originalOverflow) {
+        y = invertedY;
+        top = invertedTop;
+        bottom = invertedBottom;
+        offsetY *= -1;
+        invertY = true;
+      }
     }
     final double dx = left < 0
         ? -left
@@ -1203,8 +1342,101 @@ class PopoverLayoutRender extends RenderShiftedBox {
         : bottom > size.height
             ? size.height - bottom
             : 0;
-    Offset result = Offset(x + dx + offsetX, y + dy + offsetY);
-    BoxParentData childParentData = child!.parentData as BoxParentData;
-    childParentData.offset = result;
+    return (
+      offset: Offset(x + dx + offsetX, y + dy + offsetY),
+      invertX: invertX,
+      invertY: invertY,
+    );
+  }
+
+  @override
+  void performLayout() {
+    // The live anchor's size can't be read here (it's not our child; reading it
+    // mid-layout is illegal). It's only needed at composite time, where
+    // [_composeLiveTransform] reads it safely. Layout uses the anchor size the
+    // state supplied at open, which is stable during scroll.
+    child!.layout(getConstraintsForChild(constraints), parentUsesSize: true);
+    size = constraints.biggest;
+    final placement = _computePlacement(_position, child!.size, _anchorSize);
+    _invertX = placement.invertX;
+    _invertY = placement.invertY;
+    (child!.parentData as BoxParentData).offset = placement.offset;
+  }
+
+  /// Computes the paint transform for the current scene build while live
+  /// tracking: measures the anchor's live position (valid at composite time,
+  /// reflecting this frame's scroll), recomputes the full placement (margin +
+  /// invert) against it, and returns the transform moving the laid-out child
+  /// there. Schedules a relayout on anchor resize and a close on anchor removal
+  /// — only *schedules*, since it runs during compositing.
+  Matrix4 _composeLiveTransform() {
+    final Offset baseOffset = (child!.parentData as BoxParentData).offset;
+    final box = _liveAnchor?.call();
+    if (box == null || !box.attached || !box.hasSize) {
+      _liveOffset = null;
+      _scheduleAnchorLost();
+      return _buildTransform(baseOffset, baseOffset, _invertX, _invertY);
+    }
+    // Safe to read the anchor's size/transform here: layout is complete during
+    // compositing, and this reflects the current frame's scroll offset.
+    final Size anchorSize = box.size;
+    final Offset anchorPoint = _anchorAlignment.alongSize(anchorSize);
+    final Offset live =
+        MatrixUtils.transformPoint(box.getTransformTo(this), anchorPoint);
+    final placement = _computePlacement(live, child!.size, anchorSize);
+    _liveOffset = placement.offset;
+    _liveInvertX = placement.invertX;
+    _liveInvertY = placement.invertY;
+    return _buildTransform(
+        baseOffset, placement.offset, placement.invertX, placement.invertY);
+  }
+
+  void _scheduleAnchorLost() {
+    if (_anchorLostScheduled) return;
+    _anchorLostScheduled = true;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _anchorLostScheduled = false;
+      _onAnchorLost?.call();
+    });
+  }
+
+  @override
+  void dispose() {
+    _trackingLayer.layer = null;
+    super.dispose();
+  }
+}
+
+/// Compositing layer for a live-tracking [PopoverLayoutRender]. Its
+/// [alwaysNeedsAddToScene] guarantees [addToScene] runs on every scene build —
+/// including page scrolls that never repaint the popover's subtree — where it
+/// asks the render object to recompute the popover's placement against the
+/// anchor's current position and pushes the resulting transform. The child is
+/// painted (once, at its laid-out offset) into this layer; only the transform
+/// changes per frame, so following costs nothing when the anchor is still.
+class _PopoverTrackingLayer extends ContainerLayer {
+  _PopoverTrackingLayer(this.render);
+
+  PopoverLayoutRender render;
+  Offset paintOffset = Offset.zero;
+
+  @override
+  bool get alwaysNeedsAddToScene => true;
+
+  @override
+  void addToScene(ui.SceneBuilder builder) {
+    final Matrix4 transform = render._composeLiveTransform();
+    // Mirror PaintingContext.pushTransform: apply the transform about the
+    // offset the child was painted at.
+    final Matrix4 effective =
+        Matrix4.translationValues(paintOffset.dx, paintOffset.dy, 0)
+          ..multiply(transform)
+          ..translateByDouble(-paintOffset.dx, -paintOffset.dy, 0, 1);
+    engineLayer = builder.pushTransform(
+      effective.storage,
+      oldLayer: engineLayer as ui.TransformEngineLayer?,
+    );
+    addChildrenToScene(builder);
+    builder.pop();
   }
 }

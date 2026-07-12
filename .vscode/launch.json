@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "shadcn_flutter",
             "request": "launch",
@@ -91,6 +92,26 @@
         {
             "name": "example (release mode)",
             "cwd": "packages\\shadcn_flutter\\example",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "unit_test_assets",
+            "cwd": "packages\\shadcn_flutter\\build\\unit_test_assets",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "unit_test_assets (profile mode)",
+            "cwd": "packages\\shadcn_flutter\\build\\unit_test_assets",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "unit_test_assets (release mode)",
+            "cwd": "packages\\shadcn_flutter\\build\\unit_test_assets",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

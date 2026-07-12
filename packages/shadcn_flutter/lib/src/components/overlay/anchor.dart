@@ -39,6 +39,21 @@ abstract class AnchorSubscription implements Listenable {
   /// a separate overlay-entry render tree), so [RenderObject.getTransformTo]
   /// can't be used directly between them.
   Matrix4 computeTransform(RenderObject source);
+
+  /// Whether this subscription supports tracking the anchor through the
+  /// compositing pipeline (see [currentAnchorBox]).
+  ///
+  /// When true, the popover positions itself against the anchor's live position
+  /// every scene build — zero-lag, and with margin/invert re-evaluated during
+  /// scroll — instead of relying on a per-frame ticker + re-layout. Defaults to
+  /// false; [_LinkedAnchorSubscription] enables it.
+  bool get supportsCompositeTracking => false;
+
+  /// The anchor's currently-registered [RenderBox], or null if it can't be
+  /// resolved right now. Read at composite time by the popover's layout to
+  /// measure the anchor's live on-screen position. Only meaningful when
+  /// [supportsCompositeTracking] is true.
+  RenderBox? get currentAnchorBox => null;
 }
 
 /// Computes the transform from [anchorBox]'s local coordinate space into
@@ -121,6 +136,14 @@ class _ContextAnchorSubscription extends ChangeNotifier
   @override
   bool get isVisible => _box != null;
 
+  // ContextAnchor tracks via its per-frame ticker + re-layout, not through the
+  // compositing pipeline.
+  @override
+  bool get supportsCompositeTracking => false;
+
+  @override
+  RenderBox? get currentAnchorBox => _box;
+
   @override
   Size? get anchorSize {
     final box = _box;
@@ -142,50 +165,28 @@ class _ContextAnchorSubscription extends ChangeNotifier
   }
 }
 
-/// [LinkedAnchor]'s subscription. Event-driven (no ticker): it forwards
-/// listener registration directly onto the currently-registered
-/// [RenderOverlayAnchor] for [key], re-resolving from
-/// [OverlayAnchorRegistry] every time it (re)binds so it self-heals if the
-/// registered render object is swapped for a new instance.
+/// [LinkedAnchor]'s subscription. Resolves the anchor from
+/// [OverlayAnchorRegistry] on every read, so it self-heals if the anchor's
+/// render object is swapped for a new instance.
+///
+/// It carries no ticker and schedules no frames: it enables
+/// [supportsCompositeTracking] so the popover tracks the anchor's live position
+/// straight through the compositing pipeline (see `PopoverLayoutRender`), which
+/// re-evaluates on every scene build — including page scrolls that never repaint
+/// the anchor — with zero lag and with margin/invert applied live.
 class _LinkedAnchorSubscription extends ChangeNotifier
     implements AnchorSubscription {
   final Object key;
-  RenderOverlayAnchor? _bound;
 
   _LinkedAnchorSubscription(this.key);
 
-  RenderOverlayAnchor? get _liveAnchor {
+  @override
+  bool get supportsCompositeTracking => true;
+
+  @override
+  RenderBox? get currentAnchorBox {
     final box = OverlayAnchorRegistry.find(key)?.renderBox;
-    return box is RenderOverlayAnchor ? box : null;
-  }
-
-  void _rebind() {
-    final current = _liveAnchor;
-    if (identical(current, _bound)) return;
-    _bound?.removeListener(_handleAnchorRepaint);
-    _bound = current;
-    _bound?.addListener(_handleAnchorRepaint);
-  }
-
-  void _handleAnchorRepaint() {
-    _rebind();
-    notifyListeners();
-  }
-
-  @override
-  void addListener(VoidCallback listener) {
-    final wasEmpty = !hasListeners;
-    super.addListener(listener);
-    if (wasEmpty) _rebind();
-  }
-
-  @override
-  void removeListener(VoidCallback listener) {
-    super.removeListener(listener);
-    if (!hasListeners) {
-      _bound?.removeListener(_handleAnchorRepaint);
-      _bound = null;
-    }
+    return (box != null && box.attached) ? box : null;
   }
 
   @override
@@ -206,12 +207,5 @@ class _LinkedAnchorSubscription extends ChangeNotifier
     final box = OverlayAnchorRegistry.find(key)?.renderBox;
     if (box == null || !box.attached) return Matrix4.identity();
     return anchorTransformRelativeTo(box, source);
-  }
-
-  @override
-  void dispose() {
-    _bound?.removeListener(_handleAnchorRepaint);
-    _bound = null;
-    super.dispose();
   }
 }
