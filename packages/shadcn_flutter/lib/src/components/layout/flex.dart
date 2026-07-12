@@ -557,12 +557,12 @@ class PaintOrder extends widgets.ParentDataWidget<FlexParentData> {
   /// Creates a widget that sets the paint order of a child.
   const PaintOrder({
     super.key,
-    required this.paintOrder,
+    this.paintOrder,
     required super.child,
   });
 
   /// The paint order of this child. Higher values are painted on top.
-  final int paintOrder;
+  final int? paintOrder;
 
   @override
   void applyParentData(rendering.RenderObject renderObject) {
