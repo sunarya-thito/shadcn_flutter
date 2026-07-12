@@ -599,6 +599,34 @@ abstract class InputFeature {
   }
 }
 
+class _FocusedToFront extends StatefulWidget {
+  final Widget child;
+  final bool skipFocusTraversal;
+  const _FocusedToFront(
+      {required this.child, required this.skipFocusTraversal});
+
+  @override
+  State<_FocusedToFront> createState() => _FocusedToFrontState();
+}
+
+class _FocusedToFrontState extends State<_FocusedToFront> {
+  bool hasFocus = false;
+  @override
+  Widget build(BuildContext context) {
+    return PaintOrder(
+        paintOrder: hasFocus ? 1 : null,
+        child: Focus(
+          skipTraversal: widget.skipFocusTraversal,
+          onFocusChange: (value) {
+            setState(() {
+              hasFocus = value;
+            });
+          },
+          child: widget.child,
+        ));
+  }
+}
+
 /// Abstract base state class for input features.
 ///
 /// Manages the lifecycle and state of features that extend text field
@@ -658,10 +686,13 @@ abstract class InputFeatureState<T extends InputFeature> {
       return;
     }
     for (final widget in buildLeading()) {
-      yield Hidden(
-        hidden: _visibilityController.value < 1,
-        duration: kDefaultDuration,
-        child: widget,
+      yield _FocusedToFront(
+        skipFocusTraversal: feature.skipFocusTraversal,
+        child: Hidden(
+          hidden: _visibilityController.value < 1,
+          duration: kDefaultDuration,
+          child: widget,
+        ),
       );
     }
   }
@@ -671,10 +702,13 @@ abstract class InputFeatureState<T extends InputFeature> {
       return;
     }
     for (final widget in buildTrailing()) {
-      yield Hidden(
-        hidden: _visibilityController.value < 1,
-        duration: kDefaultDuration,
-        child: widget,
+      yield _FocusedToFront(
+        skipFocusTraversal: feature.skipFocusTraversal,
+        child: Hidden(
+          hidden: _visibilityController.value < 1,
+          duration: kDefaultDuration,
+          child: widget,
+        ),
       );
     }
   }
@@ -684,10 +718,13 @@ abstract class InputFeatureState<T extends InputFeature> {
       return;
     }
     for (final widget in buildPrefix()) {
-      yield Hidden(
-        hidden: _visibilityController.value < 1,
-        duration: kDefaultDuration,
-        child: widget,
+      yield _FocusedToFront(
+        skipFocusTraversal: feature.skipFocusTraversal,
+        child: Hidden(
+          hidden: _visibilityController.value < 1,
+          duration: kDefaultDuration,
+          child: widget,
+        ),
       );
     }
   }
@@ -697,10 +734,13 @@ abstract class InputFeatureState<T extends InputFeature> {
       return;
     }
     for (final widget in buildSuffix()) {
-      yield Hidden(
-        hidden: _visibilityController.value < 1,
-        duration: kDefaultDuration,
-        child: widget,
+      yield _FocusedToFront(
+        skipFocusTraversal: feature.skipFocusTraversal,
+        child: Hidden(
+          hidden: _visibilityController.value < 1,
+          duration: kDefaultDuration,
+          child: widget,
+        ),
       );
     }
   }
@@ -710,10 +750,13 @@ abstract class InputFeatureState<T extends InputFeature> {
       return;
     }
     for (final widget in buildAbove()) {
-      yield Hidden(
-        hidden: _visibilityController.value < 1,
-        duration: kDefaultDuration,
-        child: widget,
+      yield _FocusedToFront(
+        skipFocusTraversal: feature.skipFocusTraversal,
+        child: Hidden(
+          hidden: _visibilityController.value < 1,
+          duration: kDefaultDuration,
+          child: widget,
+        ),
       );
     }
   }
@@ -723,10 +766,13 @@ abstract class InputFeatureState<T extends InputFeature> {
       return;
     }
     for (final widget in buildBelow()) {
-      yield Hidden(
-        hidden: _visibilityController.value < 1,
-        duration: kDefaultDuration,
-        child: widget,
+      yield _FocusedToFront(
+        skipFocusTraversal: feature.skipFocusTraversal,
+        child: Hidden(
+          hidden: _visibilityController.value < 1,
+          duration: kDefaultDuration,
+          child: widget,
+        ),
       );
     }
   }
@@ -2468,48 +2514,30 @@ class TextFieldState extends State<TextField>
         List<Widget> aboveChildren = [];
         List<Widget> belowChildren = [];
         for (final attached in _attachedFeatures) {
-          leadingChildren.addAll(attached.state._internalBuildLeading().map(
-                (e) => Focus(
-                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
-                      attached.feature.skipFocusTraversal,
-                  child: e,
-                ),
-              ));
-          trailingChildren.addAll(attached.state._internalBuildTrailing().map(
-                (e) => FocusScope(
-                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
-                      attached.feature.skipFocusTraversal,
-                  child: e,
-                ),
-              ));
-          aboveChildren.addAll(attached.state._internalBuildAbove().map(
-                (e) => FocusScope(
-                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
-                      attached.feature.skipFocusTraversal,
-                  child: e,
-                ),
-              ));
-          belowChildren.addAll(attached.state._internalBuildBelow().map(
-                (e) => FocusScope(
-                  skipTraversal: widget.skipInputFeatureFocusTraversal ||
-                      attached.feature.skipFocusTraversal,
-                  child: e,
-                ),
-              ));
+          leadingChildren.addAll(attached.state._internalBuildLeading());
+          trailingChildren.addAll(attached.state._internalBuildTrailing());
+          aboveChildren.addAll(attached.state._internalBuildAbove());
+          belowChildren.addAll(attached.state._internalBuildBelow());
         }
 
         final densityGap = theme.density.baseGap * theme.scaling;
 
-        Widget leadingWidget = Row(
-          mainAxisSize: MainAxisSize.min,
-          spacing: densityGap * 0.5,
-          children: leadingChildren,
+        Widget leadingWidget = FocusScope(
+          skipTraversal: widget.skipInputFeatureFocusTraversal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: densityGap * 0.5,
+            children: leadingChildren,
+          ),
         );
 
-        Widget trailingWidget = Row(
-          mainAxisSize: MainAxisSize.min,
-          spacing: densityGap * 0.5,
-          children: trailingChildren,
+        Widget trailingWidget = FocusScope(
+          skipTraversal: widget.skipInputFeatureFocusTraversal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: densityGap * 0.5,
+            children: trailingChildren,
+          ),
         );
 
         final bool isMultiline = widget.expands ||
@@ -2784,7 +2812,9 @@ class TextFieldState extends State<TextField>
 
     return ButtonGroup.horizontal(children: [
       ...prefixes,
-      Flexible(child: Builder(builder: _buildDecorated)),
+      Flexible(
+          paintOrder: _focusNode?.hasFocus == true ? 1 : null,
+          child: Builder(builder: _buildDecorated)),
       ...suffixes,
     ]);
   }
