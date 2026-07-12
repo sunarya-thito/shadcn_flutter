@@ -567,6 +567,36 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
   }
 }
 
+class _FocusToFront extends StatefulWidget {
+  final Widget child;
+
+  const _FocusToFront({
+    required this.child,
+  });
+
+  @override
+  State<_FocusToFront> createState() => _FocusToFrontState();
+}
+
+class _FocusToFrontState extends State<_FocusToFront> {
+  bool _hasFocus = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      paintOrder: _hasFocus ? 1 : null,
+      child: Focus(
+        onFocusChange: (hasFocus) {
+          setState(() {
+            _hasFocus = hasFocus;
+          });
+        },
+        child: widget.child,
+      ),
+    );
+  }
+}
+
 /// A widget-based OTP child that doesn't accept input.
 ///
 /// Used for displaying static content like separators or spacers within
@@ -968,7 +998,7 @@ class _InputOTPState extends State<InputOTP>
       child: IntrinsicWidth(
         child: Row(
           children: [
-            for (final child in children) Expanded(child: child),
+            for (final child in children) _FocusToFront(child: child),
           ],
         ),
       ),
