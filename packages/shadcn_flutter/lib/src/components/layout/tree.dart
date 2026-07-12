@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Theme configuration for [TreeView] appearance and behavior.
+/// Theme configuration for [Tree] and [TreeView] appearance and behavior.
 ///
 /// TreeTheme defines the visual styling and behavioral options for tree view
 /// components including branch lines, padding, expand icons, and selection modes.
@@ -18,7 +18,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///     allowMultiSelect: true,
 ///     recursiveSelection: true,
 ///   ),
-///   child: TreeView(...),
+///   child: Tree(...),
 /// )
 /// ```
 class TreeTheme extends ComponentThemeData {
@@ -571,7 +571,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with transformed nodes.
   List<TreeNode<K>> replaceNodes(TreeNodeUnaryOperator<K> operator) {
-    return TreeView.replaceNodes(this, operator);
+    return Tree.replaceNodes(this, operator);
   }
 
   /// Replaces a specific node in the tree.
@@ -582,7 +582,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with node replaced.
   List<TreeNode<K>> replaceNode(TreeNode<K> oldNode, TreeNode<K> newNode) {
-    return TreeView.replaceNode(this, oldNode, newNode);
+    return Tree.replaceNode(this, oldNode, newNode);
   }
 
   /// Replaces a node by its item value.
@@ -593,21 +593,21 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with item replaced.
   List<TreeNode<K>> replaceItem(K oldItem, TreeNode<K> newItem) {
-    return TreeView.replaceItem(this, oldItem, newItem);
+    return Tree.replaceItem(this, oldItem, newItem);
   }
 
   /// Expands all nodes in the tree.
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with all nodes expanded.
   List<TreeNode<K>> expandAll() {
-    return TreeView.expandAll(this);
+    return Tree.expandAll(this);
   }
 
   /// Collapses all nodes in the tree.
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with all nodes collapsed.
   List<TreeNode<K>> collapseAll() {
-    return TreeView.collapseAll(this);
+    return Tree.collapseAll(this);
   }
 
   /// Expands a specific node.
@@ -617,7 +617,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with node expanded.
   List<TreeNode<K>> expandNode(TreeNode<K> target) {
-    return TreeView.expandNode(this, target);
+    return Tree.expandNode(this, target);
   }
 
   /// Expands a node by its item value.
@@ -627,7 +627,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with item expanded.
   List<TreeNode<K>> expandItem(K target) {
-    return TreeView.expandItem(this, target);
+    return Tree.expandItem(this, target);
   }
 
   /// Collapses a specific node.
@@ -637,7 +637,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with node collapsed.
   List<TreeNode<K>> collapseNode(TreeNode<K> target) {
-    return TreeView.collapseNode(this, target);
+    return Tree.collapseNode(this, target);
   }
 
   /// Collapses a node by its item value.
@@ -647,21 +647,21 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with item collapsed.
   List<TreeNode<K>> collapseItem(K target) {
-    return TreeView.collapseItem(this, target);
+    return Tree.collapseItem(this, target);
   }
 
   /// Gets all selected nodes in the tree.
   ///
   /// Returns: `List<TreeNode<K>>` — list of selected nodes.
   List<TreeNode<K>> get selectedNodes {
-    return TreeView.getSelectedNodes(this);
+    return Tree.getSelectedNodes(this);
   }
 
   /// Gets all selected item values in the tree.
   ///
   /// Returns: `List<K>` — list of selected item values.
   List<K> get selectedItems {
-    return TreeView.getSelectedItems(this);
+    return Tree.getSelectedItems(this);
   }
 
   /// Selects a specific node.
@@ -671,7 +671,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with node selected.
   List<TreeNode<K>> selectNode(TreeNode<K> target) {
-    return TreeView.selectNode(this, target);
+    return Tree.selectNode(this, target);
   }
 
   /// Selects a node by its item value.
@@ -681,7 +681,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with item selected.
   List<TreeNode<K>> selectItem(K target) {
-    return TreeView.selectItem(this, target);
+    return Tree.selectItem(this, target);
   }
 
   /// Deselects a specific node.
@@ -691,7 +691,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with node deselected.
   List<TreeNode<K>> deselectNode(TreeNode<K> target) {
-    return TreeView.deselectNode(this, target);
+    return Tree.deselectNode(this, target);
   }
 
   /// Deselects a node by its item value.
@@ -701,7 +701,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with item deselected.
   List<TreeNode<K>> deselectItem(K target) {
-    return TreeView.deselectItem(this, target);
+    return Tree.deselectItem(this, target);
   }
 
   /// Toggles selection state of a specific node.
@@ -711,7 +711,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with node selection toggled.
   List<TreeNode<K>> toggleSelectNode(TreeNode<K> target) {
-    return TreeView.toggleSelectNode(this, target);
+    return Tree.toggleSelectNode(this, target);
   }
 
   /// Toggles selection state of multiple nodes.
@@ -721,7 +721,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with nodes toggled.
   List<TreeNode<K>> toggleSelectNodes(Iterable<TreeNode<K>> targets) {
-    return TreeView.toggleSelectNodes(this, targets);
+    return Tree.toggleSelectNodes(this, targets);
   }
 
   /// Toggles selection state of a node by its item value.
@@ -731,7 +731,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with item toggled.
   List<TreeNode<K>> toggleSelectItem(K target) {
-    return TreeView.toggleSelectItem(this, target);
+    return Tree.toggleSelectItem(this, target);
   }
 
   /// Toggles selection state of multiple items.
@@ -741,28 +741,28 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with items toggled.
   List<TreeNode<K>> toggleSelectItems(Iterable<K> targets) {
-    return TreeView.toggleSelectItems(this, targets);
+    return Tree.toggleSelectItems(this, targets);
   }
 
   /// Selects all nodes in the tree.
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with all nodes selected.
   List<TreeNode<K>> selectAll() {
-    return TreeView.selectAll(this);
+    return Tree.selectAll(this);
   }
 
   /// Deselects all nodes in the tree.
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with all nodes deselected.
   List<TreeNode<K>> deselectAll() {
-    return TreeView.deselectAll(this);
+    return Tree.deselectAll(this);
   }
 
   /// Toggles selection state of all nodes in the tree.
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with all selections toggled.
   List<TreeNode<K>> toggleSelectAll() {
-    return TreeView.toggleSelectAll(this);
+    return Tree.toggleSelectAll(this);
   }
 
   /// Selects specific nodes.
@@ -772,7 +772,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with nodes selected.
   List<TreeNode<K>> selectNodes(Iterable<TreeNode<K>> nodes) {
-    return TreeView.selectNodes(this, nodes);
+    return Tree.selectNodes(this, nodes);
   }
 
   /// Selects nodes by their item values.
@@ -782,7 +782,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with items selected.
   List<TreeNode<K>> selectItems(Iterable<K> items) {
-    return TreeView.selectItems(this, items);
+    return Tree.selectItems(this, items);
   }
 
   /// Deselects specific nodes.
@@ -792,7 +792,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with nodes deselected.
   List<TreeNode<K>> deselectNodes(Iterable<TreeNode<K>> nodes) {
-    return TreeView.deselectNodes(this, nodes);
+    return Tree.deselectNodes(this, nodes);
   }
 
   /// Deselects nodes by their item values.
@@ -802,7 +802,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with items deselected.
   List<TreeNode<K>> deselectItems(Iterable<K> items) {
-    return TreeView.deselectItems(this, items);
+    return Tree.deselectItems(this, items);
   }
 
   /// Sets the selected nodes, replacing current selection.
@@ -812,7 +812,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with only specified nodes selected.
   List<TreeNode<K>> setSelectedNodes(Iterable<TreeNode<K>> nodes) {
-    return TreeView.setSelectedNodes(this, nodes);
+    return Tree.setSelectedNodes(this, nodes);
   }
 
   /// Sets the selected items by value, replacing current selection.
@@ -822,7 +822,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with only specified items selected.
   List<TreeNode<K>> setSelectedItems(Iterable<K> items) {
-    return TreeView.setSelectedItems(this, items);
+    return Tree.setSelectedItems(this, items);
   }
 
   /// Applies an operator to all nodes with parent context.
@@ -833,7 +833,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   /// Returns: `List<TreeNode<K>>` — new tree with transformed nodes.
   List<TreeNode<K>> replaceNodesWithParent(
       TreeNodeUnaryOperatorWithParent<K> operator) {
-    return TreeView.replaceNodesWithParent(this, operator);
+    return Tree.replaceNodesWithParent(this, operator);
   }
 
   /// Updates selection state based on recursive selection rules.
@@ -842,7 +842,7 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with updated selection state.
   List<TreeNode<K>> updateRecursiveSelection() {
-    return TreeView.updateRecursiveSelection(this);
+    return Tree.updateRecursiveSelection(this);
   }
 }
 
@@ -932,9 +932,9 @@ class TreeItemExpandDefaultHandler<T> {
   }
 }
 
-/// A comprehensive tree view widget with hierarchical data display and interaction.
+/// A comprehensive tree widget with hierarchical data display and interaction.
 ///
-/// TreeView provides a scrollable tree interface that displays hierarchical data
+/// Tree provides a scrollable tree interface that displays hierarchical data
 /// with support for expansion/collapse, multi-selection, keyboard navigation,
 /// and visual branch lines. It handles complex tree operations like recursive
 /// selection, range selection, and immutable state updates.
@@ -960,9 +960,17 @@ class TreeItemExpandDefaultHandler<T> {
 /// instances. Helper methods and extensions provide convenient operations for
 /// common tree manipulations like expanding, selecting, and filtering nodes.
 ///
+/// Every node (including descendants of a collapsed node) is built as a real
+/// widget, with collapsed subtrees animated down to zero size. This gives a
+/// smooth expand/collapse animation but means [Tree] builds a widget per node
+/// regardless of visibility. For very large or mostly-collapsed trees (e.g. a
+/// 50,000-file directory listing), use [TreeView] instead, which only builds
+/// nodes that are actually visible (at the cost of an instant, non-animated
+/// expand/collapse).
+///
 /// Example:
 /// ```dart
-/// TreeView<String>(
+/// Tree<String>(
 ///   nodes: [
 ///     TreeItem(
 ///       data: 'Documents',
@@ -980,7 +988,7 @@ class TreeItemExpandDefaultHandler<T> {
 ///   },
 /// )
 /// ```
-class TreeView<T> extends StatefulWidget {
+class Tree<T> extends StatefulWidget {
   /// Creates a default selection changed handler for tree nodes.
   ///
   /// Returns a handler that manages node selection state changes in a tree view.
@@ -1560,7 +1568,7 @@ class TreeView<T> extends StatefulWidget {
   /// selection operations recursively affect all descendant nodes.
   final bool? recursiveSelection;
 
-  /// Creates a [TreeView] with hierarchical data display and interaction.
+  /// Creates a [Tree] with hierarchical data display and interaction.
   ///
   /// Configures a tree view widget that displays hierarchical data with support
   /// for expansion, selection, keyboard navigation, and visual styling.
@@ -1581,7 +1589,7 @@ class TreeView<T> extends StatefulWidget {
   ///
   /// Example:
   /// ```dart
-  /// TreeView<FileItem>(
+  /// Tree<FileItem>(
   ///   nodes: fileTreeNodes,
   ///   allowMultiSelect: true,
   ///   recursiveSelection: true,
@@ -1596,7 +1604,7 @@ class TreeView<T> extends StatefulWidget {
   ///   },
   /// )
   /// ```
-  const TreeView({
+  const Tree({
     super.key,
     required this.nodes,
     required this.builder,
@@ -1612,7 +1620,7 @@ class TreeView<T> extends StatefulWidget {
   });
 
   @override
-  State<TreeView<T>> createState() => _TreeViewState<T>();
+  State<Tree<T>> createState() => _TreeState<T>();
 }
 
 typedef _TreeWalker<T> = void Function(
@@ -1620,12 +1628,18 @@ typedef _TreeWalker<T> = void Function(
 
 typedef _NodeWalker<T> = void Function(TreeNode<T> node);
 
-class _TreeViewState<T> extends State<TreeView<T>> {
+class _TreeState<T> extends State<Tree<T>> {
   bool _multiSelect = false;
   bool _rangeMultiSelect = false;
 
   int? _currentFocusedIndex;
   int? _startFocusedIndex;
+
+  /// Whether this state only builds nodes that are actually visible
+  /// (ancestor chain fully expanded), skipping collapsed subtrees entirely.
+  /// Overridden by [_TreeViewState] to enable real virtualization at the
+  /// cost of the animated collapse/expand transition.
+  bool get _lazy => false;
 
   void _walkFlattened(
     _TreeWalker<T> walker,
@@ -1694,6 +1708,7 @@ class _TreeViewState<T> extends State<TreeView<T>> {
     int index = 0;
     _walkFlattened((expanded, node, depth) {
       if (node is! TreeItem<T>) return;
+      if (_lazy && !expanded) return;
       final int currentIndex = index++;
       children.add(TreeNodeData(
         depth,
@@ -1887,24 +1902,74 @@ class _TreeViewState<T> extends State<TreeView<T>> {
             }
             return KeyEventResult.ignored;
           },
-          child: ListView(
+          child: ListView.builder(
             padding: padding ?? const EdgeInsets.all(8),
             shrinkWrap: widget.shrinkWrap,
             controller: widget.controller,
-            children: children
-                .map((data) => Data<TreeNodeData>.inherit(
-                      data: data,
-                      child: Builder(builder: (context) {
-                        return widget.builder(
-                            context, data.node as TreeItem<T>);
-                      }),
-                    ))
-                .toList(),
+            itemCount: children.length,
+            itemBuilder: (context, index) {
+              final data = children[index];
+              return Data<TreeNodeData>.inherit(
+                data: data,
+                child: Builder(builder: (context) {
+                  return widget.builder(context, data.node as TreeItem<T>);
+                }),
+              );
+            },
           ),
         ),
       ),
     );
   }
+}
+
+/// A lazily-built variant of [Tree] for very large or mostly-collapsed trees.
+///
+/// [TreeView] has the exact same constructor and behavior as [Tree] with one
+/// difference: nodes whose ancestor chain isn't fully expanded are excluded
+/// from the tree entirely instead of being built and animated down to zero
+/// size. This means [ListView.builder] only ever has to build nodes that are
+/// actually visible, making [TreeView] suitable for datasets with tens of
+/// thousands of nodes (e.g. a large directory listing) where most of the
+/// tree starts out collapsed.
+///
+/// The trade-off is that expanding/collapsing a node is instant rather than
+/// animated, since hidden descendants aren't present in the widget tree to
+/// animate in the first place. If you need the smooth collapse animation and
+/// your tree is small enough that building every node isn't a problem, use
+/// [Tree] instead.
+///
+/// Example:
+/// ```dart
+/// TreeView<FileItem>(
+///   nodes: fileTreeNodes, // e.g. 50,000 files, mostly collapsed
+///   builder: (context, item) => TreeItemView(child: Text(item.data.name)),
+/// )
+/// ```
+class TreeView<T> extends Tree<T> {
+  /// Creates a [TreeView] with the same parameters as [Tree].
+  const TreeView({
+    super.key,
+    required super.nodes,
+    required super.builder,
+    super.shrinkWrap,
+    super.controller,
+    super.branchLine,
+    super.padding,
+    super.expandIcon,
+    super.allowMultiSelect,
+    super.focusNode,
+    super.onSelectionChanged,
+    super.recursiveSelection,
+  });
+
+  @override
+  State<Tree<T>> createState() => _TreeViewState<T>();
+}
+
+class _TreeViewState<T> extends _TreeState<T> {
+  @override
+  bool get _lazy => true;
 }
 
 /// Abstract base class for defining tree branch line styles.
@@ -2311,7 +2376,8 @@ class _TreeItemViewState extends State<TreeItemView> {
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final data = _data;
-    assert(data != null, 'TreeItemView must be a descendant of TreeView');
+    assert(
+        data != null, 'TreeItemView must be a descendant of Tree or TreeView');
     List<Widget> rowChildren = [];
     if (data!.expandIcon) rowChildren.add(SizedBox(width: densityGap));
     for (int i = 0; i < data.depth.length; i++) {

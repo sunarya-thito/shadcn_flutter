@@ -98,4 +98,58 @@ void main() {
       expect(find.byType(Slider), findsOneWidget);
     });
   });
+
+  group('Slider value indicator', () {
+    testWidgets('is absent by default', (tester) async {
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Slider(
+            value: const SliderValue.single(0.5),
+            onChanged: (value) {},
+          ),
+        ),
+      );
+
+      expect(find.byType(SliderValueIndicator), findsNothing);
+    });
+
+    testWidgets('is hidden until dragging, then shown', (tester) async {
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Slider(
+            value: const SliderValue.single(0.5),
+            onChanged: (value) {},
+            valueIndicatorBuilder: (context, value) =>
+                SliderValueIndicator(value: value),
+          ),
+        ),
+      );
+
+      AnimatedOpacity findOpacityWidget() =>
+          tester.widget<AnimatedOpacity>(find.ancestor(
+            of: find.byType(SliderValueIndicator),
+            matching: find.byType(AnimatedOpacity),
+          ));
+
+      expect(find.byType(SliderValueIndicator), findsOneWidget);
+      expect(findOpacityWidget().opacity, 0.0);
+
+      final gesture =
+          await tester.startGesture(tester.getCenter(find.byType(Slider)));
+      await tester.pump(const Duration(milliseconds: 100));
+      // The first move past the touch-slop threshold only triggers
+      // onHorizontalDragStart (no setState there); a second move is needed
+      // to trigger onHorizontalDragUpdate, whose setState rebuilds the tree.
+      await gesture.moveBy(const Offset(30, 0));
+      await gesture.moveBy(const Offset(10, 0));
+      await tester.pump();
+
+      expect(findOpacityWidget().opacity, 1.0);
+
+      await gesture.up();
+      await tester.pump();
+
+      expect(findOpacityWidget().opacity, 0.0);
+    });
+  });
 }

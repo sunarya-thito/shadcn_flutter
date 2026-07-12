@@ -354,6 +354,11 @@ class _EditablePartWidget extends StatefulWidget {
 class _EditablePartWidgetState extends State<_EditablePartWidget> {
   late TextEditingController _controller;
 
+  TextEditingController get controller => _controller;
+
+  _FormattedSelectionCoordinator? get _selectionCoordinator =>
+      widget.data.selectionCoordinator as _FormattedSelectionCoordinator?;
+
   @override
   void initState() {
     super.initState();
@@ -365,6 +370,13 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
     _controller.addListener(_onTextChanged);
     if (widget.data.controller != null) {
       widget.data.controller!.addListener(_onFormattedInputControllerChange);
+    }
+    widget.data.focusNode?.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    if (widget.data.focusNode?.hasFocus == true) {
+      _selectionCoordinator?.onPartFocused(widget.data.partIndex);
     }
   }
 
@@ -437,6 +449,10 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
         widget.data.controller!.addListener(_onFormattedInputControllerChange);
       }
     }
+    if (oldWidget.data.focusNode != widget.data.focusNode) {
+      oldWidget.data.focusNode?.removeListener(_onFocusChange);
+      widget.data.focusNode?.addListener(_onFocusChange);
+    }
   }
 
   @override
@@ -444,6 +460,7 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
     if (widget.data.controller != null) {
       widget.data.controller!.removeListener(_onFormattedInputControllerChange);
     }
+    widget.data.focusNode?.removeListener(_onFocusChange);
     super.dispose();
   }
 
@@ -531,11 +548,247 @@ class _EditablePartWidgetState extends State<_EditablePartWidget> {
               padding: EdgeInsets.symmetric(
                 horizontal: 6 * theme.scaling,
               ),
+              onDragSelectionStart: (details) {
+                _selectionCoordinator?.onDragStart(
+                    data.partIndex, details.globalPosition);
+              },
+              onDragSelectionUpdate: (details) {
+                _selectionCoordinator?.onDragUpdate(
+                    data.partIndex, details.globalPosition);
+              },
+              onDragSelectionEnd: (details) {
+                _selectionCoordinator?.onDragEnd();
+              },
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+/// Coordinates text selection across the separate editable [TextField]s
+/// that make up a [FormattedInput] (select-all, combined copy, and
+/// click-drag selection spanning multiple parts).
+///
+/// Parts are not registered/unregistered through a persistent list; instead
+/// every operation walks the live element tree under [rootContext] to find
+/// the currently-mounted [_EditablePartWidgetState]s. This avoids lifecycle
+/// bookkeeping and always reflects the current tree.
+class _FormattedSelectionCoordinator {
+  final BuildContext Function() rootContext;
+
+  _FormattedSelectionCoordinator(this.rootContext);
+
+  /// Whether more than one part currently participates in a selection
+  /// (via [selectAll] or a cross-part drag). Read by the Copy override to
+  /// decide whether to build a combined string or fall back to default.
+  bool crossPartActive = false;
+
+  bool _dragging = false;
+  int? _dragAnchorPart;
+  int _dragAnchorOffset = 0;
+
+  List<_EditablePartWidgetState> _visitParts() {
+    final result = <_EditablePartWidgetState>[];
+    void visit(Element element) {
+      final state = element is StatefulElement ? element.state : null;
+      if (state is _EditablePartWidgetState) {
+        result.add(state);
+        return;
+      }
+      element.visitChildren(visit);
+    }
+
+    rootContext().visitChildElements(visit);
+    result.sort((a, b) => a.data.partIndex.compareTo(b.data.partIndex));
+    return result;
+  }
+
+  Rect? _boundsOf(_EditablePartWidgetState part) {
+    final renderObject = part.context.findRenderObject();
+    if (renderObject is! RenderBox || !renderObject.attached) return null;
+    return renderObject.localToGlobal(Offset.zero) & renderObject.size;
+  }
+
+  int _estimateOffset(_EditablePartWidgetState part, Offset globalPosition) {
+    final length = part.controller.text.length;
+    if (length == 0) return 0;
+    final bounds = _boundsOf(part);
+    if (bounds == null || bounds.width <= 0) return length;
+    final ratio = ((globalPosition.dx - bounds.left) / bounds.width)
+        .clamp(0.0, 1.0);
+    return (ratio * length).round().clamp(0, length);
+  }
+
+  /// Selects the full text of every editable part.
+  void selectAll() {
+    final parts = _visitParts();
+    for (final part in parts) {
+      part.controller.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: part.controller.text.length,
+      );
+    }
+    crossPartActive = parts.length > 1;
+  }
+
+  /// Called whenever a part gains focus via a normal (non-drag) interaction;
+  /// collapses every other part's selection so stale highlights don't linger.
+  void onPartFocused(int partIndex) {
+    if (_dragging) return;
+    for (final part in _visitParts()) {
+      if (part.data.partIndex != partIndex) {
+        part.controller.selection = const TextSelection.collapsed(offset: 0);
+      }
+    }
+    crossPartActive = false;
+  }
+
+  void onDragStart(int partIndex, Offset globalPosition) {
+    final parts = _visitParts();
+    _EditablePartWidgetState? anchor;
+    for (final part in parts) {
+      if (part.data.partIndex == partIndex) {
+        anchor = part;
+        break;
+      }
+    }
+    if (anchor == null) return;
+    _dragging = true;
+    _dragAnchorPart = partIndex;
+    _dragAnchorOffset = _estimateOffset(anchor, globalPosition);
+  }
+
+  void onDragUpdate(int partIndex, Offset globalPosition) {
+    final anchorIndex = _dragAnchorPart;
+    if (anchorIndex == null) return;
+    final parts = _visitParts();
+    if (parts.isEmpty) return;
+
+    var currentIndex = parts.first.data.partIndex;
+    for (var i = 0; i < parts.length; i++) {
+      final bounds = _boundsOf(parts[i]);
+      if (bounds == null) continue;
+      if (globalPosition.dx < bounds.left) {
+        currentIndex = parts[i > 0 ? i - 1 : i].data.partIndex;
+        break;
+      }
+      currentIndex = parts[i].data.partIndex;
+      if (globalPosition.dx <= bounds.right) break;
+    }
+
+    if (currentIndex == anchorIndex) {
+      crossPartActive = false;
+      return;
+    }
+    crossPartActive = true;
+    final forward = currentIndex > anchorIndex;
+    for (final part in parts) {
+      final idx = part.data.partIndex;
+      final length = part.controller.text.length;
+      final inRange = forward
+          ? idx >= anchorIndex && idx <= currentIndex
+          : idx <= anchorIndex && idx >= currentIndex;
+      if (!inRange) continue;
+      if (idx == anchorIndex) {
+        part.controller.selection = TextSelection(
+          baseOffset: _dragAnchorOffset,
+          extentOffset: forward ? length : 0,
+        );
+      } else if (idx == currentIndex) {
+        final offset = _estimateOffset(part, globalPosition);
+        part.controller.selection = TextSelection(
+          baseOffset: forward ? 0 : length,
+          extentOffset: offset,
+        );
+      } else {
+        part.controller.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: length,
+        );
+      }
+    }
+  }
+
+  void onDragEnd() {
+    _dragging = false;
+    _dragAnchorPart = null;
+  }
+
+  /// Builds the combined logical text spanning every part that currently
+  /// has a non-empty selection, including any [StaticPart] separators that
+  /// fall strictly between the first and last selected editable parts.
+  String buildCombinedText(FormattedValue value) {
+    final parts = _visitParts();
+    final byIndex = <int, _EditablePartWidgetState>{
+      for (final part in parts) part.data.partIndex: part,
+    };
+
+    int? first;
+    int? last;
+    var valueIndex = 0;
+    for (final valuePart in value.parts) {
+      if (valuePart.part.canHaveValue) {
+        final selection = byIndex[valueIndex]?.controller.selection;
+        if (selection != null && !selection.isCollapsed) {
+          first ??= valueIndex;
+          last = valueIndex;
+        }
+        valueIndex++;
+      }
+    }
+    if (first == null) return '';
+
+    final buffer = StringBuffer();
+    valueIndex = 0;
+    for (final valuePart in value.parts) {
+      if (valuePart.part.canHaveValue) {
+        if (valueIndex >= first && valueIndex <= last!) {
+          final part = byIndex[valueIndex];
+          if (part != null) {
+            final selection = part.controller.selection;
+            final text = part.controller.text;
+            buffer.write(
+                selection.isCollapsed ? text : selection.textInside(text));
+          }
+        }
+        valueIndex++;
+      } else if (valuePart.part is StaticPart &&
+          valueIndex > first &&
+          valueIndex <= last!) {
+        buffer.write((valuePart.part as StaticPart).text);
+      }
+    }
+    return buffer.toString();
+  }
+}
+
+/// Overrides [CopySelectionTextIntent] to copy the combined text across all
+/// selected parts of a [FormattedInput] when a cross-part selection is
+/// active; otherwise falls back to the normal per-field copy behavior via
+/// [callingAction], the mechanism Flutter's `_makeOverridable`-wrapped
+/// default actions (like [EditableText]'s own copy action) use to let an
+/// ancestor [Actions] entry take priority while still allowing a fallback.
+class _FormattedInputCopyAction extends ContextAction<CopySelectionTextIntent> {
+  final _FormattedSelectionCoordinator coordinator;
+  final FormattedValue? Function() getValue;
+
+  _FormattedInputCopyAction(this.coordinator, this.getValue);
+
+  @override
+  Object? invoke(CopySelectionTextIntent intent, [BuildContext? context]) {
+    if (coordinator.crossPartActive) {
+      final value = getValue();
+      if (value != null) {
+        final text = coordinator.buildCombinedText(value);
+        if (text.isNotEmpty) {
+          Clipboard.setData(ClipboardData(text: text));
+        }
+      }
+      return null;
+    }
+    return callingAction?.invoke(intent);
   }
 }
 
@@ -807,6 +1060,8 @@ class _FormattedInputState extends State<FormattedInput> {
   bool _hasFocus = false;
   FormattedValue? _value;
   late List<FocusNode> _focusNodes;
+  late final _FormattedSelectionCoordinator _selectionCoordinator =
+      _FormattedSelectionCoordinator(() => context);
 
   @override
   void initState() {
@@ -852,6 +1107,7 @@ class _FormattedInputState extends State<FormattedInput> {
       controller: widget.controller,
       focusNode: index < 0 ? null : _focusNodes[index],
       focusNodes: _focusNodes,
+      selectionCoordinator: widget.enabled ? _selectionCoordinator : null,
     );
     return part.build(context, formattedInputData);
   }
@@ -939,17 +1195,31 @@ class _FormattedInputState extends State<FormattedInput> {
                   ),
               child: Form(
                 controller: _controller,
-                child: FocusTraversalGroup(
-                  policy: WidgetOrderTraversalPolicy(),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        if (widget.leading != null) widget.leading!,
-                        ...children,
-                        if (widget.trailing != null) widget.trailing!,
-                      ],
+                child: Actions(
+                  actions: {
+                    SelectAllTextIntent: CallbackAction<SelectAllTextIntent>(
+                      onInvoke: (intent) {
+                        _selectionCoordinator.selectAll();
+                        return null;
+                      },
+                    ),
+                    CopySelectionTextIntent: _FormattedInputCopyAction(
+                      _selectionCoordinator,
+                      () => _value,
+                    ),
+                  },
+                  child: FocusTraversalGroup(
+                    policy: WidgetOrderTraversalPolicy(),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (widget.leading != null) widget.leading!,
+                          ...children,
+                          if (widget.trailing != null) widget.trailing!,
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -985,6 +1255,11 @@ class FormattedInputData {
   /// All focus nodes in the formatted input.
   final List<FocusNode> focusNodes;
 
+  /// Coordinates selection across the separate editable parts (select-all,
+  /// combined copy, cross-part drag-selection). Null when the formatted
+  /// input is disabled.
+  final Object? selectionCoordinator;
+
   /// Creates a [FormattedInputData].
   FormattedInputData({
     required this.partIndex,
@@ -993,6 +1268,7 @@ class FormattedInputData {
     required this.controller,
     required this.focusNode,
     required this.focusNodes,
+    this.selectionCoordinator,
   });
 
   @override
@@ -1004,12 +1280,13 @@ class FormattedInputData {
         enabled == other.enabled &&
         controller == other.controller &&
         focusNode == other.focusNode &&
-        focusNodes == other.focusNodes;
+        focusNodes == other.focusNodes &&
+        selectionCoordinator == other.selectionCoordinator;
   }
 
   @override
-  int get hashCode => Object.hash(
-      partIndex, initialValue, enabled, controller, focusNode, focusNodes);
+  int get hashCode => Object.hash(partIndex, initialValue, enabled, controller,
+      focusNode, focusNodes, selectionCoordinator);
 }
 
 /// A function type for building custom popup content for formatted object inputs.
@@ -1117,7 +1394,7 @@ class _FormattedObjectInputState<T> extends State<FormattedObjectInput<T>> {
   late FormattedInputController _formattedController;
   late ComponentController<T?> _controller;
 
-  final _popoverController = PopoverController();
+  final _popoverController = OverlayController();
 
   bool _updating = false; // to prevent circular updates
 
@@ -1246,14 +1523,16 @@ class _FormattedObjectInputState<T> extends State<FormattedObjectInput<T>> {
     }
     final theme = Theme.of(context);
     _popoverController.show(
-        context: context,
-        alignment: widget.popoverAlignment ?? AlignmentDirectional.topStart,
-        anchorAlignment:
-            widget.popoverAnchorAlignment ?? AlignmentDirectional.bottomStart,
-        offset: widget.popoverOffset ?? (const Offset(0, 4) * theme.scaling),
-        builder: (context) {
-          return popupBuilder(context, _controller);
-        });
+        context,
+        PopoverConfiguration(
+          alignment: widget.popoverAlignment ?? AlignmentDirectional.topStart,
+          anchorAlignment:
+              widget.popoverAnchorAlignment ?? AlignmentDirectional.bottomStart,
+          offset: widget.popoverOffset ?? (const Offset(0, 4) * theme.scaling),
+          builder: (context) {
+            return popupBuilder(context, _controller);
+          },
+        ));
   }
 
   @override
@@ -1282,7 +1561,7 @@ class _FormattedObjectInputState<T> extends State<FormattedObjectInput<T>> {
                 builder: (context, child) {
                   return WidgetStatesProvider(
                     states: {
-                      if (_popoverController.hasOpenPopover)
+                      if (_popoverController.hasOpenOverlay)
                         WidgetState.hovered,
                     },
                     child: child!,

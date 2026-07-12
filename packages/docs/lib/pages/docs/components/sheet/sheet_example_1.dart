@@ -12,23 +12,25 @@ class _SheetExample1State extends State<SheetExample1> {
   final FormController controller = FormController();
 
   void saveProfile() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Profile updated'),
-          // For demo, show raw form values.
-          content: Text('Content: ${controller.values}'),
-          actions: [
-            PrimaryButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
+    showOverlay(
+      context,
+      DialogConfiguration(
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Profile updated'),
+            // For demo, show raw form values.
+            content: Text('Content: ${controller.values}'),
+            actions: [
+              PrimaryButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -71,7 +73,7 @@ class _SheetExample1State extends State<SheetExample1> {
                   validator:
                       const NotEmptyValidator() & const LengthValidator(min: 4),
                   child: const TextField(
-                     initialValue: 'Thito Yalasatria Sunarya',
+                    initialValue: 'Thito Yalasatria Sunarya',
                     placeholder: Text('Your fullname'),
                   ),
                 ),
@@ -128,14 +130,17 @@ class _SheetExample1State extends State<SheetExample1> {
       anchor: #openSheetButton,
       child: PrimaryButton(
         onPressed: () {
-          openSheet(
-            anchor: #openSheetButton,
-            builder: (context) {
-              // Build the sheet content; keep it small and focused on the form.
-              return buildSheet(context);
-            },
-            // Slide in from the end (right on LTR).
-            position: OverlayPosition.end,
+          showOverlay(
+            context,
+            SheetConfiguration(
+              anchor: LinkedAnchor(#openSheetButton),
+              builder: (context) {
+                // Build the sheet content; keep it small and focused on the form.
+                return buildSheet(context);
+              },
+              // Slide in from the end (right on LTR).
+              position: OverlayPosition.end,
+            ),
           );
         },
         child: const Text('Open Sheet'),

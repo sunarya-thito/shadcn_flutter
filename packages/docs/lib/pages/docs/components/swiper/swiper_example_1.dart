@@ -46,8 +46,10 @@ class _SwiperExample1State extends State<SwiperExample1> {
                 anchor: #swiperCloseButton,
                 child: PrimaryButton(
                   onPressed: () {
-                    openDrawer(
-                        anchor: #swiperCloseButton,
+                    showOverlay(
+                      context,
+                      DrawerConfiguration(
+                        anchor: LinkedAnchor(#swiperCloseButton),
                         builder: (context) {
                           return ListView.separated(
                             itemCount: 1000,
@@ -61,7 +63,9 @@ class _SwiperExample1State extends State<SwiperExample1> {
                             },
                           );
                         },
-                        position: OverlayPosition.bottom);
+                        position: OverlayPosition.bottom,
+                      ),
+                    );
                   },
                   child: const Text('Close'),
                 ),

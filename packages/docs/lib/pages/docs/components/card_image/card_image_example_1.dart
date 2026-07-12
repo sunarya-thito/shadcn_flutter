@@ -30,22 +30,24 @@ class CardImageExample1 extends StatelessWidget {
                 CardImage(
                   // Simple interaction: open a dialog on tap.
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Card Image'),
-                          content: const Text('You clicked on a card image.'),
-                          actions: [
-                            PrimaryButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Close'),
-                            ),
-                          ],
-                        );
-                      },
+                    showOverlay(
+                      context,
+                      DialogConfiguration(
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Card Image'),
+                            content: const Text('You clicked on a card image.'),
+                            actions: [
+                              PrimaryButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Close'),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     );
                   },
                   // Network image; replace with your own provider as needed.

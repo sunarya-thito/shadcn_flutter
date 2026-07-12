@@ -179,6 +179,11 @@ class ControlledSlider extends StatelessWidget
   /// this amount. If `null`, a default decrement is used.
   final double? decreaseStep;
 
+  /// Optional builder for a bubble shown above a thumb while it's being
+  /// dragged or is keyboard-focused, displaying the thumb's current value.
+  /// See [Slider.valueIndicatorBuilder].
+  final SliderValueIndicatorBuilder? valueIndicatorBuilder;
+
   /// Creates a [ControlledSlider].
   ///
   /// A controlled slider that manages its state either through an external
@@ -231,6 +236,7 @@ class ControlledSlider extends StatelessWidget
     this.increaseStep,
     this.decreaseStep,
     this.enabled = true,
+    this.valueIndicatorBuilder,
   });
 
   @override
@@ -252,6 +258,7 @@ class ControlledSlider extends StatelessWidget
           increaseStep: increaseStep,
           decreaseStep: decreaseStep,
           enabled: data.enabled,
+          valueIndicatorBuilder: valueIndicatorBuilder,
         );
       },
     );
@@ -400,6 +407,58 @@ class SliderValue {
   }
 }
 
+/// Builds the content of the value-indicator bubble shown above a [Slider]
+/// thumb for the given resolved (denormalized, i.e. already scaled to
+/// [Slider.min]..[Slider.max]) [value].
+typedef SliderValueIndicatorBuilder = Widget Function(
+    BuildContext context, double value);
+
+/// Default bubble widget for displaying a [Slider]'s current value.
+///
+/// Pass this (or a widget wrapping it) as [Slider.valueIndicatorBuilder] (or
+/// [SliderTheme.valueIndicatorBuilder]) to opt into showing a small
+/// tooltip-styled bubble above the thumb while dragging or focused:
+///
+/// ```dart
+/// Slider(
+///   value: value,
+///   onChanged: (v) => setState(() => value = v),
+///   valueIndicatorBuilder: (context, value) => SliderValueIndicator(value: value),
+/// )
+/// ```
+class SliderValueIndicator extends StatelessWidget {
+  /// The resolved slider value to display.
+  final double value;
+
+  /// Optional custom formatter. Defaults to showing whole numbers without a
+  /// decimal point and other values with up to 2 decimal places.
+  final String Function(double value)? formatter;
+
+  /// Creates a [SliderValueIndicator].
+  const SliderValueIndicator({
+    super.key,
+    required this.value,
+    this.formatter,
+  });
+
+  static String _defaultFormat(double value) {
+    if (value == value.roundToDouble()) {
+      return value.toStringAsFixed(0);
+    }
+    var text = value.toStringAsFixed(2);
+    text = text.replaceFirst(RegExp(r'0+$'), '');
+    text = text.replaceFirst(RegExp(r'\.$'), '');
+    return text;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TooltipContainer(
+      child: Text((formatter ?? _defaultFormat)(value)),
+    );
+  }
+}
+
 /// Theme for [Slider].
 class SliderTheme extends ComponentThemeData {
   /// Height of the track.
@@ -429,6 +488,10 @@ class SliderTheme extends ComponentThemeData {
   /// Size of the thumb.
   final double? thumbSize;
 
+  /// Theme-level default for [Slider.valueIndicatorBuilder]. If both this and
+  /// the widget-level builder are null, no value indicator is shown.
+  final SliderValueIndicatorBuilder? valueIndicatorBuilder;
+
   /// Creates a [SliderTheme].
   const SliderTheme({
     this.trackHeight,
@@ -440,6 +503,7 @@ class SliderTheme extends ComponentThemeData {
     this.thumbBorderColor,
     this.thumbFocusedBorderColor,
     this.thumbSize,
+    this.valueIndicatorBuilder,
   });
 
   /// Returns a copy of this theme with the given fields replaced.
@@ -453,6 +517,7 @@ class SliderTheme extends ComponentThemeData {
     ValueGetter<Color?>? thumbBorderColor,
     ValueGetter<Color?>? thumbFocusedBorderColor,
     ValueGetter<double?>? thumbSize,
+    ValueGetter<SliderValueIndicatorBuilder?>? valueIndicatorBuilder,
   }) {
     return SliderTheme(
       trackHeight: trackHeight == null ? this.trackHeight : trackHeight(),
@@ -471,6 +536,9 @@ class SliderTheme extends ComponentThemeData {
           ? this.thumbFocusedBorderColor
           : thumbFocusedBorderColor(),
       thumbSize: thumbSize == null ? this.thumbSize : thumbSize(),
+      valueIndicatorBuilder: valueIndicatorBuilder == null
+          ? this.valueIndicatorBuilder
+          : valueIndicatorBuilder(),
     );
   }
 
@@ -486,7 +554,8 @@ class SliderTheme extends ComponentThemeData {
         other.thumbColor == thumbColor &&
         other.thumbBorderColor == thumbBorderColor &&
         other.thumbFocusedBorderColor == thumbFocusedBorderColor &&
-        other.thumbSize == thumbSize;
+        other.thumbSize == thumbSize &&
+        other.valueIndicatorBuilder == valueIndicatorBuilder;
   }
 
   @override
@@ -499,7 +568,8 @@ class SliderTheme extends ComponentThemeData {
       thumbColor,
       thumbBorderColor,
       thumbFocusedBorderColor,
-      thumbSize);
+      thumbSize,
+      valueIndicatorBuilder);
 }
 
 /// Intent for increasing the slider value via keyboard shortcuts.
@@ -604,6 +674,15 @@ class Slider extends StatefulWidget {
   /// displayed in a disabled state and does not respond to user input.
   final bool? enabled;
 
+  /// Optional builder for a bubble shown above a thumb while it's being
+  /// dragged or is keyboard-focused, displaying the thumb's current value.
+  ///
+  /// If both this and [SliderTheme.valueIndicatorBuilder] are `null` (the
+  /// default), no indicator is shown. Pass [SliderValueIndicator] for the
+  /// default bubble styling, e.g.:
+  /// `valueIndicatorBuilder: (context, value) => SliderValueIndicator(value: value)`.
+  final SliderValueIndicatorBuilder? valueIndicatorBuilder;
+
   /// Creates a [Slider].
   ///
   /// Parameters:
@@ -618,6 +697,7 @@ class Slider extends StatefulWidget {
   /// - [increaseStep] (`double?`, optional): Keyboard increment step.
   /// - [decreaseStep] (`double?`, optional): Keyboard decrement step.
   /// - [enabled] (`bool?`, optional): Whether interactive.
+  /// - [valueIndicatorBuilder] (`SliderValueIndicatorBuilder?`, optional): Bubble builder shown above the thumb while dragging/focused.
   ///
   /// Example:
   /// ```dart
@@ -641,6 +721,7 @@ class Slider extends StatefulWidget {
     this.increaseStep,
     this.decreaseStep,
     this.enabled = true,
+    this.valueIndicatorBuilder,
   }) : assert(min <= max);
 
   @override
@@ -1081,6 +1162,7 @@ class _SliderState extends State<Slider>
               _currentValue = SliderValue.single(value);
             });
           },
+          _dragging || _focusing,
         ),
       ],
     );
@@ -1216,10 +1298,13 @@ class _SliderState extends State<Slider>
       bool focusing,
       ValueChanged<bool> onFocusing,
       VoidCallback onIncrease,
-      VoidCallback onDecrease) {
+      VoidCallback onDecrease,
+      bool showIndicator) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final compTheme = ComponentTheme.maybeOf<SliderTheme>(context);
+    final resolvedIndicatorBuilder =
+        widget.valueIndicatorBuilder ?? compTheme?.valueIndicatorBuilder;
     if (widget.divisions != null) {
       value = (value * widget.divisions!).round() / widget.divisions!;
     }
@@ -1231,63 +1316,88 @@ class _SliderState extends State<Slider>
         lerp: lerpDouble,
         value: value,
         builder: (context, value, _) {
-          return Positioned(
-            left: value! * constraints.maxWidth - 8 * scaling,
-            child: FocusableActionDetector(
-              enabled: enabled,
-              onShowFocusHighlight: (showHighlight) {
-                onFocusing(showHighlight);
-              },
-              shortcuts: {
-                LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-                    const DecreaseSliderValue(),
-                LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                    const IncreaseSliderValue(),
-                LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                    const IncreaseSliderValue(),
-                LogicalKeySet(LogicalKeyboardKey.arrowDown):
-                    const DecreaseSliderValue(),
-              },
-              actions: {
-                IncreaseSliderValue: CallbackAction(
-                  onInvoke: (e) {
-                    onIncrease();
-                    return true;
-                  },
+          final thumbLeft = value! * constraints.maxWidth - 8 * scaling;
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              if (resolvedIndicatorBuilder != null)
+                Positioned(
+                  left: thumbLeft + 8 * scaling,
+                  top: -8 * scaling,
+                  child: FractionalTranslation(
+                    translation: const Offset(-0.5, -1.0),
+                    child: AnimatedOpacity(
+                      duration: kDefaultDuration,
+                      curve: Curves.easeInOut,
+                      opacity: showIndicator ? 1.0 : 0.0,
+                      child: IgnorePointer(
+                        child: resolvedIndicatorBuilder(
+                          context,
+                          value * (widget.max - widget.min) + widget.min,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                DecreaseSliderValue: CallbackAction(
-                  onInvoke: (e) {
-                    onDecrease();
-                    return true;
+              Positioned(
+                left: thumbLeft,
+                child: FocusableActionDetector(
+                  enabled: enabled,
+                  onShowFocusHighlight: (showHighlight) {
+                    onFocusing(showHighlight);
                   },
-                ),
-              },
-              child: Container(
-                width: (compTheme?.thumbSize ?? 16) * scaling,
-                height: (compTheme?.thumbSize ?? 16) * scaling,
-                decoration: BoxDecoration(
-                  color: compTheme?.thumbColor ?? theme.colorScheme.primary,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: focusing
-                        ? (enabled
-                            ? (compTheme?.thumbFocusedBorderColor ??
-                                theme.colorScheme.primary)
-                            : (compTheme?.disabledValueColor ??
-                                theme.colorScheme.mutedForeground))
-                        : (enabled
-                            ? (compTheme?.thumbBorderColor ??
-                                theme.colorScheme.primary.scaleAlpha(0.5))
-                            : (compTheme?.disabledValueColor ??
-                                theme.colorScheme.mutedForeground)),
-                    width: focusing ? 2 * scaling : 1 * scaling,
-                    strokeAlign: focusing
-                        ? BorderSide.strokeAlignOutside
-                        : BorderSide.strokeAlignInside,
+                  shortcuts: {
+                    LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                        const DecreaseSliderValue(),
+                    LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                        const IncreaseSliderValue(),
+                    LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                        const IncreaseSliderValue(),
+                    LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                        const DecreaseSliderValue(),
+                  },
+                  actions: {
+                    IncreaseSliderValue: CallbackAction(
+                      onInvoke: (e) {
+                        onIncrease();
+                        return true;
+                      },
+                    ),
+                    DecreaseSliderValue: CallbackAction(
+                      onInvoke: (e) {
+                        onDecrease();
+                        return true;
+                      },
+                    ),
+                  },
+                  child: Container(
+                    width: (compTheme?.thumbSize ?? 16) * scaling,
+                    height: (compTheme?.thumbSize ?? 16) * scaling,
+                    decoration: BoxDecoration(
+                      color: compTheme?.thumbColor ?? theme.colorScheme.primary,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: focusing
+                            ? (enabled
+                                ? (compTheme?.thumbFocusedBorderColor ??
+                                    theme.colorScheme.primary)
+                                : (compTheme?.disabledValueColor ??
+                                    theme.colorScheme.mutedForeground))
+                            : (enabled
+                                ? (compTheme?.thumbBorderColor ??
+                                    theme.colorScheme.primary.scaleAlpha(0.5))
+                                : (compTheme?.disabledValueColor ??
+                                    theme.colorScheme.mutedForeground)),
+                        width: focusing ? 2 * scaling : 1 * scaling,
+                        strokeAlign: focusing
+                            ? BorderSide.strokeAlignOutside
+                            : BorderSide.strokeAlignInside,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           );
         });
   }
@@ -1355,6 +1465,7 @@ class _SliderState extends State<Slider>
               _currentValue = SliderValue.ranged(value, _currentValue.end);
             });
           },
+          (_dragging && _moveStart) || _focusing,
         ),
         buildThumb(
           context,
@@ -1411,6 +1522,7 @@ class _SliderState extends State<Slider>
               _currentValue = SliderValue.ranged(_currentValue.start, value);
             });
           },
+          (_dragging && !_moveStart) || _focusingEnd,
         ),
       ],
     );

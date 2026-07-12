@@ -1069,12 +1069,12 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
 ///
 /// See also:
 /// - [Select], the widget that uses this state
-/// - [PopoverController], used to control the dropdown popup
+/// - [OverlayController], used to control the dropdown popup
 /// - [FormValueSupplier], the mixin providing form integration
 class SelectState<T> extends State<Select<T>>
     with FormValueSupplier<T, Select<T>> {
   late FocusNode _focusNode;
-  final PopoverController _popoverController = PopoverController();
+  final OverlayController _popoverController = OverlayController();
   late ValueNotifier<T?> _valueNotifier;
 
   SelectTheme? _theme;
@@ -1251,46 +1251,48 @@ class SelectState<T> extends State<Select<T>>
                     GlobalKey popupKey = GlobalKey();
                     _popoverController
                         .show(
-                      context: context,
-                      offset: Offset(0, densityGap),
-                      alignment: _popoverAlignment,
-                      anchorAlignment: _popoverAnchorAlignment,
-                      widthConstraint: widget.popupWidthConstraint,
-                      overlayBarrier: OverlayBarrier(
-                        padding: EdgeInsets.symmetric(vertical: densityGap),
-                        borderRadius: BorderRadius.circular(theme.radiusLg),
+                      context,
+                      PopoverConfiguration(
+                        offset: Offset(0, densityGap),
+                        alignment: _popoverAlignment,
+                        anchorAlignment: _popoverAnchorAlignment,
+                        widthConstraint: widget.popupWidthConstraint,
+                        overlayBarrier: OverlayBarrier(
+                          padding: EdgeInsets.symmetric(vertical: densityGap),
+                          borderRadius: BorderRadius.circular(theme.radiusLg),
+                        ),
+                        builder: (context) {
+                          return ConstrainedBox(
+                            constraints: _popupConstraints ??
+                                BoxConstraints(
+                                  maxHeight:
+                                      Select.kDefaultSelectMaxHeight * scaling,
+                                ),
+                            child: ListenableBuilder(
+                              listenable: _valueNotifier,
+                              builder: (context, _) {
+                                return Data.inherit(
+                                  key: ValueKey(widget.value),
+                                  data: SelectData(
+                                    enabled: enabled,
+                                    autoClose: _autoClosePopover,
+                                    isSelected: _isSelected,
+                                    onChanged: _onChanged,
+                                    hasSelection: widget.value != null,
+                                    expandIcon: widget.expandIcon,
+                                  ),
+                                  child: Builder(
+                                    key: popupKey,
+                                    builder: (context) {
+                                      return widget.popup(context);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
-                      builder: (context) {
-                        return ConstrainedBox(
-                          constraints: _popupConstraints ??
-                              BoxConstraints(
-                                maxHeight:
-                                    Select.kDefaultSelectMaxHeight * scaling,
-                              ),
-                          child: ListenableBuilder(
-                            listenable: _valueNotifier,
-                            builder: (context, _) {
-                              return Data.inherit(
-                                key: ValueKey(widget.value),
-                                data: SelectData(
-                                  enabled: enabled,
-                                  autoClose: _autoClosePopover,
-                                  isSelected: _isSelected,
-                                  onChanged: _onChanged,
-                                  hasSelection: widget.value != null,
-                                  expandIcon: widget.expandIcon,
-                                ),
-                                child: Builder(
-                                  key: popupKey,
-                                  builder: (context) {
-                                    return widget.popup(context);
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
                     )
                         .then((value) {
                       _focusNode.requestFocus();

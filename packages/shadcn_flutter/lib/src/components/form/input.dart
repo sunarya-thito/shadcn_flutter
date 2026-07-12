@@ -74,13 +74,15 @@ class InputHintFeature extends InputFeature {
 }
 
 class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
-  final _popoverController = PopoverController();
+  final _popoverController = OverlayController();
   void _showPopup(BuildContext context) {
     _popoverController.show(
-      context: context,
-      builder: feature.popupBuilder,
-      alignment: AlignmentDirectional.topCenter,
-      anchorAlignment: AlignmentDirectional.bottomCenter,
+      context,
+      PopoverConfiguration(
+        builder: feature.popupBuilder,
+        alignment: AlignmentDirectional.topCenter,
+        anchorAlignment: AlignmentDirectional.bottomCenter,
+      ),
     );
   }
 

@@ -25,24 +25,26 @@ class _FormExample3State extends State<FormExample3> {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Form Values'),
-                content: Text(jsonEncode(values.map(
-                  (key, value) {
-                    return MapEntry(key.key, value);
-                  },
-                ))),
-                actions: [
-                  PrimaryButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Close'),
-                  ),
-                ],
-              );
-            },
+          showOverlay(
+            context,
+            DialogConfiguration(
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Form Values'),
+                  content: Text(jsonEncode(values.map(
+                    (key, value) {
+                      return MapEntry(key.key, value);
+                    },
+                  ))),
+                  actions: [
+                    PrimaryButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
         },
         child: Column(

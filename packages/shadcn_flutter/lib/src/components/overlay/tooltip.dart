@@ -275,7 +275,7 @@ class Tooltip extends StatefulWidget {
 }
 
 class _TooltipState extends State<Tooltip> {
-  final PopoverController _controller = PopoverController();
+  final OverlayController _controller = OverlayController();
   @override
   Widget build(BuildContext context) {
     return Hover(
@@ -285,19 +285,22 @@ class _TooltipState extends State<Tooltip> {
       onHover: (hovered) {
         if (hovered) {
           _controller.show(
-            context: context,
-            modal: false,
-            builder: (context) {
-              return widget.tooltip(context);
-            },
-            alignment: widget.alignment,
-            anchorAlignment: widget.anchorAlignment,
-            dismissBackdropFocus: false,
-            overlayBarrier: const OverlayBarrier(
-              barrierColor: Colors.transparent,
+            context,
+            PopoverConfiguration(
+              modal: false,
+              builder: (context) {
+                return widget.tooltip(context);
+              },
+              alignment: widget.alignment,
+              anchorAlignment: widget.anchorAlignment,
+              dismissBackdropFocus: false,
+              overlayBarrier: const OverlayBarrier(
+                barrierColor: Colors.transparent,
+              ),
+              handler: OverlayManagerAsTooltipOverlayHandler(
+                  overlayManager: OverlayManager.of(context)),
             ),
-            handler: OverlayManagerAsTooltipOverlayHandler(
-                overlayManager: OverlayManager.of(context)),
+            adaptive: false,
           );
         } else {
           _controller.close();
@@ -362,7 +365,7 @@ class InstantTooltip extends StatefulWidget {
 }
 
 class _InstantTooltipState extends State<InstantTooltip> {
-  final PopoverController _controller = PopoverController();
+  final OverlayController _controller = OverlayController();
 
   @override
   void dispose() {
@@ -377,19 +380,22 @@ class _InstantTooltipState extends State<InstantTooltip> {
       onEnter: (event) {
         _controller.close(true);
         _controller.show(
-          context: context,
-          modal: false,
-          builder: widget.tooltipBuilder,
-          alignment: widget.tooltipAlignment,
-          anchorAlignment: widget.tooltipAnchorAlignment,
-          dismissBackdropFocus: false,
-          showDuration: Duration.zero,
-          hideDuration: Duration.zero,
-          overlayBarrier: const OverlayBarrier(
-            barrierColor: Colors.transparent,
+          context,
+          PopoverConfiguration(
+            modal: false,
+            builder: widget.tooltipBuilder,
+            alignment: widget.tooltipAlignment,
+            anchorAlignment: widget.tooltipAnchorAlignment,
+            dismissBackdropFocus: false,
+            showDuration: Duration.zero,
+            dismissDuration: Duration.zero,
+            overlayBarrier: const OverlayBarrier(
+              barrierColor: Colors.transparent,
+            ),
+            handler: OverlayManagerAsTooltipOverlayHandler(
+                overlayManager: overlayManager),
           ),
-          handler: OverlayManagerAsTooltipOverlayHandler(
-              overlayManager: overlayManager),
+          adaptive: false,
         );
       },
       onExit: (event) {
@@ -439,6 +445,7 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -446,7 +453,6 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     return overlayManager.showTooltip(
       context: context,
@@ -466,6 +472,7 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
       margin: margin,
       follow: follow,
       consumeOutsideTaps: consumeOutsideTaps,
+      anchor: anchor,
       onTickFollow: onTickFollow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
@@ -473,7 +480,6 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
-      layerLink: layerLink,
     );
   }
 }
@@ -511,6 +517,7 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -518,15 +525,35 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
-    TextDirection textDirection = Directionality.of(context);
+    final Anchor resolvedAnchor =
+        (anchor ?? const ContextAnchor()).resolve(context);
+
+    BuildContext resolvedContext = context;
+    if (resolvedAnchor is ContextAnchor) {
+      resolvedContext = resolvedAnchor.context ?? context;
+    } else if (resolvedAnchor is LinkedAnchor) {
+      resolvedContext =
+          OverlayAnchorRegistry.find(resolvedAnchor.key)?.context ?? context;
+    }
+
+    final subscription = resolvedAnchor.subscribe();
+    if (!subscription.isVisible) {
+      final popoverEntry = OverlayPopoverEntry<T>();
+      popoverEntry.completer.complete();
+      popoverEntry.animationCompleter.complete();
+      return popoverEntry;
+    }
+
+    TextDirection textDirection = Directionality.of(resolvedContext);
     Alignment resolvedAlignment = alignment.resolve(textDirection);
     anchorAlignment ??= alignment * -1;
     Alignment resolvedAnchorAlignment = anchorAlignment.resolve(textDirection);
-    final OverlayState overlay = Overlay.of(context, rootOverlay: rootOverlay);
-    final themes = InheritedTheme.capture(from: context, to: overlay.context);
-    final data = Data.capture(from: context, to: overlay.context);
+    final OverlayState overlay =
+        Overlay.of(resolvedContext, rootOverlay: rootOverlay);
+    final themes =
+        InheritedTheme.capture(from: resolvedContext, to: overlay.context);
+    final data = Data.capture(from: resolvedContext, to: overlay.context);
 
     ValueNotifier<bool> isClosed = ValueNotifier(false);
     late OverlayEntry overlayEntry;
@@ -570,7 +597,7 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
                             }
                           },
                           key: key,
-                          anchorContext: context,
+                          anchor: resolvedAnchor,
                           position: position,
                           alignment: resolvedAlignment,
                           themes: themes,
@@ -607,6 +634,7 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
                             completer.complete(value as T);
                             return animationCompleter.future;
                           },
+                          completer: popoverEntry,
                         );
                         return popoverAnchor;
                       });

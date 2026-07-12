@@ -619,7 +619,7 @@ Future<void> _showContextMenu(
   ValueListenable<List<MenuItem>> children,
   Axis direction,
 ) async {
-  final key = GlobalKey<OverlayHandlerStateMixin>();
+  final key = GlobalKey();
   final theme = Theme.of(context);
   final overlayManager = OverlayManager.of(context);
   return overlayManager
@@ -733,7 +733,7 @@ class ContextMenuPopup extends StatelessWidget {
       builder: (context, animation) {
         final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
         return PopoverOverlayWidget(
-          anchorContext: anchorContext,
+          anchor: ContextAnchor(anchorContext),
           position: position,
           anchorSize: anchorSize,
           alignment: Alignment.topLeft,

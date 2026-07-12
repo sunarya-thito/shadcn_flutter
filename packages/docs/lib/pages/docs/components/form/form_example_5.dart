@@ -21,20 +21,22 @@ class FormExample5 extends StatelessWidget {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Success'),
-                content: const Text('Password is valid!'),
-                actions: [
-                  PrimaryButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Close'),
-                  ),
-                ],
-              );
-            },
+          showOverlay(
+            context,
+            DialogConfiguration(
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Success'),
+                  content: const Text('Password is valid!'),
+                  actions: [
+                    PrimaryButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
         },
         child: Column(

@@ -614,7 +614,7 @@ class DialogRoute<T> extends RawDialogRoute<T> {
         );
 }
 
-Widget _buildShadcnDialogTransitions(
+Widget buildShadcnDialogTransitions(
     BuildContext context,
     BorderRadiusGeometry borderRadius,
     AlignmentGeometry alignment,
@@ -651,172 +651,93 @@ Widget _buildShadcnDialogTransitions(
   );
 }
 
-/// Displays a dialog using the shadcn_flutter design system.
-///
-/// Shows a modal dialog with consistent styling and animation behavior.
-/// The dialog is displayed over the current route and blocks interaction
-/// with the content below. Supports both centered and full-screen modes.
-///
-/// Features:
-/// - Consistent design system integration
-/// - Smooth scale and fade animations
-/// - Configurable alignment and barriers
-/// - Theme and data inheritance
-/// - Safe area handling
-/// - Custom transition animations
-///
-/// Parameters:
-/// - [context] (BuildContext, required): build context for navigation
-/// - [builder] (WidgetBuilder, required): function that builds dialog content
-/// - [useRootNavigator] (bool, default: true): whether to use root navigator
-/// - [barrierDismissible] (bool, default: true): tap outside to dismiss
-/// - [barrierColor] (Color?, optional): color of the backdrop barrier
-/// - [barrierLabel] (String?, optional): semantic label for the barrier
-/// - [useSafeArea] (bool, default: true): respect device safe areas
-/// - [routeSettings] (RouteSettings?, optional): settings for the route
-/// - [anchorPoint] (Offset?, optional): anchor point for transitions
-/// - [traversalEdgeBehavior] (TraversalEdgeBehavior?, optional): focus traversal
-/// - [alignment] (AlignmentGeometry?, optional): dialog alignment, defaults to center
-/// - [fullScreen] (bool, default: false): whether to display in full-screen mode
-///
-/// Returns:
-/// A [Future] that resolves to the result passed to [Navigator.pop].
-///
-/// Example:
-/// ```dart
-/// final result = await showDialog<String>(
-///   context: context,
-///   builder: (context) => AlertDialog(
-///     title: Text('Confirm'),
-///     content: Text('Are you sure?'),
-///     actions: [
-///       TextButton(
-///         onPressed: () => Navigator.pop(context, 'cancel'),
-///         child: Text('Cancel'),
-///       ),
-///       TextButton(
-///         onPressed: () => Navigator.pop(context, 'ok'),
-///         child: Text('OK'),
-///       ),
-///     ],
-///   ),
-/// );
-/// ```
-Future<T?> showDialog<T>({
-  required BuildContext context,
-  required WidgetBuilder builder,
-  bool useRootNavigator = true,
-  bool barrierDismissible = true,
-  Color? barrierColor,
-  String? barrierLabel,
-  bool useSafeArea = true,
-  RouteSettings? routeSettings,
-  Offset? anchorPoint,
-  TraversalEdgeBehavior? traversalEdgeBehavior,
-  AlignmentGeometry? alignment,
-  bool fullScreen = false,
-}) {
-  var navigatorState = Navigator.of(
-    context,
-    rootNavigator: useRootNavigator,
-  );
-  final CapturedThemes themes =
-      InheritedTheme.capture(from: context, to: navigatorState.context);
-  final CapturedData data =
-      Data.capture(from: context, to: navigatorState.context);
-  var dialogRoute = DialogRoute<T>(
-    context: context,
-    builder: (context) {
-      return _DialogOverlayWrapper(
-        route: ModalRoute.of(context) as DialogRoute<T>,
-        child: Builder(builder: (context) {
-          return builder(context);
-        }),
-      );
-    },
-    themes: themes,
-    barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor ?? const Color.fromRGBO(0, 0, 0, 0),
-    barrierLabel: barrierLabel,
-    useSafeArea: useSafeArea,
-    settings: routeSettings,
-    anchorPoint: anchorPoint,
-    data: data,
-    traversalEdgeBehavior:
-        traversalEdgeBehavior ?? TraversalEdgeBehavior.closedLoop,
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return _buildShadcnDialogTransitions(
-        context,
-        BorderRadius.zero,
-        alignment ?? Alignment.center,
-        animation,
-        secondaryAnimation,
-        fullScreen,
-        child,
-      );
-    },
-    alignment: alignment ?? Alignment.center,
-  );
-  return navigatorState.push(
-    dialogRoute,
-  );
-}
-
-class _DialogOverlayWrapper<T> extends StatefulWidget {
+class DialogOverlayContent<T> extends StatefulWidget {
   final DialogRoute<T> route;
   final Widget child;
 
-  const _DialogOverlayWrapper({
+  const DialogOverlayContent({
     super.key,
     required this.route,
     required this.child,
   });
 
   @override
-  State<_DialogOverlayWrapper<T>> createState() =>
-      _DialogOverlayWrapperState<T>();
+  State<DialogOverlayContent<T>> createState() =>
+      DialogOverlayContentState<T>();
 }
 
-class _DialogOverlayWrapperState<T> extends State<_DialogOverlayWrapper<T>>
-    with OverlayHandlerStateMixin {
+class DialogOverlayContentState<T> extends State<DialogOverlayContent<T>> {
+  late final _DialogOverlayContentCompleter<T> _completerAdapter =
+      _DialogOverlayContentCompleter<T>(widget.route);
+
   @override
   Widget build(BuildContext context) {
-    return Data<OverlayHandlerStateMixin>.inherit(
-      data: this,
+    return Data<OverlayCompleter>.inherit(
+      data: _completerAdapter,
       child: widget.child,
     );
+  }
+}
+
+/// Adapts a dialog's [DialogRoute] to [OverlayCompleter] so content rendered
+/// inside a dialog shown via `showDialog` can call [closeOverlay] to dismiss
+/// itself.
+class _DialogOverlayContentCompleter<T> extends OverlayCompleter<T> {
+  final DialogRoute<T> route;
+  bool _completed = false;
+
+  _DialogOverlayContentCompleter(this.route) {
+    route.completed.whenComplete(() => _completed = true);
   }
 
   @override
   Future<void> close([bool immediate = false]) {
-    if (immediate || !widget.route.isCurrent) {
-      widget.route.navigator?.removeRoute(widget.route);
+    if (immediate || !route.isCurrent) {
+      route.navigator?.removeRoute(route);
     } else {
-      widget.route.navigator?.pop();
+      route.navigator?.pop();
     }
-    return widget.route.completed;
+    return route.completed;
   }
 
   @override
   void closeLater() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (widget.route.isCurrent) {
-        widget.route.navigator?.pop();
+      if (route.isCurrent) {
+        route.navigator?.pop();
       } else {
-        widget.route.navigator?.removeRoute(widget.route);
+        route.navigator?.removeRoute(route);
       }
     });
   }
 
   @override
   Future<void> closeWithResult<X>([X? value]) {
-    if (widget.route.isCurrent) {
-      widget.route.navigator?.pop(value);
+    if (route.isCurrent) {
+      route.navigator?.pop(value);
     } else {
-      widget.route.navigator?.removeRoute(widget.route);
+      route.navigator?.removeRoute(route);
     }
-    return widget.route.completed;
+    return route.completed;
   }
+
+  @override
+  void remove() => route.navigator?.removeRoute(route);
+
+  @override
+  void dispose() {}
+
+  @override
+  bool get isCompleted => _completed;
+
+  @override
+  bool get isAnimationCompleted => _completed;
+
+  @override
+  Future<T?> get future => route.completed;
+
+  @override
+  Future<void> get animationFuture => route.completed.then((_) {});
 }
 
 /// Overlay handler that manages dialog display using the navigation stack.
@@ -877,6 +798,7 @@ class DialogOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -884,7 +806,6 @@ class DialogOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     var navigatorState = Navigator.of(
       context,
@@ -899,7 +820,7 @@ class DialogOverlayHandler extends OverlayHandler {
       builder: (context) {
         final theme = Theme.of(context);
         final surfaceOpacity = theme.surfaceOpacity;
-        var child = _DialogOverlayWrapper(
+        var child = DialogOverlayContent(
           route: ModalRoute.of(context) as DialogRoute<T>,
           child: Builder(builder: (context) {
             return builder(context);
@@ -938,7 +859,7 @@ class DialogOverlayHandler extends OverlayHandler {
       data: data,
       traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop,
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return _buildShadcnDialogTransitions(
+        return buildShadcnDialogTransitions(
           context,
           BorderRadius.zero,
           Alignment.center,
@@ -1014,6 +935,7 @@ class FullScreenDialogOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -1021,7 +943,6 @@ class FullScreenDialogOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     var navigatorState = Navigator.of(
       context,
@@ -1037,7 +958,7 @@ class FullScreenDialogOverlayHandler extends OverlayHandler {
       builder: (context) {
         final theme = Theme.of(context);
         final surfaceOpacity = theme.surfaceOpacity;
-        var child = _DialogOverlayWrapper(
+        var child = DialogOverlayContent(
           route: ModalRoute.of(context) as DialogRoute<T>,
           child: Builder(builder: (context) {
             return builder(context);
@@ -1076,7 +997,7 @@ class FullScreenDialogOverlayHandler extends OverlayHandler {
       data: data,
       traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop,
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return _buildShadcnDialogTransitions(
+        return buildShadcnDialogTransitions(
           context,
           BorderRadius.zero,
           Alignment.center,

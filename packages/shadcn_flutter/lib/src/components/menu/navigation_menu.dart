@@ -207,7 +207,7 @@ class NavigationMenuItemState extends State<NavigationMenuItem> {
     final theme = Theme.of(context);
     return AnimatedBuilder(
         animation: Listenable.merge(
-            [_menuState!._activeIndex, _menuState!._popoverController]),
+            [_menuState!._activeIndex, _menuState!._overlayController]),
         builder: (context, child) {
           return Button(
             style: const ButtonStyle.ghost().copyWith(
@@ -587,7 +587,7 @@ class NavigationMenuState extends State<NavigationMenu> {
   static const Duration kDebounceDuration = Duration(milliseconds: 200);
   // final GlobalKey<PopoverAnchorState> _popoverKey = GlobalKey();
   // final ValueNotifier<bool> _visible = ValueNotifier(false);
-  final PopoverController _popoverController = PopoverController();
+  final OverlayController _overlayController = OverlayController();
   final ValueNotifier<int> _activeIndex = ValueNotifier(0);
   final Map<NavigationMenuItemState, WidgetBuilder> _contentBuilders = {};
 
@@ -605,41 +605,46 @@ class NavigationMenuState extends State<NavigationMenu> {
   ///
   /// Returns: `bool` — true if the item is active and popover is open
   bool isActive(NavigationMenuItemState item) {
-    return _popoverController.hasOpenPopover &&
+    return _overlayController.hasOpenOverlay &&
         widget.children[_activeIndex.value] == item.widget;
   }
 
   @override
   void dispose() {
     _activeIndex.dispose();
-    _popoverController.dispose();
+    _overlayController.dispose();
     super.dispose();
   }
 
   void _show(BuildContext context) {
-    if (_popoverController.hasOpenPopover) {
-      _popoverController.anchorContext = context;
-      return;
+    // Switching the active item means anchoring to a different item's
+    // context, so close any existing popover first rather than trying to
+    // reposition it in place.
+    if (_overlayController.hasOpenOverlay) {
+      _overlayController.close();
     }
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
-    _popoverController.show(
-      context: context,
-      alignment: Alignment.topCenter,
-      regionGroupId: this,
-      offset: compTheme?.offset ?? Offset(0, densityGap * 0.5),
-      builder: buildPopover,
-      modal: false,
-      margin:
-          requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap),
-      allowInvertHorizontal: false,
-      allowInvertVertical: false,
-      onTickFollow: (value) {
-        value.margin =
-            requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap);
-      },
+    _overlayController.show(
+      context,
+      PopoverConfiguration(
+        alignment: Alignment.topCenter,
+        regionGroupId: this,
+        offset: compTheme?.offset ?? Offset(0, densityGap * 0.5),
+        builder: buildPopover,
+        modal: false,
+        margin:
+            requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap),
+        allowInvertHorizontal: false,
+        allowInvertVertical: false,
+        onTickFollow: (value) {
+          value.updateMargin(requestMargin() ??
+              compTheme?.margin ??
+              EdgeInsets.all(densityGap));
+        },
+      ),
     );
   }
 
@@ -689,7 +694,7 @@ class NavigationMenuState extends State<NavigationMenu> {
 
   /// Closes the currently open popover menu.
   void close() {
-    _popoverController.close();
+    _overlayController.close();
   }
 
   /// Builds the popover widget for the navigation menu.

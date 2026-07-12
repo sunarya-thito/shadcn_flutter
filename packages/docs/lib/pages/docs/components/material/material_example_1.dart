@@ -79,23 +79,25 @@ class _MaterialExample1State extends State<MaterialExample1> {
                   shadcnui.SecondaryButton(
                     onPressed: () {
                       // Show a shadcn_flutter dialog side-by-side for comparison
-                      shadcnui.showDialog(
-                        context: context,
-                        builder: (context) {
-                          return shadcnui.AlertDialog(
-                            title: const Text('Hello'),
-                            content:
-                                const Text('This is shadcn_flutter dialog'),
-                            actions: [
-                              shadcnui.PrimaryButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
+                      shadcnui.showOverlay(
+                        context,
+                        shadcnui.DialogConfiguration(
+                          builder: (context) {
+                            return shadcnui.AlertDialog(
+                              title: const Text('Hello'),
+                              content:
+                                  const Text('This is shadcn_flutter dialog'),
+                              actions: [
+                                shadcnui.PrimaryButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Close'),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       );
                     },
                     child: const Text('Open shadcn_flutter Dialog'),

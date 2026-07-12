@@ -1160,107 +1160,113 @@ class _ThemePageState extends State<ThemePage> {
   void _openDrawer(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    openSheet(
-      anchor: #themeMenuDrawer,
-      builder: (context) {
-        return Container(
-          constraints: const BoxConstraints(maxWidth: 400) * scaling,
-          padding: const EdgeInsets.only(top: 32) * scaling,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  FlutterLogo(
-                    size: 24 * scaling,
-                  ),
-                  Gap(18 * scaling),
-                  const Text('shadcn_flutter').medium().mono(),
-                  Gap(12 * scaling),
-                  _buildFlavorTag(),
-                  const Spacer(),
-                  TextButton(
-                    density: ButtonDensity.icon,
-                    size: ButtonSize.small,
-                    onPressed: () {
-                      closeDrawer(context);
-                    },
-                    child: const Icon(Icons.close),
-                  ),
-                ],
-              ).withPadding(left: 32 * scaling, right: 32 * scaling),
-              Gap(32 * scaling),
-              Expanded(
-                child: FocusTraversalGroup(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(
-                          left: 32,
-                          right: 32,
-                          bottom: 48,
-                        ) *
-                        scaling,
-                    key: const PageStorageKey('sidebar'),
-                    child: SidebarNav(children: [
-                      for (var section in DocsPageState.sections)
-                        SidebarSection(
-                          header: Text(section.title),
-                          children: [
-                            for (var page in section.pages)
-                              Semantics(
-                                link: true,
-                                linkUrl: Uri.tryParse(
-                                  'https://sunarya-thito.github.io/shadcn_flutter${_goRouterNamedLocation(context, page.name)}',
-                                ),
-                                child: DocsNavigationButton(
-                                  onPressed: () {
-                                    if (page.tag ==
-                                        ShadcnFeatureTag.workInProgress) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title:
-                                                const Text('Work in Progress'),
-                                            content: const Text(
-                                                'This page is still under development. Please come back later.'),
-                                            actions: [
-                                              PrimaryButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text('Close'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                      return;
-                                    }
-                                    context.goNamed(page.name);
-                                    closeDrawer(context);
-                                  },
-                                  selected: page.name == _pageName,
-                                  child: Basic(
-                                    trailing: page.tag?.buildBadge(context),
-                                    trailingAlignment:
-                                        AlignmentDirectional.centerStart,
-                                    content: Text(page.title),
+    showOverlay(
+      context,
+      SheetConfiguration(
+        anchor: LinkedAnchor(#themeMenuDrawer),
+        builder: (context) {
+          return Container(
+            constraints: const BoxConstraints(maxWidth: 400) * scaling,
+            padding: const EdgeInsets.only(top: 32) * scaling,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FlutterLogo(
+                      size: 24 * scaling,
+                    ),
+                    Gap(18 * scaling),
+                    const Text('shadcn_flutter').medium().mono(),
+                    Gap(12 * scaling),
+                    _buildFlavorTag(),
+                    const Spacer(),
+                    TextButton(
+                      density: ButtonDensity.icon,
+                      size: ButtonSize.small,
+                      onPressed: () {
+                        closeDrawer(context);
+                      },
+                      child: const Icon(Icons.close),
+                    ),
+                  ],
+                ).withPadding(left: 32 * scaling, right: 32 * scaling),
+                Gap(32 * scaling),
+                Expanded(
+                  child: FocusTraversalGroup(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                            left: 32,
+                            right: 32,
+                            bottom: 48,
+                          ) *
+                          scaling,
+                      key: const PageStorageKey('sidebar'),
+                      child: SidebarNav(children: [
+                        for (var section in DocsPageState.sections)
+                          SidebarSection(
+                            header: Text(section.title),
+                            children: [
+                              for (var page in section.pages)
+                                Semantics(
+                                  link: true,
+                                  linkUrl: Uri.tryParse(
+                                    'https://sunarya-thito.github.io/shadcn_flutter${_goRouterNamedLocation(context, page.name)}',
+                                  ),
+                                  child: DocsNavigationButton(
+                                    onPressed: () {
+                                      if (page.tag ==
+                                          ShadcnFeatureTag.workInProgress) {
+                                        showOverlay(
+                                          context,
+                                          DialogConfiguration(
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Work in Progress'),
+                                                content: const Text(
+                                                    'This page is still under development. Please come back later.'),
+                                                actions: [
+                                                  PrimaryButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: const Text('Close'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        );
+                                        return;
+                                      }
+                                      context.goNamed(page.name);
+                                      closeDrawer(context);
+                                    },
+                                    selected: page.name == _pageName,
+                                    child: Basic(
+                                      trailing: page.tag?.buildBadge(context),
+                                      trailingAlignment:
+                                          AlignmentDirectional.centerStart,
+                                      content: Text(page.title),
+                                    ),
                                   ),
                                 ),
-                              ),
-                          ],
-                        ),
-                    ]),
+                            ],
+                          ),
+                      ]),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-      position: OverlayPosition.left,
+              ],
+            ),
+          );
+        },
+        position: OverlayPosition.left,
+      ),
     );
   }
 
@@ -1862,23 +1868,25 @@ class _ThemeSidebarState extends State<_ThemeSidebar> {
                 child: DocsNavigationButton(
                   onPressed: () {
                     if (page.tag == ShadcnFeatureTag.workInProgress) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Work in Progress'),
-                            content: const Text(
-                                'This page is still under development. Please come back later.'),
-                            actions: [
-                              PrimaryButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
+                      showOverlay(
+                        context,
+                        DialogConfiguration(
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Work in Progress'),
+                              content: const Text(
+                                  'This page is still under development. Please come back later.'),
+                              actions: [
+                                PrimaryButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Close'),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       );
                       return;
                     }

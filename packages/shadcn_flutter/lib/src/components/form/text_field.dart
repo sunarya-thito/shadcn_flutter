@@ -905,9 +905,22 @@ class _TextFieldSelectionGestureDetectorBuilder
   }
 
   @override
+  void onDragSelectionStart(TapDragStartDetails details) {
+    super.onDragSelectionStart(details);
+    _state.widget.onDragSelectionStart?.call(details);
+  }
+
+  @override
+  void onDragSelectionUpdate(TapDragUpdateDetails details) {
+    super.onDragSelectionUpdate(details);
+    _state.widget.onDragSelectionUpdate?.call(details);
+  }
+
+  @override
   void onDragSelectionEnd(TapDragEndDetails details) {
     _state._requestKeyboard();
     super.onDragSelectionEnd(details);
+    _state.widget.onDragSelectionEnd?.call(details);
   }
 }
 
@@ -1719,6 +1732,24 @@ class TextField extends TextInputStatefulWidget {
     };
   }
 
+  /// Called when a drag-to-select gesture starts inside this field.
+  ///
+  /// Mirrors [TextSelectionGestureDetectorBuilder.onDragSelectionStart] so
+  /// callers composing several [TextField]s together (e.g. [FormattedInput])
+  /// can track a drag that may continue outside this field's own bounds.
+  /// This does not replace the field's own default drag-selection handling.
+  final ValueChanged<TapDragStartDetails>? onDragSelectionStart;
+
+  /// Called on every update of a drag-to-select gesture started in this field.
+  ///
+  /// See [onDragSelectionStart].
+  final ValueChanged<TapDragUpdateDetails>? onDragSelectionUpdate;
+
+  /// Called when a drag-to-select gesture started in this field ends.
+  ///
+  /// See [onDragSelectionStart].
+  final ValueChanged<TapDragEndDetails>? onDragSelectionEnd;
+
   /// Creates a text input field widget.
   ///
   /// A comprehensive text field implementation with support for various input
@@ -1814,6 +1845,9 @@ class TextField extends TextInputStatefulWidget {
     super.features,
     super.submitFormatters,
     super.skipInputFeatureFocusTraversal,
+    this.onDragSelectionStart,
+    this.onDragSelectionUpdate,
+    this.onDragSelectionEnd,
   });
 
   /// Default context menu builder for editable text.
@@ -2021,6 +2055,11 @@ class TextFieldState extends State<TextField>
 
   RestorableTextEditingController? _controller;
 
+  // Tracks the text last forwarded to widget.onChanged, so that
+  // selection-only or composing-only controller changes (which also
+  // trigger the listener below) don't spuriously re-report the same text.
+  String? _lastNotifiedText;
+
   /// The effective text editing controller for this text field.
   ///
   /// Returns the widget's controller or the internally created controller.
@@ -2071,6 +2110,7 @@ class TextFieldState extends State<TextField>
     } else {
       widget.controller!.addListener(_handleControllerChanged);
     }
+    _lastNotifiedText = widget.controller?.text ?? widget.initialValue ?? '';
     _effectiveFocusNode.canRequestFocus = widget.enabled;
     _effectiveFocusNode.addListener(_handleFocusChanged);
     _statesController = widget.statesController ?? WidgetStatesController();
@@ -2108,6 +2148,9 @@ class TextFieldState extends State<TextField>
       oldWidget.controller?.removeListener(_handleControllerChanged);
       widget.controller?.addListener(_handleControllerChanged);
       if (widget.controller != null) {
+        // Force a resync even if the new controller's text happens to
+        // match the old one's.
+        _lastNotifiedText = null;
         _handleControllerChanged();
       }
     }
@@ -2170,7 +2213,10 @@ class TextFieldState extends State<TextField>
   }
 
   void _handleControllerChanged() {
-    _onChanged(effectiveController.text);
+    final currentText = effectiveController.text;
+    if (currentText == _lastNotifiedText) return;
+    _lastNotifiedText = currentText;
+    _onChanged(currentText);
   }
 
   void _createLocalController([TextEditingValue? value]) {

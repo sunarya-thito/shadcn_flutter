@@ -107,33 +107,35 @@ Future<T?> showCommandDialog<T>({
   double? surfaceOpacity,
   double? surfaceBlur,
 }) {
-  return showDialog<T>(
-    context: context,
-    builder: (context) {
-      final theme = Theme.of(context);
-      final scaling = theme.scaling;
-      surfaceOpacity ??= theme.surfaceOpacity;
-      surfaceBlur ??= theme.surfaceBlur;
-      return ConstrainedBox(
-        constraints: constraints ??
-            const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
-        child: ModalBackdrop(
-          borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
-          surfaceClip: ModalBackdrop.shouldClipSurface(surfaceOpacity),
-          child: Command(
-            autofocus: autofocus,
-            builder: builder,
-            debounceDuration: debounceDuration,
-            emptyBuilder: emptyBuilder,
-            errorBuilder: errorBuilder,
-            loadingBuilder: loadingBuilder,
-            surfaceOpacity: surfaceOpacity,
-            surfaceBlur: surfaceBlur,
+  return showOverlay<T>(
+    context,
+    DialogConfiguration<T>(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final scaling = theme.scaling;
+        surfaceOpacity ??= theme.surfaceOpacity;
+        surfaceBlur ??= theme.surfaceBlur;
+        return ConstrainedBox(
+          constraints: constraints ??
+              const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
+          child: ModalBackdrop(
+            borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
+            surfaceClip: ModalBackdrop.shouldClipSurface(surfaceOpacity),
+            child: Command(
+              autofocus: autofocus,
+              builder: builder,
+              debounceDuration: debounceDuration,
+              emptyBuilder: emptyBuilder,
+              errorBuilder: errorBuilder,
+              loadingBuilder: loadingBuilder,
+              surfaceOpacity: surfaceOpacity,
+              surfaceBlur: surfaceBlur,
+            ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    ),
+  ).future;
 }
 
 /// Interactive command palette with search functionality and dynamic results.

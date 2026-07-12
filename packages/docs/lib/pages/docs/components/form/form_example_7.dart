@@ -25,20 +25,22 @@ class FormExample7 extends StatelessWidget {
           String json = jsonEncode(values.map((key, value) {
             return MapEntry(key.key, value);
           }));
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Submitted Values'),
-                content: Text(json),
-                actions: [
-                  PrimaryButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Close'),
-                  ),
-                ],
-              );
-            },
+          showOverlay(
+            context,
+            DialogConfiguration(
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Submitted Values'),
+                  content: Text(json),
+                  actions: [
+                    PrimaryButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
         },
         child: Column(

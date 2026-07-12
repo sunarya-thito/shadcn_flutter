@@ -5,8 +5,8 @@ environment:
   sdk: ">=3.6.0 <4.0.0"
 
 workspace:
-  - packages/shadcn_flutter
-  - packages/shadcn_flutter/example
-  - packages/docs
-  - packages/gen
-  - packages/shadcn_flutter_genui
+- packages/shadcn_flutter
+- packages/shadcn_flutter/example
+- packages/docs
+- packages/gen
+- packages/shadcn_flutter_genui

@@ -21,21 +21,23 @@ class FormExample8 extends StatelessWidget {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Success'),
-                content: Text('Name: ${_nameKey[values]}\n'
-                    'Email: ${_emailKey[values]}'),
-                actions: [
-                  PrimaryButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Close'),
-                  ),
-                ],
-              );
-            },
+          showOverlay(
+            context,
+            DialogConfiguration(
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Success'),
+                  content: Text('Name: ${_nameKey[values]}\n'
+                      'Email: ${_emailKey[values]}'),
+                  actions: [
+                    PrimaryButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
         },
         child: Column(

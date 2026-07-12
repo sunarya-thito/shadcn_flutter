@@ -21,31 +21,34 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
           child: PrimaryButton(
             onPressed: () {
               // Show the color picker as a popover anchored to the button.
-              showPopover(
-                anchor: #colorPickerButton,
-                alignment: Alignment.topCenter,
-                anchorAlignment: Alignment.bottomCenter,
-                widthConstraint: PopoverConstraint.intrinsic,
-                heightConstraint: PopoverConstraint.intrinsic,
-                offset: const Offset(0, 8),
-                builder: (context) {
-                  return ListenableBuilder(
-                      listenable: selectedColorNotifier,
-                      builder: (context, _) {
-                        return SurfaceCard(
-                          child: ColorPicker(
-                            value: selectedColorNotifier.value,
-                            orientation: Axis.horizontal,
-                            showAlpha: true,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedColorNotifier.value = value;
-                              });
-                            },
-                          ),
-                        );
-                      });
-                },
+              showOverlay(
+                context,
+                PopoverConfiguration(
+                  anchor: LinkedAnchor(#colorPickerButton),
+                  alignment: Alignment.topCenter,
+                  anchorAlignment: Alignment.bottomCenter,
+                  widthConstraint: PopoverConstraint.intrinsic,
+                  heightConstraint: PopoverConstraint.intrinsic,
+                  offset: const Offset(0, 8),
+                  builder: (context) {
+                    return ListenableBuilder(
+                        listenable: selectedColorNotifier,
+                        builder: (context, _) {
+                          return SurfaceCard(
+                            child: ColorPicker(
+                              value: selectedColorNotifier.value,
+                              orientation: Axis.horizontal,
+                              showAlpha: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedColorNotifier.value = value;
+                                });
+                              },
+                            ),
+                          );
+                        });
+                  },
+                ),
               );
             },
             child: const Text('Open Color Picker Popover'),
@@ -55,35 +58,37 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
         PrimaryButton(
           onPressed: () {
             // Show the color picker as a dialog with a title.
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Select Color'),
-                  content: ListenableBuilder(
-                      listenable: selectedColorNotifier,
-                      builder: (context, _) {
-                        return ColorPicker(
-                          value: selectedColorNotifier.value,
-                          orientation: Axis.horizontal,
-                          showAlpha: true,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedColorNotifier.value = value;
-                            });
-                          },
-                        );
-                      }),
-                  actions: [
-                    PrimaryButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Close'),
-                    ),
-                  ],
-                );
-              },
+            showOverlay(
+              context,
+              DialogConfiguration(
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Select Color'),
+                    content: ListenableBuilder(
+                        listenable: selectedColorNotifier,
+                        builder: (context, _) {
+                          return ColorPicker(
+                            value: selectedColorNotifier.value,
+                            orientation: Axis.horizontal,
+                            showAlpha: true,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedColorNotifier.value = value;
+                              });
+                            },
+                          );
+                        }),
+                    actions: [
+                      PrimaryButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  );
+                },
+              ),
             );
           },
           child: const Text('Open Color Picker Dialog'),

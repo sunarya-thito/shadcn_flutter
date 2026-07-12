@@ -161,7 +161,7 @@ abstract class ObjectFormHandler<T> {
 /// enabled based on the presence of an `onChanged` callback.
 class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     with FormValueSupplier<T, ObjectFormField<T>> {
-  final PopoverController _popoverController = PopoverController();
+  final OverlayController _popoverController = OverlayController();
 
   @override
   void initState() {
@@ -209,26 +209,28 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
 
   void _showDialog([T? value]) {
     value ??= formValue;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return _ObjectFormFieldDialog<T>(
-          dialogTitle: widget.dialogTitle,
-          value: value,
-          editorBuilder: widget.editorBuilder,
-          dialogActions: widget.dialogActions,
-          prompt: prompt,
-          decorate: widget.decorate,
-          onChanged: (value) {
-            // by default, dialog will not immediately inform if value is changed
-            // but if its explicitly set to true, then we should inform
-            if (widget.immediateValueChange == true) {
-              this.value = value;
-            }
-          },
-        );
-      },
-    ).then((value) {
+    showOverlay(
+      context,
+      DialogConfiguration(
+        builder: (context) {
+          return _ObjectFormFieldDialog<T>(
+            dialogTitle: widget.dialogTitle,
+            value: value,
+            editorBuilder: widget.editorBuilder,
+            dialogActions: widget.dialogActions,
+            prompt: prompt,
+            decorate: widget.decorate,
+            onChanged: (value) {
+              // by default, dialog will not immediately inform if value is changed
+              // but if its explicitly set to true, then we should inform
+              if (widget.immediateValueChange == true) {
+                this.value = value;
+              }
+            },
+          );
+        },
+      ),
+    ).future.then((value) {
       if (mounted &&
           value is ObjectFormFieldDialogResult<T> &&
           // in dialog, by default we do not inform immediate change
@@ -246,32 +248,34 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     T? delayedResult = value;
     _popoverController
         .show(
-      context: context,
-      alignment: widget.popoverAlignment ?? Alignment.topLeft,
-      anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
-      overlayBarrier: OverlayBarrier(
-        borderRadius: BorderRadius.circular(theme.radiusLg),
+      context,
+      PopoverConfiguration(
+        alignment: widget.popoverAlignment ?? Alignment.topLeft,
+        anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
+        overlayBarrier: OverlayBarrier(
+          borderRadius: BorderRadius.circular(theme.radiusLg),
+        ),
+        modal: true,
+        offset: Offset(0, 8 * scaling),
+        builder: (context) {
+          return _ObjectFormFieldPopup<T>(
+            value: value,
+            editorBuilder: widget.editorBuilder,
+            popoverPadding: widget.popoverPadding,
+            prompt: prompt,
+            decorate: widget.decorate,
+            onChanged: (value) {
+              // by default, popover will immediately inform any changes
+              // but if its explicitly set to false, then we should not inform
+              if (mounted && widget.immediateValueChange != false) {
+                this.value = value;
+              } else {
+                delayedResult = value;
+              }
+            },
+          );
+        },
       ),
-      modal: true,
-      offset: Offset(0, 8 * scaling),
-      builder: (context) {
-        return _ObjectFormFieldPopup<T>(
-          value: value,
-          editorBuilder: widget.editorBuilder,
-          popoverPadding: widget.popoverPadding,
-          prompt: prompt,
-          decorate: widget.decorate,
-          onChanged: (value) {
-            // by default, popover will immediately inform any changes
-            // but if its explicitly set to false, then we should not inform
-            if (mounted && widget.immediateValueChange != false) {
-              this.value = value;
-            } else {
-              delayedResult = value;
-            }
-          },
-        );
-      },
     )
         .then(
       (_) {

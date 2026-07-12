@@ -1556,6 +1556,10 @@ class FormValidityNotification extends Notification {
   const FormValidityNotification(this.newValidity, this.oldValidity);
 }
 
+class DynamicFormKey extends FormKey<Object?> {
+  const DynamicFormKey(Object key) : super(key);
+}
+
 /// A key that uniquely identifies a form field and its type.
 ///
 /// [FormKey] extends [LocalKey] and is used throughout the form system to
@@ -1827,7 +1831,7 @@ class FormEntryState extends State<FormEntry> with FormFieldHandle {
 
   @override
   FutureOr<ValidationResult?> reportNewFormValue<T>(T? value) {
-    bool isSameType = widget.key.type == T;
+    bool isSameType = widget.key is DynamicFormKey || widget.key.type == T;
     if (!isSameType) {
       var parentLookup = Data.maybeFind<FormFieldHandle>(context);
       assert(parentLookup != this, 'FormEntry cannot be its own parent');
@@ -2677,6 +2681,9 @@ extension FormExtension on BuildContext {
         }
         return _chainedSubmitForm(values, errors, iterator);
       });
+    }
+    if (value != null) {
+      errors[entry.key] = value;
     }
     return _chainedSubmitForm(values, errors, iterator);
   }

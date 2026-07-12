@@ -14,15 +14,20 @@ void main() {
                 anchor: #myAnchor,
                 child: Text('Anchor Element'),
               ),
-              Button.primary(
-                onPressed: () {
-                  showPopover(
-                    anchor: #myAnchor,
-                    alignment: Alignment.bottomCenter,
-                    builder: (context) => Text('Popover Content'),
-                  );
-                },
-                child: Text('Show Popover'),
+              Builder(
+                builder: (context) => Button.primary(
+                  onPressed: () {
+                    showOverlay(
+                      context,
+                      PopoverConfiguration(
+                        anchor: LinkedAnchor(#myAnchor),
+                        alignment: Alignment.bottomCenter,
+                        builder: (context) => Text('Popover Content'),
+                      ),
+                    );
+                  },
+                  child: Text('Show Popover'),
+                ),
               ),
             ],
           ),
@@ -49,15 +54,20 @@ void main() {
                 anchor: #myDrawerAnchor,
                 child: Text('Drawer Anchor Element'),
               ),
-              Button.primary(
-                onPressed: () {
-                  openDrawer(
-                    anchor: #myDrawerAnchor,
-                    position: OverlayPosition.left,
-                    builder: (context) => Text('Drawer Content'),
-                  );
-                },
-                child: Text('Show Drawer'),
+              Builder(
+                builder: (context) => Button.primary(
+                  onPressed: () {
+                    showOverlay(
+                      context,
+                      DrawerConfiguration(
+                        anchor: LinkedAnchor(#myDrawerAnchor),
+                        position: OverlayPosition.left,
+                        builder: (context) => Text('Drawer Content'),
+                      ),
+                    );
+                  },
+                  child: Text('Show Drawer'),
+                ),
               ),
             ],
           ),
@@ -93,10 +103,13 @@ void main() {
                     ),
                   Button.primary(
                     onPressed: () {
-                      showPopover(
-                        anchor: #tempAnchor,
-                        alignment: Alignment.bottomCenter,
-                        builder: (context) => Text('Temp Popover'),
+                      showOverlay(
+                        context,
+                        PopoverConfiguration(
+                          anchor: LinkedAnchor(#tempAnchor),
+                          alignment: Alignment.bottomCenter,
+                          builder: (context) => Text('Temp Popover'),
+                        ),
                       );
                     },
                     child: Text('Show Temp'),
@@ -117,6 +130,95 @@ void main() {
 
       // Verify registry is cleaned up and has unregistered the key
       expect(OverlayAnchorRegistry.find(#tempAnchor), isNull);
+    });
+  });
+
+  group('Anchor (isVisible gating and auto-close)', () {
+    testWidgets(
+        'prevents popover from showing when LinkedAnchor key is not registered',
+        (tester) async {
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Builder(
+            builder: (context) => Button.primary(
+              onPressed: () {
+                showOverlay(
+                  context,
+                  PopoverConfiguration(
+                    anchor: LinkedAnchor(#neverRegisteredAnchor),
+                    alignment: Alignment.bottomCenter,
+                    builder: (context) => Text('Popover Content'),
+                    // ShadcnApp defaults to SheetOverlayHandler on mobile;
+                    // force a real popover to exercise the isVisible gate.
+                    handler: const PopoverOverlayHandler(),
+                  ),
+                );
+              },
+              child: Text('Show Popover'),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Show Popover'));
+      await tester.pumpAndSettle();
+
+      // The anchor was never registered, so the popover must never appear.
+      expect(find.text('Popover Content'), findsNothing);
+    });
+
+    testWidgets(
+        'closes popover with its normal animation when its LinkedAnchor is removed',
+        (tester) async {
+      final valueNotifier = ValueNotifier<bool>(true);
+
+      await tester.pumpWidget(
+        SimpleApp(
+          child: AnimatedBuilder(
+            animation: valueNotifier,
+            builder: (context, child) {
+              return Column(
+                children: [
+                  if (valueNotifier.value)
+                    OverlayAnchor(
+                      anchor: #vanishingAnchor,
+                      child: Text('Vanishing Anchor'),
+                    ),
+                  Button.primary(
+                    onPressed: () {
+                      showOverlay(
+                        context,
+                        PopoverConfiguration(
+                          anchor: LinkedAnchor(#vanishingAnchor),
+                          alignment: Alignment.bottomCenter,
+                          builder: (context) => Text('Popover Content'),
+                          handler: const PopoverOverlayHandler(),
+                        ),
+                      );
+                    },
+                    child: Text('Show Popover'),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Show Popover'));
+      await tester.pumpAndSettle();
+      expect(find.text('Popover Content'), findsOneWidget);
+
+      // Remove the anchor while the popover is open.
+      valueNotifier.value = false;
+      await tester.pump();
+      await tester.pump();
+
+      // Still transitioning into its close animation, not vanished instantly.
+      expect(find.text('Popover Content'), findsOneWidget);
+
+      await tester.pumpAndSettle();
+      expect(find.text('Popover Content'), findsNothing);
     });
   });
 }

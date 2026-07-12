@@ -74,9 +74,9 @@ class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
   late Future<String> futureCode;
 
   void _refresh() {
-    //https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
+    //https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/packages/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
     String url =
-        'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/docs/${widget.path}';
+        'https://raw.githubusercontent.com/sunarya-thito/shadcn_flutter/master/packages/docs/${widget.path}';
     futureCode =
         http.get(Uri.parse(url)).then((response) => response.body).then((code) {
       try {
@@ -145,7 +145,7 @@ class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
                   onPressed: () {
                     // open in new tab
                     String url =
-                        'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}';
+                        'https://github.com/sunarya-thito/shadcn_flutter/blob/master/packages/docs/${widget.path}';
                     // html.window.open(url, 'blank');
                     launchUrlString(url);
                   },
@@ -165,9 +165,9 @@ class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
                 density: ButtonDensity.icon,
                 onPressed: () {
                   // open in new tab
-                  //https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
+                  //https://github.com/sunarya-thito/shadcn_flutter/blob/master/packages/docs/lib/pages/docs/layout_page/layout_page_example_1.dart
                   String url =
-                      'https://github.com/sunarya-thito/shadcn_flutter/blob/master/docs/${widget.path}';
+                      'https://github.com/sunarya-thito/shadcn_flutter/blob/master/packages/docs/${widget.path}';
                   // html.window.open(url, 'blank');
                   launchUrlString(url);
                 },

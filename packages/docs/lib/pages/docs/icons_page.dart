@@ -42,36 +42,38 @@ class IconsPageState extends State<IconsPage> {
   final TextEditingController _controller = TextEditingController();
 
   void _onTap(String className, MapEntry<String, IconData> entry) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title:
-              Text(capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
-          leading: Icon(entry.value, size: 48),
-          content: IntrinsicWidth(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text('Use this code to display this icon:'),
-                const Gap(8),
-                CodeBlock(
-                  code: 'Icon($className.${entry.key})',
-                  mode: 'dart',
-                ),
-              ],
+    showOverlay(
+      context,
+      DialogConfiguration(
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+                capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
+            leading: Icon(entry.value, size: 48),
+            content: IntrinsicWidth(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text('Use this code to display this icon:'),
+                  const Gap(8),
+                  CodeBlock(
+                    code: 'Icon($className.${entry.key})',
+                    mode: 'dart',
+                  ),
+                ],
+              ),
             ),
-          ),
-          actions: [
-            PrimaryButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
+            actions: [
+              PrimaryButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 

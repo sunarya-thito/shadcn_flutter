@@ -28,29 +28,31 @@ class _FormExample1State extends State<FormExample1> {
           String json = jsonEncode(values.map((key, value) {
             return MapEntry(key.key, value);
           }));
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Form Values'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Username: $username'),
-                    Text('Password: $password'),
-                    Text('Confirm Password: $confirmPassword'),
-                    Text('JSON: $json'),
-                  ],
-                ),
-                actions: [
-                  PrimaryButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Close'),
+          showOverlay(
+            context,
+            DialogConfiguration(
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Form Values'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Username: $username'),
+                      Text('Password: $password'),
+                      Text('Confirm Password: $confirmPassword'),
+                      Text('JSON: $json'),
+                    ],
                   ),
-                ],
-              );
-            },
+                  actions: [
+                    PrimaryButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
         },
         child: Column(

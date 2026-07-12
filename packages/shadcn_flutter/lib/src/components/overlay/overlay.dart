@@ -1,11 +1,13 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 
 /// Closes the currently active overlay with an optional result value.
 ///
-/// Searches up the widget tree for an [OverlayHandlerStateMixin] and
-/// requests it to close with the provided result. If no overlay handler
-/// is found, returns a completed future.
+/// Searches up the widget tree for the [OverlayCompleter] of the overlay
+/// [context] is inside of (inherited by the overlay's own content) and
+/// requests it to close with the provided result. If none is found, returns
+/// a completed future.
 ///
 /// Parameters:
 /// - [context] (BuildContext, required): Build context from within the overlay
@@ -18,76 +20,15 @@ import 'package:flutter/rendering.dart';
 /// closeOverlay(context, 'user_confirmed');
 /// ```
 Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
-  return Data.maybeFind<OverlayHandlerStateMixin>(context)
-          ?.closeWithResult(value) ??
+  return Data.maybeFind<OverlayCompleter>(context)?.closeWithResult(value) ??
       Future.value();
-}
-
-/// Mixin providing overlay state management methods.
-///
-/// Defines the interface for overlay state classes, including methods for
-/// closing overlays and updating overlay configuration dynamically.
-///
-/// Used by overlay implementations to provide consistent lifecycle management
-/// and configuration update capabilities.
-mixin OverlayHandlerStateMixin<T extends StatefulWidget> on State<T> {
-  /// Closes the overlay.
-  ///
-  /// Parameters:
-  /// - [immediate] (bool): If true, closes immediately without animation
-  ///
-  /// Returns a [Future] that completes when closed.
-  Future<void> close([bool immediate = false]);
-
-  /// Schedules overlay closure for the next frame.
-  ///
-  /// Useful for closing overlays from callbacks where immediate closure
-  /// might cause issues with the widget tree.
-  void closeLater();
-
-  /// Closes the overlay with a result value.
-  ///
-  /// Parameters:
-  /// - [value] (X?): Optional result to return
-  ///
-  /// Returns a [Future] that completes when closed.
-  Future<void> closeWithResult<X>([X? value]);
-
-  /// Updates the anchor context for positioning.
-  set anchorContext(BuildContext value) {}
-
-  /// Updates the overlay alignment.
-  set alignment(AlignmentGeometry value) {}
-
-  /// Updates the anchor alignment.
-  set anchorAlignment(AlignmentGeometry value) {}
-
-  /// Updates the width constraint.
-  set widthConstraint(PopoverConstraint value) {}
-
-  /// Updates the height constraint.
-  set heightConstraint(PopoverConstraint value) {}
-
-  /// Updates the margin.
-  set margin(EdgeInsets value) {}
-
-  /// Updates whether the overlay follows the anchor.
-  set follow(bool value) {}
-
-  /// Updates the position offset.
-  set offset(Offset? value) {}
-
-  /// Updates horizontal inversion permission.
-  set allowInvertHorizontal(bool value) {}
-
-  /// Updates vertical inversion permission.
-  set allowInvertVertical(bool value) {}
 }
 
 /// Abstract interface for overlay operation completion tracking.
 ///
 /// Provides lifecycle management and status tracking for overlay operations,
-/// including completion state, animation state, and dismissal.
+/// including completion state, animation state, dismissal, and (for
+/// mechanisms that support it) live in-place configuration updates.
 abstract class OverlayCompleter<T> {
   /// Removes the overlay from the screen.
   void remove();
@@ -106,6 +47,38 @@ abstract class OverlayCompleter<T> {
 
   /// Future that completes when the overlay animation finishes.
   Future<void> get animationFuture;
+
+  /// Closes the overlay.
+  ///
+  /// Parameters:
+  /// - [immediate] (bool): If true, closes immediately without animation.
+  ///
+  /// Returns a [Future] that completes when closed. Defaults to [remove].
+  Future<void> close([bool immediate = false]) async => remove();
+
+  /// Schedules overlay closure for the next frame.
+  ///
+  /// Useful for closing overlays from callbacks where immediate closure
+  /// might cause issues with the widget tree. Defaults to [remove].
+  void closeLater() => remove();
+
+  /// Closes the overlay with a result value.
+  ///
+  /// Parameters:
+  /// - [value] (X?): Optional result to return.
+  ///
+  /// Returns a [Future] that completes when closed. Defaults to [remove].
+  Future<void> closeWithResult<X>([X? value]) async => remove();
+
+  /// The configuration currently applied to this overlay, if this mechanism
+  /// tracks one.
+  OverlayConfiguration? get config => null;
+
+  /// Updates alignment, margin, follow, or other settings on the open
+  /// overlay without closing and reopening it. Drawer, sheet, and dialog
+  /// don't support live updates and can leave this unimplemented;
+  /// [OverlayController] closes and reopens the overlay for those instead.
+  set config(OverlayConfiguration? value) {}
 }
 
 /// Abstract handler for managing overlay presentation and lifecycle.
@@ -156,7 +129,8 @@ abstract class OverlayHandler {
   /// - [showDuration] (Duration?): Show animation duration
   /// - [dismissDuration] (Duration?): Dismiss animation duration
   /// - [overlayBarrier] (OverlayBarrier?): Custom barrier configuration
-  /// - [layerLink] (LayerLink?): Layer link for positioning
+  /// - [anchor] (Anchor?): Anchor to position/track against, defaults to a
+  ///   [ContextAnchor] wrapping [context]
   ///
   /// Returns an [OverlayCompleter] for managing the overlay lifecycle.
   OverlayCompleter<T?> show<T>({
@@ -178,6 +152,7 @@ abstract class OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -185,7 +160,6 @@ abstract class OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   });
 }
 
@@ -257,6 +231,7 @@ abstract class OverlayManager implements OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -264,7 +239,6 @@ abstract class OverlayManager implements OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   });
 
   /// Shows a tooltip overlay.
@@ -294,6 +268,7 @@ abstract class OverlayManager implements OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -301,7 +276,6 @@ abstract class OverlayManager implements OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   });
 
   /// Shows a menu overlay.
@@ -331,6 +305,7 @@ abstract class OverlayManager implements OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -338,7 +313,6 @@ abstract class OverlayManager implements OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   });
 }
 
@@ -408,6 +382,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -415,7 +390,6 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     return widget.popoverHandler.show(
       context: context,
@@ -436,6 +410,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       margin: margin,
       follow: follow,
       consumeOutsideTaps: consumeOutsideTaps,
+      anchor: anchor,
       onTickFollow: onTickFollow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
@@ -443,7 +418,6 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
-      layerLink: layerLink,
     );
   }
 
@@ -467,6 +441,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -474,7 +449,6 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     return widget.tooltipHandler.show(
       context: context,
@@ -495,6 +469,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       margin: margin,
       follow: follow,
       consumeOutsideTaps: consumeOutsideTaps,
+      anchor: anchor,
       onTickFollow: onTickFollow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
@@ -502,7 +477,6 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
-      layerLink: layerLink,
     );
   }
 
@@ -526,6 +500,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -533,7 +508,6 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     return widget.menuHandler.show(
       context: context,
@@ -554,6 +528,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       margin: margin,
       follow: follow,
       consumeOutsideTaps: consumeOutsideTaps,
+      anchor: anchor,
       onTickFollow: onTickFollow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
@@ -561,9 +536,15 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
-      layerLink: layerLink,
     );
   }
+}
+
+/// A [ChangeNotifier] with a public [notify] method, since [notifyListeners]
+/// itself is `@protected` and can't be called from an object holding a
+/// [ChangeNotifier] as a field rather than extending it.
+class _AnchorRepaintNotifier extends ChangeNotifier {
+  void notify() => notifyListeners();
 }
 
 /// The registry entry representing a registered [OverlayAnchor].
@@ -583,20 +564,20 @@ class OverlayAnchorEntry {
 
 /// Global registry for all [OverlayAnchor] widgets.
 class OverlayAnchorRegistry {
-  static final Map<Symbol, OverlayAnchorEntry> _anchors = {};
+  static final Map<Object, OverlayAnchorEntry> _anchors = {};
 
   /// Registers an [OverlayAnchorEntry] with the given key.
-  static void register(Symbol key, OverlayAnchorEntry entry) {
+  static void register(Object key, OverlayAnchorEntry entry) {
     _anchors[key] = entry;
   }
 
   /// Unregisters the entry for the given key.
-  static void unregister(Symbol key) {
+  static void unregister(Object key) {
     _anchors.remove(key);
   }
 
   /// Finds the registered entry for the given key.
-  static OverlayAnchorEntry? find(Symbol key) {
+  static OverlayAnchorEntry? find(Object key) {
     return _anchors[key];
   }
 }
@@ -604,10 +585,10 @@ class OverlayAnchorRegistry {
 /// A widget that acts as a generalized anchor for overlays.
 ///
 /// It registers its [RenderBox] and [BuildContext] dynamically in the global
-/// [OverlayAnchorRegistry] using a Dart [Symbol] key.
+/// [OverlayAnchorRegistry] using an arbitrary key (see [LinkedAnchor]).
 class OverlayAnchor extends SingleChildRenderObjectWidget {
-  /// The unique Symbol key representing this anchor.
-  final Symbol anchor;
+  /// The unique key representing this anchor.
+  final Object anchor;
 
   /// Creates an [OverlayAnchor].
   const OverlayAnchor({
@@ -637,22 +618,41 @@ class OverlayAnchor extends SingleChildRenderObjectWidget {
 /// The render object for [OverlayAnchor].
 ///
 /// Handles construction, updates, and automatic unregistration when detached.
-class RenderOverlayAnchor extends RenderProxyBox {
-  Symbol _anchor;
+/// Implements [Listenable] directly (backed by a private [ChangeNotifier])
+/// so [LinkedAnchor] subscriptions can listen for repaints without an extra
+/// indirection; notified whenever this render object repaints (see
+/// [markNeedsPaint]) or is removed from the tree (see [detach]).
+class RenderOverlayAnchor extends RenderProxyBox implements Listenable {
+  Object _anchor;
   BuildContext _anchorContext;
+  final _AnchorRepaintNotifier _notifier = _AnchorRepaintNotifier();
+  bool _notifierDisposed = false;
 
   /// Creates a [RenderOverlayAnchor].
   RenderOverlayAnchor({
-    required Symbol anchor,
+    required Object anchor,
     required BuildContext anchorContext,
     RenderBox? child,
   })  : _anchor = anchor,
         _anchorContext = anchorContext,
         super(child);
 
+  @override
+  void addListener(VoidCallback listener) => _notifier.addListener(listener);
+
+  @override
+  void removeListener(VoidCallback listener) =>
+      _notifier.removeListener(listener);
+
+  @override
+  void markNeedsPaint() {
+    super.markNeedsPaint();
+    if (!_notifierDisposed) _notifier.notify();
+  }
+
   /// Updates properties and registry.
   void update({
-    required Symbol anchor,
+    required Object anchor,
     required BuildContext anchorContext,
   }) {
     if (_anchor != anchor) {
@@ -684,6 +684,18 @@ class RenderOverlayAnchor extends RenderProxyBox {
   @override
   void detach() {
     OverlayAnchorRegistry.unregister(_anchor);
+    // Deferred past this frame's build/layout/paint: detach() runs during
+    // tree teardown, and a listener reacting synchronously would trip
+    // Flutter's "build scheduled during build" assertion. dispose() runs
+    // synchronously right after detach(), so _notifier is disposed here
+    // (once the detach is confirmed permanent) instead of in dispose().
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _notifier.notify();
+      if (!attached) {
+        _notifierDisposed = true;
+        _notifier.dispose();
+      }
+    });
     super.detach();
   }
 }

@@ -439,27 +439,29 @@ Future<T?> showItemPicker<T>(
   Widget? title,
 }) {
   final theme = Theme.of(context);
-  return showPopover<T>(
-    context: context,
-    alignment: alignment ?? AlignmentDirectional.topStart,
-    anchorAlignment: anchorAlignment ?? AlignmentDirectional.bottomStart,
-    offset: offset ?? Offset(0, 8.0 * theme.scaling),
-    builder: (context) {
-      return SurfaceCard(
-        padding: EdgeInsets.zero,
-        child: _InternalItemPicker<T>(
-          items: items,
-          builder: builder,
-          initialValue: initialValue,
-          layout: layout,
-          title: title,
-          constraints: constraints,
-          onChanged: (value) {
-            closeOverlay(context, value);
-          },
-        ),
-      );
-    },
+  return showOverlay<T>(
+    context,
+    PopoverConfiguration(
+      alignment: alignment ?? AlignmentDirectional.topStart,
+      anchorAlignment: anchorAlignment ?? AlignmentDirectional.bottomStart,
+      offset: offset ?? Offset(0, 8.0 * theme.scaling),
+      builder: (context) {
+        return SurfaceCard(
+          padding: EdgeInsets.zero,
+          child: _InternalItemPicker<T>(
+            items: items,
+            builder: builder,
+            initialValue: initialValue,
+            layout: layout,
+            title: title,
+            constraints: constraints,
+            onChanged: (value) {
+              closeOverlay(context, value);
+            },
+          ),
+        );
+      },
+    ),
   ).future;
 }
 
@@ -563,30 +565,32 @@ Future<T?> showItemPickerDialog<T>(
   BoxConstraints? constraints,
   required Widget title,
 }) {
-  return showDialog<T>(
-    context: context,
-    builder: (context) {
-      final theme = Theme.of(context);
-      return ModalBackdrop(
-        borderRadius: theme.borderRadiusXl,
-        child: ModalContainer(
+  return showOverlay<T>(
+    context,
+    DialogConfiguration<T>(
+      builder: (context) {
+        final theme = Theme.of(context);
+        return ModalBackdrop(
           borderRadius: theme.borderRadiusXl,
-          padding: EdgeInsets.zero,
-          child: _InternalItemPicker<T>(
-            items: items,
-            builder: builder,
-            initialValue: initialValue,
-            layout: layout,
-            title: title,
-            constraints: constraints,
-            onChanged: (value) {
-              closeOverlay(context, value);
-            },
+          child: ModalContainer(
+            borderRadius: theme.borderRadiusXl,
+            padding: EdgeInsets.zero,
+            child: _InternalItemPicker<T>(
+              items: items,
+              builder: builder,
+              initialValue: initialValue,
+              layout: layout,
+              title: title,
+              constraints: constraints,
+              onChanged: (value) {
+                closeOverlay(context, value);
+              },
+            ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    ),
+  ).future;
 }
 
 /// A dialog widget for picking an item from a list or grid.

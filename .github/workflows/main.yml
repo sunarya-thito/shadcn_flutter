@@ -22,6 +22,7 @@ jobs:
 
     - name: Run tests
       run: flutter test
+      working-directory: './packages/shadcn_flutter'
 
   deploy:
     runs-on: ubuntu-latest

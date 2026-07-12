@@ -175,7 +175,7 @@ class HoverCard extends StatefulWidget {
   final HitTestBehavior? behavior;
 
   /// Controller to programmatically manage the popover.
-  final PopoverController? controller;
+  final OverlayController? controller;
 
   /// Custom overlay handler for popover display.
   final OverlayHandler? handler;
@@ -223,21 +223,21 @@ class HoverCard extends StatefulWidget {
 }
 
 class _HoverCardState extends State<HoverCard> {
-  late PopoverController _controller;
+  late OverlayController _controller;
 
   int _hoverCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? PopoverController();
+    _controller = widget.controller ?? OverlayController();
   }
 
   @override
   void didUpdateWidget(covariant HoverCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
-      _controller = widget.controller ?? PopoverController();
+      _controller = widget.controller ?? OverlayController();
     }
   }
 
@@ -245,7 +245,7 @@ class _HoverCardState extends State<HoverCard> {
   void dispose() {
     // use this instead of dispose()
     // because controlled might not be ours
-    _controller.disposePopovers();
+    _controller.closeLater();
     super.dispose();
   }
 
@@ -282,7 +282,7 @@ class _HoverCardState extends State<HoverCard> {
         int count = ++_hoverCount;
         Future.delayed(wait, () {
           if (count == _hoverCount &&
-              !_controller.hasOpenPopover &&
+              !_controller.hasOpenOverlay &&
               context.mounted) {
             _showPopover(context,
                 alignment: popoverAlignment,
@@ -326,27 +326,30 @@ class _HoverCardState extends State<HoverCard> {
           OverlayManagerAsTooltipOverlayHandler(overlayManager: overlayManager);
     }
     _controller.show(
-      context: context,
-      builder: (context) {
-        return MouseRegion(
-          onEnter: (_) {
-            _hoverCount++;
-          },
-          onExit: (_) {
-            int count = ++_hoverCount;
-            Future.delayed(debounce, () {
-              if (count == _hoverCount) {
-                _controller.close();
-              }
-            });
-          },
-          child: widget.hoverBuilder(context),
-        );
-      },
-      alignment: alignment,
-      anchorAlignment: anchorAlignment,
-      offset: offset,
-      handler: handler,
+      context,
+      PopoverConfiguration(
+        builder: (context) {
+          return MouseRegion(
+            onEnter: (_) {
+              _hoverCount++;
+            },
+            onExit: (_) {
+              int count = ++_hoverCount;
+              Future.delayed(debounce, () {
+                if (count == _hoverCount) {
+                  _controller.close();
+                }
+              });
+            },
+            child: widget.hoverBuilder(context),
+          );
+        },
+        alignment: alignment,
+        anchorAlignment: anchorAlignment,
+        offset: offset,
+        handler: handler,
+      ),
+      adaptive: false,
     );
   }
 }

@@ -63,18 +63,21 @@ class CounterPageState extends State<CounterPage> {
               anchor: #menuDrawer,
               child: GhostButton(
                 onPressed: () {
-                  openDrawer(
-                    anchor: #menuDrawer,
-                    builder: (context) {
-                      return Container(
-                        alignment: Alignment.center,
-                        constraints: const BoxConstraints(
-                          maxWidth: 300,
-                        ),
-                        child: const Text('Drawer'),
-                      );
-                    },
-                    position: OverlayPosition.left,
+                  showOverlay(
+                    context,
+                    DrawerConfiguration(
+                      anchor: LinkedAnchor(#menuDrawer),
+                      builder: (context) {
+                        return Container(
+                          alignment: Alignment.center,
+                          constraints: const BoxConstraints(
+                            maxWidth: 300,
+                          ),
+                          child: const Text('Drawer'),
+                        );
+                      },
+                      position: OverlayPosition.left,
+                    ),
                   );
                 },
                 density: ButtonDensity.icon,
@@ -88,18 +91,21 @@ class CounterPageState extends State<CounterPage> {
               child: GhostButton(
                 density: ButtonDensity.icon,
                 onPressed: () {
-                  openSheet(
-                    anchor: #searchSheet,
-                    builder: (context) {
-                      return Container(
-                        alignment: Alignment.center,
-                        constraints: const BoxConstraints(
-                          maxWidth: 200,
-                        ),
-                        child: const Text('Sheet'),
-                      );
-                    },
-                    position: OverlayPosition.right,
+                  showOverlay(
+                    context,
+                    SheetConfiguration(
+                      anchor: LinkedAnchor(#searchSheet),
+                      builder: (context) {
+                        return Container(
+                          alignment: Alignment.center,
+                          constraints: const BoxConstraints(
+                            maxWidth: 200,
+                          ),
+                          child: const Text('Sheet'),
+                        );
+                      },
+                      position: OverlayPosition.right,
+                    ),
                   );
                 },
                 child: const Icon(Icons.search),

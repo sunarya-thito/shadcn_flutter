@@ -295,7 +295,7 @@ class AutoCompleteIntent extends Intent {
 class _AutoCompleteState extends State<AutoComplete> {
   final ValueNotifier<List<String>> _suggestions = ValueNotifier([]);
   final ValueNotifier<int> _selectedIndex = ValueNotifier(-1);
-  final PopoverController _popoverController = PopoverController();
+  final OverlayController _popoverController = OverlayController();
   bool _isFocused = false;
 
   AutoCompleteMode get _mode {
@@ -323,66 +323,70 @@ class _AutoCompleteState extends State<AutoComplete> {
   }
 
   void _onSuggestionsChanged() {
-    if ((_suggestions.value.isEmpty && _popoverController.hasOpenPopover) ||
+    if ((_suggestions.value.isEmpty && _popoverController.hasOpenOverlay) ||
         !_isFocused) {
       _popoverController.close();
-    } else if (!_popoverController.hasOpenPopover &&
+    } else if (!_popoverController.hasOpenOverlay &&
         _suggestions.value.isNotEmpty) {
       final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
       _selectedIndex.value = -1;
       _popoverController.show(
-        context: context,
-        handler: const PopoverOverlayHandler(),
-        builder: (context) {
-          final theme = Theme.of(context);
-          final densityGap = theme.density.baseGap * theme.scaling;
-          final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
-          final popoverConstraints = styleValue<BoxConstraints>(
-            widgetValue: widget.popoverConstraints,
-            themeValue: compTheme?.popoverConstraints,
-            defaultValue: BoxConstraints(
-              maxHeight: 300 * theme.scaling,
-            ),
-          );
-          return TextFieldTapRegion(
-            child: ConstrainedBox(
-              constraints: popoverConstraints,
-              child: SurfaceCard(
-                padding: EdgeInsets.all(densityGap * 0.5),
-                child: AnimatedBuilder(
-                    animation: Listenable.merge([_suggestions, _selectedIndex]),
-                    builder: (context, child) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _suggestions.value.length,
-                          itemBuilder: (context, index) {
-                            final suggestion = _suggestions.value[index];
-                            return _AutoCompleteItem(
-                              suggestion: suggestion,
-                              selected: index == _selectedIndex.value,
-                              onSelected: () {
-                                _selectedIndex.value = index;
-                                _handleProceed();
-                              },
-                            );
-                          });
-                    }),
+        context,
+        PopoverConfiguration(
+          handler: const PopoverOverlayHandler(),
+          builder: (context) {
+            final theme = Theme.of(context);
+            final densityGap = theme.density.baseGap * theme.scaling;
+            final compTheme =
+                ComponentTheme.maybeOf<AutoCompleteTheme>(context);
+            final popoverConstraints = styleValue<BoxConstraints>(
+              widgetValue: widget.popoverConstraints,
+              themeValue: compTheme?.popoverConstraints,
+              defaultValue: BoxConstraints(
+                maxHeight: 300 * theme.scaling,
               ),
-            ),
-          );
-        },
-        widthConstraint: styleValue(
-            widgetValue: widget.popoverWidthConstraint,
-            themeValue: compTheme?.popoverWidthConstraint,
-            defaultValue: PopoverConstraint.anchorFixedSize),
-        anchorAlignment: styleValue(
-            widgetValue: widget.popoverAnchorAlignment,
-            themeValue: compTheme?.popoverAnchorAlignment,
-            defaultValue: AlignmentDirectional.bottomStart),
-        alignment: styleValue(
-            widgetValue: widget.popoverAlignment,
-            themeValue: compTheme?.popoverAlignment,
-            defaultValue: AlignmentDirectional.topStart),
+            );
+            return TextFieldTapRegion(
+              child: ConstrainedBox(
+                constraints: popoverConstraints,
+                child: SurfaceCard(
+                  padding: EdgeInsets.all(densityGap * 0.5),
+                  child: AnimatedBuilder(
+                      animation:
+                          Listenable.merge([_suggestions, _selectedIndex]),
+                      builder: (context, child) {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _suggestions.value.length,
+                            itemBuilder: (context, index) {
+                              final suggestion = _suggestions.value[index];
+                              return _AutoCompleteItem(
+                                suggestion: suggestion,
+                                selected: index == _selectedIndex.value,
+                                onSelected: () {
+                                  _selectedIndex.value = index;
+                                  _handleProceed();
+                                },
+                              );
+                            });
+                      }),
+                ),
+              ),
+            );
+          },
+          widthConstraint: styleValue(
+              widgetValue: widget.popoverWidthConstraint,
+              themeValue: compTheme?.popoverWidthConstraint,
+              defaultValue: PopoverConstraint.anchorFixedSize),
+          anchorAlignment: styleValue(
+              widgetValue: widget.popoverAnchorAlignment,
+              themeValue: compTheme?.popoverAnchorAlignment,
+              defaultValue: AlignmentDirectional.bottomStart),
+          alignment: styleValue(
+              widgetValue: widget.popoverAlignment,
+              themeValue: compTheme?.popoverAlignment,
+              defaultValue: AlignmentDirectional.topStart),
+        ),
       );
     }
   }
@@ -430,7 +434,7 @@ class _AutoCompleteState extends State<AutoComplete> {
         builder: (context, child) {
           return FocusableActionDetector(
             onFocusChange: _onFocusChanged,
-            shortcuts: _popoverController.hasOpenPopover
+            shortcuts: _popoverController.hasOpenOverlay
                 ? {
                     LogicalKeySet(LogicalKeyboardKey.arrowDown):
                         const NavigateSuggestionIntent(1),
@@ -442,7 +446,7 @@ class _AutoCompleteState extends State<AutoComplete> {
                           const AcceptSuggestionIntent(),
                   }
                 : null,
-            actions: _popoverController.hasOpenPopover
+            actions: _popoverController.hasOpenOverlay
                 ? {
                     NavigateSuggestionIntent:
                         CallbackAction<NavigateSuggestionIntent>(

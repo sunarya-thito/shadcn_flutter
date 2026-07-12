@@ -112,7 +112,7 @@ abstract class MenuItem extends Widget {
   bool get hasLeading;
 
   /// Optional popover controller for submenu functionality.
-  PopoverController? get popoverController;
+  OverlayController? get overlayController;
 }
 
 /// Radio button group container for menu items.
@@ -158,7 +158,7 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
   bool get hasLeading => children.isNotEmpty;
 
   @override
-  PopoverController? get popoverController => null;
+  OverlayController? get overlayController => null;
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +304,7 @@ class MenuDivider extends StatelessWidget implements MenuItem {
   bool get hasLeading => false;
 
   @override
-  PopoverController? get popoverController => null;
+  OverlayController? get overlayController => null;
 }
 
 /// Spacing gap between menu items.
@@ -330,7 +330,7 @@ class MenuGap extends StatelessWidget implements MenuItem {
   bool get hasLeading => false;
 
   @override
-  PopoverController? get popoverController => null;
+  OverlayController? get overlayController => null;
 }
 
 /// Clickable button menu item with optional submenu support.
@@ -373,7 +373,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
   final bool autoClose;
 
   @override
-  final PopoverController? popoverController;
+  final OverlayController? overlayController;
 
   /// Creates a menu button.
   ///
@@ -386,7 +386,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
   /// - [enabled] (bool): Whether enabled, defaults to true
   /// - [focusNode] (FocusNode?): Focus node
   /// - [autoClose] (bool): Auto-close behavior, defaults to true
-  /// - [popoverController] (PopoverController?): Optional popover controller
+  /// - [overlayController] (OverlayController?): Optional popover controller
   const MenuButton({
     super.key,
     required this.child,
@@ -397,7 +397,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
     this.enabled = true,
     this.focusNode,
     this.autoClose = true,
-    this.popoverController,
+    this.overlayController,
   });
 
   @override
@@ -446,7 +446,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   bool get hasLeading => leading != null;
 
   @override
-  PopoverController? get popoverController => null;
+  OverlayController? get overlayController => null;
 
   @override
   Widget build(BuildContext context) {
@@ -539,7 +539,7 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
   @override
   bool get hasLeading => true;
   @override
-  PopoverController? get popoverController => null;
+  OverlayController? get overlayController => null;
 
   @override
   Widget build(BuildContext context) {
@@ -602,55 +602,58 @@ class _MenuButtonState extends State<MenuButton> {
     void openSubMenu(BuildContext context, bool autofocus) {
       menuGroupData!.closeOthers();
       final overlayManager = OverlayManager.of(context);
-      menuData!.popoverController.show(
-        context: context,
-        regionGroupId: menuGroupData.regionGroupId,
-        consumeOutsideTaps: false,
-        dismissBackdropFocus: false,
-        modal: true,
-        handler: MenuOverlayHandler(overlayManager),
-        overlayBarrier: OverlayBarrier(
-          borderRadius: BorderRadius.circular(theme.radiusMd),
+      menuData!.overlayController.show(
+        context,
+        PopoverConfiguration(
+          regionGroupId: menuGroupData.regionGroupId,
+          consumeOutsideTaps: false,
+          dismissBackdropFocus: false,
+          modal: true,
+          handler: MenuOverlayHandler(overlayManager),
+          overlayBarrier: OverlayBarrier(
+            borderRadius: BorderRadius.circular(theme.radiusMd),
+          ),
+          builder: (context) {
+            final theme = Theme.of(context);
+            final scaling = theme.scaling;
+            final densityGap = theme.density.baseGap * scaling;
+            var itemPadding = menuGroupData.itemPadding;
+            final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+            if (isSheetOverlay) {
+              itemPadding = EdgeInsets.symmetric(horizontal: densityGap * 0.5);
+            }
+            return ConstrainedBox(
+              constraints: const BoxConstraints(
+                    minWidth: 192, // 12rem
+                  ) *
+                  scaling,
+              child: AnimatedBuilder(
+                  animation: _children,
+                  builder: (context, child) {
+                    return MenuGroup(
+                        direction: menuGroupData.direction,
+                        parent: menuGroupData,
+                        onDismissed: menuGroupData.onDismissed,
+                        regionGroupId: menuGroupData.regionGroupId,
+                        subMenuOffset: compTheme?.subMenuOffset ??
+                            Offset(densityGap, -densityGap * 0.625),
+                        itemPadding: itemPadding,
+                        autofocus: autofocus,
+                        builder: (context, children) {
+                          return MenuPopup(
+                            children: children,
+                          );
+                        },
+                        children: _children.value);
+                  }),
+            );
+          },
+          alignment: Alignment.topLeft,
+          anchorAlignment:
+              menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
+          offset: menuGroupData.subMenuOffset ?? compTheme?.subMenuOffset,
         ),
-        builder: (context) {
-          final theme = Theme.of(context);
-          final scaling = theme.scaling;
-          final densityGap = theme.density.baseGap * scaling;
-          var itemPadding = menuGroupData.itemPadding;
-          final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
-          if (isSheetOverlay) {
-            itemPadding = EdgeInsets.symmetric(horizontal: densityGap * 0.5);
-          }
-          return ConstrainedBox(
-            constraints: const BoxConstraints(
-                  minWidth: 192, // 12rem
-                ) *
-                scaling,
-            child: AnimatedBuilder(
-                animation: _children,
-                builder: (context, child) {
-                  return MenuGroup(
-                      direction: menuGroupData.direction,
-                      parent: menuGroupData,
-                      onDismissed: menuGroupData.onDismissed,
-                      regionGroupId: menuGroupData.regionGroupId,
-                      subMenuOffset: compTheme?.subMenuOffset ??
-                          Offset(densityGap, -densityGap * 0.625),
-                      itemPadding: itemPadding,
-                      autofocus: autofocus,
-                      builder: (context, children) {
-                        return MenuPopup(
-                          children: children,
-                        );
-                      },
-                      children: _children.value);
-                }),
-          );
-        },
-        alignment: Alignment.topLeft,
-        anchorAlignment:
-            menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
-        offset: menuGroupData.subMenuOffset ?? compTheme?.subMenuOffset,
+        adaptive: false,
       );
     }
 
@@ -687,7 +690,7 @@ class _MenuButtonState extends State<MenuButton> {
                 child: TapRegion(
                   groupId: menuGroupData!.root,
                   child: AnimatedBuilder(
-                      animation: menuData!.popoverController,
+                      animation: menuData!.overlayController,
                       builder: (context, child) {
                         final theme = Theme.of(context);
                         final densityGap = theme.density.baseGap * scaling;
@@ -708,7 +711,7 @@ class _MenuButtonState extends State<MenuButton> {
                               final theme = Theme.of(context);
                               return (value as BoxDecoration).copyWith(
                                 color:
-                                    menuData.popoverController.hasOpenPopover ||
+                                    menuData.overlayController.hasOpenOverlay ||
                                             hasFocus
                                         ? theme.colorScheme.accent
                                         : null,
@@ -752,11 +755,11 @@ class _MenuButtonState extends State<MenuButton> {
                             if (value) {
                               subFocusState.requestFocus();
                               if ((menuBarData == null ||
-                                      menuGroupData.hasOpenPopovers) &&
+                                      menuGroupData.hasOpenOverlays) &&
                                   widget.subMenu != null &&
                                   widget.subMenu!.isNotEmpty) {
                                 if (!menuData
-                                        .popoverController.hasOpenPopover &&
+                                        .overlayController.hasOpenOverlay &&
                                     !isIndependentOverlay) {
                                   openSubMenu(context, false);
                                 }
@@ -771,7 +774,7 @@ class _MenuButtonState extends State<MenuButton> {
                             widget.onPressed?.call(context);
                             if (widget.subMenu != null &&
                                 widget.subMenu!.isNotEmpty) {
-                              if (!menuData.popoverController.hasOpenPopover) {
+                              if (!menuData.overlayController.hasOpenOverlay) {
                                 openSubMenu(context, false);
                               }
                             } else {
@@ -851,9 +854,9 @@ class MenuGroupData {
   /// Checks if any child menu items have open popovers.
   ///
   /// Returns true if at least one child has an open submenu popover.
-  bool get hasOpenPopovers {
+  bool get hasOpenOverlays {
     for (final child in children) {
-      if (child.popoverController.hasOpenPopover) {
+      if (child.overlayController.hasOpenOverlay) {
         return true;
       }
     }
@@ -865,7 +868,7 @@ class MenuGroupData {
   /// Iterates through children and closes any open submenu popovers.
   void closeOthers() {
     for (final child in children) {
-      child.popoverController.close();
+      child.overlayController.close();
     }
   }
 
@@ -930,14 +933,14 @@ class MenuGroupData {
 /// display and interaction state.
 class MenuData {
   /// Controller for this item's submenu popover.
-  final PopoverController popoverController;
+  final OverlayController overlayController;
 
   /// Creates menu item data.
   ///
   /// Parameters:
-  /// - [popoverController] (PopoverController?): Optional controller, creates default if null
-  MenuData({PopoverController? popoverController})
-      : popoverController = popoverController ?? PopoverController();
+  /// - [overlayController] (OverlayController?): Optional controller, creates default if null
+  MenuData({OverlayController? overlayController})
+      : overlayController = overlayController ?? OverlayController();
 }
 
 /// Container widget for organizing menu items into a group.
@@ -1050,20 +1053,20 @@ class _MenuGroupState extends State<MenuGroup> {
         var key = child.key ?? ValueKey(i);
         var oldData = oldKeyedData[key];
         if (oldData != null) {
-          if (child.popoverController != null &&
-              oldData.popoverController != child.popoverController) {
-            oldData.popoverController.dispose();
-            oldData = MenuData(popoverController: child.popoverController);
+          if (child.overlayController != null &&
+              oldData.overlayController != child.overlayController) {
+            oldData.overlayController.dispose();
+            oldData = MenuData(overlayController: child.overlayController);
           }
         } else {
-          oldData = MenuData(popoverController: child.popoverController);
+          oldData = MenuData(overlayController: child.overlayController);
         }
         return oldData;
       });
       // dispose unused data
       for (var data in oldKeyedData.values) {
         if (!_data.contains(data)) {
-          data.popoverController.dispose();
+          data.overlayController.dispose();
         }
       }
     }
@@ -1072,7 +1075,7 @@ class _MenuGroupState extends State<MenuGroup> {
   @override
   void dispose() {
     for (var data in _data) {
-      data.popoverController.dispose();
+      data.overlayController.dispose();
     }
     super.dispose();
   }
@@ -1135,7 +1138,7 @@ class _MenuGroupState extends State<MenuGroup> {
                     if (intent.direction == TraversalDirection.left) {
                       if (direction == TextDirection.ltr) {
                         for (final menu in parentGroupData?.children ?? []) {
-                          menu.popoverController.close();
+                          menu.overlayController.close();
                         }
                         return;
                       } else {}
@@ -1153,7 +1156,7 @@ class _MenuGroupState extends State<MenuGroup> {
                   }
                   if (!scope.nextFocus(intent.direction)) {
                     for (final menu in parentGroupData?.children ?? []) {
-                      menu.popoverController.close();
+                      menu.overlayController.close();
                     }
                     parentGroupData?.focusScope.nextFocus(
                       intent.direction,
@@ -1295,6 +1298,7 @@ class MenuOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
+    Anchor? anchor,
     ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
@@ -1302,7 +1306,6 @@ class MenuOverlayHandler extends OverlayHandler {
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
-    LayerLink? layerLink,
   }) {
     return manager.showMenu(
       context: context,
@@ -1323,6 +1326,7 @@ class MenuOverlayHandler extends OverlayHandler {
       margin: margin,
       follow: follow,
       consumeOutsideTaps: consumeOutsideTaps,
+      anchor: anchor,
       onTickFollow: onTickFollow,
       allowInvertHorizontal: allowInvertHorizontal,
       allowInvertVertical: allowInvertVertical,
@@ -1330,7 +1334,6 @@ class MenuOverlayHandler extends OverlayHandler {
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
-      layerLink: layerLink,
     );
   }
 }
