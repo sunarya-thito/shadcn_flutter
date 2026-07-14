@@ -32,7 +32,7 @@ class _SortableExample5State extends State<SortableExample5> {
           children: [
             for (int i = 0; i < names.length; i++)
               Sortable<String>(
-                key: ValueKey(i),
+                key: ValueKey(names[i].data),
                 data: names[i],
                 // we only want user to drag the item from the handle,
                 // so we disable the drag on the item itself

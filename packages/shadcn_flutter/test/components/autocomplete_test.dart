@@ -3,6 +3,59 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../test_helper.dart';
 
+/// Mirrors the docs example: a text field whose suggestions are filtered from
+/// the current word on every change.
+class _FilteredAutoComplete extends StatefulWidget {
+  const _FilteredAutoComplete();
+  @override
+  State<_FilteredAutoComplete> createState() => _FilteredAutoCompleteState();
+}
+
+class _FilteredAutoCompleteState extends State<_FilteredAutoComplete> {
+  final List<String> _all = const [
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Grape',
+    'Pineapple',
+  ];
+  List<String> _current = [];
+  final TextEditingController _controller = TextEditingController();
+
+  void _update(String value) {
+    final word = _controller.currentWord;
+    if (word == null || word.isEmpty) {
+      setState(() => _current = []);
+      return;
+    }
+    setState(() {
+      _current = _all
+          .where((e) => e.toLowerCase().contains(word.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AutoComplete(
+      suggestions: _current,
+      child: TextField(controller: _controller, onChanged: _update),
+    );
+  }
+}
+
+// Suggestion items are SelectedButtons; the text field itself is not, so this
+// counts only the entries of an open popover.
+int _openSuggestionCount() => find.byType(SelectedButton).evaluate().length;
+
+Future<void> _settle(WidgetTester tester) async {
+  // The focused text field keeps a blinking-cursor animation alive, so
+  // pumpAndSettle would never settle. Pump a bounded, generous amount instead.
+  for (int i = 0; i < 30; i++) {
+    await tester.pump(const Duration(milliseconds: 50));
+  }
+}
+
 void main() {
   group('AutoComplete', () {
     testWidgets('renders child widget', (tester) async {
@@ -237,6 +290,43 @@ void main() {
 
       expect(find.byType(AutoComplete), findsOneWidget);
       expect(find.byType(TextField), findsOneWidget);
+    });
+
+    testWidgets('does not reopen the popover after selecting a suggestion',
+        (tester) async {
+      await tester.pumpWidget(const SimpleApp(child: _FilteredAutoComplete()));
+
+      await tester.enterText(find.byType(TextField), 'App');
+      await _settle(tester);
+      expect(_openSuggestionCount(), greaterThan(0));
+
+      // Completing "Pineapple" narrows the match set, which previously caused
+      // the popover to reopen right after the selection.
+      await tester.tap(find.text('Pineapple').first);
+      await _settle(tester);
+
+      expect(_openSuggestionCount(), 0,
+          reason: 'popover should stay closed after selecting a suggestion');
+    });
+
+    testWidgets('reopens the popover when typing after a selection',
+        (tester) async {
+      await tester.pumpWidget(const SimpleApp(child: _FilteredAutoComplete()));
+
+      await tester.enterText(find.byType(TextField), 'Ba');
+      await _settle(tester);
+      expect(_openSuggestionCount(), greaterThan(0));
+
+      await tester.tap(find.text('Banana').first);
+      await _settle(tester);
+      expect(_openSuggestionCount(), 0);
+
+      // Starting a new word must open the popover again.
+      await tester.enterText(find.byType(TextField), 'Banana Gr');
+      await _settle(tester);
+      expect(_openSuggestionCount(), greaterThan(0),
+          reason: 'typing after a selection should reopen suggestions');
+      expect(find.text('Grape'), findsWidgets);
     });
   });
 }

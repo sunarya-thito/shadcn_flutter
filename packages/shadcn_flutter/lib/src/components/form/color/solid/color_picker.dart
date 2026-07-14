@@ -636,7 +636,7 @@ class ColorControls extends StatelessWidget {
             child: ButtonGroup.horizontal(
               expands: true,
               children: [
-                Expanded(
+                ExpandedFocusToFront(
                   child: Select<ColorPickerMode>(
                     value: mode,
                     itemBuilder: (context, value) {
@@ -657,7 +657,9 @@ class ColorControls extends StatelessWidget {
                     ).call,
                   ),
                 ),
-                ...buildInputs(context),
+                ...buildInputs(context).map(
+                  (input) => FocusToFront(child: input),
+                )
               ],
             ),
           ),

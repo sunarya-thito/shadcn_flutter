@@ -74,6 +74,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'components/app_bar/app_bar_tile.dart';
 import 'components/autocomplete/autocomplete_tile.dart';
 import 'components/card_image/card_image_tile.dart';
+import 'components/chat/chat_tile.dart';
 import 'components/chip/chip_tile.dart';
 import 'components/dot_indicator/dot_indicator_tile.dart';
 import 'components/expandable_sidebar/expandable_sidebar_tile.dart';
@@ -87,15 +88,18 @@ import 'components/navigation_rail/navigation_rail_tile.dart';
 import 'components/navigation_sidebar/navigation_sidebar_tile.dart';
 import 'components/number_input/number_input_tile.dart';
 import 'components/overflow_marquee/overflow_marquee_tile.dart';
+import 'components/pinned_sheet/pinned_sheet_tile.dart';
 import 'components/radio_card/radio_card_tile.dart';
 import 'components/refresh_trigger/refresh_trigger_tile.dart';
 import 'components/scaffold/scaffold_tile.dart';
 import 'components/sortable/sortable_tile.dart';
 import 'components/swiper/swiper_tile.dart';
+import 'components/switcher/switcher_tile.dart';
 import 'components/tab_pane/tab_pane_tile.dart';
 import 'components/table/table_tile.dart';
 import 'components/timeline_animation/timeline_animation_tile.dart';
 import 'components/window/window_tile.dart';
+import 'components/wrapper/wrapper_tile.dart';
 
 const kComponentsMode = ComponentsMode.normal;
 
@@ -233,6 +237,7 @@ class ComponentsPageState extends State<ComponentsPage> {
               const NavigationRailTile(),
               const NavigationSidebarTile(),
               const TabPaneTile(),
+              const SwitcherTile(),
             ]),
             const Text('Surfaces').h2().anchored(surfacesKey),
             const Gap(16),
@@ -243,6 +248,7 @@ class ComponentsPageState extends State<ComponentsPage> {
               const SheetTile(),
               const TooltipTile(),
               const PopoverTile(),
+              const PinnedSheetTile(),
             ]),
             const Text('Data Display').h2().anchored(dataDisplayKey),
             const Gap(16),
@@ -252,11 +258,11 @@ class ComponentsPageState extends State<ComponentsPage> {
               const WIPComponentCard(title: 'Data Table'),
               const WIPComponentCard(title: 'Chart'),
               const CodeSnippetTile(),
-              const WIPComponentCard(title: 'Table'),
               const TrackerTile(),
               const DotIndicatorTile(),
               const CardImageTile(),
               const TableTile(),
+              const ChatTile(),
             ]),
             const Text('Utilities').h2().anchored(utilitiesKey),
             const Gap(16),
@@ -270,6 +276,7 @@ class ComponentsPageState extends State<ComponentsPage> {
               const OverflowMarqueeTile(),
               const RefreshTriggerTile(),
               const TimelineAnimationTile(),
+              const WrapperTile(),
             ]),
           ],
         ),
@@ -415,7 +422,11 @@ class _ComponentCardState extends State<ComponentCard> {
                                 child: Container(
                                     clipBehavior: Clip.antiAlias,
                                     decoration: BoxDecoration(
-                                      color: theme.colorScheme.accent,
+                                      // `accent` equals `border`/`muted` in the
+                                      // dark themes, which makes widget borders
+                                      // invisible against it; `card` keeps
+                                      // contrast in both themes.
+                                      color: theme.colorScheme.card,
                                       borderRadius: BorderRadius.only(
                                         topLeft:
                                             Radius.circular(theme.radiusMd + 3),

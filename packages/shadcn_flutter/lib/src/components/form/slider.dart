@@ -736,6 +736,9 @@ class _SliderState extends State<Slider>
   // trackbar position uses the widget.value
   bool _dragging = false;
   bool _moveStart = false;
+  // true from the moment the pointer goes down until it's released,
+  // whether that press ends up being a tap or a drag
+  bool _pressed = false;
 
   bool _focusing = false;
   bool _focusingEnd = false;
@@ -872,6 +875,7 @@ class _SliderState extends State<Slider>
                             _dispatchValueChange(newSliderValue);
                             _dispatchValueChangeEnd(newSliderValue);
                             setState(() {
+                              _pressed = true;
                               _currentValue = SliderValue.ranged(newValue, end);
                             });
                             _scheduleExternalSync();
@@ -892,6 +896,7 @@ class _SliderState extends State<Slider>
                             _dispatchValueChange(newSliderValue);
                             _dispatchValueChangeEnd(newSliderValue);
                             setState(() {
+                              _pressed = true;
                               _currentValue =
                                   SliderValue.ranged(start, newValue);
                             });
@@ -921,14 +926,35 @@ class _SliderState extends State<Slider>
                           _dispatchValueChange(newSliderValue);
                           _dispatchValueChangeEnd(newSliderValue);
                           setState(() {
+                            _pressed = true;
                             _currentValue = SliderValue.single(newValue);
                           });
                           _scheduleExternalSync();
                         },
+              onTapUp: !enabled
+                  ? null
+                  : (details) {
+                      setState(() {
+                        _pressed = false;
+                      });
+                    },
+              onTapCancel: !enabled
+                  ? null
+                  : () {
+                      // if a horizontal drag has taken over the gesture arena,
+                      // leave _pressed alone; onHorizontalDragEnd/Cancel will
+                      // clear it once the drag itself finishes
+                      if (!_dragging) {
+                        setState(() {
+                          _pressed = false;
+                        });
+                      }
+                    },
               onHorizontalDragStart: !enabled
                   ? null
                   : (details) {
                       _dragging = true;
+                      _pressed = true;
                       if (_currentValue.isRanged) {
                         // change _moveStart to true if the tap is closer to the start thumb
                         double offset = details.localPosition.dx;
@@ -1064,6 +1090,7 @@ class _SliderState extends State<Slider>
                   ? null
                   : (details) {
                       _dragging = false;
+                      _pressed = false;
                       if (_currentValue.isRanged) {
                         var start = _currentValue.start;
                         var end = _currentValue.end;
@@ -1079,6 +1106,14 @@ class _SliderState extends State<Slider>
                       }
                       setState(() {
                         _setCurrentValueFromExternal();
+                      });
+                    },
+              onHorizontalDragCancel: !enabled
+                  ? null
+                  : () {
+                      setState(() {
+                        _dragging = false;
+                        _pressed = false;
                       });
                     },
               child: MouseRegion(
@@ -1162,7 +1197,7 @@ class _SliderState extends State<Slider>
               _currentValue = SliderValue.single(value);
             });
           },
-          _dragging || _focusing,
+          _pressed || _focusing,
         ),
       ],
     );
@@ -1465,7 +1500,7 @@ class _SliderState extends State<Slider>
               _currentValue = SliderValue.ranged(value, _currentValue.end);
             });
           },
-          (_dragging && _moveStart) || _focusing,
+          (_pressed && _moveStart) || _focusing,
         ),
         buildThumb(
           context,
@@ -1522,7 +1557,7 @@ class _SliderState extends State<Slider>
               _currentValue = SliderValue.ranged(_currentValue.start, value);
             });
           },
-          (_dragging && !_moveStart) || _focusingEnd,
+          (_pressed && !_moveStart) || _focusingEnd,
         ),
       ],
     );

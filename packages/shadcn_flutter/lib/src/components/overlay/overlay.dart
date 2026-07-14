@@ -554,30 +554,98 @@ class OverlayAnchorEntry {
   });
 }
 
-/// Global registry for all [OverlayAnchor] widgets.
+/// A registry mapping anchor keys to their [OverlayAnchor] entries.
+///
+/// By default anchors register with the process-wide [global] registry, so keys
+/// must be globally unique. Wrap a subtree in an [OverlayAnchorScope] to give it
+/// its own registry — then keys only need to be unique within that scope, and
+/// the same key can be reused in sibling scopes (e.g. one per list item, tab, or
+/// route). [OverlayAnchor] and [LinkedAnchor] both resolve their registry from
+/// the nearest scope via [of].
 class OverlayAnchorRegistry {
-  static final Map<Object, OverlayAnchorEntry> _anchors = {};
+  /// The process-wide fallback registry, used when there's no enclosing
+  /// [OverlayAnchorScope]. Has no [parent].
+  static final OverlayAnchorRegistry global = OverlayAnchorRegistry();
 
-  /// Registers an [OverlayAnchorEntry] with the given key.
-  static void register(Object key, OverlayAnchorEntry entry) {
+  /// The enclosing scope's registry. [find] falls back to it (and so on up to
+  /// [global]) when a key isn't registered in this scope, so an inner scope can
+  /// resolve anchors declared by an outer one. Null for [global]. Set by the
+  /// owning [OverlayAnchorScope]; registrations always stay local.
+  OverlayAnchorRegistry? parent;
+
+  /// Creates an [OverlayAnchorRegistry], optionally chained to a [parent].
+  OverlayAnchorRegistry({this.parent});
+
+  final Map<Object, OverlayAnchorEntry> _anchors = {};
+
+  /// The registry for [context]'s nearest [OverlayAnchorScope], or [global] if
+  /// there is none. Does not create an inherited-widget dependency, so it is
+  /// safe to call outside of build (e.g. while showing an overlay).
+  static OverlayAnchorRegistry of(BuildContext context) =>
+      Data.maybeFind<OverlayAnchorRegistry>(context) ?? global;
+
+  /// Registers an [OverlayAnchorEntry] with the given key in this registry.
+  void register(Object key, OverlayAnchorEntry entry) {
     _anchors[key] = entry;
   }
 
-  /// Unregisters the entry for the given key.
-  static void unregister(Object key) {
+  /// Unregisters the entry for the given key from this registry.
+  void unregister(Object key) {
     _anchors.remove(key);
   }
 
-  /// Finds the registered entry for the given key.
-  static OverlayAnchorEntry? find(Object key) {
-    return _anchors[key];
+  /// Finds the entry for [key], falling back to [parent] (and up the chain to
+  /// [global]) when it isn't registered in this scope.
+  OverlayAnchorEntry? find(Object key) {
+    return _anchors[key] ?? parent?.find(key);
+  }
+}
+
+/// Provides a local [OverlayAnchorRegistry] to its subtree, so [OverlayAnchor]
+/// keys only need to be unique within this scope rather than globally.
+///
+/// Place a scope around each repeated region (list item, tab, dialog, route)
+/// that reuses the same anchor keys. Both the [OverlayAnchor] and the code that
+/// opens a [LinkedAnchor]-based overlay must sit under the same scope for them
+/// to connect.
+class OverlayAnchorScope extends StatefulWidget {
+  /// The subtree that shares this scope's registry.
+  final Widget child;
+
+  /// Creates an [OverlayAnchorScope].
+  const OverlayAnchorScope({super.key, required this.child});
+
+  @override
+  State<OverlayAnchorScope> createState() => _OverlayAnchorScopeState();
+}
+
+class _OverlayAnchorScopeState extends State<OverlayAnchorScope> {
+  final OverlayAnchorRegistry _registry = OverlayAnchorRegistry();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Chain to the enclosing scope (or the global registry) so a lookup that
+    // misses here falls back outward. maybeOf establishes a dependency, so this
+    // re-resolves if an ancestor scope is inserted/removed.
+    _registry.parent = Data.maybeOf<OverlayAnchorRegistry>(context) ??
+        OverlayAnchorRegistry.global;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Data<OverlayAnchorRegistry>.inherit(
+      data: _registry,
+      child: widget.child,
+    );
   }
 }
 
 /// A widget that acts as a generalized anchor for overlays.
 ///
-/// It registers its [RenderBox] and [BuildContext] dynamically in the global
-/// [OverlayAnchorRegistry] using an arbitrary key (see [LinkedAnchor]).
+/// It registers its [RenderBox] and [BuildContext] dynamically in the nearest
+/// [OverlayAnchorRegistry] (see [OverlayAnchorScope]) using an arbitrary key
+/// (see [LinkedAnchor]).
 class OverlayAnchor extends SingleChildRenderObjectWidget {
   /// The unique key representing this anchor.
   final Object anchor;
@@ -594,6 +662,7 @@ class OverlayAnchor extends SingleChildRenderObjectWidget {
     return RenderOverlayAnchor(
       anchor: anchor,
       anchorContext: context,
+      registry: OverlayAnchorRegistry.of(context),
     );
   }
 
@@ -603,6 +672,7 @@ class OverlayAnchor extends SingleChildRenderObjectWidget {
     renderObject.update(
       anchor: anchor,
       anchorContext: context,
+      registry: OverlayAnchorRegistry.of(context),
     );
   }
 }
@@ -616,24 +686,30 @@ class OverlayAnchor extends SingleChildRenderObjectWidget {
 class RenderOverlayAnchor extends RenderProxyBox {
   Object _anchor;
   BuildContext _anchorContext;
+  OverlayAnchorRegistry _registry;
 
   /// Creates a [RenderOverlayAnchor].
   RenderOverlayAnchor({
     required Object anchor,
     required BuildContext anchorContext,
+    required OverlayAnchorRegistry registry,
     RenderBox? child,
   })  : _anchor = anchor,
         _anchorContext = anchorContext,
+        _registry = registry,
         super(child);
 
   /// Updates properties and registry.
   void update({
     required Object anchor,
     required BuildContext anchorContext,
+    required OverlayAnchorRegistry registry,
   }) {
-    if (_anchor != anchor) {
-      OverlayAnchorRegistry.unregister(_anchor);
+    if (_anchor != anchor || !identical(_registry, registry)) {
+      // Drop the old registration before moving to a new key or scope.
+      _registry.unregister(_anchor);
       _anchor = anchor;
+      _registry = registry;
     }
     _anchorContext = anchorContext;
     if (attached) {
@@ -642,7 +718,7 @@ class RenderOverlayAnchor extends RenderProxyBox {
   }
 
   void _register() {
-    OverlayAnchorRegistry.register(
+    _registry.register(
       _anchor,
       OverlayAnchorEntry(
         renderBox: this,
@@ -659,7 +735,7 @@ class RenderOverlayAnchor extends RenderProxyBox {
 
   @override
   void detach() {
-    OverlayAnchorRegistry.unregister(_anchor);
+    _registry.unregister(_anchor);
     super.detach();
   }
 }

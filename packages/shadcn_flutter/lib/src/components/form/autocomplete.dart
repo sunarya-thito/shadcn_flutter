@@ -298,6 +298,17 @@ class _AutoCompleteState extends State<AutoComplete> {
   final OverlayController _popoverController = OverlayController();
   bool _isFocused = false;
 
+  /// When `true`, the next suggestion sync must not auto-open the popover.
+  ///
+  /// Set right after a suggestion is accepted. Accepting a suggestion changes
+  /// the field text programmatically, which fires the text field's `onChanged`
+  /// and causes the parent to recompute suggestions. Those recomputed
+  /// suggestions usually still match the just-completed word, which would
+  /// otherwise immediately reopen the popover the user just dismissed. The flag
+  /// is consumed on the next [didUpdateWidget] cycle, so subsequent typing
+  /// reopens the popover as normal.
+  bool _suppressReopen = false;
+
   AutoCompleteMode get _mode {
     final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
     return styleValue(
@@ -310,27 +321,41 @@ class _AutoCompleteState extends State<AutoComplete> {
   @override
   void initState() {
     super.initState();
-    _suggestions.addListener(_onSuggestionsChanged);
     if (widget.suggestions.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) {
           return;
         }
-        _suggestions.value = widget.suggestions;
-        _selectedIndex.value = widget.suggestions.isEmpty ? -1 : 0;
+        _applySuggestions(widget.suggestions, allowOpen: true);
       });
     }
   }
 
-  void _onSuggestionsChanged() {
-    if ((_suggestions.value.isEmpty && _popoverController.hasOpenOverlay) ||
-        !_isFocused) {
-      _popoverController.close();
-    } else if (!_popoverController.hasOpenOverlay &&
-        _suggestions.value.isNotEmpty) {
-      final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
-      _selectedIndex.value = -1;
-      _popoverController.show(
+  /// Stores a new suggestion list and reconciles the popover visibility.
+  void _applySuggestions(List<String> suggestions, {required bool allowOpen}) {
+    _suggestions.value = suggestions;
+    _selectedIndex.value = suggestions.isEmpty ? -1 : 0;
+    _syncPopover(allowOpen: allowOpen);
+  }
+
+  /// Opens or closes the popover to match the current suggestions and focus.
+  ///
+  /// Closing always happens when needed, but opening is skipped when
+  /// [allowOpen] is `false` (e.g. right after a suggestion was accepted).
+  void _syncPopover({required bool allowOpen}) {
+    final shouldOpen = _isFocused && _suggestions.value.isNotEmpty;
+    if (!shouldOpen) {
+      if (_popoverController.hasOpenOverlay) {
+        _popoverController.close();
+      }
+      return;
+    }
+    if (_popoverController.hasOpenOverlay || !allowOpen) {
+      return;
+    }
+    final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
+    _selectedIndex.value = -1;
+    _popoverController.show(
         context,
         PopoverConfiguration(
           handler: const PopoverOverlayHandler(),
@@ -388,7 +413,6 @@ class _AutoCompleteState extends State<AutoComplete> {
               defaultValue: AlignmentDirectional.topStart),
         ),
       );
-    }
   }
 
   void _handleProceed() {
@@ -396,6 +420,10 @@ class _AutoCompleteState extends State<AutoComplete> {
     if (selectedIndex < 0 || selectedIndex >= _suggestions.value.length) {
       return;
     }
+    // Applying the suggestion changes the field text, which fires onChanged and
+    // re-derives suggestions that usually still match. Suppress the reopen it
+    // would trigger so the popover stays closed until the user types again.
+    _suppressReopen = true;
     _popoverController.close();
     var suggestion = _suggestions.value[selectedIndex];
     suggestion = widget.completer(
@@ -409,13 +437,17 @@ class _AutoCompleteState extends State<AutoComplete> {
   @override
   void didUpdateWidget(covariant AutoComplete oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Consume the suppression flag for this update cycle: the change that
+    // arrives right after an accept must not reopen the popover, but the flag
+    // is cleared here so the next user edit reopens it normally.
+    final allowOpen = !_suppressReopen;
+    _suppressReopen = false;
     if (!listEquals(oldWidget.suggestions, widget.suggestions)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) {
           return;
         }
-        _suggestions.value = widget.suggestions;
-        _selectedIndex.value = widget.suggestions.isEmpty ? -1 : 0;
+        _applySuggestions(widget.suggestions, allowOpen: allowOpen);
       });
     }
   }

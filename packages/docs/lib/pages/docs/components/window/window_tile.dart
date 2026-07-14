@@ -1,6 +1,8 @@
 import 'package:docs/pages/docs/components_page.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
+import 'window_example_1.dart';
+
 class WindowTile extends StatelessWidget implements IComponentPage {
   const WindowTile({super.key});
 
@@ -9,84 +11,14 @@ class WindowTile extends StatelessWidget implements IComponentPage {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return ComponentCard(
+    return const ComponentCard(
       name: 'window',
       title: 'Window',
-      scale: 1.2,
-      example: Card(
-        child: Container(
-          width: 320,
-          height: 240,
-          decoration: BoxDecoration(
-            border: Border.all(color: theme.colorScheme.border),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            children: [
-              // Window title bar
-              Container(
-                height: 40,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.muted,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    // Window controls
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const Gap(6),
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                        color: Colors.yellow,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const Gap(6),
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const Gap(16),
-                    const Text('Window Title').medium(),
-                    const Spacer(),
-                    const Icon(Icons.minimize, size: 16),
-                    const Gap(8),
-                    const Icon(Icons.crop_square, size: 16),
-                    const Gap(8),
-                    const Icon(Icons.close, size: 16),
-                  ],
-                ),
-              ),
-              // Window content
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  child: const Center(
-                    child: Text('Window Content Area'),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      fit: true,
+      example: SizedBox(
+        width: 420,
+        height: 660,
+        child: WindowExample1(),
       ),
     );
   }

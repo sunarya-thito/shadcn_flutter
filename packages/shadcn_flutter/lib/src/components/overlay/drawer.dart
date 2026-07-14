@@ -202,7 +202,11 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
 }) {
   BuildContext? resolvedContext = context;
   if (anchor is LinkedAnchor) {
-    final entry = OverlayAnchorRegistry.find(anchor.key);
+    final registry = anchor.registry ??
+        (context != null
+            ? OverlayAnchorRegistry.of(context)
+            : OverlayAnchorRegistry.global);
+    final entry = registry.find(anchor.key);
     if (entry == null) {
       throw FlutterError(
           'No OverlayAnchor found for the given symbol: ${anchor.key}');
@@ -314,7 +318,11 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
 }) {
   BuildContext? resolvedContext = context;
   if (anchor is LinkedAnchor) {
-    final entry = OverlayAnchorRegistry.find(anchor.key);
+    final registry = anchor.registry ??
+        (context != null
+            ? OverlayAnchorRegistry.of(context)
+            : OverlayAnchorRegistry.global);
+    final entry = registry.find(anchor.key);
     if (entry == null) {
       throw FlutterError(
           'No OverlayAnchor found for the given symbol: ${anchor.key}');
@@ -500,302 +508,11 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     }
   }
 
-  Widget buildDraggableBar(ThemeData theme) {
-    final densityGap = theme.density.baseGap * theme.scaling;
-    switch (resolvedPosition) {
-      case OverlayPosition.left:
-      case OverlayPosition.right:
-        return Container(
-          width: widget.dragHandleSize?.width ?? densityGap * 0.75,
-          height: widget.dragHandleSize?.height ?? densityGap * 12.5,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.muted,
-            borderRadius: theme.borderRadiusXxl,
-          ),
-        );
-      case OverlayPosition.top:
-      case OverlayPosition.bottom:
-        return Container(
-          width: widget.dragHandleSize?.width ?? densityGap * 12.5,
-          height: widget.dragHandleSize?.height ?? densityGap * 0.75,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.muted,
-            borderRadius: theme.borderRadiusXxl,
-          ),
-        );
-      default:
-        throw UnimplementedError('Unknown position');
-    }
-  }
-
   Size getSize(BuildContext context) {
     final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
     return renderBox?.hasSize ?? false
         ? renderBox?.size ?? widget.size
         : widget.size;
-  }
-
-  Widget buildDraggable(BuildContext context, ControlledAnimation? controlled,
-      Widget child, ThemeData theme) {
-    final densityGap = theme.density.baseGap * theme.scaling;
-    switch (resolvedPosition) {
-      case OverlayPosition.left:
-        return GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onHorizontalDragUpdate: (details) {
-            if (controlled == null) {
-              return;
-            }
-            final size = getSize(context);
-            final increment = details.primaryDelta! / size.width;
-            double newValue = controlled.value + increment;
-            if (newValue < 0) {
-              newValue = 0;
-            }
-            if (newValue > 1) {
-              _extraOffset.value +=
-                  details.primaryDelta! / max(_extraOffset.value, 1);
-              newValue = 1;
-            }
-            controlled.value = newValue;
-          },
-          onHorizontalDragEnd: (details) {
-            if (controlled == null) {
-              return;
-            }
-            _extraOffset.forward(0, Curves.easeOut);
-            if (controlled.value + _extraOffset.value < 0.5) {
-              controlled.forward(0, Curves.easeOut).then((value) {
-                closeDrawer(context);
-              });
-            } else {
-              controlled.forward(1, Curves.easeOut);
-            }
-          },
-          child: Row(
-            textDirection: TextDirection.ltr,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedBuilder(
-                  animation: _extraOffset,
-                  builder: (context, child) {
-                    return Gap(
-                        widget.extraSize.width + _extraOffset.value.max(0));
-                  }),
-              Flexible(
-                child: AnimatedBuilder(
-                  builder: (context, child) {
-                    return Transform.scale(
-                        scaleX:
-                            1 + _extraOffset.value / getSize(context).width / 4,
-                        alignment: Alignment.centerRight,
-                        child: child);
-                  },
-                  animation: _extraOffset,
-                  child: child,
-                ),
-              ),
-              if (widget.showDragHandle) ...[
-                Gap(widget.gapAfterDragger ?? densityGap * 2),
-                buildDraggableBar(theme),
-                Gap(widget.gapBeforeDragger ?? densityGap * 1.5),
-              ],
-            ],
-          ),
-        );
-      case OverlayPosition.right:
-        return GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onHorizontalDragUpdate: (details) {
-            if (controlled == null) {
-              return;
-            }
-            final size = getSize(context);
-            final increment = details.primaryDelta! / size.width;
-            double newValue = controlled.value - increment;
-            if (newValue < 0) {
-              newValue = 0;
-            }
-            if (newValue > 1) {
-              _extraOffset.value +=
-                  -details.primaryDelta! / max(_extraOffset.value, 1);
-              newValue = 1;
-            }
-            controlled.value = newValue;
-          },
-          onHorizontalDragEnd: (details) {
-            if (controlled == null) {
-              return;
-            }
-            _extraOffset.forward(0, Curves.easeOut);
-            if (controlled.value + _extraOffset.value < 0.5) {
-              controlled.forward(0, Curves.easeOut).then((value) {
-                closeDrawer(context);
-              });
-            } else {
-              controlled.forward(1, Curves.easeOut);
-            }
-          },
-          child: Row(
-            textDirection: TextDirection.ltr,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (widget.showDragHandle) ...[
-                Gap(widget.gapBeforeDragger ?? densityGap * 1.5),
-                buildDraggableBar(theme),
-                Gap(widget.gapAfterDragger ?? densityGap * 2),
-              ],
-              Flexible(
-                child: AnimatedBuilder(
-                  builder: (context, child) {
-                    return Transform.scale(
-                        scaleX:
-                            1 + _extraOffset.value / getSize(context).width / 4,
-                        alignment: Alignment.centerLeft,
-                        child: child);
-                  },
-                  animation: _extraOffset,
-                  child: child,
-                ),
-              ),
-              AnimatedBuilder(
-                  animation: _extraOffset,
-                  builder: (context, child) {
-                    return Gap(
-                        widget.extraSize.width + _extraOffset.value.max(0));
-                  }),
-            ],
-          ),
-        );
-      case OverlayPosition.top:
-        return GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onVerticalDragUpdate: (details) {
-            if (controlled == null) {
-              return;
-            }
-            final size = getSize(context);
-            final increment = details.primaryDelta! / size.height;
-            double newValue = controlled.value + increment;
-            if (newValue < 0) {
-              newValue = 0;
-            }
-            if (newValue > 1) {
-              _extraOffset.value +=
-                  details.primaryDelta! / max(_extraOffset.value, 1);
-              newValue = 1;
-            }
-            controlled.value = newValue;
-          },
-          onVerticalDragEnd: (details) {
-            if (controlled == null) {
-              return;
-            }
-            _extraOffset.forward(0, Curves.easeOut);
-            if (controlled.value + _extraOffset.value < 0.5) {
-              controlled.forward(0, Curves.easeOut).then((value) {
-                closeDrawer(context);
-              });
-            } else {
-              controlled.forward(1, Curves.easeOut);
-            }
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedBuilder(
-                  animation: _extraOffset,
-                  builder: (context, child) {
-                    return Gap(
-                        widget.extraSize.height + _extraOffset.value.max(0));
-                  }),
-              Flexible(
-                child: AnimatedBuilder(
-                  builder: (context, child) {
-                    return Transform.scale(
-                        scaleY: 1 +
-                            _extraOffset.value / getSize(context).height / 4,
-                        alignment: Alignment.bottomCenter,
-                        child: child);
-                  },
-                  animation: _extraOffset,
-                  child: child,
-                ),
-              ),
-              if (widget.showDragHandle) ...[
-                Gap(widget.gapAfterDragger ?? densityGap * 2),
-                buildDraggableBar(theme),
-                Gap(widget.gapBeforeDragger ?? densityGap * 1.5),
-              ],
-            ],
-          ),
-        );
-      case OverlayPosition.bottom:
-        return GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onVerticalDragUpdate: (details) {
-            if (controlled == null) {
-              return;
-            }
-            final size = getSize(context);
-            final increment = details.primaryDelta! / size.height;
-            double newValue = controlled.value - increment;
-            if (newValue < 0) {
-              newValue = 0;
-            }
-            if (newValue > 1) {
-              _extraOffset.value +=
-                  -details.primaryDelta! / max(_extraOffset.value, 1);
-              newValue = 1;
-            }
-            controlled.value = newValue;
-          },
-          onVerticalDragEnd: (details) {
-            if (controlled == null) {
-              return;
-            }
-            _extraOffset.forward(0, Curves.easeOut);
-            if (controlled.value + _extraOffset.value < 0.5) {
-              controlled.forward(0, Curves.easeOut).then((value) {
-                closeDrawer(context);
-              });
-            } else {
-              controlled.forward(1, Curves.easeOut);
-            }
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (widget.showDragHandle) ...[
-                Gap(widget.gapBeforeDragger ?? densityGap * 1.5),
-                buildDraggableBar(theme),
-                Gap(widget.gapAfterDragger ?? densityGap * 2),
-              ],
-              Flexible(
-                child: AnimatedBuilder(
-                  builder: (context, child) {
-                    return Transform.scale(
-                        scaleY: 1 +
-                            _extraOffset.value / getSize(context).height / 4,
-                        alignment: Alignment.topCenter,
-                        child: child);
-                  },
-                  animation: _extraOffset,
-                  child: child,
-                ),
-              ),
-              AnimatedBuilder(
-                  animation: _extraOffset,
-                  builder: (context, child) {
-                    return Gap(
-                        widget.extraSize.height + _extraOffset.value.max(0));
-                  }),
-            ],
-          ),
-        );
-      default:
-        throw UnimplementedError('Unknown position');
-    }
   }
 
   @override
@@ -821,90 +538,6 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     super.dispose();
   }
 
-  Border getBorder(ThemeData theme) {
-    switch (resolvedPosition) {
-      case OverlayPosition.left:
-        // top, right, bottom
-        return Border(
-          right: BorderSide(color: theme.colorScheme.border),
-          top: BorderSide(color: theme.colorScheme.border),
-          bottom: BorderSide(color: theme.colorScheme.border),
-        );
-      case OverlayPosition.right:
-        // top, left, bottom
-        return Border(
-          left: BorderSide(color: theme.colorScheme.border),
-          top: BorderSide(color: theme.colorScheme.border),
-          bottom: BorderSide(color: theme.colorScheme.border),
-        );
-      case OverlayPosition.top:
-        // left, right, bottom
-        return Border(
-          left: BorderSide(color: theme.colorScheme.border),
-          right: BorderSide(color: theme.colorScheme.border),
-          bottom: BorderSide(color: theme.colorScheme.border),
-        );
-      case OverlayPosition.bottom:
-        // left, right, top
-        return Border(
-          left: BorderSide(color: theme.colorScheme.border),
-          right: BorderSide(color: theme.colorScheme.border),
-          top: BorderSide(color: theme.colorScheme.border),
-        );
-      default:
-        throw UnimplementedError('Unknown position');
-    }
-  }
-
-  BorderRadiusGeometry getBorderRadius(double radius) {
-    switch (resolvedPosition) {
-      case OverlayPosition.left:
-        return BorderRadius.only(
-          topRight: Radius.circular(radius),
-          bottomRight: Radius.circular(radius),
-        );
-      case OverlayPosition.right:
-        return BorderRadius.only(
-          topLeft: Radius.circular(radius),
-          bottomLeft: Radius.circular(radius),
-        );
-      case OverlayPosition.top:
-        return BorderRadius.only(
-          bottomLeft: Radius.circular(radius),
-          bottomRight: Radius.circular(radius),
-        );
-      case OverlayPosition.bottom:
-        return BorderRadius.only(
-          topLeft: Radius.circular(radius),
-          topRight: Radius.circular(radius),
-        );
-      default:
-        throw UnimplementedError('Unknown position');
-    }
-  }
-
-  BoxDecoration getDecoration(ThemeData theme) {
-    var border = getBorder(theme);
-    // according to the design, the border radius is 10
-    // seems to be a fixed value
-    var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
-    var backgroundColor = theme.colorScheme.background;
-    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    if (surfaceOpacity != null && surfaceOpacity < 1) {
-      if (widget.stackIndex == 0) {
-        // the top sheet should have a higher opacity to prevent
-        // visual bleeding from the main content
-        surfaceOpacity = surfaceOpacity * 1.25;
-      }
-      backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
-    }
-    return BoxDecoration(
-      borderRadius: borderRadius,
-      color: backgroundColor,
-      border: border,
-    );
-  }
-
   Widget buildChild(BuildContext context) {
     return widget.child;
   }
@@ -917,62 +550,119 @@ class _DrawerWrapperState extends State<DrawerWrapper>
     return EdgeInsets.zero;
   }
 
+  /// Whether to render as a sheet ([SheetRawContainer]) rather than a drawer.
+  bool get isSheet => false;
+
+  /// Wraps the inner handle+content [layout] with the drag gesture, driving the
+  /// entry's [controlled] animation and the local overscroll [_extraOffset].
+  Widget _wrapGesture(
+      BuildContext context, ControlledAnimation controlled, Widget layout) {
+    final position = resolvedPosition;
+    final isVertical =
+        position == OverlayPosition.top || position == OverlayPosition.bottom;
+    final sign =
+        (position == OverlayPosition.left || position == OverlayPosition.top)
+            ? 1.0
+            : -1.0;
+    void onUpdate(DragUpdateDetails details) {
+      final size = getSize(context);
+      final axis = isVertical ? size.height : size.width;
+      final increment = sign * details.primaryDelta! / axis;
+      double newValue = controlled.value + increment;
+      if (newValue < 0) {
+        newValue = 0;
+      }
+      if (newValue > 1) {
+        _extraOffset.value +=
+            sign * details.primaryDelta! / max(_extraOffset.value, 1);
+        newValue = 1;
+      }
+      controlled.value = newValue;
+    }
+
+    void onEnd(DragEndDetails details) {
+      _extraOffset.forward(0, Curves.easeOut);
+      if (controlled.value + _extraOffset.value < 0.5) {
+        controlled.forward(0, Curves.easeOut).then((value) {
+          closeDrawer(context);
+        });
+      } else {
+        controlled.forward(1, Curves.easeOut);
+      }
+    }
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onVerticalDragUpdate: isVertical ? onUpdate : null,
+      onVerticalDragEnd: isVertical ? onEnd : null,
+      onHorizontalDragUpdate: isVertical ? null : onUpdate,
+      onHorizontalDragEnd: isVertical ? null : onEnd,
+      child: layout,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<_MountedOverlayEntryData>(context);
     final animation = data?.state._controlledAnimation;
-    final theme = Theme.of(context);
-    var surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
-    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    var borderRadius = widget.borderRadius ?? getBorderRadius(theme.radiusXxl);
-    Widget container = Container(
-      width: widget.expands ? expandingWidth : null,
-      height: widget.expands ? expandingHeight : null,
-      decoration: getDecoration(theme),
-      padding: buildPadding(context),
-      margin: buildMargin(context),
-      child: widget.draggable
-          ? buildDraggable(context, animation, buildChild(context), theme)
-          : buildChild(context),
+    return AnimatedBuilder(
+      animation: _extraOffset,
+      builder: (context, _) {
+        final gestureWrapper = (widget.draggable && animation != null)
+            ? (BuildContext ctx, Widget layout) =>
+                _wrapGesture(ctx, animation, layout)
+            : null;
+        if (isSheet) {
+          return SheetRawContainer(
+            position: resolvedPosition,
+            size: getSize(context),
+            stackIndex: widget.stackIndex,
+            expands: widget.expands,
+            draggable: widget.draggable,
+            showDragHandle: widget.showDragHandle,
+            dragHandleSize: widget.dragHandleSize,
+            padding: buildPadding(context),
+            margin: buildMargin(context),
+            surfaceOpacity: widget.surfaceOpacity,
+            surfaceBlur: widget.surfaceBlur,
+            barrierColor: widget.barrierColor,
+            gapBeforeDragger: widget.gapBeforeDragger,
+            gapAfterDragger: widget.gapAfterDragger,
+            constraints: widget.constraints,
+            alignment: widget.alignment,
+            fadeAnimation: animation,
+            extraSize: widget.extraSize,
+            overscroll: _extraOffset.value,
+            gestureWrapper: gestureWrapper,
+            child: buildChild(context),
+          );
+        }
+        return DrawerRawContainer(
+          position: resolvedPosition,
+          size: getSize(context),
+          stackIndex: widget.stackIndex,
+          expands: widget.expands,
+          draggable: widget.draggable,
+          showDragHandle: widget.showDragHandle,
+          dragHandleSize: widget.dragHandleSize,
+          borderRadius: widget.borderRadius,
+          padding: buildPadding(context),
+          margin: buildMargin(context),
+          surfaceOpacity: widget.surfaceOpacity,
+          surfaceBlur: widget.surfaceBlur,
+          barrierColor: widget.barrierColor,
+          gapBeforeDragger: widget.gapBeforeDragger,
+          gapAfterDragger: widget.gapAfterDragger,
+          constraints: widget.constraints,
+          alignment: widget.alignment,
+          fadeAnimation: animation,
+          extraSize: widget.extraSize,
+          overscroll: _extraOffset.value,
+          gestureWrapper: gestureWrapper,
+          child: buildChild(context),
+        );
+      },
     );
-
-    if (widget.constraints != null) {
-      container = ConstrainedBox(
-        constraints: widget.constraints!,
-        child: container,
-      );
-    }
-
-    if (widget.alignment != null) {
-      container = Align(
-        alignment: widget.alignment!,
-        child: container,
-      );
-    }
-
-    if (surfaceBlur != null && surfaceBlur > 0) {
-      container = SurfaceBlur(
-        surfaceBlur: surfaceBlur,
-        borderRadius: getBorderRadius(theme.radiusXxl),
-        child: container,
-      );
-    }
-    var barrierColor = widget.barrierColor ?? Colors.black.scaleAlpha(0.8);
-    if (animation != null) {
-      if (widget.stackIndex != 0) {
-        // weaken the barrier color for the upper sheets
-        barrierColor = barrierColor.scaleAlpha(0.75);
-      }
-      container = ModalBackdrop(
-        surfaceClip: ModalBackdrop.shouldClipSurface(surfaceOpacity),
-        borderRadius: borderRadius,
-        barrierColor: barrierColor,
-        fadeAnimation: animation,
-        padding: buildMargin(context),
-        child: container,
-      );
-    }
-    return container;
   }
 }
 
@@ -1021,20 +711,7 @@ class SheetWrapper extends DrawerWrapper {
 
 class _SheetWrapperState extends _DrawerWrapperState {
   @override
-  Border getBorder(ThemeData theme) {
-    switch (resolvedPosition) {
-      case OverlayPosition.left:
-        return Border(right: BorderSide(color: theme.colorScheme.border));
-      case OverlayPosition.right:
-        return Border(left: BorderSide(color: theme.colorScheme.border));
-      case OverlayPosition.top:
-        return Border(bottom: BorderSide(color: theme.colorScheme.border));
-      case OverlayPosition.bottom:
-        return Border(top: BorderSide(color: theme.colorScheme.border));
-      default:
-        throw UnimplementedError('Unknown position');
-    }
-  }
+  bool get isSheet => true;
 
   @override
   EdgeInsets buildMargin(BuildContext context) {
@@ -1107,29 +784,6 @@ class _SheetWrapperState extends _DrawerWrapperState {
         right: paddingRight,
       ),
       child: super.buildChild(context),
-    );
-  }
-
-  @override
-  BorderRadiusGeometry getBorderRadius(double radius) {
-    return BorderRadius.zero;
-  }
-
-  @override
-  BoxDecoration getDecoration(ThemeData theme) {
-    var backgroundColor = theme.colorScheme.background;
-    var surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
-    if (surfaceOpacity != null && surfaceOpacity < 1) {
-      if (widget.stackIndex == 0) {
-        // the top sheet should have a higher opacity to prevent
-        // visual bleeding from the main content
-        surfaceOpacity = surfaceOpacity * 1.25;
-      }
-      backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
-    }
-    return BoxDecoration(
-      color: backgroundColor,
-      border: getBorder(theme),
     );
   }
 }
@@ -1300,7 +954,11 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
 }) {
   BuildContext? resolvedContext = context;
   if (anchor is LinkedAnchor) {
-    final entry = OverlayAnchorRegistry.find(anchor.key);
+    final registry = anchor.registry ??
+        (context != null
+            ? OverlayAnchorRegistry.of(context)
+            : OverlayAnchorRegistry.global);
+    final entry = registry.find(anchor.key);
     if (entry == null) {
       throw FlutterError(
           'No OverlayAnchor found for the given symbol: ${anchor.key}');
@@ -1347,84 +1005,35 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
     alignment: alignment,
     backdropBuilder: transformBackdrop
         ? (context, child, animation, stackIndex) {
-            final theme = Theme.of(context);
+            const transform = ScaleBackdropTransform();
             final existingData = Data.maybeOf<BackdropTransformData>(context);
+            final isRoot = stackIndex == 0;
             return LayoutBuilder(builder: (context, constraints) {
-              return stackIndex == 0
-                  ? AnimatedBuilder(
-                      animation: animation,
-                      builder: (context, child) {
-                        Size size = constraints.biggest;
-                        double scale =
-                            1 - (1 - kBackdropScaleDown) * animation.value;
-                        Size sizeAfterScale = Size(
-                          size.width * scale,
-                          size.height * scale,
-                        );
-                        var extraSize = Size(
-                          size.width -
-                              sizeAfterScale.width / kBackdropScaleDown,
-                          size.height -
-                              sizeAfterScale.height / kBackdropScaleDown,
-                        );
-                        if (existingData != null) {
-                          extraSize = Size(
-                            extraSize.width +
-                                existingData.sizeDifference.width /
-                                    kBackdropScaleDown,
-                            extraSize.height +
-                                existingData.sizeDifference.height /
-                                    kBackdropScaleDown,
-                          );
-                        }
-                        return Data.inherit(
-                          data: BackdropTransformData(extraSize),
-                          child: Transform.scale(
-                            scale: scale,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  theme.radiusXxl * animation.value),
-                              child: child,
-                            ),
-                          ),
-                        );
-                      },
-                      child: child,
-                    )
-                  : AnimatedBuilder(
-                      animation: animation,
-                      builder: (context, child) {
-                        Size size = constraints.biggest;
-                        double scale =
-                            1 - (1 - kBackdropScaleDown) * animation.value;
-                        Size sizeAfterScale = Size(
-                          size.width * scale,
-                          size.height * scale,
-                        );
-                        var extraSize = Size(
-                          size.width - sizeAfterScale.width,
-                          size.height - sizeAfterScale.height,
-                        );
-                        if (existingData != null) {
-                          extraSize = Size(
-                            extraSize.width +
-                                existingData.sizeDifference.width /
-                                    kBackdropScaleDown,
-                            extraSize.height +
-                                existingData.sizeDifference.height /
-                                    kBackdropScaleDown,
-                          );
-                        }
-                        return Data.inherit(
-                          data: BackdropTransformData(extraSize),
-                          child: Transform.scale(
-                            scale: scale,
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: child,
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  final size = constraints.biggest;
+                  final t = animation.value;
+                  var extraSize =
+                      transform.resolveExtraSize(size, t, isRoot: isRoot);
+                  if (existingData != null) {
+                    extraSize = Size(
+                      extraSize.width +
+                          existingData.sizeDifference.width /
+                              kBackdropScaleDown,
+                      extraSize.height +
+                          existingData.sizeDifference.height /
+                              kBackdropScaleDown,
                     );
+                  }
+                  return Data.inherit(
+                    data: BackdropTransformData(extraSize),
+                    child: transform.wrapBackdrop(context, child!, t,
+                        isRoot: isRoot),
+                  );
+                },
+                child: child,
+              );
             });
           }
         : (context, child, animation, stackIndex) => child,

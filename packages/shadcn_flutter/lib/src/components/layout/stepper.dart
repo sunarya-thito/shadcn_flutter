@@ -369,13 +369,14 @@ class _StepVariantCircle extends StepVariant {
                         start: 0,
                         bottom: 0,
                         child: SizedBox(
-                          width: properties.size.size,
+                          width: properties.size.size * scaling,
                           child: i == properties.steps.length - 1
                               ? null
                               : AnimatedBuilder(
                                   animation: properties.state,
                                   builder: (context, child) {
                                     return VerticalDivider(
+                                      width: properties.size.size * scaling,
                                       thickness: 2 * scaling,
                                       color: properties.hasFailure &&
                                               properties.state.value
@@ -402,7 +403,7 @@ class _StepVariantCircle extends StepVariant {
                               ),
                               secondChild: Container(
                                 margin: EdgeInsets.only(
-                                  left: properties.size.size,
+                                  left: properties.size.size * scaling,
                                 ),
                                 child: child!,
                               ),
@@ -588,13 +589,14 @@ class _StepVariantCircleAlternative extends StepVariant {
                         start: 0,
                         bottom: 0,
                         child: SizedBox(
-                          width: properties.size.size,
+                          width: properties.size.size * scaling,
                           child: i == properties.steps.length - 1
                               ? null
                               : AnimatedBuilder(
                                   animation: properties.state,
                                   builder: (context, child) {
                                     return VerticalDivider(
+                                      width: properties.size.size * scaling,
                                       thickness: 2 * scaling,
                                       color: properties.hasFailure &&
                                               properties.state.value
@@ -621,7 +623,7 @@ class _StepVariantCircleAlternative extends StepVariant {
                               ),
                               secondChild: Container(
                                 margin: EdgeInsets.only(
-                                  left: properties.size.size,
+                                  left: properties.size.size * scaling,
                                 ),
                                 child: child!,
                               ),

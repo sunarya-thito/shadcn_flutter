@@ -34,7 +34,7 @@ class _SortableExample2State extends State<SortableExample2> {
             for (int i = 0; i < names.length; i++)
               Sortable<String>(
                 // Use a stable key for better drag/reorder behavior.
-                key: ValueKey(i),
+                key: ValueKey(names[i].data),
                 data: names[i],
                 // Swap into the target index when dropped on the top edge.
                 onAcceptTop: (value) {

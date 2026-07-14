@@ -6535,3 +6535,77 @@ class ButtonGroupData {
     );
   }
 }
+
+class FocusToFront extends StatefulWidget {
+  final Widget child;
+  const FocusToFront({super.key, required this.child});
+
+  @override
+  State<FocusToFront> createState() => _FocusToFrontState();
+}
+
+class _FocusToFrontState extends State<FocusToFront> {
+  bool _focus = false;
+  @override
+  Widget build(BuildContext context) {
+    return PaintOrder(
+      paintOrder: _focus ? 1 : null,
+      child: Focus(
+        onFocusChange: (focus) => setState(() => _focus = focus),
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+class ExpandedFocusToFront extends StatefulWidget {
+  final Widget child;
+  final int flex;
+  const ExpandedFocusToFront({super.key, required this.child, this.flex = 1});
+
+  @override
+  State<ExpandedFocusToFront> createState() => _ExpandedFocusToFrontState();
+}
+
+class _ExpandedFocusToFrontState extends State<ExpandedFocusToFront> {
+  bool _focus = false;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        flex: widget.flex,
+        paintOrder: _focus ? 1 : null,
+        child: Focus(
+          onFocusChange: (focus) => setState(() => _focus = focus),
+          child: widget.child,
+        ));
+  }
+}
+
+class FlexibleFocusToFront extends StatefulWidget {
+  final Widget child;
+  final int flex;
+  final FlexFit fit;
+  const FlexibleFocusToFront(
+      {super.key,
+      required this.child,
+      this.flex = 1,
+      this.fit = FlexFit.loose});
+
+  @override
+  State<FlexibleFocusToFront> createState() => _FlexibleFocusToFrontState();
+}
+
+class _FlexibleFocusToFrontState extends State<FlexibleFocusToFront> {
+  bool _focus = false;
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+        flex: widget.flex,
+        fit: widget.fit,
+        paintOrder: _focus ? 1 : null,
+        child: Focus(
+          onFocusChange: (focus) => setState(() => _focus = focus),
+          child: widget.child,
+        ));
+  }
+}

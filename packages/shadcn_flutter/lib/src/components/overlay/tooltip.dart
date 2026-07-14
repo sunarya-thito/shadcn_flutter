@@ -533,8 +533,9 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
     if (resolvedAnchor is ContextAnchor) {
       resolvedContext = resolvedAnchor.context ?? context;
     } else if (resolvedAnchor is LinkedAnchor) {
+      final registry = resolvedAnchor.registry ?? OverlayAnchorRegistry.global;
       resolvedContext =
-          OverlayAnchorRegistry.find(resolvedAnchor.key)?.context ?? context;
+          registry.find(resolvedAnchor.key)?.context ?? context;
     }
 
     final subscription = resolvedAnchor.subscribe();

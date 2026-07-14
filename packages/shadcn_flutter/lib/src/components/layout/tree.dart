@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Theme configuration for [Tree] and [TreeView] appearance and behavior.
+/// Theme configuration for [Tree] appearance and behavior.
 ///
 /// TreeTheme defines the visual styling and behavioral options for tree view
 /// components including branch lines, padding, expand icons, and selection modes.
@@ -134,7 +134,7 @@ class TreeTheme extends ComponentThemeData {
 /// updates through copy methods that return new instances with modified state.
 ///
 /// The generic type parameter [T] represents the data type stored in tree items.
-/// TreeNode is implemented by [TreeItem] for data-bearing nodes and [TreeRoot]
+/// TreeNode is implemented by [TreeItemNode] for data-bearing nodes and [TreeRootNode]
 /// for the invisible root container.
 ///
 /// Key operations include state updates for expansion and selection, child
@@ -143,9 +143,9 @@ class TreeTheme extends ComponentThemeData {
 ///
 /// Example:
 /// ```dart
-/// TreeNode<String> node = TreeItem(
+/// TreeNode<String> node = TreeItemNode(
 ///   data: 'parent',
-///   children: [TreeItem(data: 'child1'), TreeItem(data: 'child2')],
+///   children: [TreeItemNode(data: 'child1'), TreeItemNode(data: 'child2')],
 /// );
 ///
 /// // Expand the node
@@ -213,7 +213,7 @@ abstract class TreeNode<T> {
   ///
   /// Example:
   /// ```dart
-  /// List<TreeNode<String>> newChildren = [TreeItem(data: 'new_child')];
+  /// List<TreeNode<String>> newChildren = [TreeItemNode(data: 'new_child')];
   /// TreeNode<String> updated = node.updateChildren(newChildren);
   /// ```
   TreeNode<T> updateChildren(List<TreeNode<T>> children);
@@ -221,35 +221,35 @@ abstract class TreeNode<T> {
 
 /// A concrete tree node implementation that holds data and state.
 ///
-/// TreeItem represents a data-bearing node in the tree structure with support
+/// TreeItemNode represents a data-bearing node in the tree structure with support
 /// for hierarchical organization, expansion/collapse state, and selection state.
 /// It implements the immutable pattern where state changes return new instances.
 ///
-/// Each TreeItem contains user data of type [T], a list of child nodes, and
+/// Each TreeItemNode contains user data of type [T], a list of child nodes, and
 /// boolean flags for expansion and selection state. The class provides equality
 /// comparison based on all properties and implements proper hash codes.
 ///
-/// TreeItem supports deep hierarchies through its children list, which can
-/// contain other TreeItem instances or TreeRoot containers. The expansion state
+/// TreeItemNode supports deep hierarchies through its children list, which can
+/// contain other TreeItemNode instances or TreeRootNode containers. The expansion state
 /// controls visibility of children in tree views.
 ///
 /// Example:
 /// ```dart
 /// // Create a simple item
-/// TreeItem<String> item = TreeItem(
+/// TreeItemNode<String> item = TreeItemNode(
 ///   data: 'Document',
 ///   expanded: true,
 ///   selected: false,
 ///   children: [
-///     TreeItem(data: 'Chapter 1'),
-///     TreeItem(data: 'Chapter 2'),
+///     TreeItemNode(data: 'Chapter 1'),
+///     TreeItemNode(data: 'Chapter 2'),
 ///   ],
 /// );
 ///
 /// // Update its state
-/// TreeItem<String> selected = item.updateState(selected: true);
+/// TreeItemNode<String> selected = item.updateState(selected: true);
 /// ```
-class TreeItem<T> extends TreeNode<T> {
+class TreeItemNode<T> extends TreeNode<T> {
   /// The data value stored in this tree item.
   ///
   /// Type: `T`. This is the actual content that the tree item represents,
@@ -277,7 +277,7 @@ class TreeItem<T> extends TreeNode<T> {
   @override
   final bool selected;
 
-  /// Creates a [TreeItem] with the specified data and configuration.
+  /// Creates a [TreeItemNode] with the specified data and configuration.
   ///
   /// Constructs a tree item node with user data and optional children,
   /// expansion state, and selection state.
@@ -291,19 +291,19 @@ class TreeItem<T> extends TreeNode<T> {
   /// Example:
   /// ```dart
   /// // Simple leaf item
-  /// TreeItem<String> leaf = TreeItem(data: 'Leaf Node');
+  /// TreeItemNode<String> leaf = TreeItemNode(data: 'Leaf Node');
   ///
   /// // Parent with children
-  /// TreeItem<String> parent = TreeItem(
+  /// TreeItemNode<String> parent = TreeItemNode(
   ///   data: 'Parent Node',
   ///   expanded: true,
   ///   children: [
-  ///     TreeItem(data: 'Child 1'),
-  ///     TreeItem(data: 'Child 2'),
+  ///     TreeItemNode(data: 'Child 1'),
+  ///     TreeItemNode(data: 'Child 2'),
   ///   ],
   /// );
   /// ```
-  TreeItem({
+  TreeItemNode({
     required this.data,
     this.children = const [],
     this.expanded = false,
@@ -311,11 +311,11 @@ class TreeItem<T> extends TreeNode<T> {
   });
 
   @override
-  TreeItem<T> updateState({
+  TreeItemNode<T> updateState({
     bool? expanded,
     bool? selected,
   }) {
-    return TreeItem(
+    return TreeItemNode(
       data: data,
       children: children,
       expanded: expanded ?? this.expanded,
@@ -324,8 +324,8 @@ class TreeItem<T> extends TreeNode<T> {
   }
 
   @override
-  TreeItem<T> updateChildren(List<TreeNode<T>> children) {
-    return TreeItem(
+  TreeItemNode<T> updateChildren(List<TreeNode<T>> children) {
+    return TreeItemNode(
       data: data,
       children: children,
       expanded: expanded,
@@ -337,7 +337,7 @@ class TreeItem<T> extends TreeNode<T> {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is TreeItem<T> &&
+    return other is TreeItemNode<T> &&
         other.data == data &&
         listEquals(other.children, children) &&
         other.expanded == expanded &&
@@ -351,32 +351,32 @@ class TreeItem<T> extends TreeNode<T> {
 
   @override
   String toString() {
-    return 'TreeItem(data: $data, children: $children, expanded: $expanded, selected: $selected)';
+    return 'TreeItemNode(data: $data, children: $children, expanded: $expanded, selected: $selected)';
   }
 }
 
 /// A special tree node that serves as an invisible root container.
 ///
-/// TreeRoot represents the invisible root of a tree structure that contains
+/// TreeRootNode represents the invisible root of a tree structure that contains
 /// other tree nodes but doesn't appear in the visual tree. It's always considered
 /// expanded and never selected, serving purely as a container for organizing
 /// multiple top-level tree items.
 ///
 /// This is useful when you need to group multiple tree items under a common
 /// parent without showing that parent in the tree view. All children of a
-/// TreeRoot appear at the top level of the tree.
+/// TreeRootNode appear at the top level of the tree.
 ///
-/// TreeRoot maintains immutability like other tree nodes, but state update
+/// TreeRootNode maintains immutability like other tree nodes, but state update
 /// operations (expanded/selected) have no effect since these properties are
 /// fixed by design.
 ///
 /// Example:
 /// ```dart
-/// TreeRoot<String> root = TreeRoot(
+/// TreeRootNode<String> root = TreeRootNode(
 ///   children: [
-///     TreeItem(data: 'First Section'),
-///     TreeItem(data: 'Second Section'),
-///     TreeItem(data: 'Third Section'),
+///     TreeItemNode(data: 'First Section'),
+///     TreeItemNode(data: 'Second Section'),
+///     TreeItemNode(data: 'Third Section'),
 ///   ],
 /// );
 ///
@@ -384,7 +384,7 @@ class TreeItem<T> extends TreeNode<T> {
 /// print(root.expanded); // true
 /// print(root.selected); // false
 /// ```
-class TreeRoot<T> extends TreeNode<T> {
+class TreeRootNode<T> extends TreeNode<T> {
   /// List of child nodes contained in this root.
   ///
   /// Type: `List<TreeNode<T>>`. These children appear as top-level items
@@ -394,17 +394,17 @@ class TreeRoot<T> extends TreeNode<T> {
 
   /// Always returns true since root containers are conceptually always expanded.
   ///
-  /// Returns: `bool`. TreeRoot is always expanded to show its children.
+  /// Returns: `bool`. TreeRootNode is always expanded to show its children.
   @override
   bool get expanded => true;
 
   /// Always returns false since root containers cannot be selected.
   ///
-  /// Returns: `bool`. TreeRoot can never be selected in tree operations.
+  /// Returns: `bool`. TreeRootNode can never be selected in tree operations.
   @override
   bool get selected => false;
 
-  /// Creates a [TreeRoot] container with the specified children.
+  /// Creates a [TreeRootNode] container with the specified children.
   ///
   /// Constructs an invisible root node that serves as a container for
   /// multiple top-level tree items.
@@ -414,20 +414,20 @@ class TreeRoot<T> extends TreeNode<T> {
   ///
   /// Example:
   /// ```dart
-  /// TreeRoot<String> root = TreeRoot(
+  /// TreeRootNode<String> root = TreeRootNode(
   ///   children: [
-  ///     TreeItem(data: 'Item 1'),
-  ///     TreeItem(data: 'Item 2'),
-  ///     TreeItem(data: 'Item 3'),
+  ///     TreeItemNode(data: 'Item 1'),
+  ///     TreeItemNode(data: 'Item 2'),
+  ///     TreeItemNode(data: 'Item 3'),
   ///   ],
   /// );
   /// ```
-  TreeRoot({
+  TreeRootNode({
     required this.children,
   });
 
   @override
-  TreeRoot<T> updateState({
+  TreeRootNode<T> updateState({
     bool? expanded,
     bool? selected,
   }) {
@@ -435,8 +435,8 @@ class TreeRoot<T> extends TreeNode<T> {
   }
 
   @override
-  TreeRoot<T> updateChildren(List<TreeNode<T>> children) {
-    return TreeRoot(
+  TreeRootNode<T> updateChildren(List<TreeNode<T>> children) {
+    return TreeRootNode(
       children: children,
     );
   }
@@ -445,7 +445,7 @@ class TreeRoot<T> extends TreeNode<T> {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is TreeRoot<T> && listEquals(other.children, children);
+    return other is TreeRootNode<T> && listEquals(other.children, children);
   }
 
   @override
@@ -454,7 +454,7 @@ class TreeRoot<T> extends TreeNode<T> {
   }
 
   @override
-  String toString() => 'TreeRoot(children: $children)';
+  String toString() => 'TreeRootNode(children: $children)';
 }
 
 /// Represents the visual position of a selected item within a group.
@@ -972,15 +972,15 @@ class TreeItemExpandDefaultHandler<T> {
 /// ```dart
 /// Tree<String>(
 ///   nodes: [
-///     TreeItem(
+///     TreeItemNode(
 ///       data: 'Documents',
 ///       expanded: true,
 ///       children: [
-///         TreeItem(data: 'document1.txt'),
-///         TreeItem(data: 'document2.txt'),
+///         TreeItemNode(data: 'document1.txt'),
+///         TreeItemNode(data: 'document2.txt'),
 ///       ],
 ///     ),
-///     TreeItem(data: 'Images'),
+///     TreeItemNode(data: 'Images'),
 ///   ],
 ///   builder: (context, item) => Text(item.data),
 ///   onSelectionChanged: (selected, multiSelect, isSelected) {
@@ -1110,7 +1110,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> replaceItem<K>(
       List<TreeNode<K>> nodes, K oldItem, TreeNode<K> newItem) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && node.data == oldItem) {
+      if (node is TreeItemNode<K> && node.data == oldItem) {
         return newItem;
       }
       return null;
@@ -1126,7 +1126,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> updateRecursiveSelection<K>(
       List<TreeNode<K>> nodes) {
     return replaceNodesWithParent(nodes, (parent, node) {
-      if (node is TreeItem<K> &&
+      if (node is TreeItemNode<K> &&
           !node.selected &&
           parent != null &&
           parent.selected) {
@@ -1154,7 +1154,7 @@ class Tree<T> extends StatefulWidget {
   /// Returns: `List<K>` — selected item values.
   static List<K> getSelectedItems<K>(List<TreeNode<K>> nodes) {
     return nodes
-        .whereType<TreeItem<K>>()
+        .whereType<TreeItemNode<K>>()
         .where((node) => node.selected)
         .map((node) => node.data)
         .toList();
@@ -1207,7 +1207,7 @@ class Tree<T> extends StatefulWidget {
   /// Returns: `List<TreeNode<K>>` — tree with item expanded.
   static List<TreeNode<K>> expandItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && node.data == target && !node.expanded) {
+      if (node is TreeItemNode<K> && node.data == target && !node.expanded) {
         return node.updateState(expanded: true);
       }
       return null;
@@ -1237,7 +1237,7 @@ class Tree<T> extends StatefulWidget {
   /// Returns: `List<TreeNode<K>>` — tree with item collapsed.
   static List<TreeNode<K>> collapseItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && node.data == target) {
+      if (node is TreeItemNode<K> && node.data == target) {
         return node.updateState(expanded: false);
       }
       return null;
@@ -1267,7 +1267,7 @@ class Tree<T> extends StatefulWidget {
   /// Returns: `List<TreeNode<K>>` — tree with item selected.
   static List<TreeNode<K>> selectItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && node.data == target) {
+      if (node is TreeItemNode<K> && node.data == target) {
         return node.updateState(selected: true);
       }
       return null;
@@ -1297,7 +1297,7 @@ class Tree<T> extends StatefulWidget {
   /// Returns: `List<TreeNode<K>>` — tree with item deselected.
   static List<TreeNode<K>> deselectItem<K>(List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && node.data == target) {
+      if (node is TreeItemNode<K> && node.data == target) {
         return node.updateState(selected: false);
       }
       return null;
@@ -1344,7 +1344,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> toggleSelectItem<K>(
       List<TreeNode<K>> nodes, K target) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && node.data == target) {
+      if (node is TreeItemNode<K> && node.data == target) {
         return node.updateState(selected: !node.selected);
       }
       return null;
@@ -1361,7 +1361,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> toggleSelectItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> targets) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && targets.contains(node.data)) {
+      if (node is TreeItemNode<K> && targets.contains(node.data)) {
         return node.updateState(selected: !node.selected);
       }
       return null;
@@ -1430,7 +1430,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> selectItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> selectedItems) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && selectedItems.contains(node.data)) {
+      if (node is TreeItemNode<K> && selectedItems.contains(node.data)) {
         return node.updateState(selected: true);
       }
       return null;
@@ -1463,7 +1463,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> deselectItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> deselectedItems) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K> && deselectedItems.contains(node.data)) {
+      if (node is TreeItemNode<K> && deselectedItems.contains(node.data)) {
         return node.updateState(selected: false);
       }
       return null;
@@ -1494,7 +1494,7 @@ class Tree<T> extends StatefulWidget {
   static List<TreeNode<K>> setSelectedItems<K>(
       List<TreeNode<K>> nodes, Iterable<K> selectedItems) {
     return replaceNodes(nodes, (node) {
-      if (node is TreeItem<K>) {
+      if (node is TreeItemNode<K>) {
         return node.updateState(selected: selectedItems.contains(node.data));
       }
       return null;
@@ -1504,15 +1504,15 @@ class Tree<T> extends StatefulWidget {
   /// List of tree nodes to display in the tree view.
   ///
   /// Type: `List<TreeNode<T>>`. The root-level nodes that will be rendered
-  /// in the tree. Can contain TreeItem instances and TreeRoot containers.
+  /// in the tree. Can contain TreeItemNode instances and TreeRootNode containers.
   final List<TreeNode<T>> nodes;
 
   /// Builder function to create widgets for tree items.
   ///
-  /// Type: `Widget Function(BuildContext, TreeItem<T>)`. Called for each
+  /// Type: `Widget Function(BuildContext, TreeItemNode<T>)`. Called for each
   /// visible tree item to create its visual representation. Receives the
   /// build context and the tree item data.
-  final Widget Function(BuildContext context, TreeItem<T> node) builder;
+  final Widget Function(BuildContext context, TreeItemNode<T> node) builder;
 
   /// Whether the tree view should size itself to its content.
   ///
@@ -1576,7 +1576,7 @@ class Tree<T> extends StatefulWidget {
   /// Parameters:
   /// - [key] (Key?): Widget identifier for the widget tree
   /// - [nodes] (`List<TreeNode<T>>`, required): Root-level tree nodes to display
-  /// - [builder] (Widget Function(BuildContext, `TreeItem<T>`), required): Builder for tree items
+  /// - [builder] (Widget Function(BuildContext, `TreeItemNode<T>`), required): Builder for tree items
   /// - [shrinkWrap] (bool, default: false): Whether to size to content
   /// - [controller] (ScrollController?, optional): Scroll controller for the tree
   /// - [branchLine] (BranchLine?, optional): Style for connecting lines
@@ -1635,12 +1635,6 @@ class _TreeState<T> extends State<Tree<T>> {
   int? _currentFocusedIndex;
   int? _startFocusedIndex;
 
-  /// Whether this state only builds nodes that are actually visible
-  /// (ancestor chain fully expanded), skipping collapsed subtrees entirely.
-  /// Overridden by [_TreeViewState] to enable real virtualization at the
-  /// cost of the animated collapse/expand transition.
-  bool get _lazy => false;
-
   void _walkFlattened(
     _TreeWalker<T> walker,
     List<TreeNode<T>> nodes,
@@ -1649,13 +1643,13 @@ class _TreeState<T> extends State<Tree<T>> {
   ) {
     for (int i = 0; i < nodes.length; i++) {
       final node = nodes[i];
-      if (node is TreeItem<T>) {
+      if (node is TreeItemNode<T>) {
         List<TreeNodeDepth> newDepth = List.from(depth);
         newDepth.add(TreeNodeDepth(i, nodes.length));
         walker(parentExpanded, node, newDepth);
         _walkFlattened(
             walker, node.children, parentExpanded && node.expanded, newDepth);
-      } else if (node is TreeRoot<T>) {
+      } else if (node is TreeRootNode<T>) {
         _walkFlattened(walker, node.children, parentExpanded, depth);
       }
     }
@@ -1664,10 +1658,10 @@ class _TreeState<T> extends State<Tree<T>> {
   void _walkNodes(_NodeWalker<T> walker, List<TreeNode<T>> nodes) {
     for (int i = 0; i < nodes.length; i++) {
       final node = nodes[i];
-      if (node is TreeItem<T>) {
+      if (node is TreeItemNode<T>) {
         walker(node);
         _walkNodes(walker, node.children);
-      } else if (node is TreeRoot<T>) {
+      } else if (node is TreeRootNode<T>) {
         _walkNodes(walker, node.children);
       }
     }
@@ -1707,8 +1701,7 @@ class _TreeState<T> extends State<Tree<T>> {
     List<TreeNodeData<T>> children = [];
     int index = 0;
     _walkFlattened((expanded, node, depth) {
-      if (node is! TreeItem<T>) return;
-      if (_lazy && !expanded) return;
+      if (node is! TreeItemNode<T>) return;
       final int currentIndex = index++;
       children.add(TreeNodeData(
         depth,
@@ -1747,13 +1740,13 @@ class _TreeState<T> extends State<Tree<T>> {
     int selectedCount = 0;
     for (int i = 0; i < children.length; i++) {
       final child = children[i];
-      if (child.node is! TreeItem<T> || !child.node.selected) {
+      if (child.node is! TreeItemNode<T> || !child.node.selected) {
         continue;
       }
       if (child.node.selected) {
         bool isNextSelected = false;
         for (int j = i + 1; j < children.length; j++) {
-          if (!children[j].expanded || children[j].node is! TreeItem<T>) {
+          if (!children[j].expanded || children[j].node is! TreeItemNode<T>) {
             continue;
           }
           isNextSelected = children[j].node.selected;
@@ -1844,7 +1837,7 @@ class _TreeState<T> extends State<Tree<T>> {
               var equalSelection = currentIndex == _startFocusedIndex!;
               if (down) {
                 for (int i = currentIndex + 1; i < children.length; i++) {
-                  if (children[i].node is TreeItem<T> &&
+                  if (children[i].node is TreeItemNode<T> &&
                       children[i].expanded &&
                       (equalSelection
                           ? !children[i].node.selected
@@ -1857,7 +1850,7 @@ class _TreeState<T> extends State<Tree<T>> {
                 }
               } else {
                 for (int i = currentIndex - 1; i >= 0; i--) {
-                  if (children[i].node is TreeItem<T> &&
+                  if (children[i].node is TreeItemNode<T> &&
                       children[i].expanded &&
                       (equalSelection
                           ? !children[i].node.selected
@@ -1912,7 +1905,7 @@ class _TreeState<T> extends State<Tree<T>> {
               return Data<TreeNodeData>.inherit(
                 data: data,
                 child: Builder(builder: (context) {
-                  return widget.builder(context, data.node as TreeItem<T>);
+                  return widget.builder(context, data.node as TreeItemNode<T>);
                 }),
               );
             },
@@ -1921,55 +1914,6 @@ class _TreeState<T> extends State<Tree<T>> {
       ),
     );
   }
-}
-
-/// A lazily-built variant of [Tree] for very large or mostly-collapsed trees.
-///
-/// [TreeView] has the exact same constructor and behavior as [Tree] with one
-/// difference: nodes whose ancestor chain isn't fully expanded are excluded
-/// from the tree entirely instead of being built and animated down to zero
-/// size. This means [ListView.builder] only ever has to build nodes that are
-/// actually visible, making [TreeView] suitable for datasets with tens of
-/// thousands of nodes (e.g. a large directory listing) where most of the
-/// tree starts out collapsed.
-///
-/// The trade-off is that expanding/collapsing a node is instant rather than
-/// animated, since hidden descendants aren't present in the widget tree to
-/// animate in the first place. If you need the smooth collapse animation and
-/// your tree is small enough that building every node isn't a problem, use
-/// [Tree] instead.
-///
-/// Example:
-/// ```dart
-/// TreeView<FileItem>(
-///   nodes: fileTreeNodes, // e.g. 50,000 files, mostly collapsed
-///   builder: (context, item) => TreeItemView(child: Text(item.data.name)),
-/// )
-/// ```
-class TreeView<T> extends Tree<T> {
-  /// Creates a [TreeView] with the same parameters as [Tree].
-  const TreeView({
-    super.key,
-    required super.nodes,
-    required super.builder,
-    super.shrinkWrap,
-    super.controller,
-    super.branchLine,
-    super.padding,
-    super.expandIcon,
-    super.allowMultiSelect,
-    super.focusNode,
-    super.onSelectionChanged,
-    super.recursiveSelection,
-  });
-
-  @override
-  State<Tree<T>> createState() => _TreeViewState<T>();
-}
-
-class _TreeViewState<T> extends _TreeState<T> {
-  @override
-  bool get _lazy => true;
 }
 
 /// Abstract base class for defining tree branch line styles.
@@ -1989,7 +1933,7 @@ class _TreeViewState<T> extends _TreeState<T> {
 /// Example:
 /// ```dart
 /// // Using built-in styles
-/// TreeView(
+/// Tree(
 ///   branchLine: BranchLine.path, // Connected paths
 ///   // ... other properties
 /// );
@@ -2033,7 +1977,7 @@ abstract class BranchLine {
 ///
 /// Example:
 /// ```dart
-/// TreeView(
+/// Tree(
 ///   branchLine: BranchLine.none,
 ///   // ...
 /// );
@@ -2055,7 +1999,7 @@ class IndentGuideNone implements BranchLine {
 ///
 /// Example:
 /// ```dart
-/// TreeView(
+/// Tree(
 ///   branchLine: BranchLine.line,
 ///   // or with custom color:
 ///   branchLine: IndentGuideLine(color: Colors.blue),
@@ -2090,7 +2034,7 @@ class IndentGuideLine implements BranchLine {
 ///
 /// Example:
 /// ```dart
-/// TreeView(
+/// Tree(
 ///   branchLine: BranchLine.path,
 ///   // or with custom color:
 ///   branchLine: IndentGuidePath(color: Colors.grey),
@@ -2195,15 +2139,15 @@ class _PathPainter extends CustomPainter {
 
 /// A comprehensive tree item widget with interaction, expansion, and selection support.
 ///
-/// TreeItemView provides a complete tree item interface that handles user
+/// TreeItem provides a complete tree item interface that handles user
 /// interaction, visual feedback, expansion/collapse behavior, and keyboard
-/// navigation. It's designed to work within a TreeView context but can be
+/// navigation. It's designed to work within a [Tree] context but can be
 /// used independently for custom tree implementations.
 ///
 /// The widget supports both single and double-click interactions, optional
 /// leading and trailing widgets, expandable content, and focus management.
 /// It automatically integrates with the tree's selection and expansion state
-/// when used within a TreeView.
+/// when used within a [Tree].
 ///
 /// Features:
 /// - Click and double-click interaction support
@@ -2220,7 +2164,7 @@ class _PathPainter extends CustomPainter {
 ///
 /// Example:
 /// ```dart
-/// TreeItemView(
+/// TreeItem(
 ///   leading: Icon(isDirectory ? Icons.folder : Icons.insert_drive_file),
 ///   trailing: PopupMenuButton(items: contextMenuItems),
 ///   expandable: hasChildren,
@@ -2230,7 +2174,7 @@ class _PathPainter extends CustomPainter {
 ///   child: Text(item.name),
 /// )
 /// ```
-class TreeItemView extends StatefulWidget {
+class TreeItem extends StatefulWidget {
   /// The main content widget for this tree item.
   ///
   /// Type: `Widget`. This widget represents the primary content of the tree item,
@@ -2279,7 +2223,7 @@ class TreeItemView extends StatefulWidget {
   /// Allows external control of focus state for this tree item.
   final FocusNode? focusNode;
 
-  /// Creates a [TreeItemView] with comprehensive tree item functionality.
+  /// Creates a [TreeItem] with comprehensive tree item functionality.
   ///
   /// Configures a tree item widget with interaction support, optional expansion,
   /// and customizable leading/trailing elements.
@@ -2297,7 +2241,7 @@ class TreeItemView extends StatefulWidget {
   ///
   /// Example:
   /// ```dart
-  /// TreeItemView(
+  /// TreeItem(
   ///   leading: Icon(Icons.folder),
   ///   trailing: Badge(child: Text('3')),
   ///   expandable: true,
@@ -2307,7 +2251,7 @@ class TreeItemView extends StatefulWidget {
   ///   child: Text('Project Folder'),
   /// )
   /// ```
-  const TreeItemView({
+  const TreeItem({
     super.key,
     required this.child,
     this.leading,
@@ -2320,10 +2264,10 @@ class TreeItemView extends StatefulWidget {
   });
 
   @override
-  State<TreeItemView> createState() => _TreeItemViewState();
+  State<TreeItem> createState() => _TreeItemState();
 }
 
-class _TreeItemViewState extends State<TreeItemView> {
+class _TreeItemState extends State<TreeItem> {
   late FocusNode _focusNode;
   final WidgetStatesController _statesController = WidgetStatesController();
 
@@ -2337,7 +2281,7 @@ class _TreeItemViewState extends State<TreeItemView> {
   }
 
   @override
-  void didUpdateWidget(covariant TreeItemView oldWidget) {
+  void didUpdateWidget(covariant TreeItem oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       oldWidget.focusNode?.removeListener(_onFocusChanged);
@@ -2376,8 +2320,7 @@ class _TreeItemViewState extends State<TreeItemView> {
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final data = _data;
-    assert(
-        data != null, 'TreeItemView must be a descendant of Tree or TreeView');
+    assert(data != null, 'TreeItem must be a descendant of Tree');
     List<Widget> rowChildren = [];
     if (data!.expandIcon) rowChildren.add(SizedBox(width: densityGap));
     for (int i = 0; i < data.depth.length; i++) {
@@ -2451,6 +2394,109 @@ class _TreeItemViewState extends State<TreeItemView> {
         ),
       ),
     );
+    final content = IntrinsicHeight(
+      child: Clickable(
+        focusNode: _focusNode,
+        focusOutline: !(_data?.node.selected ?? false),
+        disableTransition: true,
+        statesController: _statesController,
+        shortcuts: {
+          if (widget.onExpand != null &&
+              (widget.expandable ?? data.node.children.isNotEmpty))
+            LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                const ExpandTreeNodeIntent(),
+          if (widget.onExpand != null &&
+              (widget.expandable ?? data.node.children.isNotEmpty))
+            LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                const CollapseTreeNodeIntent(),
+        },
+        actions: {
+          ActivateIntent: CallbackAction(
+            onInvoke: (e) {
+              if (widget.onExpand != null &&
+                  (widget.expandable ?? data.node.children.isNotEmpty)) {
+                widget.onExpand!(!data.node.expanded);
+              }
+              widget.onPressed?.call();
+              return null;
+            },
+          ),
+          CollapseTreeNodeIntent: CallbackAction(
+            onInvoke: (e) {
+              if (widget.onExpand != null &&
+                  (widget.expandable ?? data.node.children.isNotEmpty)) {
+                widget.onExpand!(false);
+              }
+              return null;
+            },
+          ),
+          ExpandTreeNodeIntent: CallbackAction(
+            onInvoke: (e) {
+              if (widget.onExpand != null &&
+                  (widget.expandable ?? data.node.children.isNotEmpty)) {
+                widget.onExpand!(true);
+              }
+              return null;
+            },
+          ),
+        },
+        decoration: WidgetStateProperty.resolveWith(
+          (states) {
+            if (states.contains(WidgetState.selected)) {
+              if (states.contains(WidgetState.focused)) {
+                return BoxDecoration(
+                  color: theme.colorScheme.primary.scaleAlpha(0.1),
+                  borderRadius: _borderRadiusFromPosition(
+                    data.selectionPosition,
+                    theme.radiusMd,
+                  ),
+                );
+              }
+              return BoxDecoration(
+                color: theme.colorScheme.primary.scaleAlpha(0.05),
+                borderRadius: _borderRadiusFromPosition(
+                  data.selectionPosition,
+                  theme.radiusMd,
+                ),
+              );
+            }
+            return const BoxDecoration();
+          },
+        ),
+        behavior: HitTestBehavior.translucent,
+        mouseCursor: widget.onDoublePressed != null ||
+                widget.onPressed != null ||
+                (widget.onExpand != null &&
+                    (widget.expandable ?? data.node.children.isNotEmpty))
+            ? const WidgetStatePropertyAll(SystemMouseCursors.click)
+            : const WidgetStatePropertyAll(SystemMouseCursors.basic),
+        onDoubleTap: () {
+          if (widget.onDoublePressed != null) {
+            widget.onDoublePressed!();
+          }
+          if (widget.onExpand != null &&
+              (widget.expandable ?? data.node.children.isNotEmpty)) {
+            widget.onExpand!(!data.node.expanded);
+          }
+          _focusNode.requestFocus();
+        },
+        onPressed: () {
+          if (widget.onPressed != null) {
+            widget.onPressed!();
+          }
+          _focusNode.requestFocus();
+          _data!.onFocusChanged?.call(FocusChangeReason.userInteraction);
+        },
+        enabled: widget.onPressed != null ||
+            widget.onDoublePressed != null ||
+            (widget.onExpand != null &&
+                (widget.expandable ?? data.node.children.isNotEmpty)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: rowChildren,
+        ),
+      ),
+    );
     return ExcludeFocus(
       excluding: !data.expanded && !data.node.expanded,
       child: DefaultTextStyle.merge(
@@ -2464,109 +2510,7 @@ class _TreeItemViewState extends State<TreeItemView> {
               ? CrossFadeState.showFirst
               : CrossFadeState.showSecond,
           secondChild: const SizedBox(),
-          firstChild: IntrinsicHeight(
-            child: Clickable(
-              focusNode: _focusNode,
-              focusOutline: !(_data?.node.selected ?? false),
-              disableTransition: true,
-              statesController: _statesController,
-              shortcuts: {
-                if (widget.onExpand != null &&
-                    (widget.expandable ?? data.node.children.isNotEmpty))
-                  LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                      const ExpandTreeNodeIntent(),
-                if (widget.onExpand != null &&
-                    (widget.expandable ?? data.node.children.isNotEmpty))
-                  LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-                      const CollapseTreeNodeIntent(),
-              },
-              actions: {
-                ActivateIntent: CallbackAction(
-                  onInvoke: (e) {
-                    if (widget.onExpand != null &&
-                        (widget.expandable ?? data.node.children.isNotEmpty)) {
-                      widget.onExpand!(!data.node.expanded);
-                    }
-                    widget.onPressed?.call();
-                    return null;
-                  },
-                ),
-                CollapseTreeNodeIntent: CallbackAction(
-                  onInvoke: (e) {
-                    if (widget.onExpand != null &&
-                        (widget.expandable ?? data.node.children.isNotEmpty)) {
-                      widget.onExpand!(false);
-                    }
-                    return null;
-                  },
-                ),
-                ExpandTreeNodeIntent: CallbackAction(
-                  onInvoke: (e) {
-                    if (widget.onExpand != null &&
-                        (widget.expandable ?? data.node.children.isNotEmpty)) {
-                      widget.onExpand!(true);
-                    }
-                    return null;
-                  },
-                ),
-              },
-              decoration: WidgetStateProperty.resolveWith(
-                (states) {
-                  if (states.contains(WidgetState.selected)) {
-                    if (states.contains(WidgetState.focused)) {
-                      return BoxDecoration(
-                        color: theme.colorScheme.primary.scaleAlpha(0.1),
-                        borderRadius: _borderRadiusFromPosition(
-                          data.selectionPosition,
-                          theme.radiusMd,
-                        ),
-                      );
-                    }
-                    return BoxDecoration(
-                      color: theme.colorScheme.primary.scaleAlpha(0.05),
-                      borderRadius: _borderRadiusFromPosition(
-                        data.selectionPosition,
-                        theme.radiusMd,
-                      ),
-                    );
-                  }
-                  return const BoxDecoration();
-                },
-              ),
-              behavior: HitTestBehavior.translucent,
-              mouseCursor: widget.onDoublePressed != null ||
-                      widget.onPressed != null ||
-                      (widget.onExpand != null &&
-                          (widget.expandable ?? data.node.children.isNotEmpty))
-                  ? const WidgetStatePropertyAll(SystemMouseCursors.click)
-                  : const WidgetStatePropertyAll(SystemMouseCursors.basic),
-              onDoubleTap: () {
-                if (widget.onDoublePressed != null) {
-                  widget.onDoublePressed!();
-                }
-                if (widget.onExpand != null &&
-                    (widget.expandable ?? data.node.children.isNotEmpty)) {
-                  widget.onExpand!(!data.node.expanded);
-                }
-                _focusNode.requestFocus();
-              },
-              onPressed: () {
-                if (widget.onPressed != null) {
-                  widget.onPressed!();
-                }
-                _focusNode.requestFocus();
-                _data!.onFocusChanged?.call(FocusChangeReason.userInteraction);
-              },
-              enabled: widget.onPressed != null ||
-                  widget.onDoublePressed != null ||
-                  (widget.onExpand != null &&
-                      (widget.expandable ?? data.node.children.isNotEmpty)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: rowChildren,
-              ),
-            ),
-          ),
+          firstChild: content,
         ).iconSmall(),
       ),
     );

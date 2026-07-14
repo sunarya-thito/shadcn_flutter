@@ -122,14 +122,14 @@ void main() {
       );
 
       // Verify registry contains key initially
-      expect(OverlayAnchorRegistry.find(#tempAnchor), isNotNull);
+      expect(OverlayAnchorRegistry.global.find(#tempAnchor), isNotNull);
 
       // Unmount the anchor
       valueNotifier.value = false;
       await tester.pump();
 
       // Verify registry is cleaned up and has unregistered the key
-      expect(OverlayAnchorRegistry.find(#tempAnchor), isNull);
+      expect(OverlayAnchorRegistry.global.find(#tempAnchor), isNull);
     });
   });
 
@@ -542,6 +542,89 @@ void main() {
         reason:
             'popover should hug the overflowing (bottom) edge, not teleport to the top',
       );
+    });
+  });
+
+  group('OverlayAnchorScope (registry scoping)', () {
+    testWidgets('sibling scopes isolate the same anchor key', (tester) async {
+      OverlayAnchorRegistry? regA;
+      OverlayAnchorRegistry? regB;
+
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Row(
+            children: [
+              OverlayAnchorScope(
+                child: Builder(
+                  builder: (context) {
+                    regA = OverlayAnchorRegistry.of(context);
+                    return const OverlayAnchor(
+                      anchor: #shared,
+                      child: SizedBox(width: 10, height: 10),
+                    );
+                  },
+                ),
+              ),
+              OverlayAnchorScope(
+                child: Builder(
+                  builder: (context) {
+                    regB = OverlayAnchorRegistry.of(context);
+                    return const OverlayAnchor(
+                      anchor: #shared,
+                      child: SizedBox(width: 10, height: 10),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      // Each scope resolves #shared to its own, distinct anchor...
+      expect(regA, isNotNull);
+      expect(regB, isNotNull);
+      expect(regA!.find(#shared), isNotNull);
+      expect(regB!.find(#shared), isNotNull);
+      expect(regA!.find(#shared)!.renderBox,
+          isNot(same(regB!.find(#shared)!.renderBox)));
+      // ...and nothing leaked into the global registry.
+      expect(OverlayAnchorRegistry.global.find(#shared), isNull);
+    });
+
+    testWidgets('inner scope falls back to a parent scope for unknown keys',
+        (tester) async {
+      OverlayAnchorRegistry? innerRegistry;
+
+      await tester.pumpWidget(
+        SimpleApp(
+          child: OverlayAnchorScope(
+            child: Column(
+              children: [
+                const OverlayAnchor(
+                  anchor: #outer,
+                  child: SizedBox(width: 10, height: 10),
+                ),
+                OverlayAnchorScope(
+                  child: Builder(
+                    builder: (context) {
+                      innerRegistry = OverlayAnchorRegistry.of(context);
+                      return const SizedBox();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      // #outer is registered only in the outer scope; the inner scope resolves
+      // it through parent fallback.
+      expect(innerRegistry, isNotNull);
+      expect(innerRegistry!.find(#outer), isNotNull);
+      // A key registered nowhere still returns null after walking the chain.
+      expect(innerRegistry!.find(#nowhere), isNull);
     });
   });
 }

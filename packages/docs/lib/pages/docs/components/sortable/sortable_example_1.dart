@@ -53,6 +53,11 @@ class _SortableExample1State extends State<SortableExample1> {
                     children: [
                       for (int i = 0; i < invited.length; i++)
                         Sortable<String>(
+                          // Identity-based key: items move between the two
+                          // lists, so the key must follow the data (not the
+                          // index) or the per-item drag state rebinds to the
+                          // wrong item when a list changes length.
+                          key: ValueKey(invited[i].data),
                           data: invited[i],
                           // Insert above the current index when dropped at the top edge.
                           onAcceptTop: (value) {
@@ -94,6 +99,7 @@ class _SortableExample1State extends State<SortableExample1> {
                     children: [
                       for (int i = 0; i < reserved.length; i++)
                         Sortable<String>(
+                          key: ValueKey(reserved[i].data),
                           data: reserved[i],
                           onAcceptTop: (value) {
                             setState(() {

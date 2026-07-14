@@ -353,7 +353,6 @@ class ColorsPageState extends State<ColorsPage> {
             ],
           ),
           const Gap(12),
-          const Spacer(),
           Offstage(
             offstage: _tabIndex != 0,
             child: Column(

@@ -511,6 +511,11 @@ class _SortableState<T> extends State<Sortable<T>>
   bool _claimUnchanged = false;
   _SortableDraggingSession<T>? _session;
 
+  // Pointer position (in the SortableLayer's local space) driving the drag.
+  // Drop targets are resolved under the pointer rather than the dragged item's
+  // centre.
+  Offset? _pointerLayerPosition;
+
   _ScrollableSortableLayerState? _scrollableLayer;
 
   @override
@@ -549,14 +554,23 @@ class _SortableState<T> extends State<Sortable<T>>
       // a freshly mounted copy resetting to its initial state. The hidden
       // placeholder left at the original position (see build()) stops using
       // `_key` while dragging so the key isn't claimed twice in one frame.
-      ghost: ListenableBuilder(
-        listenable: _currentTarget,
-        builder: (context, child) {
-          if (_currentTarget.value != null) {
-            return candidateFallback ?? KeyedSubtree(key: _key, child: widget.child);
-          }
-          return customGhost ?? KeyedSubtree(key: _key, child: widget.child);
-        },
+      // The ghost re-parents `widget.child` (via `_key`) out of this Sortable
+      // and into the layer overlay. A [SortableDragHandle] inside the child
+      // resolves its owning Sortable through `Data<_SortableState>`, so the
+      // ghost must re-provide it - otherwise the handle loses `_state`, its
+      // pan callbacks become null, and the in-flight drag is cancelled.
+      ghost: Data<_SortableState>.inherit(
+        data: this,
+        child: ListenableBuilder(
+          listenable: _currentTarget,
+          builder: (context, child) {
+            if (_currentTarget.value != null) {
+              return candidateFallback ??
+                  KeyedSubtree(key: _key, child: widget.child);
+            }
+            return customGhost ?? KeyedSubtree(key: _key, child: widget.child);
+          },
+        ),
       ),
       placeholder: widget.placeholder ?? widget.child,
       data: widget.data,
@@ -565,6 +579,7 @@ class _SortableState<T> extends State<Sortable<T>>
       lock: layer.widget.lock,
       offset: Offset.zero,
     );
+    _pointerLayerPosition = layerRenderBox.globalToLocal(details.globalPosition);
     layer.pushDraggingSession(_session!);
     widget.onDragStart?.call();
     setState(() {
@@ -612,10 +627,22 @@ class _SortableState<T> extends State<Sortable<T>>
       } else {
         _session!.offset.value += delta;
       }
-      Offset globalPosition = _session!.offset.value +
-          minOffset +
-          Offset((maxOffset.dx - minOffset.dx) / 2,
-              (maxOffset.dy - minOffset.dy) / 2);
+      // Resolve the drop target under the pointer, not the dragged item's
+      // centre, so an item leaves a zone the moment the cursor does (matches
+      // expectations for drag-out-to-remove). Falls back to the item centre if
+      // the pointer position is unknown.
+      Offset globalPosition = _pointerLayerPosition ??
+          (_session!.offset.value +
+              minOffset +
+              Offset((maxOffset.dx - minOffset.dx) / 2,
+                  (maxOffset.dy - minOffset.dy) / 2));
+      // Once the pointer leaves the item's own starting bounds the drag has
+      // genuinely "moved off", so a later release on empty space counts as a
+      // failed drop (removable) in any direction - not only after crossing
+      // another item.
+      if (!Rect.fromPoints(minOffset, maxOffset).contains(globalPosition)) {
+        _hasDraggedOff.value = true;
+      }
       (_SortableState<T>, Offset)? target =
           _findState(_session!.layer, globalPosition);
       if (target == null) {
@@ -632,11 +659,28 @@ class _SortableState<T> extends State<Sortable<T>>
         if (_currentTarget.value != null) {
           _currentTarget.value!.dispose(_session!);
         }
-        var targetRenderBox = target.$1.context.findRenderObject() as RenderBox;
-        var size = targetRenderBox.size;
+        // Resolve the drop location against the target's *content* box rather
+        // than its outer Sortable box. The outer box grows while a candidate
+        // placeholder animates open, which shifts the left/right (or top/bottom)
+        // midpoint under the pointer and makes the drop zone flip back and forth
+        // (jitter, and clipped/"disappearing" neighbors). The content box keeps
+        // a stable size, so the midpoint stays put.
+        final targetState = target.$1;
+        RenderBox sizeBox;
+        Offset localPosition;
+        final contentObject = targetState._key.currentContext?.findRenderObject();
+        if (contentObject is RenderBox && contentObject.hasSize) {
+          sizeBox = contentObject;
+          final globalPos =
+              _session!.layerRenderBox.localToGlobal(globalPosition);
+          localPosition = sizeBox.globalToLocal(globalPos);
+        } else {
+          sizeBox = targetState.context.findRenderObject() as RenderBox;
+          localPosition = target.$2;
+        }
         _SortableDropLocation? location = _getPosition(
-          target.$2,
-          size,
+          localPosition,
+          sizeBox.size,
           acceptTop: widget.onAcceptTop != null,
           acceptLeft: widget.onAcceptLeft != null,
           acceptRight: widget.onAcceptRight != null,
@@ -644,11 +688,11 @@ class _SortableState<T> extends State<Sortable<T>>
         );
         if (location != null) {
           ValueNotifier<_SortableDraggingSession<T>?> candidate =
-              target.$1._getByLocation(location);
+              targetState._getByLocation(location);
 
           candidate.value = _session;
           _currentTarget.value = _DroppingTarget(
-              candidate: candidate, source: target.$1, location: location);
+              candidate: candidate, source: targetState, location: location);
         }
       }
     }
@@ -684,6 +728,8 @@ class _SortableState<T> extends State<Sortable<T>>
     if (_hasClaimedDrop.value) {
       return;
     }
+    _pointerLayerPosition =
+        _session?.layerRenderBox.globalToLocal(details.globalPosition);
     _handleDrag(details.delta);
     _scrollableLayer?._updateDrag(this, details.globalPosition);
   }
@@ -706,6 +752,9 @@ class _SortableState<T> extends State<Sortable<T>>
         _session!.layer.removeDraggingSession(_session!);
         _currentTarget.value = null;
       } else if (_hasDraggedOff.value) {
+        // The item was genuinely dragged away from its slot but released
+        // outside every drop target. If a fallback zone claims it, hand it
+        // over; otherwise this is a failed drop (e.g. drag-out-to-remove).
         var target = _currentFallback.value;
         if (target != null) {
           var sortData = _session!.data;
@@ -713,21 +762,24 @@ class _SortableState<T> extends State<Sortable<T>>
               target.widget.canAccept!(sortData)) {
             target.widget.onAccept?.call(sortData);
           }
-        }
-        _session!.layer.removeDraggingSession(_session!);
-        if (target == null) {
+          _session!.layer.removeDraggingSession(_session!);
+        } else {
+          _session!.layer.removeDraggingSession(_session!);
+          widget.onDropFailed?.call();
           _session!.layer._claimDrop(this, _session!.data, true);
         }
       } else {
-        // basically the same as drag cancel, because the drag has not been
-        // dragged off of itself
+        // The item never left its own position (a tap or tiny nudge), so treat
+        // it as a cancel and animate it back rather than reporting a failed
+        // drop - that used to fire onDropFailed here and made drag-to-remove
+        // trigger on a mere tap while ignoring real drag-outs.
         _session!.layer.removeDraggingSession(_session!);
-        widget.onDropFailed?.call();
         _session!.layer._claimDrop(this, _session!.data, true);
       }
       _claimUnchanged = true;
       _session = null;
     }
+    _pointerLayerPosition = null;
     setState(() {
       _dragging = false;
     });
@@ -744,6 +796,7 @@ class _SortableState<T> extends State<Sortable<T>>
       _session!.layer._claimDrop(this, _session!.data, true);
       _session = null;
     }
+    _pointerLayerPosition = null;
     setState(() {
       _dragging = false;
     });
@@ -1742,10 +1795,17 @@ class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
       } else if (pos > size - widget.scrollThreshold) {
         scrollDelta = delta / 10000;
       }
-      for (var pos in widget.controller.positions) {
-        pos.pointerScroll(scrollDelta);
+      // Only drive scrolling (and re-resolve the drop target against the
+      // scrolled-under-pointer layout) while actually auto-scrolling. Doing this
+      // every frame regardless re-selects the target against animating
+      // placeholders even when the pointer is still, which makes the drop zone
+      // flip back and forth near a boundary (jitter).
+      if (scrollDelta != 0) {
+        for (var pos in widget.controller.positions) {
+          pos.pointerScroll(scrollDelta);
+        }
+        _attached?._handleDrag(Offset.zero);
       }
-      _attached?._handleDrag(Offset.zero);
     }
     _lastElapsed = elapsed;
   }

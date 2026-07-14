@@ -108,13 +108,11 @@ void main() {
                   'pubspec.yaml file:')
               .p(),
           const CodeBlock(
-            // code: 'shadcn_flutter:\n'
-            //     '  git:\n'
-            //     '    url: "https://github.com/sunarya-thito/shadcn_flutter.git"',
             code: 'dependencies:\n'
                 '  shadcn_flutter:\n'
                 '    git:\n'
-                '      url: "https://github.com/sunarya-thito/shadcn_flutter.git"',
+                '      url: "https://github.com/sunarya-thito/shadcn_flutter.git"\n'
+                '      path: packages/shadcn_flutter',
             mode: 'yaml',
           ).p(),
           const Text('See ')

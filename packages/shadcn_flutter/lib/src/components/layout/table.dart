@@ -675,8 +675,7 @@ enum TableCellResizeMode {
 /// )
 /// ```
 class ResizableTable extends StatefulWidget {
-  /// List of table rows to display. Null when constructed via
-  /// [ResizableTable.builder].
+  /// List of table rows to display.
   final List<TableRow>? rows;
 
   /// Controller for managing table resize state.
@@ -692,11 +691,6 @@ class ResizableTable extends StatefulWidget {
   final TableCellResizeMode cellWidthResizeMode;
 
   /// Resize mode for row heights.
-  ///
-  /// Forced to [TableCellResizeMode.none] when constructed via
-  /// [ResizableTable.builder], since per-row resizing is incompatible with
-  /// lazy row loading (the vertical scroll extent depends on every row
-  /// sharing the same fixed height).
   final TableCellResizeMode cellHeightResizeMode;
 
   /// Configuration for frozen (non-scrolling) rows and columns.
@@ -718,25 +712,6 @@ class ResizableTable extends StatefulWidget {
   /// Optional controller for horizontal scrolling owned by this
   /// [ResizableTable]. See [Table.horizontalController].
   final ScrollController? horizontalController;
-
-  /// Total number of rows, only used by [ResizableTable.builder].
-  final int? rowCount;
-
-  /// Builds a single row on demand, only used by [ResizableTable.builder].
-  final TableRow Function(BuildContext context, int index)? rowBuilder;
-
-  /// Fixed height applied to every row, only used by
-  /// [ResizableTable.builder]. Row heights from [controller] are ignored
-  /// in builder mode.
-  final TableSize? rowHeight;
-
-  /// Number of leading rows always built and pinned above the scrolling
-  /// body, only used by [ResizableTable.builder].
-  final int headerRowCount;
-
-  /// Number of trailing rows always built and pinned below the scrolling
-  /// body, only used by [ResizableTable.builder].
-  final int footerRowCount;
 
   /// Creates a [ResizableTable].
   ///
@@ -765,37 +740,7 @@ class ResizableTable extends StatefulWidget {
     this.viewportSize,
     this.verticalController,
     this.horizontalController,
-  })  : rowCount = null,
-        rowBuilder = null,
-        rowHeight = null,
-        headerRowCount = 0,
-        footerRowCount = 0;
-
-  /// Creates a [ResizableTable] that lazily builds its rows.
-  ///
-  /// See [Table.builder] for the general laziness model. Only column
-  /// resizing is supported in builder mode. [cellHeightResizeMode] is
-  /// forced to [TableCellResizeMode.none] and row heights always come from
-  /// the required [rowHeight], not from [controller].
-  const ResizableTable.builder({
-    super.key,
-    required this.controller,
-    required this.rowCount,
-    required this.rowBuilder,
-    required this.rowHeight,
-    this.headerRowCount = 0,
-    this.footerRowCount = 0,
-    this.theme,
-    this.clipBehavior = Clip.hardEdge,
-    this.cellWidthResizeMode = TableCellResizeMode.reallocate,
-    this.frozenCells,
-    this.verticalController,
-    this.horizontalController,
-  })  : rows = null,
-        cellHeightResizeMode = TableCellResizeMode.none,
-        horizontalOffset = null,
-        verticalOffset = null,
-        viewportSize = null;
+  });
 
   @override
   State<ResizableTable> createState() => _ResizableTableState();
@@ -812,15 +757,13 @@ class _ResizableTableState extends State<ResizableTable> {
   @override
   void initState() {
     super.initState();
-    if (widget.rowBuilder == null) {
-      _initResizerRows();
-    }
+    _initResizerRows();
   }
 
   @override
   void didUpdateWidget(covariant ResizableTable oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.rowBuilder == null && !listEquals(widget.rows, oldWidget.rows)) {
+    if (!listEquals(widget.rows, oldWidget.rows)) {
       _initResizerRows();
     }
   }
@@ -882,9 +825,6 @@ class _ResizableTableState extends State<ResizableTable> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.rowBuilder != null) {
-      return _buildLazy(context);
-    }
     ResizableTableTheme? resizableTableTheme =
         widget.theme ?? ComponentTheme.maybeOf<ResizableTableTheme>(context);
     TableTheme? tableTheme = resizableTableTheme?.tableTheme ??
@@ -961,194 +901,6 @@ class _ResizableTableState extends State<ResizableTable> {
             maxRow: _maxRow),
         child: table,
       ),
-    );
-  }
-
-  /// Builds a single contiguous group of rows for [ResizableTable.builder],
-  /// wiring up column-resize support the same way the eager path does.
-  /// See [_TableState._buildLazySection] for the general laziness model.
-  Widget _buildLazySection(
-    BuildContext context,
-    int startAbsolute,
-    int count,
-    double horizontalOffsetForFrozen,
-    Size viewportSizeForFrozen,
-  ) {
-    if (count <= 0) return const SizedBox.shrink();
-    final cells = <_FlattenedTableCell>[];
-    int maxColumn = 0;
-    for (int local = 0; local < count; local++) {
-      final absolute = startAbsolute + local;
-      final row = widget.rowBuilder!(context, absolute);
-      for (int c = 0; c < row.cells.length; c++) {
-        final cell = row.cells[c];
-        maxColumn = max(maxColumn, c + cell.columnSpan - 1);
-        cells.add(_FlattenedTableCell(
-          column: c,
-          row: local,
-          columnSpan: cell.columnSpan,
-          rowSpan: cell.rowSpan,
-          builder: cell.build,
-          enabled: cell.enabled,
-          hoveredCellNotifier: _hoveredCellNotifier,
-          dragNotifier: _dragNotifier,
-          tableCellThemeBuilder: row.buildDefaultTheme,
-          selected: row.selected,
-        ));
-      }
-    }
-    final reorganized = _reorganizeCells(cells);
-    final children = reorganized.map((cell) {
-      return Data.inherit(
-        data: cell,
-        child: RawCell(
-          column: cell.column,
-          row: cell.row,
-          columnSpan: cell.columnSpan,
-          rowSpan: cell.rowSpan,
-          child: Builder(builder: (context) {
-            return cell.builder(context);
-          }),
-        ),
-      );
-    }).toList();
-    return Data.inherit(
-      data: this,
-      child: Data.inherit(
-        data: _ResizableTableData(
-          controller: widget.controller,
-          cellWidthResizeMode: widget.cellWidthResizeMode,
-          cellHeightResizeMode: TableCellResizeMode.none,
-          maxColumn: maxColumn,
-          maxRow: count - 1,
-        ),
-        child: RawTableLayout(
-          clipBehavior: widget.clipBehavior,
-          frozenColumn: widget.frozenCells?.testColumn,
-          horizontalOffset: horizontalOffsetForFrozen,
-          viewportSize: viewportSizeForFrozen,
-          width: (index) => _width(index),
-          height: (_) => widget.rowHeight!,
-          children: children,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLazy(BuildContext context) {
-    final rowHeightSize = widget.rowHeight;
-    if (rowHeightSize is! FixedTableSize) {
-      throw FlutterError('ResizableTable.builder requires rowHeight to be '
-          'a FixedTableSize, got ${rowHeightSize.runtimeType}.');
-    }
-    final rowHeightValue = rowHeightSize.value;
-    final rowCount = widget.rowCount!;
-    final headerCount = widget.headerRowCount.clamp(0, rowCount);
-    final footerCount = widget.footerRowCount.clamp(0, rowCount - headerCount);
-    final bodyRowCount = rowCount - headerCount - footerCount;
-    ResizableTableTheme? resizableTableTheme =
-        widget.theme ?? ComponentTheme.maybeOf<ResizableTableTheme>(context);
-    TableTheme? tableTheme = resizableTableTheme?.tableTheme ??
-        ComponentTheme.maybeOf<TableTheme>(context);
-
-    return ListenableBuilder(
-      listenable: widget.controller,
-      builder: (context, child) {
-        int columnCount = 0;
-        if (headerCount > 0) {
-          columnCount =
-              max(columnCount, widget.rowBuilder!(context, 0).cells.length);
-        }
-        if (bodyRowCount > 0) {
-          columnCount = max(columnCount,
-              widget.rowBuilder!(context, headerCount).cells.length);
-        }
-        if (footerCount > 0) {
-          columnCount = max(columnCount,
-              widget.rowBuilder!(context, rowCount - footerCount).cells.length);
-        }
-        _maxColumn = columnCount > 0 ? columnCount - 1 : 0;
-        _maxRow = 0;
-        double totalContentWidth = 0;
-        for (int c = 0; c < columnCount; c++) {
-          totalContentWidth += widget.controller.getColumnWidth(c);
-        }
-
-        final content = ScrollableClient(
-          verticalDetails:
-              ScrollableDetails.vertical(controller: widget.verticalController),
-          horizontalDetails: ScrollableDetails.horizontal(
-              controller: widget.horizontalController),
-          builder: (context, offset, viewportSize, child) {
-            final window = _computeRowWindow(
-              scrollOffset: offset.dy,
-              viewportHeight: viewportSize.height,
-              rowHeightValue: rowHeightValue,
-              bodyRowCount: bodyRowCount,
-            );
-            final contentHeight =
-                max(bodyRowCount * rowHeightValue, viewportSize.height);
-            return SizedBox(
-              width: totalContentWidth,
-              height: contentHeight,
-              child: Stack(
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  if (window.count > 0)
-                    Positioned(
-                      top: window.start * rowHeightValue,
-                      left: 0,
-                      width: totalContentWidth,
-                      child: _buildLazySection(
-                        context,
-                        headerCount + window.start,
-                        window.count,
-                        offset.dx,
-                        viewportSize,
-                      ),
-                    ),
-                  if (headerCount > 0)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      width: totalContentWidth,
-                      child: Transform.translate(
-                        offset: Offset(0, offset.dy),
-                        child: _buildLazySection(
-                            context, 0, headerCount, offset.dx, viewportSize),
-                      ),
-                    ),
-                  if (footerCount > 0)
-                    Positioned(
-                      top: viewportSize.height - footerCount * rowHeightValue,
-                      left: 0,
-                      width: totalContentWidth,
-                      child: Transform.translate(
-                        offset: Offset(0, offset.dy),
-                        child: _buildLazySection(
-                            context,
-                            rowCount - footerCount,
-                            footerCount,
-                            offset.dx,
-                            viewportSize),
-                      ),
-                    ),
-                ],
-              ),
-            );
-          },
-        );
-
-        return Container(
-          clipBehavior: widget.clipBehavior,
-          decoration: BoxDecoration(
-            border: tableTheme?.border,
-            color: tableTheme?.backgroundColor,
-            borderRadius: tableTheme?.borderRadius,
-          ),
-          child: content,
-        );
-      },
     );
   }
 }
@@ -1539,66 +1291,6 @@ abstract class _TableCellData {
   int get columnSpan;
   int get rowSpan;
   _TableCellData shift(int column, int row);
-}
-
-/// Resolves a list of column widths, given the [FixedTableSize]/
-/// [FlexTableSize] sizes returned by [widthSupplier] for each of
-/// [columnCount] columns and the width available to distribute among flex
-/// columns. Used by the lazy `Table.builder`/`ResizableTable.builder` paths,
-/// which restrict column sizing to Fixed/Flex so widths can be resolved
-/// once per build without measuring any cell content.
-///
-/// Throws [FlutterError] if any resolved size is not [FixedTableSize] or
-/// [FlexTableSize]. [IntrinsicTableSize] requires building and measuring a
-/// cell, which lazy row windowing does not support.
-List<double> _resolveFixedFlexColumnWidths(
-    TableSizeSupplier widthSupplier, int columnCount, double availableWidth) {
-  final sizes = List.generate(columnCount, widthSupplier);
-  double fixedTotal = 0;
-  double flexTotal = 0;
-  for (final size in sizes) {
-    if (size is FixedTableSize) {
-      fixedTotal += size.value;
-    } else if (size is FlexTableSize) {
-      flexTotal += size.flex;
-    } else {
-      throw FlutterError(
-          'Table.builder / ResizableTable.builder column sizes must be '
-          'FixedTableSize or FlexTableSize, got ${size.runtimeType}.');
-    }
-  }
-  final remaining =
-      availableWidth.isFinite ? max(0.0, availableWidth - fixedTotal) : 0.0;
-  final perFlex = flexTotal > 0 ? remaining / flexTotal : 0.0;
-  return [
-    for (final size in sizes)
-      size is FixedTableSize
-          ? size.value
-          : (size as FlexTableSize).flex * perFlex,
-  ];
-}
-
-/// The visible row window (as a half-open range starting at [start] with
-/// [count] rows) to build for a lazy scrolling table body, given the
-/// current scroll position and viewport height. Includes a small lookahead
-/// on both sides so rows are already built by the time they scroll into
-/// view.
-({int start, int count}) _computeRowWindow({
-  required double scrollOffset,
-  required double viewportHeight,
-  required double rowHeightValue,
-  required int bodyRowCount,
-  int lookahead = 5,
-}) {
-  if (bodyRowCount <= 0 || rowHeightValue <= 0) {
-    return (start: 0, count: 0);
-  }
-  final firstVisible = (scrollOffset / rowHeightValue).floor();
-  final visibleCount = (viewportHeight / rowHeightValue).ceil() + 1;
-  final start = (firstVisible - lookahead).clamp(0, bodyRowCount - 1);
-  final endExclusive =
-      (firstVisible + visibleCount + lookahead + 1).clamp(0, bodyRowCount);
-  return (start: start, count: max(0, endExclusive - start));
 }
 
 /// This will shift cell data if there are any overlapping cells due to column or row spans.
@@ -2210,37 +1902,7 @@ class Table extends StatefulWidget {
   /// Type: `List<TableRow>?`. Contains the table data organized as rows.
   /// Can include [TableRow], [TableHeader], and [TableFooter] instances.
   /// Each row contains a list of [TableCell] widgets.
-  ///
-  /// Null when constructed via [Table.builder], which instead builds rows
-  /// lazily via [rowBuilder].
   final List<TableRow>? rows;
-
-  /// Total number of rows, only used by [Table.builder].
-  ///
-  /// Type: `int?`. Required when constructed via [Table.builder].
-  final int? rowCount;
-
-  /// Builds a single row on demand, only used by [Table.builder].
-  ///
-  /// Type: `TableRow Function(BuildContext, int)?`. Called only for rows
-  /// within the current scroll window (plus a small lookahead) and for any
-  /// configured header/footer rows, instead of eagerly for every row.
-  final TableRow Function(BuildContext context, int index)? rowBuilder;
-
-  /// Fixed height applied to every row, only used by [Table.builder].
-  ///
-  /// Type: `TableSize?`. Must be a [FixedTableSize], since lazy row
-  /// windowing requires a row's vertical extent to be knowable without
-  /// building or measuring it.
-  final TableSize? rowHeight;
-
-  /// Number of leading rows (starting at row 0) that are always built and
-  /// pinned above the scrolling body, only used by [Table.builder].
-  final int headerRowCount;
-
-  /// Number of trailing rows (ending at [rowCount] - 1) that are always
-  /// built and pinned below the scrolling body, only used by [Table.builder].
-  final int footerRowCount;
 
   /// Default sizing strategy for all columns.
   ///
@@ -2360,67 +2022,7 @@ class Table extends StatefulWidget {
     this.viewportSize,
     this.verticalController,
     this.horizontalController,
-  })  : rowCount = null,
-        rowBuilder = null,
-        rowHeight = null,
-        headerRowCount = 0,
-        footerRowCount = 0;
-
-  /// Creates a [Table] that lazily builds its rows.
-  ///
-  /// Unlike the default [Table] constructor, which requires every [TableRow]
-  /// to be constructed upfront, [Table.builder] only builds rows within the
-  /// current scroll viewport (plus a small lookahead) via [rowBuilder]. This
-  /// makes it suitable for tables with very large row counts (tens of
-  /// thousands of rows) where eagerly building every row's widgets would be
-  /// too slow.
-  ///
-  /// Because row windowing requires a row's vertical position to be
-  /// knowable without building it, [rowHeight] must be a [FixedTableSize]
-  /// and [columnWidths]/[defaultColumnWidth] must resolve to
-  /// [FixedTableSize] or [FlexTableSize] only. [IntrinsicTableSize] is not
-  /// supported and throws a [FlutterError].
-  ///
-  /// [headerRowCount]/[footerRowCount] mark leading/trailing rows (e.g. a
-  /// header row) that are always built and pinned outside the scrolling
-  /// body, regardless of scroll position. Arbitrary frozen rows in the
-  /// middle of the table are not supported by the builder variant; use
-  /// [frozenCells] for frozen (pinned) columns, which are fully supported.
-  ///
-  /// Example:
-  /// ```dart
-  /// Table.builder(
-  ///   rowCount: 50000,
-  ///   rowHeight: const FixedTableSize(40),
-  ///   headerRowCount: 1,
-  ///   rowBuilder: (context, index) {
-  ///     if (index == 0) {
-  ///       return TableHeader(cells: [TableCell(child: Text('Name'))]);
-  ///     }
-  ///     return TableRow(cells: [TableCell(child: Text('Row $index'))]);
-  ///   },
-  /// );
-  /// ```
-  const Table.builder({
-    super.key,
-    required this.rowCount,
-    required this.rowBuilder,
-    required this.rowHeight,
-    this.headerRowCount = 0,
-    this.footerRowCount = 0,
-    this.defaultColumnWidth = const FlexTableSize(),
-    this.columnWidths,
-    this.clipBehavior = Clip.hardEdge,
-    this.theme,
-    this.frozenCells,
-    this.verticalController,
-    this.horizontalController,
-  })  : rows = null,
-        defaultRowHeight = const IntrinsicTableSize(),
-        rowHeights = null,
-        horizontalOffset = null,
-        verticalOffset = null,
-        viewportSize = null;
+  });
 
   @override
   State<Table> createState() => _TableState();
@@ -2433,15 +2035,13 @@ class _TableState extends State<Table> {
   @override
   void initState() {
     super.initState();
-    if (widget.rowBuilder == null) {
-      _initCells();
-    }
+    _initCells();
   }
 
   @override
   void didUpdateWidget(covariant Table oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.rowBuilder == null && !listEquals(widget.rows, oldWidget.rows)) {
+    if (!listEquals(widget.rows, oldWidget.rows)) {
       _initCells();
     }
   }
@@ -2472,9 +2072,6 @@ class _TableState extends State<Table> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.rowBuilder != null) {
-      return _buildLazy(context);
-    }
     TableTheme? tableTheme =
         widget.theme ?? ComponentTheme.maybeOf<TableTheme>(context);
     Widget buildTable(
@@ -2538,178 +2135,6 @@ class _TableState extends State<Table> {
 
     return buildTable(
         widget.horizontalOffset, widget.verticalOffset, widget.viewportSize);
-  }
-
-  /// Builds a single contiguous group of rows (a header, footer, or the
-  /// currently visible body window) starting at [startAbsolute], using
-  /// locally-renumbered row indices so the resulting [RawTableLayout] stays
-  /// cheap to lay out regardless of how far into the virtual row space
-  /// [startAbsolute] is.
-  Widget _buildLazySection(
-    BuildContext context,
-    int startAbsolute,
-    int count,
-    List<double> columnWidths,
-    double horizontalOffsetForFrozen,
-    Size viewportSizeForFrozen,
-  ) {
-    if (count <= 0) return const SizedBox.shrink();
-    final cells = <_FlattenedTableCell>[];
-    for (int local = 0; local < count; local++) {
-      final absolute = startAbsolute + local;
-      final row = widget.rowBuilder!(context, absolute);
-      for (int c = 0; c < row.cells.length; c++) {
-        final cell = row.cells[c];
-        cells.add(_FlattenedTableCell(
-          column: c,
-          row: local,
-          columnSpan: cell.columnSpan,
-          rowSpan: cell.rowSpan,
-          builder: cell.build,
-          enabled: cell.enabled,
-          hoveredCellNotifier: _hoveredCellNotifier,
-          dragNotifier: null,
-          tableCellThemeBuilder: row.buildDefaultTheme,
-          selected: row.selected,
-        ));
-      }
-    }
-    final reorganized = _reorganizeCells(cells);
-    return RawTableLayout(
-      clipBehavior: widget.clipBehavior,
-      frozenColumn: widget.frozenCells?.testColumn,
-      horizontalOffset: horizontalOffsetForFrozen,
-      viewportSize: viewportSizeForFrozen,
-      width: (index) => index < columnWidths.length
-          ? FixedTableSize(columnWidths[index])
-          : const FixedTableSize(0),
-      height: (_) => widget.rowHeight!,
-      children: reorganized.map((cell) {
-        return Data.inherit(
-          data: cell,
-          child: RawCell(
-            column: cell.column,
-            row: cell.row,
-            columnSpan: cell.columnSpan,
-            rowSpan: cell.rowSpan,
-            child: Builder(builder: (context) {
-              return cell.builder(context);
-            }),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildLazy(BuildContext context) {
-    final rowHeightSize = widget.rowHeight;
-    if (rowHeightSize is! FixedTableSize) {
-      throw FlutterError('Table.builder requires rowHeight to be a '
-          'FixedTableSize, got ${rowHeightSize.runtimeType}.');
-    }
-    final rowHeightValue = rowHeightSize.value;
-    final rowCount = widget.rowCount!;
-    final headerCount = widget.headerRowCount.clamp(0, rowCount);
-    final footerCount = widget.footerRowCount.clamp(0, rowCount - headerCount);
-    final bodyRowCount = rowCount - headerCount - footerCount;
-    final tableTheme =
-        widget.theme ?? ComponentTheme.maybeOf<TableTheme>(context);
-
-    int columnCount = 0;
-    if (headerCount > 0) {
-      columnCount =
-          max(columnCount, widget.rowBuilder!(context, 0).cells.length);
-    }
-    if (bodyRowCount > 0) {
-      columnCount = max(
-          columnCount, widget.rowBuilder!(context, headerCount).cells.length);
-    }
-    if (footerCount > 0) {
-      columnCount = max(columnCount,
-          widget.rowBuilder!(context, rowCount - footerCount).cells.length);
-    }
-
-    TableSizeSupplier widthSupplier = (index) {
-      return widget.columnWidths?[index] ?? widget.defaultColumnWidth;
-    };
-
-    return LayoutBuilder(builder: (context, constraints) {
-      final columnWidths = _resolveFixedFlexColumnWidths(
-          widthSupplier, columnCount, constraints.maxWidth);
-      final totalContentWidth = columnWidths.fold(0.0, (a, b) => a + b);
-
-      final content = ScrollableClient(
-        verticalDetails:
-            ScrollableDetails.vertical(controller: widget.verticalController),
-        horizontalDetails: ScrollableDetails.horizontal(
-            controller: widget.horizontalController),
-        builder: (context, offset, viewportSize, child) {
-          final window = _computeRowWindow(
-            scrollOffset: offset.dy,
-            viewportHeight: viewportSize.height,
-            rowHeightValue: rowHeightValue,
-            bodyRowCount: bodyRowCount,
-          );
-          final contentHeight =
-              max(bodyRowCount * rowHeightValue, viewportSize.height);
-          return SizedBox(
-            width: totalContentWidth,
-            height: contentHeight,
-            child: Stack(
-              clipBehavior: Clip.hardEdge,
-              children: [
-                if (window.count > 0)
-                  Positioned(
-                    top: window.start * rowHeightValue,
-                    left: 0,
-                    width: totalContentWidth,
-                    child: _buildLazySection(
-                      context,
-                      headerCount + window.start,
-                      window.count,
-                      columnWidths,
-                      offset.dx,
-                      viewportSize,
-                    ),
-                  ),
-                if (headerCount > 0)
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    width: totalContentWidth,
-                    child: Transform.translate(
-                      offset: Offset(0, offset.dy),
-                      child: _buildLazySection(context, 0, headerCount,
-                          columnWidths, offset.dx, viewportSize),
-                    ),
-                  ),
-                if (footerCount > 0)
-                  Positioned(
-                    top: viewportSize.height - footerCount * rowHeightValue,
-                    left: 0,
-                    width: totalContentWidth,
-                    child: Transform.translate(
-                      offset: Offset(0, offset.dy),
-                      child: _buildLazySection(context, rowCount - footerCount,
-                          footerCount, columnWidths, offset.dx, viewportSize),
-                    ),
-                  ),
-              ],
-            ),
-          );
-        },
-      );
-
-      return Container(
-        clipBehavior: widget.clipBehavior,
-        decoration: BoxDecoration(
-          border: tableTheme?.border,
-          color: tableTheme?.backgroundColor,
-          borderRadius: tableTheme?.borderRadius,
-        ),
-        child: content,
-      );
-    });
   }
 }
 

@@ -15,54 +15,54 @@ class _TreeExample1State extends State<TreeExample1> {
   bool usePath = true;
   bool recursiveSelection = false;
   List<TreeNode<String>> treeItems = [
-    TreeItem(
+    TreeItemNode(
       data: 'Apple',
       expanded: true,
       children: [
-        TreeItem(data: 'Red Apple', children: [
-          TreeItem(data: 'Red Apple 1'),
-          TreeItem(data: 'Red Apple 2'),
+        TreeItemNode(data: 'Red Apple', children: [
+          TreeItemNode(data: 'Red Apple 1'),
+          TreeItemNode(data: 'Red Apple 2'),
         ]),
-        TreeItem(data: 'Green Apple'),
+        TreeItemNode(data: 'Green Apple'),
       ],
     ),
-    TreeItem(
+    TreeItemNode(
       data: 'Banana',
       children: [
-        TreeItem(data: 'Yellow Banana'),
-        TreeItem(data: 'Green Banana', children: [
-          TreeItem(data: 'Green Banana 1'),
-          TreeItem(data: 'Green Banana 2'),
-          TreeItem(data: 'Green Banana 3'),
+        TreeItemNode(data: 'Yellow Banana'),
+        TreeItemNode(data: 'Green Banana', children: [
+          TreeItemNode(data: 'Green Banana 1'),
+          TreeItemNode(data: 'Green Banana 2'),
+          TreeItemNode(data: 'Green Banana 3'),
         ]),
       ],
     ),
-    TreeItem(
+    TreeItemNode(
       data: 'Cherry',
       children: [
-        TreeItem(data: 'Red Cherry'),
-        TreeItem(data: 'Green Cherry'),
+        TreeItemNode(data: 'Red Cherry'),
+        TreeItemNode(data: 'Green Cherry'),
       ],
     ),
-    TreeItem(
+    TreeItemNode(
       data: 'Date',
     ),
     // Tree Root acts as a parent node with no data,
     // it will flatten the children into the parent node
-    TreeRoot(
+    TreeRootNode(
       children: [
-        TreeItem(
+        TreeItemNode(
           data: 'Elderberry',
           children: [
-            TreeItem(data: 'Black Elderberry'),
-            TreeItem(data: 'Red Elderberry'),
+            TreeItemNode(data: 'Black Elderberry'),
+            TreeItemNode(data: 'Red Elderberry'),
           ],
         ),
-        TreeItem(
+        TreeItemNode(
           data: 'Fig',
           children: [
-            TreeItem(data: 'Green Fig'),
-            TreeItem(data: 'Purple Fig'),
+            TreeItemNode(data: 'Green Fig'),
+            TreeItemNode(data: 'Purple Fig'),
           ],
         ),
       ],
@@ -97,7 +97,7 @@ class _TreeExample1State extends State<TreeExample1> {
                 },
               ),
               builder: (context, node) {
-                return TreeItemView(
+                return TreeItem(
                   onPressed: () {},
                   trailing: node.leaf
                       ? Container(

@@ -51,6 +51,7 @@ import 'package:docs/pages/docs/components/refresh_trigger_example.dart';
 import 'package:docs/pages/docs/components/repeated_animation_builder_example.dart';
 import 'package:docs/pages/docs/components/resizable_example.dart';
 import 'package:docs/pages/docs/components/scaffold_example.dart';
+import 'package:docs/pages/docs/components/pinned_sheet_example.dart';
 import 'package:docs/pages/docs/components/select_example.dart';
 import 'package:docs/pages/docs/components/sheet_example.dart';
 import 'package:docs/pages/docs/components/skeleton_example.dart';
@@ -489,6 +490,13 @@ class MyAppState extends State<MyApp> {
             name: 'sheet',
             builder: (context, state) {
               return const SheetExample();
+            },
+          ),
+          GoRoute(
+            path: 'pinned_sheet',
+            name: 'pinned_sheet',
+            builder: (context, state) {
+              return const PinnedSheetExample();
             },
           ),
           GoRoute(

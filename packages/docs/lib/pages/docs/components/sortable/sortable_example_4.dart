@@ -53,8 +53,9 @@ class _SortableExample4State extends State<SortableExample4> {
               controller: controller,
               itemBuilder: (context, i) {
                 return Sortable<String>(
-                  // Stable key helps maintain drag state with virtualization.
-                  key: ValueKey(i),
+                  // Identity key: items reorder, so the key must follow the
+                  // data (not the index) to keep drag state with its item.
+                  key: ValueKey(names[i].data),
                   data: names[i],
                   onAcceptTop: (value) {
                     setState(() {

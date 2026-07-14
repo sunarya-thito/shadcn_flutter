@@ -59,15 +59,19 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
           suggestions: _suggestions,
           child: ChipInput<String>(
             controller: _controller,
+            clipboardHandler: DecoratedChipClipboardHandler(
+              prefix: '@',
+              delimiter: ';',
+              chipDeserializer: (inner) => inner,
+            ),
             onChipSubmitted: (value) {
               setState(() {
                 _suggestions = [];
               });
-              // Transform the chip value before storing it.
-              return '@$value';
+              return value;
             },
             chipBuilder: (context, chip) {
-              return Text(chip);
+              return Text('@$chip');
             },
           ),
         ),

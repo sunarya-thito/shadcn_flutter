@@ -86,17 +86,31 @@ class ContextAnchor extends Anchor {
       this.context == null ? ContextAnchor(context) : this;
 }
 
-/// An [Anchor] resolved dynamically through [OverlayAnchorRegistry], via the
+/// An [Anchor] resolved dynamically through an [OverlayAnchorRegistry], via the
 /// key an [OverlayAnchor] widget was registered with.
+///
+/// The registry is resolved from the [BuildContext] passed to a `show()` call
+/// (see [resolve]) so the anchor connects to the nearest [OverlayAnchorScope];
+/// pass [registry] explicitly to target a specific one.
 class LinkedAnchor extends Anchor {
   /// The registry key, matching an [OverlayAnchor.anchor].
   final Object key;
 
+  /// The registry this anchor is bound to. When null it is filled in by
+  /// [resolve] from the calling context's nearest [OverlayAnchorScope].
+  final OverlayAnchorRegistry? registry;
+
   /// Creates a [LinkedAnchor].
-  const LinkedAnchor(this.key);
+  const LinkedAnchor(this.key, {this.registry});
 
   @override
-  AnchorSubscription subscribe() => _LinkedAnchorSubscription(key);
+  Anchor resolve(BuildContext context) => registry != null
+      ? this
+      : LinkedAnchor(key, registry: OverlayAnchorRegistry.of(context));
+
+  @override
+  AnchorSubscription subscribe() =>
+      _LinkedAnchorSubscription(key, registry ?? OverlayAnchorRegistry.global);
 }
 
 /// [ContextAnchor]'s subscription. There's no reliable "about to move/be
@@ -177,34 +191,35 @@ class _ContextAnchorSubscription extends ChangeNotifier
 class _LinkedAnchorSubscription extends ChangeNotifier
     implements AnchorSubscription {
   final Object key;
+  final OverlayAnchorRegistry registry;
 
-  _LinkedAnchorSubscription(this.key);
+  _LinkedAnchorSubscription(this.key, this.registry);
 
   @override
   bool get supportsCompositeTracking => true;
 
   @override
   RenderBox? get currentAnchorBox {
-    final box = OverlayAnchorRegistry.find(key)?.renderBox;
+    final box = registry.find(key)?.renderBox;
     return (box != null && box.attached) ? box : null;
   }
 
   @override
   bool get isVisible {
-    final entry = OverlayAnchorRegistry.find(key);
+    final entry = registry.find(key);
     return entry != null && entry.context.mounted;
   }
 
   @override
   Size? get anchorSize {
-    final box = OverlayAnchorRegistry.find(key)?.renderBox;
+    final box = registry.find(key)?.renderBox;
     if (box == null || !box.attached || !box.hasSize) return null;
     return box.size;
   }
 
   @override
   Matrix4 computeTransform(RenderObject source) {
-    final box = OverlayAnchorRegistry.find(key)?.renderBox;
+    final box = registry.find(key)?.renderBox;
     if (box == null || !box.attached) return Matrix4.identity();
     return anchorTransformRelativeTo(box, source);
   }

@@ -303,6 +303,8 @@ class DocsPageState extends State<DocsPage> {
         ShadcnDocsPage('Hover Card', 'hover_card'),
         ShadcnDocsPage('Popover', 'popover'),
         ShadcnDocsPage('Sheet', 'sheet'),
+        ShadcnDocsPage(
+            'Pinned Sheet', 'pinned_sheet', ShadcnFeatureTag.newFeature),
         ShadcnDocsPage('Swiper', 'swiper'),
         ShadcnDocsPage('Tooltip', 'tooltip'),
         ShadcnDocsPage('Window', 'window', ShadcnFeatureTag.experimental),

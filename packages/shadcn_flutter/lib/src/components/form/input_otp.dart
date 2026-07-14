@@ -518,6 +518,7 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
                     color: theme.colorScheme.input.scaleAlpha(0.3),
                     border: Border.all(
                       color: theme.colorScheme.border,
+                      strokeAlign: BorderSide.strokeAlignCenter,
                     ),
                     borderRadius: getBorderRadiusByRelativeIndex(
                       theme,

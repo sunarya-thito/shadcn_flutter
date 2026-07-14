@@ -35,7 +35,7 @@ class _SortableExample3State extends State<SortableExample3> {
             children: [
               for (int i = 0; i < names.length; i++)
                 Sortable<String>(
-                  key: ValueKey(i),
+                  key: ValueKey(names[i].data),
                   data: names[i],
                   // For horizontal sorting, drop on the left/right edges to reorder.
                   onAcceptLeft: (value) {
