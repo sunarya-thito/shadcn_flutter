@@ -79,6 +79,7 @@ import 'package:docs/pages/docs/components/tree_example.dart';
 import 'package:docs/pages/docs/components/window_example.dart';
 import 'package:docs/pages/docs/components/wrapper_example.dart';
 import 'package:docs/pages/docs/components_page.dart';
+import 'package:docs/pages/docs/genui_page.dart';
 import 'package:docs/pages/docs/icons_page.dart';
 import 'package:docs/pages/docs/installation_page.dart';
 import 'package:docs/pages/docs/introduction_page.dart';
@@ -273,6 +274,11 @@ class MyAppState extends State<MyApp> {
       path: '/state',
       name: 'state',
       builder: (context, state) => const StateManagementPage(),
+    ),
+    GoRoute(
+      path: '/genui',
+      name: 'genui',
+      builder: (context, state) => const GenUIPage(),
     ),
     GoRoute(
         path: '/components',

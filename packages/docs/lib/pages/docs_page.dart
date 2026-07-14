@@ -166,6 +166,7 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Colors', 'colors'),
           ShadcnDocsPage('Material/Cupertino', 'external'),
           ShadcnDocsPage('State Management', 'state'),
+          ShadcnDocsPage('GenUI', 'genui', ShadcnFeatureTag.experimental),
         ]),
         Icons.book),
     // COMPONENTS BEGIN
