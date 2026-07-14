@@ -11,6 +11,13 @@
     `openSheetOverlay` This eliminates the need to use `Builder` widgets to wrap
     trigger components just to obtain a nested `BuildContext` for
     `findRenderObject()`.
+- **[#271] PinnedSheet component**: A new sheet variant that stays pinned to its
+  anchor.
+- **`shadcn_flutter_genui` package**: Added a new companion package to the
+  monorepo.
+- Added `DecoratedChipClipboardHandler` and improved `ChipInput` clipboard
+  handling.
+- Added focus-based paint ordering on the text field and its input features.
 
 ### Changed
 
@@ -20,6 +27,12 @@
 - Simplified PhoneInput component. Dial code is now mandatory and
   filterPlusCode, filterZeroCode, and filterCountryCode are now marked as
   deprecated.
+- **Renamed `TreeView` to `Tree`** (breaking): update usages of `TreeView` and
+  related APIs to the new `Tree` name.
+- **[#367] Migrated to the new Overlay system**: Overlays now use the reworked
+  overlay implementation.
+- Made `paintOrder` nullable.
+- Improved `InputOTP` border and paint order.
 
 ### Fixed
 
@@ -29,7 +42,15 @@
   morphs smoothly when transitioning between shape/border-radius changes.
 - Cleaned up redundant and deprecated `Builder` widget usages in documentation,
   main examples, and sub-components.
-- **[#415] Fixed inconsistent InputFeature text setting
+- **[#415]** Fixed inconsistent InputFeature text setting.
+- **[#411]** Fixed `Sortable` losing/incorrectly tracking its state, and fixed
+  the sortable example.
+- **[#417]** Fixed `Divider` rendering inside a vertically-unbounded parent.
+- Fixed `Stepper` line alignment.
+- Fixed paint order for `ButtonGroup`.
+- Fixed paint order for input features.
+- Fixed `AutoComplete` overlay behavior.
+- Fixed popover positioning.
 
 ## [0.0.52]
 
