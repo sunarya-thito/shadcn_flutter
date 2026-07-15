@@ -1,0 +1,196 @@
+{
+  "name": "TypeScript",
+  "version": "1.0.0",
+  "fileTypes": ["ts", "tsx"],
+  "scopeName": "source.ts",
+
+  "foldingStartMarker": "\\{\\s*$",
+  "foldingStopMarker": "^\\s*\\}",
+
+  "patterns": [
+    {
+      "name": "meta.declaration.typescript",
+      "begin": "\\b(import|export|class|interface|enum|type|function|var|let|const|namespace|module)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.declaration.typescript"
+        }
+      },
+      "end": "(\\{|;|$)",
+      "patterns": [
+        {
+          "include": "#type-annotations"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#constants-and-literals"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#templates"
+    }
+  ],
+
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation.typescript",
+          "begin": "/\\*\\*",
+          "end": "\\*/",
+          "patterns": [
+            {
+              "include": "#tsdoc"
+            }
+          ]
+        },
+        {
+          "name": "comment.block.typescript",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.line.double-slash.typescript",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.typescript",
+          "match": "\\b(if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw|yield|await)\\b"
+        },
+        {
+          "name": "keyword.control.async.typescript",
+          "match": "\\b(async|await)\\b"
+        },
+        {
+          "name": "keyword.declaration.typescript",
+          "match": "\\b(class|interface|enum|type|function|namespace|module|abstract|extends|implements)\\b"
+        },
+        {
+          "name": "keyword.other.typescript",
+          "match": "\\b(public|private|protected|static|readonly|declare|const|let|var|new|delete|in|of|instanceof|typeof|void)\\b"
+        }
+      ]
+    },
+    "constants-and-literals": {
+      "patterns": [
+        {
+          "name": "constant.language.typescript",
+          "match": "\\b(true|false|null|undefined|NaN|Infinity)\\b"
+        },
+        {
+          "name": "constant.numeric.typescript",
+          "match": "\\b(-?\\d+(\\.\\d+)?([eE][+-]?\\d+)?)\\b"
+        },
+        {
+          "name": "constant.character.escape.typescript",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.typescript",
+          "match": "(=|\\+=|-=|\\*=|/=|%=|&&=|\\|\\|=|\\^=|<<=|>>=|>>>=)"
+        },
+        {
+          "name": "keyword.operator.arithmetic.typescript",
+          "match": "(\\+|-|\\*|\\/|%)"
+        },
+        {
+          "name": "keyword.operator.comparison.typescript",
+          "match": "(==|===|!=|!==|<=?|>=?)"
+        },
+        {
+          "name": "keyword.operator.logical.typescript",
+          "match": "(\\!|&&|\\|\\|)"
+        },
+        {
+          "name": "keyword.operator.bitwise.typescript",
+          "match": "(\\&|\\||\\^|<<|>>|>>>)"
+        },
+        {
+          "name": "keyword.operator.ternary.typescript",
+          "match": "(\\?|:)"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.typescript",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.typescript",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.typescript",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.typescript",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "templates": {
+      "patterns": [
+        {
+          "name": "string.quoted.template.typescript",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "name": "string.interpolated.typescript",
+              "begin": "\\$\\{",
+              "end": "\\}"
+            },
+            {
+              "name": "constant.character.escape.typescript",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "type-annotations": {
+      "patterns": [
+        {
+          "match": ":\\s*([a-zA-Z_$][\\w$]*)",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.typescript"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
