@@ -1582,6 +1582,19 @@ extension ColorExtension on Color {
     return hsl.withLightness(luminance).toColor();
   }
 
+  Color darken([double amount = .1]) {
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+    return hslDark.toColor();
+  }
+
+  Color lighten([double amount = .1]) {
+    final hsl = HSLColor.fromColor(this);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    return hslLight.toColor();
+  }
+
   /// Converts this color to hexadecimal string.
   ///
   /// Parameters:
@@ -2198,6 +2211,7 @@ class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
 class ErrorFilter extends StatefulWidget {
   /// Child widget to wrap with error filtering.
   final Widget child;
+
   /// Creates an [ErrorFilter].
   ///
   /// Parameters:

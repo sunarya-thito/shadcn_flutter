@@ -10,3 +10,4 @@ workspace:
 - packages/docs
 - packages/gen
 - packages/shadcn_flutter_genui
+- packages/shadcn_flutter_genui/example
