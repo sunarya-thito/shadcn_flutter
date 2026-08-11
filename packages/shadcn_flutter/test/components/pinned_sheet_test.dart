@@ -265,6 +265,7 @@ void main() {
               position: OverlayPosition.bottom,
               stages: const [SheetStage.closed(), SheetStage.expanded()],
               initialStage: const SheetStage.closed(),
+              contentExpands: true,
               backdrop: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
@@ -276,7 +277,6 @@ void main() {
                 ),
               ),
               child: const DrawerContainer(
-                expands: true,
                 child:
                     SizedBox(height: 120, child: Center(child: Text('sheet'))),
               ),
@@ -322,8 +322,8 @@ void main() {
                 const SheetStage.expanded()
               ],
               initialStage: ninety,
+              contentExpands: true,
               child: DrawerContainer(
-                expands: true,
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: const [

@@ -1,10 +1,11 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-/// Demonstrates `DrawerContainer(expands: true)`: the sheet content is sized to
-/// the visible extent (0 when closed → the backdrop size when fully open)
-/// instead of sliding. With `intrinsic: true` (the default) the content stops
-/// shrinking at its intrinsic size, so it never overflows. The "90%" stage
-/// (`SheetStage.expanded() * 0.9`) stops 10% short of fully covering.
+/// Demonstrates `PinnedSheet(contentExpands: true)`: the sheet content is
+/// sized to the visible extent (0 when closed → the backdrop size when fully
+/// open) instead of sliding. With `contentIntrinsic: true` (the default) the
+/// content stops shrinking at its intrinsic size, so it never overflows. The
+/// "90%" stage (`SheetStage.expanded() * 0.9`) stops 10% short of fully
+/// covering.
 class PinnedSheetExample5 extends StatefulWidget {
   const PinnedSheetExample5({super.key});
 
@@ -41,6 +42,8 @@ class _PinnedSheetExample5State extends State<PinnedSheetExample5> {
           position: OverlayPosition.bottom,
           stages: stages,
           initialStage: const SheetStage.closed(),
+          // Sizes the content to the visible extent instead of sliding it.
+          contentExpands: true,
           backdropTransform: const ScaleBackdropTransform(),
           backdrop: Container(
             color: theme.colorScheme.muted,
@@ -63,10 +66,7 @@ class _PinnedSheetExample5State extends State<PinnedSheetExample5> {
               ],
             ),
           ),
-          // expands: true sizes the content to the visible extent; intrinsic
-          // (default true) floors it at the content's natural size.
           child: DrawerContainer(
-            expands: true,
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(

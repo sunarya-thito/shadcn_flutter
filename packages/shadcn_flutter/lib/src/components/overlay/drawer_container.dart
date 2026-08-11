@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// A cross-axis size for a drawer/sheet container, resolved against the
@@ -407,8 +408,9 @@ class DrawerRawContainer extends StatelessWidget {
           children: [
             Gap(max(0.0, extraSize.width + over)),
             Flexible(
-              child: Transform.scale(
-                scaleX: 1 + overscroll / size.width / 4,
+              child: _OverscrollScale(
+                overscroll: overscroll,
+                axis: Axis.horizontal,
                 alignment: Alignment.centerRight,
                 child: child,
               ),
@@ -431,8 +433,9 @@ class DrawerRawContainer extends StatelessWidget {
               Gap(gapAfter),
             ],
             Flexible(
-              child: Transform.scale(
-                scaleX: 1 + overscroll / size.width / 4,
+              child: _OverscrollScale(
+                overscroll: overscroll,
+                axis: Axis.horizontal,
                 alignment: Alignment.centerLeft,
                 child: child,
               ),
@@ -446,8 +449,9 @@ class DrawerRawContainer extends StatelessWidget {
           children: [
             Gap(max(0.0, extraSize.height + over)),
             Flexible(
-              child: Transform.scale(
-                scaleY: 1 + overscroll / size.height / 4,
+              child: _OverscrollScale(
+                overscroll: overscroll,
+                axis: Axis.vertical,
                 alignment: Alignment.bottomCenter,
                 child: child,
               ),
@@ -469,8 +473,9 @@ class DrawerRawContainer extends StatelessWidget {
               Gap(gapAfter),
             ],
             Flexible(
-              child: Transform.scale(
-                scaleY: 1 + overscroll / size.height / 4,
+              child: _OverscrollScale(
+                overscroll: overscroll,
+                axis: Axis.vertical,
                 alignment: Alignment.topCenter,
                 child: child,
               ),
@@ -859,16 +864,6 @@ class DrawerContainer extends StatelessWidget {
   /// Cross-axis alignment in `[-1, 1]`.
   final double alignment;
 
-  /// When true, the sheet content is sized along the main axis to the currently
-  /// visible extent (0 when closed, the backdrop extent when fully open) instead
-  /// of sliding a fixed-size child. See [intrinsic].
-  final bool expands;
-
-  /// When [expands] is true, floors the sheet's main-axis size at the child's
-  /// intrinsic size so it stops shrinking (preventing overflow) rather than
-  /// clipping the content down to nothing. Defaults to true.
-  final bool intrinsic;
-
   /// Creates a data-driven drawer container.
   const DrawerContainer({
     super.key,
@@ -877,8 +872,6 @@ class DrawerContainer extends StatelessWidget {
     this.endPadding = 0,
     this.size,
     this.alignment = 0,
-    this.expands = false,
-    this.intrinsic = true,
   });
 
   /// A drawer container aligned to the cross-axis start.
@@ -888,8 +881,6 @@ class DrawerContainer extends StatelessWidget {
     this.startPadding = 0,
     this.endPadding = 0,
     this.size,
-    this.expands = false,
-    this.intrinsic = true,
   }) : alignment = -1;
 
   /// A drawer container centered on the cross axis.
@@ -899,8 +890,6 @@ class DrawerContainer extends StatelessWidget {
     this.startPadding = 0,
     this.endPadding = 0,
     this.size,
-    this.expands = false,
-    this.intrinsic = true,
   }) : alignment = 0;
 
   /// A drawer container aligned to the cross-axis end.
@@ -910,8 +899,6 @@ class DrawerContainer extends StatelessWidget {
     this.startPadding = 0,
     this.endPadding = 0,
     this.size,
-    this.expands = false,
-    this.intrinsic = true,
   }) : alignment = 1;
 
   @override
@@ -945,12 +932,6 @@ class SheetContainer extends StatelessWidget {
   /// Cross-axis alignment in `[-1, 1]`.
   final double alignment;
 
-  /// See [DrawerContainer.expands].
-  final bool expands;
-
-  /// See [DrawerContainer.intrinsic].
-  final bool intrinsic;
-
   /// Creates a data-driven sheet container.
   const SheetContainer({
     super.key,
@@ -959,8 +940,6 @@ class SheetContainer extends StatelessWidget {
     this.endPadding = 0,
     this.size,
     this.alignment = 0,
-    this.expands = false,
-    this.intrinsic = true,
   });
 
   /// A sheet container aligned to the cross-axis start.
@@ -970,8 +949,6 @@ class SheetContainer extends StatelessWidget {
     this.startPadding = 0,
     this.endPadding = 0,
     this.size,
-    this.expands = false,
-    this.intrinsic = true,
   }) : alignment = -1;
 
   /// A sheet container centered on the cross axis.
@@ -981,8 +958,6 @@ class SheetContainer extends StatelessWidget {
     this.startPadding = 0,
     this.endPadding = 0,
     this.size,
-    this.expands = false,
-    this.intrinsic = true,
   }) : alignment = 0;
 
   /// A sheet container aligned to the cross-axis end.
@@ -992,8 +967,6 @@ class SheetContainer extends StatelessWidget {
     this.startPadding = 0,
     this.endPadding = 0,
     this.size,
-    this.expands = false,
-    this.intrinsic = true,
   }) : alignment = 1;
 
   @override
@@ -1004,6 +977,126 @@ class SheetContainer extends StatelessWidget {
       endPadding: endPadding,
       crossAxisSize: size,
       crossAxisAlignment: alignment,
+    );
+  }
+}
+
+/// Scales [child] for the overscroll "bounce" effect, deriving the scale
+/// factor from [overscroll] and the child's own size — measured directly at
+/// layout time rather than threaded in as a separately-measured value.
+/// Self-measuring means the factor is exact on every frame, including the
+/// very first one (no staleness window to correct on a later rebuild).
+class _OverscrollScale extends SingleChildRenderObjectWidget {
+  final double overscroll;
+  final Axis axis;
+  final Alignment alignment;
+
+  const _OverscrollScale({
+    required this.overscroll,
+    required this.axis,
+    required this.alignment,
+    super.child,
+  });
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return _RenderOverscrollScale(
+      overscroll: overscroll,
+      axis: axis,
+      alignment: alignment,
+    );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, _RenderOverscrollScale renderObject) {
+    renderObject
+      ..overscroll = overscroll
+      ..axis = axis
+      ..alignment = alignment;
+  }
+}
+
+class _RenderOverscrollScale extends RenderProxyBox {
+  _RenderOverscrollScale({
+    required double overscroll,
+    required Axis axis,
+    required Alignment alignment,
+  })  : _overscroll = overscroll,
+        _axis = axis,
+        _alignment = alignment;
+
+  double _overscroll;
+  set overscroll(double value) {
+    if (_overscroll == value) return;
+    _overscroll = value;
+    markNeedsPaint();
+  }
+
+  Axis _axis;
+  set axis(Axis value) {
+    if (_axis == value) return;
+    _axis = value;
+    markNeedsPaint();
+  }
+
+  Alignment _alignment;
+  set alignment(Alignment value) {
+    if (_alignment == value) return;
+    _alignment = value;
+    markNeedsPaint();
+  }
+
+  /// The current scale matrix, derived from [_overscroll] and the child's
+  /// own (just-laid-out) size.
+  Matrix4 _transform() {
+    final child = this.child;
+    final childSize = child?.size ?? Size.zero;
+    final divisor = _axis == Axis.horizontal ? childSize.width : childSize.height;
+    final scale = divisor > 0 ? 1 + _overscroll / divisor / 4 : 1.0;
+    final scaleX = _axis == Axis.horizontal ? scale : 1.0;
+    final scaleY = _axis == Axis.vertical ? scale : 1.0;
+    final origin = _alignment.alongSize(childSize);
+    return Matrix4.identity()
+      ..translateByDouble(origin.dx, origin.dy, 0, 1)
+      ..scaleByDouble(scaleX, scaleY, 1, 1)
+      ..translateByDouble(-origin.dx, -origin.dy, 0, 1);
+  }
+
+  @override
+  bool get alwaysNeedsCompositing => false;
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    final child = this.child;
+    if (child == null) return;
+    if (_overscroll == 0) {
+      // No-op transform: paint directly, matching Transform's own fast path.
+      context.paintChild(child, offset);
+      return;
+    }
+    context.pushTransform(needsCompositing, offset, _transform(), (
+      PaintingContext context,
+      Offset offset,
+    ) {
+      context.paintChild(child, offset);
+    });
+  }
+
+  @override
+  void applyPaintTransform(RenderBox child, Matrix4 transform) {
+    transform.multiply(_transform());
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    final child = this.child;
+    if (child == null) return false;
+    return result.addWithPaintTransform(
+      transform: _transform(),
+      position: position,
+      hitTest: (result, transformed) =>
+          child.hitTest(result, position: transformed),
     );
   }
 }

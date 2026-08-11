@@ -6,6 +6,7 @@
 - `adaptiveOverlay` is now set to false.
 - Removed `OverlayHandler`, `OverlayManager`, `OverlayManagerLayer`, and `*OverlayHandler` from internal use.
 - `bool? adaptiveOverlay` and `OverlayConfiguration? overlayConfiguration` now lives in overlay component's component themes.
+- `DrawerContainer.intrinsic` and `DrawerContainer.expands` is moved to `PinnedSheet.contentExpands` and `DrawerContainer.contentIntrinsic`
 
 ### Fixed
 - **[#420] DatePicker**: Calendar navigation arrow icons now flip to match RTL
@@ -14,6 +15,7 @@
   horizontal `SideSheet` inside a vertical `BottomSheet`) no longer leak
   leftover drag delta into the parent sheet's own axis; the drag chain now
   only propagates between sheets that share the same drag axis.
+- Fixed PinnedSheet not immediately layout the sheet.
 
 ## [0.0.53]
 
