@@ -213,6 +213,18 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
     return localizations.datePickerSelectYear;
   }
 
+  /// Builds a directional arrow icon that mirrors horizontally in RTL
+  /// layouts, so navigation arrows keep pointing towards the "previous" and
+  /// "next" reading directions instead of always pointing left/right.
+  Widget _buildDirectionalArrow(
+      BuildContext context, IconData icon, Color? color) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    return Transform.flip(
+      flipX: isRtl,
+      child: Icon(icon, color: color),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
@@ -252,7 +264,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             }
                           });
                         },
-                        child: Icon(LucideIcons.arrowLeft, color: arrowColor)
+                        child: _buildDirectionalArrow(
+                                context, LucideIcons.arrowLeft, arrowColor)
                             .iconXSmall(),
                       ),
                       SizedBox(
@@ -313,7 +326,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                          child: _buildDirectionalArrow(
+                                  context, LucideIcons.arrowRight, arrowColor)
                               .iconXSmall(),
                         ),
                     ],
@@ -379,7 +393,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                               }
                             });
                           },
-                          child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                          child: _buildDirectionalArrow(
+                                  context, LucideIcons.arrowRight, arrowColor)
                               .iconXSmall(),
                         ),
                       ],
@@ -465,8 +480,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child:
-                    Icon(LucideIcons.arrowLeft, color: arrowColor).iconXSmall(),
+                child: _buildDirectionalArrow(
+                        context, LucideIcons.arrowLeft, arrowColor)
+                    .iconXSmall(),
               ),
               SizedBox(
                 width: theme.scaling * 16,
@@ -517,7 +533,8 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     }
                   });
                 },
-                child: Icon(LucideIcons.arrowRight, color: arrowColor)
+                child: _buildDirectionalArrow(
+                        context, LucideIcons.arrowRight, arrowColor)
                     .iconXSmall(),
               ),
             ],
