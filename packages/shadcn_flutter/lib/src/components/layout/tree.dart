@@ -2270,42 +2270,11 @@ class TreeItem extends StatefulWidget {
 }
 
 class _TreeItemState extends State<TreeItem> {
-  late FocusNode _focusNode;
   final WidgetStatesController _statesController = WidgetStatesController();
   DateTime? _lastTap;
   int _tapCount = 0;
 
   TreeNodeData? _data;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-    _focusNode.addListener(_onFocusChanged);
-  }
-
-  @override
-  void didUpdateWidget(covariant TreeItem oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.focusNode != oldWidget.focusNode) {
-      oldWidget.focusNode?.removeListener(_onFocusChanged);
-      _focusNode = widget.focusNode ?? FocusNode();
-      _focusNode.addListener(_onFocusChanged);
-    }
-  }
-
-  @override
-  void dispose() {
-    _focusNode.removeListener(_onFocusChanged);
-    super.dispose();
-  }
-
-  void _onFocusChanged() {
-    _updateState(WidgetState.focused, _focusNode.hasFocus);
-    if (_data != null && _focusNode.hasFocus) {
-      _data!.onFocusChanged?.call(FocusChangeReason.focusScope);
-    }
-  }
 
   void _updateState(WidgetState state, bool value) {
     if (!mounted) return;
@@ -2340,63 +2309,12 @@ class _TreeItemState extends State<TreeItem> {
       if (canExpand) {
         widget.onExpand!(!data.node.expanded);
       }
-      _focusNode.requestFocus();
       _tapCount = 0;
     } else {
       widget.onPressed?.call();
       _feedbackForTap();
-      _focusNode.requestFocus();
       _data!.onFocusChanged?.call(FocusChangeReason.userInteraction);
     }
-  }
-
-  KeyEventResult _handleKeyEvent(KeyEvent event) {
-    final data = _data;
-    if (data == null) return KeyEventResult.ignored;
-    // Only handle keys when the item itself has primary focus. When a
-    // descendant (e.g. a TextField/IME) has focus, let keys propagate so they
-    // reach the platform / text input instead of being consumed here.
-    if (!_focusNode.hasPrimaryFocus) return KeyEventResult.ignored;
-    if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
-      return KeyEventResult.ignored;
-    }
-    // Let modified keys (shift+arrow range-select, ctrl+space multi-select at
-    // the Tree level) propagate up rather than consuming them here.
-    if (HardwareKeyboard.instance.isControlPressed ||
-        HardwareKeyboard.instance.isShiftPressed ||
-        HardwareKeyboard.instance.isAltPressed ||
-        HardwareKeyboard.instance.isMetaPressed) {
-      return KeyEventResult.ignored;
-    }
-    final canExpand = widget.onExpand != null &&
-        (widget.expandable ?? data.node.children.isNotEmpty);
-    final key = event.logicalKey;
-    if (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.space) {
-      if (canExpand) {
-        widget.onExpand!(!data.node.expanded);
-      }
-      widget.onPressed?.call();
-      return KeyEventResult.handled;
-    }
-    if (key == LogicalKeyboardKey.arrowUp) {
-      _focusNode.focusInDirection(TraversalDirection.up);
-      return KeyEventResult.handled;
-    }
-    if (key == LogicalKeyboardKey.arrowDown) {
-      _focusNode.focusInDirection(TraversalDirection.down);
-      return KeyEventResult.handled;
-    }
-    if (canExpand) {
-      if (key == LogicalKeyboardKey.arrowRight) {
-        widget.onExpand!(true);
-        return KeyEventResult.handled;
-      }
-      if (key == LogicalKeyboardKey.arrowLeft) {
-        widget.onExpand!(false);
-        return KeyEventResult.handled;
-      }
-    }
-    return KeyEventResult.ignored;
   }
 
   void _feedbackForTap() {
