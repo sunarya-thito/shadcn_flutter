@@ -769,6 +769,12 @@ class _PinnedSheetState extends State<PinnedSheet>
     }
   }
 
+  /// Whether this sheet drags along the vertical axis (top/bottom) rather
+  /// than the horizontal one (left/right).
+  bool get _isVertical =>
+      resolvedPosition == OverlayPosition.top ||
+      resolvedPosition == OverlayPosition.bottom;
+
   /// Applies a raw [primaryDelta] to this sheet, clamped to its `[0, 1]` range,
   /// and returns the unconsumed leftover [primaryDelta] (0 when fully consumed).
   double _applyDrag(double primaryDelta) {
@@ -786,12 +792,21 @@ class _PinnedSheetState extends State<PinnedSheet>
     _overscroll.value += _dragSign * leftover / max(_overscroll.value, 1);
   }
 
-  /// This sheet plus its ancestor sheets, innermost (child) first.
+  /// This sheet plus its ancestor sheets that share this sheet's drag axis
+  /// (vertical vs horizontal), innermost (child) first. An ancestor dragging
+  /// on the other axis is skipped — its own gesture handles its own axis, so
+  /// forwarding a cross-axis delta to it would move it on an axis the user
+  /// never dragged (and, in RTL layouts, along a delta whose sign was never
+  /// resolved for it). The walk still continues past a mismatched ancestor to
+  /// reach further ones that do share the axis.
   List<_PinnedSheetState> _dragChain() {
     final chain = <_PinnedSheetState>[];
+    final vertical = _isVertical;
     _PinnedSheetState? node = this;
     while (node != null) {
-      chain.add(node);
+      if (node._isVertical == vertical) {
+        chain.add(node);
+      }
       node = node._parentSheet;
     }
     return chain;
@@ -1053,8 +1068,7 @@ class _PinnedSheetState extends State<PinnedSheet>
   }
 
   Widget _wrapGesture(OverlayPosition resolved, Widget child) {
-    final isVertical =
-        resolved == OverlayPosition.top || resolved == OverlayPosition.bottom;
+    final isVertical = _isVertical;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onVerticalDragStart: isVertical ? _onDragStart : null,
