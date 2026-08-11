@@ -16,33 +16,32 @@ class AlertDialogExample1 extends StatelessWidget {
         // Standard Flutter API to present a dialog above the current route.
         showOverlay(
           context,
-          DialogConfiguration(
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Alert title'),
-                content: const Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                actions: [
-                  // Secondary action to cancel/dismiss.
-                  OutlineButton(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      // Close the dialog.
-                      Navigator.pop(context);
-                    },
-                  ),
-                  // Primary action to accept/confirm.
-                  PrimaryButton(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      // Close the dialog. In real apps, perform work before closing.
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
+          DialogConfiguration(),
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Alert title'),
+              content: const Text(
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+              actions: [
+                // Secondary action to cancel/dismiss.
+                OutlineButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    // Close the dialog.
+                    Navigator.pop(context);
+                  },
+                ),
+                // Primary action to accept/confirm.
+                PrimaryButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    // Close the dialog. In real apps, perform work before closing.
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
         );
       },
     );

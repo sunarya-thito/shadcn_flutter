@@ -22,8 +22,8 @@ void main() {
                       PopoverConfiguration(
                         anchor: LinkedAnchor(#myAnchor),
                         alignment: Alignment.bottomCenter,
-                        builder: (context) => Text('Popover Content'),
                       ),
+                      builder: (context) => Text('Popover Content'),
                     );
                   },
                   child: Text('Show Popover'),
@@ -62,8 +62,8 @@ void main() {
                       DrawerConfiguration(
                         anchor: LinkedAnchor(#myDrawerAnchor),
                         position: OverlayPosition.left,
-                        builder: (context) => Text('Drawer Content'),
                       ),
+                      builder: (context) => Text('Drawer Content'),
                     );
                   },
                   child: Text('Show Drawer'),
@@ -108,8 +108,8 @@ void main() {
                         PopoverConfiguration(
                           anchor: LinkedAnchor(#tempAnchor),
                           alignment: Alignment.bottomCenter,
-                          builder: (context) => Text('Temp Popover'),
                         ),
+                        builder: (context) => Text('Temp Popover'),
                       );
                     },
                     child: Text('Show Temp'),
@@ -147,11 +147,11 @@ void main() {
                   PopoverConfiguration(
                     anchor: LinkedAnchor(#neverRegisteredAnchor),
                     alignment: Alignment.bottomCenter,
-                    builder: (context) => Text('Popover Content'),
-                    // ShadcnApp defaults to SheetOverlayHandler on mobile;
-                    // force a real popover to exercise the isVisible gate.
-                    handler: const PopoverOverlayHandler(),
                   ),
+                  builder: (context) => Text('Popover Content'),
+                  // Force a real popover (never a mobile bottom-drawer
+                  // conversion) to exercise the isVisible gate.
+                  adaptive: false,
                 );
               },
               child: Text('Show Popover'),
@@ -191,9 +191,9 @@ void main() {
                         PopoverConfiguration(
                           anchor: LinkedAnchor(#vanishingAnchor),
                           alignment: Alignment.bottomCenter,
-                          builder: (context) => Text('Popover Content'),
-                          handler: const PopoverOverlayHandler(),
                         ),
+                        builder: (context) => Text('Popover Content'),
+                        adaptive: false,
                       );
                     },
                     child: Text('Show Popover'),
@@ -256,14 +256,14 @@ void main() {
                       // runs, which is where the corner-snapping regression
                       // manifested.
                       alignment: Alignment.topCenter,
-                      builder: (context) => SizedBox(
-                        key: popoverKey,
-                        width: 120,
-                        height: 60,
-                        child: const Text('Popover Content'),
-                      ),
-                      handler: const PopoverOverlayHandler(),
                     ),
+                    builder: (context) => SizedBox(
+                      key: popoverKey,
+                      width: 120,
+                      height: 60,
+                      child: const Text('Popover Content'),
+                    ),
+                    adaptive: false,
                   );
                 },
                 child: const Text('Show Popover'),
@@ -316,14 +316,14 @@ void main() {
                         anchor: const LinkedAnchor(#scrollAnchor),
                         alignment: Alignment.bottomCenter,
                         anchorAlignment: Alignment.topCenter,
-                        builder: (context) => SizedBox(
-                          key: popoverKey,
-                          width: 120,
-                          height: 60,
-                          child: const Text('Popover Content'),
-                        ),
-                        handler: const PopoverOverlayHandler(),
                       ),
+                      builder: (context) => SizedBox(
+                        key: popoverKey,
+                        width: 120,
+                        height: 60,
+                        child: const Text('Popover Content'),
+                      ),
+                      adaptive: false,
                     );
                   },
                   child: const Text('Show Popover'),
@@ -404,14 +404,14 @@ void main() {
                         // Opens below the anchor.
                         alignment: Alignment.topCenter,
                         anchorAlignment: Alignment.bottomCenter,
-                        builder: (context) => SizedBox(
-                          key: popoverKey,
-                          width: 120,
-                          height: 200,
-                          child: const Text('Popover Content'),
-                        ),
-                        handler: const PopoverOverlayHandler(),
                       ),
+                      builder: (context) => SizedBox(
+                        key: popoverKey,
+                        width: 120,
+                        height: 200,
+                        child: const Text('Popover Content'),
+                      ),
+                      adaptive: false,
                     );
                   },
                   child: const Text('Show Popover'),
@@ -504,14 +504,14 @@ void main() {
                           // Opens downward from the anchor.
                           alignment: Alignment.topCenter,
                           anchorAlignment: Alignment.bottomCenter,
-                          builder: (context) => SizedBox(
-                            key: popoverKey,
-                            width: 120,
-                            height: 560,
-                            child: const Text('P'),
-                          ),
-                          handler: const PopoverOverlayHandler(),
                         ),
+                        builder: (context) => SizedBox(
+                          key: popoverKey,
+                          width: 120,
+                          height: 560,
+                          child: const Text('P'),
+                        ),
+                        adaptive: false,
                       );
                     },
                     child: const Text('Show'),

@@ -50,6 +50,11 @@ class InputHintFeature extends InputFeature {
   /// Whether to enable keyboard shortcut (F1) to show the hint.
   final bool enableShortcuts;
 
+  /// Whether the hint popover may adapt to a different presentation on
+  /// mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults
+  /// to `true` when null.
+  final bool? adaptiveOverlay;
+
   /// Creates an [InputHintFeature].
   ///
   /// Parameters:
@@ -60,6 +65,7 @@ class InputHintFeature extends InputFeature {
   /// - [enableShortcuts] (`bool`, default: `true`): Enable F1 keyboard shortcut.
   /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
   /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
+  /// - [adaptiveOverlay] (`bool?`, optional): whether `adaptiveConversion` runs for this overlay.
   const InputHintFeature({
     super.visibility,
     super.skipFocusTraversal,
@@ -67,6 +73,7 @@ class InputHintFeature extends InputFeature {
     this.position = InputFeaturePosition.trailing,
     this.icon,
     this.enableShortcuts = true,
+    this.adaptiveOverlay,
   });
 
   @override
@@ -78,11 +85,12 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
   void _showPopup(BuildContext context) {
     _popoverController.show(
       context,
-      PopoverConfiguration(
-        builder: feature.popupBuilder,
+      const PopoverConfiguration(
         alignment: AlignmentDirectional.topCenter,
         anchorAlignment: AlignmentDirectional.bottomCenter,
       ),
+      builder: feature.popupBuilder,
+      adaptive: feature.adaptiveOverlay ?? true,
     );
   }
 
@@ -497,14 +505,13 @@ class InputAutoCompleteFeature extends InputFeature {
   /// Constraints for the popover size.
   final BoxConstraints? popoverConstraints;
 
-  /// Width constraint for the popover.
-  final PopoverConstraint? popoverWidthConstraint;
+  /// Overrides the [OverlayConfiguration] used to present the suggestion
+  /// popover.
+  final OverlayConfiguration? overlayConfiguration;
 
-  /// Anchor alignment for the popover.
-  final AlignmentDirectional? popoverAnchorAlignment;
-
-  /// Popover alignment relative to the anchor.
-  final AlignmentDirectional? popoverAlignment;
+  /// Whether the suggestion popover may adapt to a different presentation on
+  /// mobile platforms (see [showOverlay]'s `adaptive` parameter).
+  final bool? adaptiveOverlay;
 
   /// Autocomplete mode (e.g., popover or inline).
   final AutoCompleteMode mode;
@@ -515,9 +522,8 @@ class InputAutoCompleteFeature extends InputFeature {
   /// - [querySuggestions] (`SuggestionBuilder`, required): Provides suggestions.
   /// - [child] (`Widget`, required): Content for suggestion items.
   /// - [popoverConstraints] (`BoxConstraints?`, optional): Size constraints.
-  /// - [popoverWidthConstraint] (`PopoverConstraint?`, optional): Width constraint.
-  /// - [popoverAnchorAlignment] (`AlignmentDirectional?`, optional): Anchor alignment.
-  /// - [popoverAlignment] (`AlignmentDirectional?`, optional): Popover alignment.
+  /// - [overlayConfiguration] (`OverlayConfiguration?`, optional): overrides the popover presentation.
+  /// - [adaptiveOverlay] (`bool?`, optional): whether `adaptiveConversion` runs for this overlay.
   /// - [mode] (`AutoCompleteMode`, required): Autocomplete display mode.
   /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
   /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
@@ -527,9 +533,8 @@ class InputAutoCompleteFeature extends InputFeature {
     required this.querySuggestions,
     required this.child,
     this.popoverConstraints,
-    this.popoverWidthConstraint,
-    this.popoverAnchorAlignment,
-    this.popoverAlignment,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
     this.mode = AutoCompleteMode.replaceWord,
   });
 
@@ -563,9 +568,8 @@ class _AutoCompleteFeatureState
                 suggestions:
                     snapshot.hasData ? snapshot.requireData.toList() : const [],
                 popoverConstraints: feature.popoverConstraints,
-                popoverWidthConstraint: feature.popoverWidthConstraint,
-                popoverAnchorAlignment: feature.popoverAnchorAlignment,
-                popoverAlignment: feature.popoverAlignment,
+                overlayConfiguration: feature.overlayConfiguration,
+                adaptiveOverlay: feature.adaptiveOverlay,
                 mode: feature.mode,
                 child: child!,
               );
@@ -576,9 +580,8 @@ class _AutoCompleteFeatureState
           key: _key,
           suggestions: suggestions == null ? const [] : suggestions.toList(),
           popoverConstraints: feature.popoverConstraints,
-          popoverWidthConstraint: feature.popoverWidthConstraint,
-          popoverAnchorAlignment: feature.popoverAnchorAlignment,
-          popoverAlignment: feature.popoverAlignment,
+          overlayConfiguration: feature.overlayConfiguration,
+          adaptiveOverlay: feature.adaptiveOverlay,
           mode: feature.mode,
           child: child!,
         );

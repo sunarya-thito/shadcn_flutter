@@ -15,11 +15,14 @@ class SelectTheme extends ComponentThemeData {
   /// Constraints for the popup menu size.
   final BoxConstraints? popupConstraints;
 
-  /// Alignment of the popover relative to the anchor.
-  final AlignmentGeometry? popoverAlignment;
+  /// Overrides the [OverlayConfiguration] used to present the popup, when
+  /// not overridden per-instance by [SelectBase.overlayConfiguration].
+  final OverlayConfiguration? overlayConfiguration;
 
-  /// Anchor alignment for the popover.
-  final AlignmentGeometry? popoverAnchorAlignment;
+  /// Whether the popup may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter), when not
+  /// overridden per-instance by [SelectBase.adaptiveOverlay].
+  final bool? adaptiveOverlay;
 
   /// Border radius for select items.
   final BorderRadiusGeometry? borderRadius;
@@ -39,8 +42,8 @@ class SelectTheme extends ComponentThemeData {
   /// Creates a select theme.
   const SelectTheme({
     this.popupConstraints,
-    this.popoverAlignment,
-    this.popoverAnchorAlignment,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
     this.borderRadius,
     this.padding,
     this.disableHoverEffect,
@@ -51,8 +54,8 @@ class SelectTheme extends ComponentThemeData {
   /// Creates a copy of this theme with the given fields replaced.
   SelectTheme copyWith({
     ValueGetter<BoxConstraints?>? popupConstraints,
-    ValueGetter<AlignmentGeometry?>? popoverAlignment,
-    ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment,
+    ValueGetter<OverlayConfiguration?>? overlayConfiguration,
+    ValueGetter<bool?>? adaptiveOverlay,
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
     ValueGetter<EdgeInsetsGeometry?>? padding,
     ValueGetter<bool?>? disableHoverEffect,
@@ -62,11 +65,11 @@ class SelectTheme extends ComponentThemeData {
     return SelectTheme(
       popupConstraints:
           popupConstraints == null ? this.popupConstraints : popupConstraints(),
-      popoverAlignment:
-          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
-      popoverAnchorAlignment: popoverAnchorAlignment == null
-          ? this.popoverAnchorAlignment
-          : popoverAnchorAlignment(),
+      overlayConfiguration: overlayConfiguration == null
+          ? this.overlayConfiguration
+          : overlayConfiguration(),
+      adaptiveOverlay:
+          adaptiveOverlay == null ? this.adaptiveOverlay : adaptiveOverlay(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       padding: padding == null ? this.padding : padding(),
       disableHoverEffect: disableHoverEffect == null
@@ -82,8 +85,8 @@ class SelectTheme extends ComponentThemeData {
   bool operator ==(Object other) {
     return other is SelectTheme &&
         other.popupConstraints == popupConstraints &&
-        other.popoverAlignment == popoverAlignment &&
-        other.popoverAnchorAlignment == popoverAnchorAlignment &&
+        other.overlayConfiguration == overlayConfiguration &&
+        other.adaptiveOverlay == adaptiveOverlay &&
         other.borderRadius == borderRadius &&
         other.padding == padding &&
         other.disableHoverEffect == disableHoverEffect &&
@@ -94,8 +97,8 @@ class SelectTheme extends ComponentThemeData {
   @override
   int get hashCode => Object.hash(
         popupConstraints,
-        popoverAlignment,
-        popoverAnchorAlignment,
+        overlayConfiguration,
+        adaptiveOverlay,
         borderRadius,
         padding,
         disableHoverEffect,
@@ -196,15 +199,13 @@ class ControlledSelect<T> extends StatelessWidget
   @override
   final BoxConstraints? popupConstraints;
   @override
-  final PopoverConstraint popupWidthConstraint;
+  final OverlayConfiguration? overlayConfiguration;
+  @override
+  final bool? adaptiveOverlay;
   @override
   final BorderRadiusGeometry? borderRadius;
   @override
   final EdgeInsetsGeometry? padding;
-  @override
-  final AlignmentGeometry popoverAlignment;
-  @override
-  final AlignmentGeometry? popoverAnchorAlignment;
   @override
   final bool disableHoverEffect;
   @override
@@ -240,11 +241,9 @@ class ControlledSelect<T> extends StatelessWidget
   /// - [focusNode] (FocusNode?, optional): custom focus node for keyboard handling
   /// - [constraints] (BoxConstraints?, optional): size constraints for select widget
   /// - [popupConstraints] (BoxConstraints?, optional): size constraints for popup
-  /// - [popupWidthConstraint] (PopoverConstraint, default: anchorFixedSize): popup width behavior
+  /// - [overlayConfiguration] (OverlayConfiguration?, optional): overrides the popup presentation
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
   /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
-  /// - [popoverAlignment] (AlignmentGeometry, default: topCenter): popup alignment
-  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): anchor alignment
   /// - [disableHoverEffect] (bool, default: false): disable item hover effects
   /// - [canUnselect] (bool, default: false): allow deselecting current item
   /// - [autoClosePopover] (bool, default: true): close popup after selection
@@ -254,6 +253,7 @@ class ControlledSelect<T> extends StatelessWidget
   /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<T>?`, optional): selection validation
   /// - [showValuePredicate] (`Predicate<T>?`, optional): visibility filter for values
   /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   ///
   /// Example:
   /// ```dart
@@ -275,11 +275,9 @@ class ControlledSelect<T> extends StatelessWidget
     this.focusNode,
     this.constraints,
     this.popupConstraints,
-    this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
+    this.overlayConfiguration,
     this.borderRadius,
     this.padding,
-    this.popoverAlignment = Alignment.topCenter,
-    this.popoverAnchorAlignment,
     this.disableHoverEffect = false,
     this.canUnselect = false,
     this.autoClosePopover = true,
@@ -289,6 +287,7 @@ class ControlledSelect<T> extends StatelessWidget
     this.valueSelectionHandler,
     this.valueSelectionPredicate,
     this.showValuePredicate,
+    this.adaptiveOverlay,
   });
 
   @override
@@ -302,12 +301,10 @@ class ControlledSelect<T> extends StatelessWidget
           focusNode: focusNode,
           constraints: constraints,
           popupConstraints: popupConstraints,
-          popupWidthConstraint: popupWidthConstraint,
+          overlayConfiguration: overlayConfiguration,
           value: data.value,
           borderRadius: borderRadius,
           padding: padding,
-          popoverAlignment: popoverAlignment,
-          popoverAnchorAlignment: popoverAnchorAlignment,
           disableHoverEffect: disableHoverEffect,
           canUnselect: canUnselect,
           autoClosePopover: autoClosePopover,
@@ -317,6 +314,7 @@ class ControlledSelect<T> extends StatelessWidget
           valueSelectionPredicate: valueSelectionPredicate,
           showValuePredicate: showValuePredicate,
           popup: popup,
+          adaptiveOverlay: adaptiveOverlay,
         );
       },
       initialValue: initialValue,
@@ -422,15 +420,13 @@ class ControlledMultiSelect<T> extends StatelessWidget
   @override
   final BoxConstraints? popupConstraints;
   @override
-  final PopoverConstraint popupWidthConstraint;
+  final OverlayConfiguration? overlayConfiguration;
+  @override
+  final bool? adaptiveOverlay;
   @override
   final BorderRadiusGeometry? borderRadius;
   @override
   final EdgeInsetsGeometry? padding;
-  @override
-  final AlignmentGeometry popoverAlignment;
-  @override
-  final AlignmentGeometry? popoverAnchorAlignment;
   @override
   final bool disableHoverEffect;
   @override
@@ -471,11 +467,9 @@ class ControlledMultiSelect<T> extends StatelessWidget
   /// - [focusNode] (FocusNode?, optional): custom focus node for keyboard handling
   /// - [constraints] (BoxConstraints?, optional): size constraints for select widget
   /// - [popupConstraints] (BoxConstraints?, optional): size constraints for popup
-  /// - [popupWidthConstraint] (PopoverConstraint, default: anchorFixedSize): popup width behavior
+  /// - [overlayConfiguration] (OverlayConfiguration?, optional): overrides the popup presentation
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
   /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
-  /// - [popoverAlignment] (AlignmentGeometry, default: topCenter): popup alignment
-  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): anchor alignment
   /// - [disableHoverEffect] (bool, default: false): disable item hover effects
   /// - [canUnselect] (bool, default: false): allow deselecting all items
   /// - [autoClosePopover] (bool, default: false): close popup after each selection
@@ -486,6 +480,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
   /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<Iterable<T>>?`, optional): selection validation
   /// - [showValuePredicate] (`Predicate<Iterable<T>>?`, optional): visibility filter for values
   /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   ///
   /// Example:
   /// ```dart
@@ -512,11 +507,9 @@ class ControlledMultiSelect<T> extends StatelessWidget
     this.focusNode,
     this.constraints,
     this.popupConstraints,
-    this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
+    this.overlayConfiguration,
     this.borderRadius,
     this.padding,
-    this.popoverAlignment = Alignment.topCenter,
-    this.popoverAnchorAlignment,
     this.disableHoverEffect = false,
     this.canUnselect = true,
     this.autoClosePopover = false,
@@ -526,6 +519,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
     required SelectValueBuilder<T> itemBuilder,
     this.valueSelectionHandler,
     this.valueSelectionPredicate,
+    this.adaptiveOverlay,
   }) : multiItemBuilder = itemBuilder;
 
   @override
@@ -540,11 +534,9 @@ class ControlledMultiSelect<T> extends StatelessWidget
       focusNode: focusNode,
       constraints: constraints,
       popupConstraints: popupConstraints,
-      popupWidthConstraint: popupWidthConstraint,
+      overlayConfiguration: overlayConfiguration,
       borderRadius: borderRadius,
       padding: padding,
-      popoverAlignment: popoverAlignment,
-      popoverAnchorAlignment: popoverAnchorAlignment,
       disableHoverEffect: disableHoverEffect,
       canUnselect: canUnselect,
       autoClosePopover: autoClosePopover,
@@ -557,6 +549,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
           valueSelectionHandler ?? _defaultMultiSelectValueSelectionHandler,
       valueSelectionPredicate:
           valueSelectionPredicate ?? _defaultMultiSelectValueSelectionPredicate,
+      adaptiveOverlay: adaptiveOverlay,
     );
   }
 }
@@ -847,20 +840,20 @@ mixin SelectBase<T> {
   /// Size constraints for the popup menu.
   BoxConstraints? get popupConstraints;
 
-  /// How popup width should relate to trigger width.
-  PopoverConstraint get popupWidthConstraint;
+  /// Overrides the [OverlayConfiguration] used to present the popup. When
+  /// null, a default [PopoverConfiguration] is used
+  /// (`PopoverConstraint.anchorFixedSize`, `Alignment.topCenter`).
+  OverlayConfiguration? get overlayConfiguration;
+
+  /// Whether the popup may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter).
+  bool? get adaptiveOverlay;
 
   /// Border radius of the select trigger.
   BorderRadiusGeometry? get borderRadius;
 
   /// Internal padding of the select trigger.
   EdgeInsetsGeometry? get padding;
-
-  /// Alignment of popup relative to trigger.
-  AlignmentGeometry get popoverAlignment;
-
-  /// Alignment of anchor point for popup positioning.
-  AlignmentGeometry? get popoverAnchorAlignment;
 
   /// Whether to disable hover effects.
   bool get disableHoverEffect;
@@ -962,7 +955,9 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   @override
   final BoxConstraints? popupConstraints;
   @override
-  final PopoverConstraint popupWidthConstraint;
+  final OverlayConfiguration? overlayConfiguration;
+  @override
+  final bool? adaptiveOverlay;
 
   /// The currently selected value.
   final T? value;
@@ -971,10 +966,6 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   final BorderRadiusGeometry? borderRadius;
   @override
   final EdgeInsetsGeometry? padding;
-  @override
-  final AlignmentGeometry popoverAlignment;
-  @override
-  final AlignmentGeometry? popoverAnchorAlignment;
   @override
   final bool disableHoverEffect;
   @override
@@ -1010,13 +1001,11 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   /// - [focusNode] (FocusNode?): Focus node for keyboard interaction
   /// - [constraints] (BoxConstraints?): Size constraints for the select button
   /// - [popupConstraints] (BoxConstraints?): Size constraints for the popup menu
-  /// - [popupWidthConstraint] (PopoverConstraint): Width constraint mode for popup, defaults to `PopoverConstraint.anchorFixedSize`
+  /// - [overlayConfiguration] (OverlayConfiguration?): overrides the popup presentation
   /// - [value] (T?): Currently selected value
   /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
   /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
   /// - [padding] (EdgeInsetsGeometry?): Custom padding
-  /// - [popoverAlignment] (AlignmentGeometry): Popup alignment, defaults to `Alignment.topCenter`
-  /// - [popoverAnchorAlignment] (AlignmentGeometry?): Anchor alignment for popup positioning
   /// - [canUnselect] (bool): Whether user can deselect current value, defaults to false
   /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to true
   /// - [enabled] (bool?): Whether select is enabled for interaction
@@ -1026,6 +1015,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   /// - [popup] (SelectPopupBuilder): Required builder for popup content
   /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for selected value display
   /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
+  /// - [adaptiveOverlay] (bool?): whether `adaptiveConversion` runs for this overlay
   const Select({
     super.key,
     this.onChanged,
@@ -1034,13 +1024,11 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
     this.focusNode,
     this.constraints,
     this.popupConstraints,
-    this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
+    this.overlayConfiguration,
     this.value,
     this.disableHoverEffect = false,
     this.borderRadius,
     this.padding,
-    this.popoverAlignment = Alignment.topCenter,
-    this.popoverAnchorAlignment,
     this.canUnselect = false,
     this.autoClosePopover = true,
     this.enabled,
@@ -1050,6 +1038,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
     this.expandIcon = const SelectExpandIcon(),
     required this.popup,
     required this.itemBuilder,
+    this.adaptiveOverlay,
   });
 
   @override
@@ -1091,16 +1080,13 @@ class SelectState<T> extends State<Select<T>>
         defaultValue: null,
       );
 
-  AlignmentGeometry get _popoverAlignment => styleValue(
-        widgetValue: widget.popoverAlignment,
-        themeValue: _theme?.popoverAlignment,
-        defaultValue: Alignment.topCenter,
-      );
+  OverlayConfiguration? get _overlayConfigurationOverride =>
+      widget.overlayConfiguration ?? _theme?.overlayConfiguration;
 
-  AlignmentGeometry? get _popoverAnchorAlignment => styleValue(
-        widgetValue: widget.popoverAnchorAlignment,
-        themeValue: _theme?.popoverAnchorAlignment,
-        defaultValue: null,
+  bool get _adaptiveOverlay => styleValue(
+        widgetValue: widget.adaptiveOverlay,
+        themeValue: _theme?.adaptiveOverlay,
+        defaultValue: true,
       );
 
   BorderRadiusGeometry? get _borderRadius => styleValue(
@@ -1252,47 +1238,50 @@ class SelectState<T> extends State<Select<T>>
                     _popoverController
                         .show(
                       context,
-                      PopoverConfiguration(
-                        offset: Offset(0, densityGap),
-                        alignment: _popoverAlignment,
-                        anchorAlignment: _popoverAnchorAlignment,
-                        widthConstraint: widget.popupWidthConstraint,
-                        overlayBarrier: OverlayBarrier(
-                          padding: EdgeInsets.symmetric(vertical: densityGap),
-                          borderRadius: BorderRadius.circular(theme.radiusLg),
-                        ),
-                        builder: (context) {
-                          return ConstrainedBox(
-                            constraints: _popupConstraints ??
-                                BoxConstraints(
-                                  maxHeight:
-                                      Select.kDefaultSelectMaxHeight * scaling,
-                                ),
-                            child: ListenableBuilder(
-                              listenable: _valueNotifier,
-                              builder: (context, _) {
-                                return Data.inherit(
-                                  key: ValueKey(widget.value),
-                                  data: SelectData(
-                                    enabled: enabled,
-                                    autoClose: _autoClosePopover,
-                                    isSelected: _isSelected,
-                                    onChanged: _onChanged,
-                                    hasSelection: widget.value != null,
-                                    expandIcon: widget.expandIcon,
-                                  ),
-                                  child: Builder(
-                                    key: popupKey,
-                                    builder: (context) {
-                                      return widget.popup(context);
-                                    },
-                                  ),
-                                );
-                              },
+                      _overlayConfigurationOverride ??
+                          PopoverConfiguration(
+                            offset: Offset(0, densityGap),
+                            alignment: Alignment.topCenter,
+                            widthConstraint: PopoverConstraint.anchorFixedSize,
+                            overlayBarrier: OverlayBarrier(
+                              padding:
+                                  EdgeInsets.symmetric(vertical: densityGap),
+                              borderRadius:
+                                  BorderRadius.circular(theme.radiusLg),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                      builder: (context) {
+                        return ConstrainedBox(
+                          constraints: _popupConstraints ??
+                              BoxConstraints(
+                                maxHeight:
+                                    Select.kDefaultSelectMaxHeight * scaling,
+                              ),
+                          child: ListenableBuilder(
+                            listenable: _valueNotifier,
+                            builder: (context, _) {
+                              return Data.inherit(
+                                key: ValueKey(widget.value),
+                                data: SelectData(
+                                  enabled: enabled,
+                                  autoClose: _autoClosePopover,
+                                  isSelected: _isSelected,
+                                  onChanged: _onChanged,
+                                  hasSelection: widget.value != null,
+                                  expandIcon: widget.expandIcon,
+                                ),
+                                child: Builder(
+                                  key: popupKey,
+                                  builder: (context) {
+                                    return widget.popup(context);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      adaptive: _adaptiveOverlay,
                     )
                         .then((value) {
                       _focusNode.requestFocus();
@@ -1483,7 +1472,9 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
   final BoxConstraints? popupConstraints;
   @override
-  final PopoverConstraint popupWidthConstraint;
+  final OverlayConfiguration? overlayConfiguration;
+  @override
+  final bool? adaptiveOverlay;
 
   /// The currently selected values.
   final Iterable<T>? value;
@@ -1492,10 +1483,6 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final BorderRadiusGeometry? borderRadius;
   @override
   final EdgeInsetsGeometry? padding;
-  @override
-  final AlignmentGeometry popoverAlignment;
-  @override
-  final AlignmentGeometry? popoverAnchorAlignment;
   @override
   final bool disableHoverEffect;
   @override
@@ -1539,13 +1526,11 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   /// - [focusNode] (FocusNode?): Focus node for keyboard interaction
   /// - [constraints] (BoxConstraints?): Size constraints for the select button
   /// - [popupConstraints] (BoxConstraints?): Size constraints for the popup menu
-  /// - [popupWidthConstraint] (PopoverConstraint): Width constraint mode for popup, defaults to `PopoverConstraint.anchorFixedSize`
+  /// - [overlayConfiguration] (OverlayConfiguration?): overrides the popup presentation
   /// - [value] (`Iterable<T>`): Required currently selected values
   /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
   /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
   /// - [padding] (EdgeInsetsGeometry?): Custom padding
-  /// - [popoverAlignment] (AlignmentGeometry): Popup alignment, defaults to `Alignment.topCenter`
-  /// - [popoverAnchorAlignment] (AlignmentGeometry?): Anchor alignment for popup positioning
   /// - [canUnselect] (bool): Whether user can deselect items, defaults to true
   /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to false
   /// - [enabled] (bool?): Whether multi-select is enabled for interaction
@@ -1555,6 +1540,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   /// - [popup] (SelectPopupBuilder): Required builder for popup content
   /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for individual chip items
   /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
+  /// - [adaptiveOverlay] (bool?): whether `adaptiveConversion` runs for this overlay
   const MultiSelect({
     super.key,
     this.onChanged,
@@ -1563,13 +1549,11 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
     this.focusNode,
     this.constraints,
     this.popupConstraints,
-    this.popupWidthConstraint = PopoverConstraint.anchorFixedSize,
+    this.overlayConfiguration,
     required this.value,
     this.disableHoverEffect = false,
     this.borderRadius,
     this.padding,
-    this.popoverAlignment = Alignment.topCenter,
-    this.popoverAnchorAlignment,
     this.canUnselect = true,
     this.autoClosePopover = false,
     this.enabled,
@@ -1579,6 +1563,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
     this.expandIcon = const SelectExpandIcon(),
     required this.popup,
     required SelectValueBuilder<T> itemBuilder,
+    this.adaptiveOverlay,
   }) : multiItemBuilder = itemBuilder;
 
   static Widget _buildItem<T>(
@@ -1608,12 +1593,10 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
       focusNode: focusNode,
       constraints: constraints,
       popupConstraints: popupConstraints,
-      popupWidthConstraint: popupWidthConstraint,
+      overlayConfiguration: overlayConfiguration,
       value: value,
       borderRadius: borderRadius,
       padding: padding,
-      popoverAlignment: popoverAlignment,
-      popoverAnchorAlignment: popoverAnchorAlignment,
       disableHoverEffect: disableHoverEffect,
       canUnselect: canUnselect,
       autoClosePopover: autoClosePopover ?? true,
@@ -1625,6 +1608,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
           valueSelectionHandler ?? _defaultMultiSelectValueSelectionHandler,
       valueSelectionPredicate:
           valueSelectionPredicate ?? _defaultMultiSelectValueSelectionPredicate,
+      adaptiveOverlay: adaptiveOverlay,
     );
   }
 }

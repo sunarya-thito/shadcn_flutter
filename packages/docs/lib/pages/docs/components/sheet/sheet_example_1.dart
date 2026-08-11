@@ -14,23 +14,22 @@ class _SheetExample1State extends State<SheetExample1> {
   void saveProfile() {
     showOverlay(
       context,
-      DialogConfiguration(
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Profile updated'),
-            // For demo, show raw form values.
-            content: Text('Content: ${controller.values}'),
-            actions: [
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      ),
+      DialogConfiguration(),
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Profile updated'),
+          // For demo, show raw form values.
+          content: Text('Content: ${controller.values}'),
+          actions: [
+            PrimaryButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -134,13 +133,13 @@ class _SheetExample1State extends State<SheetExample1> {
             context,
             SheetConfiguration(
               anchor: LinkedAnchor(#openSheetButton),
-              builder: (context) {
-                // Build the sheet content; keep it small and focused on the form.
-                return buildSheet(context);
-              },
               // Slide in from the end (right on LTR).
               position: OverlayPosition.end,
             ),
+            builder: (context) {
+              // Build the sheet content; keep it small and focused on the form.
+              return buildSheet(context);
+            },
           );
         },
         child: const Text('Open Sheet'),

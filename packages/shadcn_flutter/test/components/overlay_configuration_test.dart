@@ -21,8 +21,8 @@ void main() {
                   context,
                   PopoverConfiguration(
                     alignment: Alignment.bottomCenter,
-                    builder: (context) => const Text('Popover Content'),
                   ),
+                  builder: (context) => const Text('Popover Content'),
                 );
               },
               child: const Text('Show'),
@@ -53,8 +53,8 @@ void main() {
                   context,
                   PopoverConfiguration(
                     alignment: Alignment.bottomCenter,
-                    builder: (context) => const Text('Popover Content'),
                   ),
+                  builder: (context) => const Text('Popover Content'),
                 );
               },
               child: const Text('Show'),
@@ -83,8 +83,8 @@ void main() {
                   context,
                   PopoverConfiguration(
                     alignment: Alignment.bottomCenter,
-                    builder: (context) => const Text('Popover Content'),
                   ),
+                  builder: (context) => const Text('Popover Content'),
                   adaptive: false,
                 );
               },
@@ -114,11 +114,10 @@ void main() {
               onPressed: () {
                 showOverlay<String>(
                   context,
-                  DialogConfiguration(
-                    builder: (context) => Button.primary(
-                      onPressed: () => Navigator.of(context).pop('confirmed'),
-                      child: const Text('Confirm'),
-                    ),
+                  const DialogConfiguration(),
+                  builder: (context) => Button.primary(
+                    onPressed: () => Navigator.of(context).pop('confirmed'),
+                    child: const Text('Confirm'),
                   ),
                 ).future.then((value) => result = value);
               },

@@ -177,8 +177,11 @@ class HoverCard extends StatefulWidget {
   /// Controller to programmatically manage the popover.
   final OverlayController? controller;
 
-  /// Custom overlay handler for popover display.
-  final OverlayHandler? handler;
+  /// Whether this hover card may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter). Defaults to
+  /// `false` — see [Tooltip.adaptiveOverlay]; a hover card is presented via
+  /// [TooltipConfiguration] just like [Tooltip].
+  final bool adaptiveOverlay;
 
   /// Creates a [HoverCard].
   ///
@@ -194,7 +197,7 @@ class HoverCard extends StatefulWidget {
   /// - [popoverOffset] (Offset?, optional): offset from position, defaults to (0, 8)
   /// - [behavior] (HitTestBehavior?, optional): hit test behavior, defaults to deferToChild
   /// - [controller] (PopoverController?, optional): controller for programmatic control
-  /// - [handler] (OverlayHandler?, optional): custom overlay handler
+  /// - [adaptiveOverlay] (bool, default: `false`): whether `adaptiveConversion` runs for this overlay.
   ///
   /// Example:
   /// ```dart
@@ -215,7 +218,7 @@ class HoverCard extends StatefulWidget {
     this.popoverOffset,
     this.behavior,
     this.controller,
-    this.handler,
+    this.adaptiveOverlay = false,
   });
 
   @override
@@ -319,37 +322,30 @@ class _HoverCardState extends State<HoverCard> {
       AlignmentGeometry? anchorAlignment,
       required Offset offset,
       required Duration debounce}) {
-    OverlayHandler? handler = widget.handler;
-    if (handler == null) {
-      final overlayManager = OverlayManager.of(context);
-      handler =
-          OverlayManagerAsTooltipOverlayHandler(overlayManager: overlayManager);
-    }
     _controller.show(
       context,
-      PopoverConfiguration(
-        builder: (context) {
-          return MouseRegion(
-            onEnter: (_) {
-              _hoverCount++;
-            },
-            onExit: (_) {
-              int count = ++_hoverCount;
-              Future.delayed(debounce, () {
-                if (count == _hoverCount) {
-                  _controller.close();
-                }
-              });
-            },
-            child: widget.hoverBuilder(context),
-          );
-        },
+      TooltipConfiguration(
         alignment: alignment,
         anchorAlignment: anchorAlignment,
         offset: offset,
-        handler: handler,
       ),
-      adaptive: false,
+      builder: (context) {
+        return MouseRegion(
+          onEnter: (_) {
+            _hoverCount++;
+          },
+          onExit: (_) {
+            int count = ++_hoverCount;
+            Future.delayed(debounce, () {
+              if (count == _hoverCount) {
+                _controller.close();
+              }
+            });
+          },
+          child: widget.hoverBuilder(context),
+        );
+      },
+      adaptive: widget.adaptiveOverlay,
     );
   }
 }

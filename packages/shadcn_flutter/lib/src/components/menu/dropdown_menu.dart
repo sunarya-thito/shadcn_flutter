@@ -85,30 +85,31 @@ OverlayCompleter<T?> showDropdown<T>({
   final theme = Theme.of(context);
   final scaling = theme.scaling;
   final GlobalKey key = GlobalKey();
-  final overlayManager = OverlayManager.of(context);
-  return overlayManager.showMenu<T>(
-    context: context,
-    alignment: alignment ?? Alignment.topCenter,
-    offset: offset ?? (const Offset(0, 4) * scaling),
-    follow: follow,
-    clipBehavior: clipBehavior,
-    margin: margin,
-    transitionAlignment: transitionAlignment,
-    onTickFollow: onTickFollow,
-    allowInvertHorizontal: allowInvertHorizontal,
-    allowInvertVertical: allowInvertVertical,
-    showDuration: showDuration,
-    dismissDuration: dismissDuration,
-    widthConstraint: widthConstraint,
-    heightConstraint: heightConstraint,
-    position: position,
-    anchorAlignment: anchorAlignment,
-    consumeOutsideTaps: consumeOutsideTaps,
-    regionGroupId: key,
-    modal: modal,
-    dismissBackdropFocus: dismissBackdropFocus,
-    overlayBarrier: OverlayBarrier(
-      borderRadius: BorderRadius.circular(theme.radiusMd),
+  return showOverlay<T>(
+    context,
+    MenuConfiguration(
+      alignment: alignment ?? Alignment.topCenter,
+      offset: offset ?? (const Offset(0, 4) * scaling),
+      follow: follow,
+      clipBehavior: clipBehavior,
+      margin: margin,
+      transitionAlignment: transitionAlignment,
+      onTickFollow: onTickFollow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
+      showDuration: showDuration,
+      dismissDuration: dismissDuration,
+      widthConstraint: widthConstraint,
+      heightConstraint: heightConstraint,
+      position: position,
+      anchorAlignment: anchorAlignment,
+      consumeOutsideTaps: consumeOutsideTaps,
+      regionGroupId: key,
+      modal: modal,
+      dismissBackdropFocus: dismissBackdropFocus,
+      overlayBarrier: OverlayBarrier(
+        borderRadius: BorderRadius.circular(theme.radiusMd),
+      ),
     ),
     builder: (context) {
       return Data.inherit(
@@ -255,7 +256,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
     final densityGap = theme.density.baseGap * theme.scaling;
     final densityContentPadding =
         theme.density.baseContentPadding * theme.scaling;
-    final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+    final isSheetOverlay =
+        OverlayConfiguration.maybeOf(context) is SheetConfiguration;
     final compTheme = ComponentTheme.maybeOf<DropdownMenuTheme>(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(

@@ -27,20 +27,19 @@ class FormExample7 extends StatelessWidget {
           }));
           showOverlay(
             context,
-            DialogConfiguration(
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Submitted Values'),
-                  content: Text(json),
-                  actions: [
-                    PrimaryButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                );
-              },
-            ),
+            DialogConfiguration(),
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Submitted Values'),
+                content: Text(json),
+                actions: [
+                  PrimaryButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
           );
         },
         child: Column(

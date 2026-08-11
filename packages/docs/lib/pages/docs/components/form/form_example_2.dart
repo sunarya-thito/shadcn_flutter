@@ -32,30 +32,29 @@ class _FormExample2State extends State<FormExample2> {
           }));
           showOverlay(
             context,
-            DialogConfiguration(
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Form Values'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Username: $username'),
-                      Text('Password: $password'),
-                      Text('Confirm Password: $confirmPassword'),
-                      Text('Agree: $agree'),
-                      Text('JSON: $json'),
-                    ],
-                  ),
-                  actions: [
-                    PrimaryButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
-                    ),
+            DialogConfiguration(),
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Form Values'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Username: $username'),
+                    Text('Password: $password'),
+                    Text('Confirm Password: $confirmPassword'),
+                    Text('Agree: $agree'),
+                    Text('JSON: $json'),
                   ],
-                );
-              },
-            ),
+                ),
+                actions: [
+                  PrimaryButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
           );
         },
         child: Column(

@@ -24,23 +24,14 @@ class AutoCompleteTheme extends ComponentThemeData {
   /// Defaults to a maximum height of 300 logical pixels when null.
   final BoxConstraints? popoverConstraints;
 
-  /// Width constraint strategy for the autocomplete popover.
-  ///
-  /// Determines how the popover width relates to its anchor (the text field).
-  /// Options include matching anchor width, flexible sizing, or fixed dimensions.
-  final PopoverConstraint? popoverWidthConstraint;
+  /// Overrides the [OverlayConfiguration] used to present the suggestion
+  /// popover, when not overridden per-instance by [AutoComplete.overlayConfiguration].
+  final OverlayConfiguration? overlayConfiguration;
 
-  /// Alignment point on the anchor widget where the popover attaches.
-  ///
-  /// Specifies which edge/corner of the text field the popover should align to.
-  /// Defaults to bottom-start (bottom-left in LTR, bottom-right in RTL).
-  final AlignmentDirectional? popoverAnchorAlignment;
-
-  /// Alignment point on the popover that aligns with the anchor point.
-  ///
-  /// Specifies which edge/corner of the popover aligns with the anchor alignment.
-  /// Defaults to top-start (top-left in LTR, top-right in RTL).
-  final AlignmentDirectional? popoverAlignment;
+  /// Whether the suggestion popover may adapt to a different presentation on
+  /// mobile platforms (see [showOverlay]'s `adaptive` parameter), when not
+  /// overridden per-instance by [AutoComplete.adaptiveOverlay].
+  final bool? adaptiveOverlay;
 
   /// Default mode for how suggestions are applied to text fields.
   ///
@@ -53,9 +44,8 @@ class AutoCompleteTheme extends ComponentThemeData {
   /// All parameters are optional and will use framework defaults when null.
   const AutoCompleteTheme({
     this.popoverConstraints,
-    this.popoverWidthConstraint,
-    this.popoverAnchorAlignment,
-    this.popoverAlignment,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
     this.mode,
   });
 
@@ -65,23 +55,19 @@ class AutoCompleteTheme extends ComponentThemeData {
   /// overrides while preserving existing values for unspecified properties.
   AutoCompleteTheme copyWith({
     ValueGetter<BoxConstraints?>? popoverConstraints,
-    ValueGetter<PopoverConstraint?>? popoverWidthConstraint,
-    ValueGetter<AlignmentDirectional?>? popoverAnchorAlignment,
-    ValueGetter<AlignmentDirectional?>? popoverAlignment,
+    ValueGetter<OverlayConfiguration?>? overlayConfiguration,
+    ValueGetter<bool?>? adaptiveOverlay,
     ValueGetter<AutoCompleteMode?>? mode,
   }) {
     return AutoCompleteTheme(
       popoverConstraints: popoverConstraints == null
           ? this.popoverConstraints
           : popoverConstraints(),
-      popoverWidthConstraint: popoverWidthConstraint == null
-          ? this.popoverWidthConstraint
-          : popoverWidthConstraint(),
-      popoverAnchorAlignment: popoverAnchorAlignment == null
-          ? this.popoverAnchorAlignment
-          : popoverAnchorAlignment(),
-      popoverAlignment:
-          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
+      overlayConfiguration: overlayConfiguration == null
+          ? this.overlayConfiguration
+          : overlayConfiguration(),
+      adaptiveOverlay:
+          adaptiveOverlay == null ? this.adaptiveOverlay : adaptiveOverlay(),
       mode: mode == null ? this.mode : mode(),
     );
   }
@@ -91,15 +77,14 @@ class AutoCompleteTheme extends ComponentThemeData {
     if (identical(this, other)) return true;
     return other is AutoCompleteTheme &&
         other.popoverConstraints == popoverConstraints &&
-        other.popoverWidthConstraint == popoverWidthConstraint &&
-        other.popoverAnchorAlignment == popoverAnchorAlignment &&
-        other.popoverAlignment == popoverAlignment &&
+        other.overlayConfiguration == overlayConfiguration &&
+        other.adaptiveOverlay == adaptiveOverlay &&
         other.mode == mode;
   }
 
   @override
-  int get hashCode => Object.hash(popoverConstraints, popoverWidthConstraint,
-      popoverAnchorAlignment, popoverAlignment, mode);
+  int get hashCode => Object.hash(
+      popoverConstraints, overlayConfiguration, adaptiveOverlay, mode);
 }
 
 /// Intelligent autocomplete functionality with customizable suggestion handling.
@@ -153,23 +138,16 @@ class AutoComplete extends StatefulWidget {
   /// suggestion list. When null, uses theme value or framework default.
   final BoxConstraints? popoverConstraints;
 
-  /// Width constraint strategy for the autocomplete popover.
-  ///
-  /// Overrides the theme default. Determines how popover width relates to
-  /// the anchor widget. When null, uses theme value or matches anchor width.
-  final PopoverConstraint? popoverWidthConstraint;
+  /// Overrides the [OverlayConfiguration] used to present the suggestion
+  /// popover. When null, uses the theme value, or a default
+  /// [PopoverConfiguration] (`AlignmentDirectional.topStart` /
+  /// `AlignmentDirectional.bottomStart`, `PopoverConstraint.anchorFixedSize`).
+  final OverlayConfiguration? overlayConfiguration;
 
-  /// Alignment point on the anchor widget for popover attachment.
-  ///
-  /// Overrides the theme default. Specifies which edge/corner of the child
-  /// widget the popover aligns to. When null, uses theme or bottom-start.
-  final AlignmentDirectional? popoverAnchorAlignment;
-
-  /// Alignment point on the popover for anchor attachment.
-  ///
-  /// Overrides the theme default. Specifies which edge/corner of the popover
-  /// aligns with the anchor point. When null, uses theme or top-start.
-  final AlignmentDirectional? popoverAlignment;
+  /// Whether the suggestion popover may adapt to a different presentation on
+  /// mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults to
+  /// `false` — the suggestion popup should always be a real anchored popover.
+  final bool? adaptiveOverlay;
 
   /// Text replacement strategy when a suggestion is selected.
   ///
@@ -194,9 +172,8 @@ class AutoComplete extends StatefulWidget {
   /// - [suggestions] (`List<String>`, required): available autocomplete options
   /// - [child] (Widget, required): widget to receive autocomplete functionality
   /// - [popoverConstraints] (BoxConstraints?, optional): popover size limits
-  /// - [popoverWidthConstraint] (PopoverConstraint?, optional): width strategy
-  /// - [popoverAnchorAlignment] (AlignmentDirectional?, optional): anchor point
-  /// - [popoverAlignment] (AlignmentDirectional?, optional): popover align point
+  /// - [overlayConfiguration] (OverlayConfiguration?, optional): overrides the popover presentation
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   /// - [mode] (AutoCompleteMode?, optional): text replacement strategy
   /// - [completer] (AutoCompleteCompleter, default: identity): suggestion processor
   ///
@@ -214,9 +191,8 @@ class AutoComplete extends StatefulWidget {
     required this.suggestions,
     required this.child,
     this.popoverConstraints,
-    this.popoverWidthConstraint,
-    this.popoverAnchorAlignment,
-    this.popoverAlignment,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
     this.mode,
     this.completer = _defaultCompleter,
   });
@@ -355,63 +331,63 @@ class _AutoCompleteState extends State<AutoComplete> {
     }
     final compTheme = ComponentTheme.maybeOf<AutoCompleteTheme>(context);
     _selectedIndex.value = -1;
+    final overlayConfiguration = widget.overlayConfiguration ??
+        compTheme?.overlayConfiguration ??
+        const PopoverConfiguration(
+          widthConstraint: PopoverConstraint.anchorFixedSize,
+          anchorAlignment: AlignmentDirectional.bottomStart,
+          alignment: AlignmentDirectional.topStart,
+        );
+    final adaptiveOverlay = styleValue(
+        widgetValue: widget.adaptiveOverlay,
+        themeValue: compTheme?.adaptiveOverlay,
+        defaultValue: false);
     _popoverController.show(
         context,
-        PopoverConfiguration(
-          handler: const PopoverOverlayHandler(),
-          builder: (context) {
-            final theme = Theme.of(context);
-            final densityGap = theme.density.baseGap * theme.scaling;
-            final compTheme =
-                ComponentTheme.maybeOf<AutoCompleteTheme>(context);
-            final popoverConstraints = styleValue<BoxConstraints>(
-              widgetValue: widget.popoverConstraints,
-              themeValue: compTheme?.popoverConstraints,
-              defaultValue: BoxConstraints(
-                maxHeight: 300 * theme.scaling,
+        overlayConfiguration,
+        builder: (context) {
+          final theme = Theme.of(context);
+          final densityGap = theme.density.baseGap * theme.scaling;
+          final compTheme =
+              ComponentTheme.maybeOf<AutoCompleteTheme>(context);
+          final popoverConstraints = styleValue<BoxConstraints>(
+            widgetValue: widget.popoverConstraints,
+            themeValue: compTheme?.popoverConstraints,
+            defaultValue: BoxConstraints(
+              maxHeight: 300 * theme.scaling,
+            ),
+          );
+          return TextFieldTapRegion(
+            child: ConstrainedBox(
+              constraints: popoverConstraints,
+              child: SurfaceCard(
+                padding: EdgeInsets.all(densityGap * 0.5),
+                child: AnimatedBuilder(
+                    animation:
+                        Listenable.merge([_suggestions, _selectedIndex]),
+                    builder: (context, child) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _suggestions.value.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = _suggestions.value[index];
+                            return _AutoCompleteItem(
+                              suggestion: suggestion,
+                              selected: index == _selectedIndex.value,
+                              onSelected: () {
+                                _selectedIndex.value = index;
+                                _handleProceed();
+                              },
+                            );
+                          });
+                    }),
               ),
-            );
-            return TextFieldTapRegion(
-              child: ConstrainedBox(
-                constraints: popoverConstraints,
-                child: SurfaceCard(
-                  padding: EdgeInsets.all(densityGap * 0.5),
-                  child: AnimatedBuilder(
-                      animation:
-                          Listenable.merge([_suggestions, _selectedIndex]),
-                      builder: (context, child) {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _suggestions.value.length,
-                            itemBuilder: (context, index) {
-                              final suggestion = _suggestions.value[index];
-                              return _AutoCompleteItem(
-                                suggestion: suggestion,
-                                selected: index == _selectedIndex.value,
-                                onSelected: () {
-                                  _selectedIndex.value = index;
-                                  _handleProceed();
-                                },
-                              );
-                            });
-                      }),
-                ),
-              ),
-            );
-          },
-          widthConstraint: styleValue(
-              widgetValue: widget.popoverWidthConstraint,
-              themeValue: compTheme?.popoverWidthConstraint,
-              defaultValue: PopoverConstraint.anchorFixedSize),
-          anchorAlignment: styleValue(
-              widgetValue: widget.popoverAnchorAlignment,
-              themeValue: compTheme?.popoverAnchorAlignment,
-              defaultValue: AlignmentDirectional.bottomStart),
-          alignment: styleValue(
-              widgetValue: widget.popoverAlignment,
-              themeValue: compTheme?.popoverAlignment,
-              defaultValue: AlignmentDirectional.topStart),
-        ),
+            ),
+          );
+        },
+        // AutoComplete's suggestion popup defaults to always being a real
+        // anchored popover, never a bottom drawer, on every platform.
+        adaptive: adaptiveOverlay,
       );
   }
 

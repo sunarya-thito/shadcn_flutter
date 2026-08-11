@@ -63,10 +63,23 @@ class ObjectFormField<T> extends StatefulWidget {
   final Widget Function(BuildContext context, ObjectFormHandler<T> handler)
       editorBuilder;
 
-  /// Popover alignment relative to the trigger.
+  /// Overrides the [OverlayConfiguration] used to present the popover editor
+  /// (only relevant when [mode] is [PromptMode.popover]). When null, a
+  /// default [PopoverConfiguration] is used, positioned via [popoverAlignment]
+  /// / [popoverAnchorAlignment].
+  final OverlayConfiguration? overlayConfiguration;
+
+  /// Whether the popover/dialog editor may adapt to a different presentation
+  /// on mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults
+  /// to `true` when null.
+  final bool? adaptiveOverlay;
+
+  /// Popover alignment relative to the trigger. Ignored when
+  /// [overlayConfiguration] is set.
   final AlignmentGeometry? popoverAlignment;
 
-  /// Anchor alignment for popover positioning.
+  /// Anchor alignment for popover positioning. Ignored when
+  /// [overlayConfiguration] is set.
   final AlignmentGeometry? popoverAnchorAlignment;
 
   /// Padding inside the popover.
@@ -109,6 +122,8 @@ class ObjectFormField<T> extends StatefulWidget {
     this.trailing,
     this.mode = PromptMode.dialog,
     required this.editorBuilder,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
@@ -211,25 +226,25 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     value ??= formValue;
     showOverlay(
       context,
-      DialogConfiguration(
-        builder: (context) {
-          return _ObjectFormFieldDialog<T>(
-            dialogTitle: widget.dialogTitle,
-            value: value,
-            editorBuilder: widget.editorBuilder,
-            dialogActions: widget.dialogActions,
-            prompt: prompt,
-            decorate: widget.decorate,
-            onChanged: (value) {
-              // by default, dialog will not immediately inform if value is changed
-              // but if its explicitly set to true, then we should inform
-              if (widget.immediateValueChange == true) {
-                this.value = value;
-              }
-            },
-          );
-        },
-      ),
+      const DialogConfiguration(),
+      builder: (context) {
+        return _ObjectFormFieldDialog<T>(
+          dialogTitle: widget.dialogTitle,
+          value: value,
+          editorBuilder: widget.editorBuilder,
+          dialogActions: widget.dialogActions,
+          prompt: prompt,
+          decorate: widget.decorate,
+          onChanged: (value) {
+            // by default, dialog will not immediately inform if value is changed
+            // but if its explicitly set to true, then we should inform
+            if (widget.immediateValueChange == true) {
+              this.value = value;
+            }
+          },
+        );
+      },
+      adaptive: widget.adaptiveOverlay ?? true,
     ).future.then((value) {
       if (mounted &&
           value is ObjectFormFieldDialogResult<T> &&
@@ -249,33 +264,36 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     _popoverController
         .show(
       context,
-      PopoverConfiguration(
-        alignment: widget.popoverAlignment ?? Alignment.topLeft,
-        anchorAlignment: widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
-        overlayBarrier: OverlayBarrier(
-          borderRadius: BorderRadius.circular(theme.radiusLg),
-        ),
-        modal: true,
-        offset: Offset(0, 8 * scaling),
-        builder: (context) {
-          return _ObjectFormFieldPopup<T>(
-            value: value,
-            editorBuilder: widget.editorBuilder,
-            popoverPadding: widget.popoverPadding,
-            prompt: prompt,
-            decorate: widget.decorate,
-            onChanged: (value) {
-              // by default, popover will immediately inform any changes
-              // but if its explicitly set to false, then we should not inform
-              if (mounted && widget.immediateValueChange != false) {
-                this.value = value;
-              } else {
-                delayedResult = value;
-              }
-            },
-          );
-        },
-      ),
+      widget.overlayConfiguration ??
+          PopoverConfiguration(
+            alignment: widget.popoverAlignment ?? Alignment.topLeft,
+            anchorAlignment:
+                widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
+            overlayBarrier: OverlayBarrier(
+              borderRadius: BorderRadius.circular(theme.radiusLg),
+            ),
+            modal: true,
+            offset: Offset(0, 8 * scaling),
+          ),
+      builder: (context) {
+        return _ObjectFormFieldPopup<T>(
+          value: value,
+          editorBuilder: widget.editorBuilder,
+          popoverPadding: widget.popoverPadding,
+          prompt: prompt,
+          decorate: widget.decorate,
+          onChanged: (value) {
+            // by default, popover will immediately inform any changes
+            // but if its explicitly set to false, then we should not inform
+            if (mounted && widget.immediateValueChange != false) {
+              this.value = value;
+            } else {
+              delayedResult = value;
+            }
+          },
+        );
+      },
+      adaptive: widget.adaptiveOverlay ?? true,
     )
         .then(
       (_) {

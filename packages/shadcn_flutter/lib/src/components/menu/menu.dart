@@ -596,64 +596,62 @@ class _MenuButtonState extends State<MenuButton> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final compTheme = ComponentTheme.maybeOf<MenuTheme>(context);
-    final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
-    final isDialogOverlay = DialogOverlayHandler.isDialogOverlay(context);
+    final isSheetOverlay = OverlayConfiguration.maybeOf(context) is SheetConfiguration;
+    final isDialogOverlay = OverlayConfiguration.maybeOf(context) is DialogConfiguration;
     final isIndependentOverlay = isSheetOverlay || isDialogOverlay;
     void openSubMenu(BuildContext context, bool autofocus) {
       menuGroupData!.closeOthers();
-      final overlayManager = OverlayManager.of(context);
       menuData!.overlayController.show(
         context,
-        PopoverConfiguration(
+        MenuConfiguration(
           regionGroupId: menuGroupData.regionGroupId,
           consumeOutsideTaps: false,
           dismissBackdropFocus: false,
           modal: true,
-          handler: MenuOverlayHandler(overlayManager),
           overlayBarrier: OverlayBarrier(
             borderRadius: BorderRadius.circular(theme.radiusMd),
           ),
-          builder: (context) {
-            final theme = Theme.of(context);
-            final scaling = theme.scaling;
-            final densityGap = theme.density.baseGap * scaling;
-            var itemPadding = menuGroupData.itemPadding;
-            final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
-            if (isSheetOverlay) {
-              itemPadding = EdgeInsets.symmetric(horizontal: densityGap * 0.5);
-            }
-            return ConstrainedBox(
-              constraints: const BoxConstraints(
-                    minWidth: 192, // 12rem
-                  ) *
-                  scaling,
-              child: AnimatedBuilder(
-                  animation: _children,
-                  builder: (context, child) {
-                    return MenuGroup(
-                        direction: menuGroupData.direction,
-                        parent: menuGroupData,
-                        onDismissed: menuGroupData.onDismissed,
-                        regionGroupId: menuGroupData.regionGroupId,
-                        subMenuOffset: compTheme?.subMenuOffset ??
-                            Offset(densityGap, -densityGap * 0.625),
-                        itemPadding: itemPadding,
-                        autofocus: autofocus,
-                        builder: (context, children) {
-                          return MenuPopup(
-                            children: children,
-                          );
-                        },
-                        children: _children.value);
-                  }),
-            );
-          },
           alignment: Alignment.topLeft,
           anchorAlignment:
               menuBarData != null ? Alignment.bottomLeft : Alignment.topRight,
           offset: menuGroupData.subMenuOffset ?? compTheme?.subMenuOffset,
         ),
-        adaptive: false,
+        builder: (context) {
+          final theme = Theme.of(context);
+          final scaling = theme.scaling;
+          final densityGap = theme.density.baseGap * scaling;
+          var itemPadding = menuGroupData.itemPadding;
+          final isSheetOverlay =
+              OverlayConfiguration.maybeOf(context) is SheetConfiguration;
+          if (isSheetOverlay) {
+            itemPadding = EdgeInsets.symmetric(horizontal: densityGap * 0.5);
+          }
+          return ConstrainedBox(
+            constraints: const BoxConstraints(
+                  minWidth: 192, // 12rem
+                ) *
+                scaling,
+            child: AnimatedBuilder(
+                animation: _children,
+                builder: (context, child) {
+                  return MenuGroup(
+                      direction: menuGroupData.direction,
+                      parent: menuGroupData,
+                      onDismissed: menuGroupData.onDismissed,
+                      regionGroupId: menuGroupData.regionGroupId,
+                      subMenuOffset: compTheme?.subMenuOffset ??
+                          Offset(densityGap, -densityGap * 0.625),
+                      itemPadding: itemPadding,
+                      autofocus: autofocus,
+                      builder: (context, children) {
+                        return MenuPopup(
+                          children: children,
+                        );
+                      },
+                      children: _children.value);
+                }),
+          );
+        },
       );
     }
 
@@ -1264,79 +1262,8 @@ class NextMenuFocusIntent extends Intent {
   const NextMenuFocusIntent(this.forward);
 }
 
-/// Overlay handler specialized for menu popover display.
-///
-/// Delegates to an [OverlayManager] to show menu popovers with
-/// appropriate positioning, transitions, and dismissal behavior.
-class MenuOverlayHandler extends OverlayHandler {
-  /// The overlay manager handling menu display.
-  final OverlayManager manager;
-
-  /// Creates a menu overlay handler.
-  ///
-  /// Parameters:
-  /// - [manager] (OverlayManager, required): Overlay manager for menu display
-  const MenuOverlayHandler(this.manager);
-
-  @override
-  OverlayCompleter<T?> show<T>({
-    required BuildContext context,
-    required AlignmentGeometry alignment,
-    required WidgetBuilder builder,
-    Offset? position,
-    AlignmentGeometry? anchorAlignment,
-    PopoverConstraint widthConstraint = PopoverConstraint.flexible,
-    PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-    Key? key,
-    bool rootOverlay = true,
-    bool modal = true,
-    bool barrierDismissable = true,
-    Clip clipBehavior = Clip.none,
-    Object? regionGroupId,
-    Offset? offset,
-    AlignmentGeometry? transitionAlignment,
-    EdgeInsetsGeometry? margin,
-    bool follow = true,
-    bool consumeOutsideTaps = true,
-    Anchor? anchor,
-    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
-    bool allowInvertHorizontal = true,
-    bool allowInvertVertical = true,
-    bool dismissBackdropFocus = true,
-    Duration? showDuration,
-    Duration? dismissDuration,
-    OverlayBarrier? overlayBarrier,
-  }) {
-    return manager.showMenu(
-      context: context,
-      alignment: alignment,
-      builder: builder,
-      position: position,
-      anchorAlignment: anchorAlignment,
-      widthConstraint: widthConstraint,
-      heightConstraint: heightConstraint,
-      key: key,
-      rootOverlay: rootOverlay,
-      modal: modal,
-      barrierDismissable: barrierDismissable,
-      clipBehavior: clipBehavior,
-      regionGroupId: regionGroupId,
-      offset: offset,
-      transitionAlignment: transitionAlignment,
-      margin: margin,
-      follow: follow,
-      consumeOutsideTaps: consumeOutsideTaps,
-      anchor: anchor,
-      onTickFollow: onTickFollow,
-      allowInvertHorizontal: allowInvertHorizontal,
-      allowInvertVertical: allowInvertVertical,
-      dismissBackdropFocus: dismissBackdropFocus,
-      showDuration: showDuration,
-      dismissDuration: dismissDuration,
-      overlayBarrier: overlayBarrier,
-    );
-  }
-}
+// Menu popovers are presented via [MenuConfiguration] (see
+// overlay_configuration.dart), which owns this presentation logic directly.
 
 /// Intent for directional focus traversal within menus.
 ///

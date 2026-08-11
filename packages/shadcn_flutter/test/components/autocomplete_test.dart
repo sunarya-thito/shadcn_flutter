@@ -116,12 +116,17 @@ void main() {
       expect(autoComplete.popoverConstraints, BoxConstraints(maxHeight: 200));
     });
 
-    testWidgets('accepts custom popover width constraint', (tester) async {
+    testWidgets('accepts custom overlay configuration', (tester) async {
+      const overlayConfiguration = PopoverConfiguration(
+        widthConstraint: PopoverConstraint.anchorFixedSize,
+        anchorAlignment: AlignmentDirectional.topStart,
+        alignment: AlignmentDirectional.bottomStart,
+      );
       await tester.pumpWidget(
         SimpleApp(
           child: AutoComplete(
             suggestions: ['Test'],
-            popoverWidthConstraint: PopoverConstraint.anchorFixedSize,
+            overlayConfiguration: overlayConfiguration,
             child: TextField(),
           ),
         ),
@@ -129,27 +134,7 @@ void main() {
 
       final autoComplete =
           tester.widget<AutoComplete>(find.byType(AutoComplete));
-      expect(autoComplete.popoverWidthConstraint,
-          PopoverConstraint.anchorFixedSize);
-    });
-
-    testWidgets('accepts custom popover alignments', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AutoComplete(
-            suggestions: ['Test'],
-            popoverAnchorAlignment: AlignmentDirectional.topStart,
-            popoverAlignment: AlignmentDirectional.bottomStart,
-            child: TextField(),
-          ),
-        ),
-      );
-
-      final autoComplete =
-          tester.widget<AutoComplete>(find.byType(AutoComplete));
-      expect(
-          autoComplete.popoverAnchorAlignment, AlignmentDirectional.topStart);
-      expect(autoComplete.popoverAlignment, AlignmentDirectional.bottomStart);
+      expect(autoComplete.overlayConfiguration, overlayConfiguration);
     });
 
     testWidgets('accepts custom mode', (tester) async {
@@ -269,9 +254,7 @@ void main() {
       final autoComplete =
           tester.widget<AutoComplete>(find.byType(AutoComplete));
       expect(autoComplete.popoverConstraints, null);
-      expect(autoComplete.popoverWidthConstraint, null);
-      expect(autoComplete.popoverAnchorAlignment, null);
-      expect(autoComplete.popoverAlignment, null);
+      expect(autoComplete.overlayConfiguration, null);
       expect(autoComplete.mode, null);
     });
 

@@ -57,45 +57,44 @@ class ColorsPageState extends State<ColorsPage> {
   void _onTap(String name, ColorShades swatch, int shade) {
     showOverlay(
       context,
-      DialogConfiguration(
-        builder: (context) {
-          final theme = Theme.of(context);
-          return AlertDialog(
-            title: Text(name),
-            leading: Container(
-              width: 96,
-              height: 112,
-              decoration: BoxDecoration(
-                color: swatch[shade],
-                borderRadius: theme.borderRadiusMd,
-              ),
+      DialogConfiguration(),
+      builder: (context) {
+        final theme = Theme.of(context);
+        return AlertDialog(
+          title: Text(name),
+          leading: Container(
+            width: 96,
+            height: 112,
+            decoration: BoxDecoration(
+              color: swatch[shade],
+              borderRadius: theme.borderRadiusMd,
             ),
-            content: IntrinsicWidth(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text('Use this code to display this color:'),
-                  const Gap(8),
-                  CodeBlock(
-                    code: shade == 500
-                        ? 'Colors.${name.toLowerCase()}'
-                        : 'Colors.${name.toLowerCase()}[$shade]',
-                    mode: 'dart',
-                  ),
-                ],
-              ),
+          ),
+          content: IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Use this code to display this color:'),
+                const Gap(8),
+                CodeBlock(
+                  code: shade == 500
+                      ? 'Colors.${name.toLowerCase()}'
+                      : 'Colors.${name.toLowerCase()}[$shade]',
+                  mode: 'dart',
+                ),
+              ],
             ),
-            actions: [
-              PrimaryButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      ),
+          ),
+          actions: [
+            PrimaryButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -178,25 +177,25 @@ class ColorsPageState extends State<ColorsPage> {
                           offset: const Offset(0, 8),
                           widthConstraint: PopoverConstraint.intrinsic,
                           heightConstraint: PopoverConstraint.intrinsic,
-                          builder: (context) {
-                            return SurfaceCard(
-                              child: ColorPicker(
-                                value: ColorDerivative.fromColor(swatch[shade]),
-                                showAlpha: false,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _customColor = ColorShades.shiftHSL(
-                                      value.toHSLColor(),
-                                      base: shade,
-                                      500,
-                                    );
-                                  });
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            );
-                          },
                         ),
+                        builder: (context) {
+                          return SurfaceCard(
+                            child: ColorPicker(
+                              value: ColorDerivative.fromColor(swatch[shade]),
+                              showAlpha: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  _customColor = ColorShades.shiftHSL(
+                                    value.toHSLColor(),
+                                    base: shade,
+                                    500,
+                                  );
+                                });
+                                Navigator.pop(context);
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
                     onHover: (value) {
@@ -486,39 +485,38 @@ class ColorsPageState extends State<ColorsPage> {
                   onPressed: () {
                     showOverlay(
                       context,
-                      DialogConfiguration(
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Reset Options'),
-                            content: const Text(
-                                'Are you sure you want to reset the options?'),
-                            actions: [
-                              PrimaryButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _hueShift = _defaultHueShift;
-                                    _saturationStepUp =
-                                        _defaultSaturationStepUp;
-                                    _saturationStepDown =
-                                        _defaultSaturationStepDown;
-                                    _lightnessStepUp = _defaultLightnessStepUp;
-                                    _lightnessStepDown =
-                                        _defaultLightnessStepDown;
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Reset'),
-                              ),
-                              SecondaryButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+                      DialogConfiguration(),
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Reset Options'),
+                          content: const Text(
+                              'Are you sure you want to reset the options?'),
+                          actions: [
+                            PrimaryButton(
+                              onPressed: () {
+                                setState(() {
+                                  _hueShift = _defaultHueShift;
+                                  _saturationStepUp =
+                                      _defaultSaturationStepUp;
+                                  _saturationStepDown =
+                                      _defaultSaturationStepDown;
+                                  _lightnessStepUp = _defaultLightnessStepUp;
+                                  _lightnessStepDown =
+                                      _defaultLightnessStepDown;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Reset'),
+                            ),
+                            SecondaryButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                          ],
+                        );
+                      },
                     );
                   },
                   leading: const Icon(Icons.restore),

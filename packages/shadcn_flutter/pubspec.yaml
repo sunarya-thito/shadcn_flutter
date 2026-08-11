@@ -1,6 +1,6 @@
 name: shadcn_flutter
 description: "Beautifully designed components from Shadcn/UI is now available for Flutter"
-version: 0.0.53
+version: 0.0.54
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
 repository: "https://github.com/sunarya-thito/shadcn_flutter"
@@ -42,7 +42,7 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
-    - pubspec.yaml
+  - pubspec.yaml
   fonts:
   - family: RadixIcons
     fonts:

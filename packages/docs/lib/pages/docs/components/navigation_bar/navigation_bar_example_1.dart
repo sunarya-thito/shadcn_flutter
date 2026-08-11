@@ -77,7 +77,10 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       (BuildContext context, NavigationBarAlignment item) {
                     return Text(item.name);
                   },
-                  popupWidthConstraint: PopoverConstraint.anchorFixedSize,
+                  overlayConfiguration: const PopoverConfiguration(
+                    widthConstraint: PopoverConstraint.anchorFixedSize,
+                    alignment: Alignment.topCenter,
+                  ),
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {
@@ -101,7 +104,10 @@ class _NavigationBarExample1State extends State<NavigationBarExample1> {
                       (BuildContext context, NavigationLabelType item) {
                     return Text(item.name);
                   },
-                  popupWidthConstraint: PopoverConstraint.anchorFixedSize,
+                  overlayConfiguration: const PopoverConfiguration(
+                    widthConstraint: PopoverConstraint.anchorFixedSize,
+                    alignment: Alignment.topCenter,
+                  ),
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {

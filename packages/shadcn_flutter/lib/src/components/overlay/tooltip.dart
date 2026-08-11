@@ -249,6 +249,13 @@ class Tooltip extends StatefulWidget {
   /// Minimum time the tooltip stays visible once shown.
   final Duration minDuration;
 
+  /// Whether this tooltip may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter). Defaults to
+  /// `false` — a tooltip should never become a bottom drawer; its own
+  /// simplified fixed-position mobile presentation ([TooltipConfiguration])
+  /// always applies regardless of this flag.
+  final bool adaptiveOverlay;
+
   /// Creates a [Tooltip].
   ///
   /// Parameters:
@@ -259,6 +266,7 @@ class Tooltip extends StatefulWidget {
   /// - [waitDuration] (`Duration`, default: 500ms): Delay before showing.
   /// - [showDuration] (`Duration`, default: 200ms): Animation duration.
   /// - [minDuration] (`Duration`, default: 0ms): Minimum visible time.
+  /// - [adaptiveOverlay] (`bool`, default: `false`): whether `adaptiveConversion` runs for this overlay.
   const Tooltip({
     super.key,
     required this.child,
@@ -268,6 +276,7 @@ class Tooltip extends StatefulWidget {
     this.waitDuration = const Duration(milliseconds: 500),
     this.showDuration = const Duration(milliseconds: 200),
     this.minDuration = const Duration(milliseconds: 0),
+    this.adaptiveOverlay = false,
   });
 
   @override
@@ -286,21 +295,14 @@ class _TooltipState extends State<Tooltip> {
         if (hovered) {
           _controller.show(
             context,
-            PopoverConfiguration(
-              modal: false,
-              builder: (context) {
-                return widget.tooltip(context);
-              },
+            TooltipConfiguration(
               alignment: widget.alignment,
               anchorAlignment: widget.anchorAlignment,
-              dismissBackdropFocus: false,
-              overlayBarrier: const OverlayBarrier(
-                barrierColor: Colors.transparent,
-              ),
-              handler: OverlayManagerAsTooltipOverlayHandler(
-                  overlayManager: OverlayManager.of(context)),
             ),
-            adaptive: false,
+            builder: (context) {
+              return widget.tooltip(context);
+            },
+            adaptive: widget.adaptiveOverlay,
           );
         } else {
           _controller.close();
@@ -335,6 +337,11 @@ class InstantTooltip extends StatefulWidget {
   /// Alignment point on the child widget where tooltip anchors.
   final AlignmentGeometry? tooltipAnchorAlignment;
 
+  /// Whether this tooltip may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter). Defaults to
+  /// `false` — see [Tooltip.adaptiveOverlay].
+  final bool adaptiveOverlay;
+
   /// Creates an [InstantTooltip].
   ///
   /// Parameters:
@@ -343,6 +350,7 @@ class InstantTooltip extends StatefulWidget {
   /// - [behavior] (`HitTestBehavior`, default: `HitTestBehavior.translucent`): Hit test behavior.
   /// - [tooltipAlignment] (`AlignmentGeometry`, default: `Alignment.bottomCenter`): Tooltip position.
   /// - [tooltipAnchorAlignment] (`AlignmentGeometry?`, optional): Anchor point on child.
+  /// - [adaptiveOverlay] (`bool`, default: `false`): whether `adaptiveConversion` runs for this overlay.
   ///
   /// Example:
   /// ```dart
@@ -358,6 +366,7 @@ class InstantTooltip extends StatefulWidget {
     this.behavior = HitTestBehavior.translucent,
     this.tooltipAlignment = Alignment.bottomCenter,
     this.tooltipAnchorAlignment,
+    this.adaptiveOverlay = false,
   });
 
   @override
@@ -375,27 +384,19 @@ class _InstantTooltipState extends State<InstantTooltip> {
 
   @override
   Widget build(BuildContext context) {
-    final overlayManager = OverlayManager.of(context);
     return MouseRegion(
       onEnter: (event) {
         _controller.close(true);
         _controller.show(
           context,
-          PopoverConfiguration(
-            modal: false,
-            builder: widget.tooltipBuilder,
+          TooltipConfiguration(
             alignment: widget.tooltipAlignment,
             anchorAlignment: widget.tooltipAnchorAlignment,
-            dismissBackdropFocus: false,
             showDuration: Duration.zero,
             dismissDuration: Duration.zero,
-            overlayBarrier: const OverlayBarrier(
-              barrierColor: Colors.transparent,
-            ),
-            handler: OverlayManagerAsTooltipOverlayHandler(
-                overlayManager: overlayManager),
           ),
-          adaptive: false,
+          builder: widget.tooltipBuilder,
+          adaptive: widget.adaptiveOverlay,
         );
       },
       onExit: (event) {
@@ -407,245 +408,6 @@ class _InstantTooltipState extends State<InstantTooltip> {
   }
 }
 
-/// Overlay handler that delegates tooltip display to an [OverlayManager].
-///
-/// This handler integrates tooltips with the overlay management system,
-/// allowing tooltips to be displayed through the overlay manager's
-/// tooltip-specific display logic. This ensures proper layering and
-/// lifecycle management within the overlay system.
-class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
-  /// The overlay manager instance to use for displaying tooltips.
-  final OverlayManager overlayManager;
-
-  /// Creates an [OverlayManagerAsTooltipOverlayHandler].
-  ///
-  /// Parameters:
-  /// - [overlayManager] (`OverlayManager`, required): The overlay manager instance.
-  const OverlayManagerAsTooltipOverlayHandler({
-    required this.overlayManager,
-  });
-
-  @override
-  OverlayCompleter<T?> show<T>({
-    required BuildContext context,
-    required AlignmentGeometry alignment,
-    required WidgetBuilder builder,
-    Offset? position,
-    AlignmentGeometry? anchorAlignment,
-    PopoverConstraint widthConstraint = PopoverConstraint.flexible,
-    PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-    Key? key,
-    bool rootOverlay = true,
-    bool barrierDismissable = true,
-    bool modal = true,
-    Clip clipBehavior = Clip.none,
-    Object? regionGroupId,
-    Offset? offset,
-    AlignmentGeometry? transitionAlignment,
-    EdgeInsetsGeometry? margin,
-    bool follow = true,
-    bool consumeOutsideTaps = true,
-    Anchor? anchor,
-    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
-    bool allowInvertHorizontal = true,
-    bool allowInvertVertical = true,
-    bool dismissBackdropFocus = true,
-    Duration? showDuration,
-    Duration? dismissDuration,
-    OverlayBarrier? overlayBarrier,
-  }) {
-    return overlayManager.showTooltip(
-      context: context,
-      alignment: alignment,
-      builder: builder,
-      position: position,
-      anchorAlignment: anchorAlignment,
-      widthConstraint: widthConstraint,
-      heightConstraint: heightConstraint,
-      key: key,
-      rootOverlay: rootOverlay,
-      modal: modal,
-      clipBehavior: clipBehavior,
-      regionGroupId: regionGroupId,
-      offset: offset,
-      transitionAlignment: transitionAlignment,
-      margin: margin,
-      follow: follow,
-      consumeOutsideTaps: consumeOutsideTaps,
-      anchor: anchor,
-      onTickFollow: onTickFollow,
-      allowInvertHorizontal: allowInvertHorizontal,
-      allowInvertVertical: allowInvertVertical,
-      dismissBackdropFocus: dismissBackdropFocus,
-      showDuration: showDuration,
-      dismissDuration: dismissDuration,
-      overlayBarrier: overlayBarrier,
-    );
-  }
-}
-
-/// A fixed overlay handler for tooltips using direct overlay entries.
-///
-/// This handler creates tooltips using Flutter's built-in overlay system
-/// without delegating to an overlay manager. Tooltips are positioned
-/// directly in the overlay and use fixed positioning relative to their
-/// anchor widget.
-///
-/// Use this handler when you need direct control over tooltip overlay
-/// entries or when not using an overlay manager.
-class FixedTooltipOverlayHandler extends OverlayHandler {
-  /// Creates a [FixedTooltipOverlayHandler].
-  const FixedTooltipOverlayHandler();
-
-  @override
-  OverlayCompleter<T> show<T>({
-    required BuildContext context,
-    required AlignmentGeometry alignment,
-    required WidgetBuilder builder,
-    Offset? position,
-    AlignmentGeometry? anchorAlignment,
-    PopoverConstraint widthConstraint = PopoverConstraint.flexible,
-    PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-    Key? key,
-    bool rootOverlay = true,
-    bool modal = true,
-    bool barrierDismissable = true,
-    Clip clipBehavior = Clip.none,
-    Object? regionGroupId,
-    Offset? offset,
-    AlignmentGeometry? transitionAlignment,
-    EdgeInsetsGeometry? margin,
-    bool follow = true,
-    bool consumeOutsideTaps = true,
-    Anchor? anchor,
-    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
-    bool allowInvertHorizontal = true,
-    bool allowInvertVertical = true,
-    bool dismissBackdropFocus = true,
-    Duration? showDuration,
-    Duration? dismissDuration,
-    OverlayBarrier? overlayBarrier,
-  }) {
-    final Anchor resolvedAnchor =
-        (anchor ?? const ContextAnchor()).resolve(context);
-
-    BuildContext resolvedContext = context;
-    if (resolvedAnchor is ContextAnchor) {
-      resolvedContext = resolvedAnchor.context ?? context;
-    } else if (resolvedAnchor is LinkedAnchor) {
-      final registry = resolvedAnchor.registry ?? OverlayAnchorRegistry.global;
-      resolvedContext =
-          registry.find(resolvedAnchor.key)?.context ?? context;
-    }
-
-    final subscription = resolvedAnchor.subscribe();
-    if (!subscription.isVisible) {
-      final popoverEntry = OverlayPopoverEntry<T>();
-      popoverEntry.completer.complete();
-      popoverEntry.animationCompleter.complete();
-      return popoverEntry;
-    }
-
-    TextDirection textDirection = Directionality.of(resolvedContext);
-    Alignment resolvedAlignment = alignment.resolve(textDirection);
-    anchorAlignment ??= alignment * -1;
-    Alignment resolvedAnchorAlignment = anchorAlignment.resolve(textDirection);
-    final OverlayState overlay =
-        Overlay.of(resolvedContext, rootOverlay: rootOverlay);
-    final themes =
-        InheritedTheme.capture(from: resolvedContext, to: overlay.context);
-    final data = Data.capture(from: resolvedContext, to: overlay.context);
-
-    ValueNotifier<bool> isClosed = ValueNotifier(false);
-    late OverlayEntry overlayEntry;
-    final OverlayPopoverEntry<T> popoverEntry = OverlayPopoverEntry();
-    final completer = popoverEntry.completer;
-    final animationCompleter = popoverEntry.animationCompleter;
-    overlayEntry = OverlayEntry(
-      builder: (innerContext) {
-        return RepaintBoundary(
-          child: FocusScope(
-            autofocus: dismissBackdropFocus,
-            child: AnimatedBuilder(
-                animation: isClosed,
-                builder: (innerContext, child) {
-                  return AnimatedValueBuilder.animation(
-                      value: isClosed.value ? 0.0 : 1.0,
-                      initialValue: 0.0,
-                      curve: isClosed.value
-                          ? const Interval(0, 2 / 3)
-                          : Curves.linear,
-                      duration: isClosed.value
-                          ? (showDuration ?? kDefaultDuration)
-                          : (dismissDuration ??
-                              const Duration(milliseconds: 100)),
-                      onEnd: (value) {
-                        if (value == 0.0 && isClosed.value) {
-                          popoverEntry.remove();
-                          popoverEntry.dispose();
-                          animationCompleter.complete();
-                        }
-                      },
-                      builder: (innerContext, animation) {
-                        final theme = Theme.of(innerContext);
-                        var popoverAnchor = PopoverOverlayWidget(
-                          animation: animation,
-                          onTapOutside: () {
-                            if (isClosed.value) return;
-                            if (!modal) {
-                              isClosed.value = true;
-                              completer.complete();
-                            }
-                          },
-                          key: key,
-                          anchor: resolvedAnchor,
-                          position: position,
-                          alignment: resolvedAlignment,
-                          themes: themes,
-                          builder: builder,
-                          // anchorAlignment: anchorAlignment ?? alignment * -1,
-                          anchorAlignment: resolvedAnchorAlignment,
-                          widthConstraint: widthConstraint,
-                          heightConstraint: heightConstraint,
-                          regionGroupId: regionGroupId,
-                          offset: offset,
-                          transitionAlignment: Alignment.center,
-                          margin: EdgeInsets.all(
-                              theme.density.baseContentPadding *
-                                  theme.scaling *
-                                  3),
-                          follow: false,
-                          consumeOutsideTaps: consumeOutsideTaps,
-                          allowInvertHorizontal: allowInvertHorizontal,
-                          allowInvertVertical: allowInvertVertical,
-                          data: data,
-                          onClose: () {
-                            if (isClosed.value) return Future.value();
-                            isClosed.value = true;
-                            completer.complete();
-                            return animationCompleter.future;
-                          },
-                          onImmediateClose: () {
-                            popoverEntry.remove();
-                            completer.complete();
-                          },
-                          onCloseWithResult: (value) {
-                            if (isClosed.value) return Future.value();
-                            isClosed.value = true;
-                            completer.complete(value as T);
-                            return animationCompleter.future;
-                          },
-                          completer: popoverEntry,
-                        );
-                        return popoverAnchor;
-                      });
-                }),
-          ),
-        );
-      },
-    );
-    popoverEntry.initialize(overlayEntry);
-    overlay.insert(overlayEntry);
-    return popoverEntry;
-  }
-}
+// Tooltip overlays are presented via [TooltipConfiguration] (see
+// overlay_configuration.dart), which owns both the desktop (real popover,
+// non-modal) and mobile (simplified, fixed-position) presentation directly.

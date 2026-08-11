@@ -431,7 +431,8 @@ class SurfaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<CardTheme>(context);
-    var isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+    var isSheetOverlay =
+        OverlayConfiguration.maybeOf(context) is SheetConfiguration;
     final scaling = theme.scaling;
     final densityContainerPadding =
         theme.density.baseContainerPadding * scaling;

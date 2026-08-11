@@ -410,11 +410,10 @@ class GridItemPickerLayout extends ItemPickerLayout {
 /// - [builder] (`ItemPickerBuilder<T>`, required): Builds each item widget.
 /// - [initialValue] (`T?`, optional): Initially selected item.
 /// - [layout] (`ItemPickerLayout`, default: `GridItemPickerLayout()`): Layout strategy.
-/// - [alignment] (`AlignmentGeometry?`, optional): Popover alignment.
-/// - [anchorAlignment] (`AlignmentGeometry?`, optional): Anchor alignment.
+/// - [overlayConfiguration] (`OverlayConfiguration?`, optional): overrides the popover presentation.
 /// - [constraints] (`BoxConstraints?`, optional): Size constraints for the popover.
-/// - [offset] (`Offset?`, optional): Offset from anchor.
 /// - [title] (`Widget?`, optional): Optional title widget.
+/// - [adaptiveOverlay] (`bool?`, optional): whether `adaptiveConversion` runs for this overlay.
 ///
 /// Returns: A `Future<T?>` that completes with the selected item or null.
 ///
@@ -432,36 +431,37 @@ Future<T?> showItemPicker<T>(
   required ItemPickerBuilder<T> builder,
   T? initialValue,
   ItemPickerLayout layout = const GridItemPickerLayout(),
-  AlignmentGeometry? alignment,
-  AlignmentGeometry? anchorAlignment,
+  OverlayConfiguration? overlayConfiguration,
   BoxConstraints? constraints,
-  Offset? offset,
   Widget? title,
+  bool? adaptiveOverlay,
 }) {
   final theme = Theme.of(context);
   return showOverlay<T>(
     context,
-    PopoverConfiguration(
-      alignment: alignment ?? AlignmentDirectional.topStart,
-      anchorAlignment: anchorAlignment ?? AlignmentDirectional.bottomStart,
-      offset: offset ?? Offset(0, 8.0 * theme.scaling),
-      builder: (context) {
-        return SurfaceCard(
-          padding: EdgeInsets.zero,
-          child: _InternalItemPicker<T>(
-            items: items,
-            builder: builder,
-            initialValue: initialValue,
-            layout: layout,
-            title: title,
-            constraints: constraints,
-            onChanged: (value) {
-              closeOverlay(context, value);
-            },
-          ),
-        );
-      },
-    ),
+    overlayConfiguration ??
+        PopoverConfiguration(
+          alignment: AlignmentDirectional.topStart,
+          anchorAlignment: AlignmentDirectional.bottomStart,
+          offset: Offset(0, 8.0 * theme.scaling),
+        ),
+    builder: (context) {
+      return SurfaceCard(
+        padding: EdgeInsets.zero,
+        child: _InternalItemPicker<T>(
+          items: items,
+          builder: builder,
+          initialValue: initialValue,
+          layout: layout,
+          title: title,
+          constraints: constraints,
+          onChanged: (value) {
+            closeOverlay(context, value);
+          },
+        ),
+      );
+    },
+    adaptive: adaptiveOverlay ?? true,
   ).future;
 }
 
@@ -564,32 +564,33 @@ Future<T?> showItemPickerDialog<T>(
   T? initialValue,
   BoxConstraints? constraints,
   required Widget title,
+  bool? adaptiveOverlay,
 }) {
   return showOverlay<T>(
     context,
-    DialogConfiguration<T>(
-      builder: (context) {
-        final theme = Theme.of(context);
-        return ModalBackdrop(
+    const DialogConfiguration(),
+    builder: (context) {
+      final theme = Theme.of(context);
+      return ModalBackdrop(
+        borderRadius: theme.borderRadiusXl,
+        child: ModalContainer(
           borderRadius: theme.borderRadiusXl,
-          child: ModalContainer(
-            borderRadius: theme.borderRadiusXl,
-            padding: EdgeInsets.zero,
-            child: _InternalItemPicker<T>(
-              items: items,
-              builder: builder,
-              initialValue: initialValue,
-              layout: layout,
-              title: title,
-              constraints: constraints,
-              onChanged: (value) {
-                closeOverlay(context, value);
-              },
-            ),
+          padding: EdgeInsets.zero,
+          child: _InternalItemPicker<T>(
+            items: items,
+            builder: builder,
+            initialValue: initialValue,
+            layout: layout,
+            title: title,
+            constraints: constraints,
+            onChanged: (value) {
+              closeOverlay(context, value);
+            },
           ),
-        );
-      },
-    ),
+        ),
+      );
+    },
+    adaptive: adaptiveOverlay ?? true,
   ).future;
 }
 

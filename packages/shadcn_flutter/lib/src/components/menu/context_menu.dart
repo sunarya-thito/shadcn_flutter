@@ -621,60 +621,59 @@ Future<void> _showContextMenu(
 ) async {
   final key = GlobalKey();
   final theme = Theme.of(context);
-  final overlayManager = OverlayManager.of(context);
-  return overlayManager
-      .showMenu(
-        key: key,
-        context: context,
-        position: position + const Offset(8, 0),
-        alignment: Alignment.topLeft,
-        anchorAlignment: Alignment.topRight,
-        regionGroupId: key,
-        modal: true,
-        follow: false,
-        consumeOutsideTaps: false,
-        dismissBackdropFocus: false,
-        overlayBarrier: OverlayBarrier(
-          borderRadius: BorderRadius.circular(theme.radiusMd),
-          barrierColor: const Color(0xB2000000),
-        ),
-        builder: (context) {
-          return AnimatedBuilder(
-              animation: children,
-              builder: (context, child) {
-                bool isSheetOverlay =
-                    SheetOverlayHandler.isSheetOverlay(context);
-                return ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minWidth: 192,
-                  ),
-                  child: MenuGroup(
-                    itemPadding: isSheetOverlay
-                        ? const EdgeInsets.symmetric(horizontal: 8) *
-                            theme.scaling
-                        : EdgeInsets.zero,
-                    direction: direction,
-                    regionGroupId: key,
-                    subMenuOffset: const Offset(8, -4),
-                    onDismissed: () {
-                      closeOverlay(context);
-                    },
-                    builder: (context, children) {
-                      final compTheme =
-                          ComponentTheme.maybeOf<ContextMenuTheme>(context);
-                      return MenuPopup(
-                        surfaceOpacity: compTheme?.surfaceOpacity,
-                        surfaceBlur: compTheme?.surfaceBlur,
-                        children: children,
-                      );
-                    },
-                    children: children.value,
-                  ),
-                );
-              });
-        },
-      )
-      .future;
+  return showOverlay(
+    context,
+    MenuConfiguration(
+      key: key,
+      position: position + const Offset(8, 0),
+      alignment: Alignment.topLeft,
+      anchorAlignment: Alignment.topRight,
+      regionGroupId: key,
+      modal: true,
+      follow: false,
+      consumeOutsideTaps: false,
+      dismissBackdropFocus: false,
+      overlayBarrier: OverlayBarrier(
+        borderRadius: BorderRadius.circular(theme.radiusMd),
+        barrierColor: const Color(0xB2000000),
+      ),
+    ),
+    builder: (context) {
+      return AnimatedBuilder(
+          animation: children,
+          builder: (context, child) {
+            bool isSheetOverlay =
+                OverlayConfiguration.maybeOf(context) is SheetConfiguration;
+            return ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: 192,
+              ),
+              child: MenuGroup(
+                itemPadding: isSheetOverlay
+                    ? const EdgeInsets.symmetric(horizontal: 8) *
+                        theme.scaling
+                    : EdgeInsets.zero,
+                direction: direction,
+                regionGroupId: key,
+                subMenuOffset: const Offset(8, -4),
+                onDismissed: () {
+                  closeOverlay(context);
+                },
+                builder: (context, children) {
+                  final compTheme =
+                      ComponentTheme.maybeOf<ContextMenuTheme>(context);
+                  return MenuPopup(
+                    surfaceOpacity: compTheme?.surfaceOpacity,
+                    surfaceBlur: compTheme?.surfaceBlur,
+                    children: children,
+                  );
+                },
+                children: children.value,
+              ),
+            );
+          });
+    },
+  ).future;
 }
 
 /// Internal widget for rendering a context menu popup.
@@ -731,7 +730,8 @@ class ContextMenuPopup extends StatelessWidget {
       initialValue: 0.0,
       duration: const Duration(milliseconds: 100),
       builder: (context, animation) {
-        final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+        final isSheetOverlay =
+            OverlayConfiguration.maybeOf(context) is SheetConfiguration;
         return PopoverOverlayWidget(
           anchor: ContextAnchor(anchorContext),
           position: position,

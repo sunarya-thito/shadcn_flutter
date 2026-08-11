@@ -15,17 +15,38 @@ class FormattedInputTheme extends ComponentThemeData {
   /// Internal padding for the formatted input.
   final EdgeInsetsGeometry? padding;
 
+  /// Overrides the [OverlayConfiguration] used to present the popup, when
+  /// not overridden per-instance by [FormattedObjectInput.overlayConfiguration].
+  final OverlayConfiguration? overlayConfiguration;
+
+  /// Whether the popup may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter), when not
+  /// overridden per-instance by [FormattedObjectInput.adaptiveOverlay].
+  final bool? adaptiveOverlay;
+
   /// Creates a [FormattedInputTheme].
-  const FormattedInputTheme({this.height, this.padding});
+  const FormattedInputTheme({
+    this.height,
+    this.padding,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
+  });
 
   /// Creates a copy of this theme with specified properties overridden.
   FormattedInputTheme copyWith({
     ValueGetter<double?>? height,
     ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<OverlayConfiguration?>? overlayConfiguration,
+    ValueGetter<bool?>? adaptiveOverlay,
   }) {
     return FormattedInputTheme(
       height: height == null ? this.height : height(),
       padding: padding == null ? this.padding : padding(),
+      overlayConfiguration: overlayConfiguration == null
+          ? this.overlayConfiguration
+          : overlayConfiguration(),
+      adaptiveOverlay:
+          adaptiveOverlay == null ? this.adaptiveOverlay : adaptiveOverlay(),
     );
   }
 
@@ -34,11 +55,14 @@ class FormattedInputTheme extends ComponentThemeData {
     if (identical(this, other)) return true;
     return other is FormattedInputTheme &&
         other.height == height &&
-        other.padding == padding;
+        other.padding == padding &&
+        other.overlayConfiguration == overlayConfiguration &&
+        other.adaptiveOverlay == adaptiveOverlay;
   }
 
   @override
-  int get hashCode => Object.hash(height, padding);
+  int get hashCode =>
+      Object.hash(height, padding, overlayConfiguration, adaptiveOverlay);
 }
 
 /// Abstract base class for parts of a formatted input.
@@ -1351,14 +1375,14 @@ class FormattedObjectInput<T> extends StatefulWidget
   /// The input parts that make up the formatted input.
   final List<InputPart> parts;
 
-  /// Alignment of the popover relative to the anchor.
-  final AlignmentGeometry? popoverAlignment;
+  /// Overrides the [OverlayConfiguration] used to present the popup. When
+  /// null, a default [PopoverConfiguration] is used (`AlignmentDirectional.topStart`
+  /// / `AlignmentDirectional.bottomStart`).
+  final OverlayConfiguration? overlayConfiguration;
 
-  /// Anchor alignment for popover positioning.
-  final AlignmentGeometry? popoverAnchorAlignment;
-
-  /// Offset for the popover position.
-  final Offset? popoverOffset;
+  /// Whether the popup may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter).
+  final bool? adaptiveOverlay;
 
   /// Icon displayed in the popover trigger.
   final Widget? popoverIcon;
@@ -1373,9 +1397,8 @@ class FormattedObjectInput<T> extends StatefulWidget
     this.controller,
     required this.converter,
     required this.parts,
-    this.popoverAlignment,
-    this.popoverAnchorAlignment,
-    this.popoverOffset,
+    this.overlayConfiguration,
+    this.adaptiveOverlay,
     this.popoverIcon,
     this.onPartsChanged,
   });
@@ -1522,17 +1545,26 @@ class _FormattedObjectInputState<T> extends State<FormattedObjectInput<T>> {
       return;
     }
     final theme = Theme.of(context);
-    _popoverController.show(
-        context,
+    final compTheme = ComponentTheme.maybeOf<FormattedInputTheme>(context);
+    final overlayConfiguration = widget.overlayConfiguration ??
+        compTheme?.overlayConfiguration ??
         PopoverConfiguration(
-          alignment: widget.popoverAlignment ?? AlignmentDirectional.topStart,
-          anchorAlignment:
-              widget.popoverAnchorAlignment ?? AlignmentDirectional.bottomStart,
-          offset: widget.popoverOffset ?? (const Offset(0, 4) * theme.scaling),
-          builder: (context) {
-            return popupBuilder(context, _controller);
-          },
-        ));
+          alignment: AlignmentDirectional.topStart,
+          anchorAlignment: AlignmentDirectional.bottomStart,
+          offset: const Offset(0, 4) * theme.scaling,
+        );
+    final adaptiveOverlay = styleValue(
+        widgetValue: widget.adaptiveOverlay,
+        themeValue: compTheme?.adaptiveOverlay,
+        defaultValue: true);
+    _popoverController.show(
+      context,
+      overlayConfiguration,
+      builder: (context) {
+        return popupBuilder(context, _controller);
+      },
+      adaptive: adaptiveOverlay,
+    );
   }
 
   @override

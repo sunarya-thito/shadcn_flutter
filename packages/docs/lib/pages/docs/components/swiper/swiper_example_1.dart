@@ -50,21 +50,21 @@ class _SwiperExample1State extends State<SwiperExample1> {
                       context,
                       DrawerConfiguration(
                         anchor: LinkedAnchor(#swiperCloseButton),
-                        builder: (context) {
-                          return ListView.separated(
-                            itemCount: 1000,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                child: Text('Item $index'),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Gap(8);
-                            },
-                          );
-                        },
                         position: OverlayPosition.bottom,
                       ),
+                      builder: (context) {
+                        return ListView.separated(
+                          itemCount: 1000,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: Text('Item $index'),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Gap(8);
+                          },
+                        );
+                      },
                     );
                   },
                   child: const Text('Close'),

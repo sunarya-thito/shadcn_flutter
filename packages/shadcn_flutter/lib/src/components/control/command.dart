@@ -80,6 +80,7 @@ class CommandEmpty extends StatelessWidget {
 /// * [loadingBuilder] - Custom widget for loading states.
 /// * [surfaceOpacity] - Modal surface opacity.
 /// * [surfaceBlur] - Modal surface blur amount.
+/// * [adaptiveOverlay] - whether `adaptiveConversion` runs for this overlay.
 ///
 /// ## Returns
 ///
@@ -106,35 +107,36 @@ Future<T?> showCommandDialog<T>({
   WidgetBuilder? loadingBuilder,
   double? surfaceOpacity,
   double? surfaceBlur,
+  bool adaptiveOverlay = true,
 }) {
   return showOverlay<T>(
     context,
-    DialogConfiguration<T>(
-      builder: (context) {
-        final theme = Theme.of(context);
-        final scaling = theme.scaling;
-        surfaceOpacity ??= theme.surfaceOpacity;
-        surfaceBlur ??= theme.surfaceBlur;
-        return ConstrainedBox(
-          constraints: constraints ??
-              const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
-          child: ModalBackdrop(
-            borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
-            surfaceClip: ModalBackdrop.shouldClipSurface(surfaceOpacity),
-            child: Command(
-              autofocus: autofocus,
-              builder: builder,
-              debounceDuration: debounceDuration,
-              emptyBuilder: emptyBuilder,
-              errorBuilder: errorBuilder,
-              loadingBuilder: loadingBuilder,
-              surfaceOpacity: surfaceOpacity,
-              surfaceBlur: surfaceBlur,
-            ),
+    const DialogConfiguration(),
+    builder: (context) {
+      final theme = Theme.of(context);
+      final scaling = theme.scaling;
+      surfaceOpacity ??= theme.surfaceOpacity;
+      surfaceBlur ??= theme.surfaceBlur;
+      return ConstrainedBox(
+        constraints: constraints ??
+            const BoxConstraints.tightFor(width: 510, height: 349) * scaling,
+        child: ModalBackdrop(
+          borderRadius: subtractByBorder(theme.borderRadiusXxl, 1 * scaling),
+          surfaceClip: ModalBackdrop.shouldClipSurface(surfaceOpacity),
+          child: Command(
+            autofocus: autofocus,
+            builder: builder,
+            debounceDuration: debounceDuration,
+            emptyBuilder: emptyBuilder,
+            errorBuilder: errorBuilder,
+            loadingBuilder: loadingBuilder,
+            surfaceOpacity: surfaceOpacity,
+            surfaceBlur: surfaceBlur,
           ),
-        );
-      },
-    ),
+        ),
+      );
+    },
+    adaptive: adaptiveOverlay,
   ).future;
 }
 

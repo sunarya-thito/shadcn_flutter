@@ -69,7 +69,7 @@ Matrix4 anchorTransformRelativeTo(RenderBox anchorBox, RenderObject source) {
 /// An [Anchor] resolved from a plain [BuildContext].
 ///
 /// If [context] is null (`const ContextAnchor()`), it's resolved by the
-/// consumer (e.g. [PopoverOverlayHandler.show]) to whatever [BuildContext]
+/// consumer (e.g. [PopoverConfiguration.show]) to whatever [BuildContext]
 /// the `show()` call itself received.
 class ContextAnchor extends Anchor {
   /// The context to anchor to, or null to use the consumer's own context.

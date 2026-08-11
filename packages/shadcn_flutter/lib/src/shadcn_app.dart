@@ -61,9 +61,6 @@ class ShadcnApp extends StatefulWidget {
     this.enableScrollInterception = true,
     this.darkTheme,
     this.themeMode = ThemeMode.system,
-    this.popoverHandler,
-    this.tooltipHandler,
-    this.menuHandler,
     this.enableThemeAnimation = true,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
@@ -113,9 +110,6 @@ class ShadcnApp extends StatefulWidget {
     this.enableScrollInterception = false,
     this.darkTheme,
     this.themeMode = ThemeMode.system,
-    this.popoverHandler,
-    this.tooltipHandler,
-    this.menuHandler,
     this.enableThemeAnimation = true,
   })  : assert(routerDelegate != null || routerConfig != null),
         navigatorObservers = null,
@@ -259,15 +253,6 @@ class ShadcnApp extends StatefulWidget {
 
   /// Whether to enable scroll interception.
   final bool enableScrollInterception;
-
-  /// The overlay handler for popovers.
-  final OverlayHandler? popoverHandler;
-
-  /// The overlay handler for tooltips.
-  final OverlayHandler? tooltipHandler;
-
-  /// The overlay handler for menus.
-  final OverlayHandler? menuHandler;
 
   /// Whether to animate theme changes.
   final bool enableThemeAnimation;
@@ -429,9 +414,6 @@ class _ShadcnAppState extends State<ShadcnApp> {
       builder: widget.builder,
       enableScrollInterception: widget.enableScrollInterception,
       darkTheme: widget.darkTheme,
-      popoverHandler: widget.popoverHandler,
-      tooltipHandler: widget.tooltipHandler,
-      menuHandler: widget.menuHandler,
       themeMode: widget.themeMode,
       enableThemeAnimation: widget.enableThemeAnimation,
       child: child,
@@ -601,15 +583,6 @@ class ShadcnLayer extends StatelessWidget {
   /// Whether to enable scroll interception.
   final bool enableScrollInterception;
 
-  /// The overlay handler for popovers.
-  final OverlayHandler? popoverHandler;
-
-  /// The overlay handler for tooltips.
-  final OverlayHandler? tooltipHandler;
-
-  /// The overlay handler for menus.
-  final OverlayHandler? menuHandler;
-
   /// Whether to animate theme changes.
   final bool enableThemeAnimation;
 
@@ -626,9 +599,6 @@ class ShadcnLayer extends StatelessWidget {
     this.enableScrollInterception = false,
     this.darkTheme,
     this.themeMode = ThemeMode.system,
-    this.popoverHandler,
-    this.tooltipHandler,
-    this.menuHandler,
     this.enableThemeAnimation = true,
   });
 
@@ -636,30 +606,16 @@ class ShadcnLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     var appScaling = scaling ?? AdaptiveScaler.defaultScaling(theme);
     var platformBrightness = MediaQuery.platformBrightnessOf(context);
-    var mobileMode = isMobile(theme.platform);
     var hasShadcnApp = Data.maybeOf<_ShadcnAppState>(context) != null;
     final scaledTheme = themeMode == ThemeMode.dark ||
             (themeMode == ThemeMode.system &&
                 platformBrightness == Brightness.dark)
         ? appScaling.scale(darkTheme ?? theme)
         : appScaling.scale(theme);
-    return OverlayManagerLayer(
-      menuHandler: menuHandler ??
-          (mobileMode
-              ? const SheetOverlayHandler()
-              : const PopoverOverlayHandler()),
-      popoverHandler: popoverHandler ??
-          (mobileMode
-              ? const SheetOverlayHandler()
-              : const PopoverOverlayHandler()),
-      tooltipHandler: tooltipHandler ??
-          (mobileMode
-              ? const FixedTooltipOverlayHandler()
-              : const PopoverOverlayHandler()),
-      child: ShadcnAnimatedTheme(
-        duration: kDefaultDuration,
-        data: scaledTheme,
-        child: Builder(builder: (context) {
+    return ShadcnAnimatedTheme(
+      duration: kDefaultDuration,
+      data: scaledTheme,
+      child: Builder(builder: (context) {
           var theme = Theme.of(context);
           var scrollViewInterceptor = ScrollViewInterceptor(
             enabled: enableScrollInterception,
@@ -703,8 +659,7 @@ class ShadcnLayer extends StatelessWidget {
             return scrollViewInterceptor;
           }
         }),
-      ),
-    );
+      );
   }
 }
 

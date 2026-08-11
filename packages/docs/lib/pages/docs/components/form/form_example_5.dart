@@ -23,20 +23,19 @@ class FormExample5 extends StatelessWidget {
         onSubmit: (context, values) {
           showOverlay(
             context,
-            DialogConfiguration(
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Success'),
-                  content: const Text('Password is valid!'),
-                  actions: [
-                    PrimaryButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                );
-              },
-            ),
+            DialogConfiguration(),
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Success'),
+                content: const Text('Password is valid!'),
+                actions: [
+                  PrimaryButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
           );
         },
         child: Column(

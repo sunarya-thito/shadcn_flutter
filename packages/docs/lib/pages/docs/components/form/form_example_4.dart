@@ -46,30 +46,29 @@ class _FormExample4State extends State<FormExample4> {
           bool? notify = _notifyKey[values];
           showOverlay(
             context,
-            DialogConfiguration(
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Form Values'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Name: $name'),
-                      Text('Agree: $agree'),
-                      Text('Birthday: $birthday'),
-                      Text('Gender: $gender'),
-                      Text('Notify: $notify'),
-                    ],
-                  ),
-                  actions: [
-                    PrimaryButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
-                    ),
+            DialogConfiguration(),
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Form Values'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Name: $name'),
+                    Text('Agree: $agree'),
+                    Text('Birthday: $birthday'),
+                    Text('Gender: $gender'),
+                    Text('Notify: $notify'),
                   ],
-                );
-              },
-            ),
+                ),
+                actions: [
+                  PrimaryButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
           );
         },
         child: Column(

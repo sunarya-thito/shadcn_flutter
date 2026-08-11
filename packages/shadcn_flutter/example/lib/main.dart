@@ -67,17 +67,17 @@ class CounterPageState extends State<CounterPage> {
                     context,
                     DrawerConfiguration(
                       anchor: LinkedAnchor(#menuDrawer),
-                      builder: (context) {
-                        return Container(
-                          alignment: Alignment.center,
-                          constraints: const BoxConstraints(
-                            maxWidth: 300,
-                          ),
-                          child: const Text('Drawer'),
-                        );
-                      },
                       position: OverlayPosition.left,
                     ),
+                    builder: (context) {
+                      return Container(
+                        alignment: Alignment.center,
+                        constraints: const BoxConstraints(
+                          maxWidth: 300,
+                        ),
+                        child: const Text('Drawer'),
+                      );
+                    },
                   );
                 },
                 density: ButtonDensity.icon,
@@ -95,17 +95,17 @@ class CounterPageState extends State<CounterPage> {
                     context,
                     SheetConfiguration(
                       anchor: LinkedAnchor(#searchSheet),
-                      builder: (context) {
-                        return Container(
-                          alignment: Alignment.center,
-                          constraints: const BoxConstraints(
-                            maxWidth: 200,
-                          ),
-                          child: const Text('Sheet'),
-                        );
-                      },
                       position: OverlayPosition.right,
                     ),
+                    builder: (context) {
+                      return Container(
+                        alignment: Alignment.center,
+                        constraints: const BoxConstraints(
+                          maxWidth: 200,
+                        ),
+                        child: const Text('Sheet'),
+                      );
+                    },
                   );
                 },
                 child: const Icon(Icons.search),

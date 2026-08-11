@@ -184,8 +184,10 @@ class MenuPopup extends StatelessWidget {
     final densityContentPadding =
         theme.density.baseContentPadding * theme.scaling;
     final compTheme = ComponentTheme.maybeOf<MenuPopupTheme>(context);
-    final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
-    final isDialogOverlay = DialogOverlayHandler.isDialogOverlay(context);
+    final isSheetOverlay =
+        OverlayConfiguration.maybeOf(context) is SheetConfiguration;
+    final isDialogOverlay =
+        OverlayConfiguration.maybeOf(context) is DialogConfiguration;
     final pad = styleValue(
         widgetValue: padding,
         themeValue: compTheme?.padding,

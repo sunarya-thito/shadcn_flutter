@@ -3,13 +3,20 @@ import '../../../shadcn_flutter.dart';
 /// Describes *what* overlay to show and *how*, independent of the specific
 /// mechanism (popover, drawer, sheet, dialog, menu, tooltip).
 ///
-/// This replaces choosing an [OverlayHandler] per call site (or relying on a
-/// single app-wide adaptive default in [ShadcnLayer]) with an explicit,
-/// per-call configuration object. Each concrete subclass ([PopoverConfiguration],
-/// [DrawerConfiguration], [SheetConfiguration], [DialogConfiguration],
-/// [MenuConfiguration], [TooltipConfiguration]) knows how to present itself
-/// via [show], and how to adapt itself for the current platform via
-/// [adaptiveConversion].
+/// Each concrete subclass ([PopoverConfiguration], [DrawerConfiguration],
+/// [SheetConfiguration], [DialogConfiguration], [MenuConfiguration],
+/// [TooltipConfiguration]) owns its own presentation mechanism directly —
+/// there is no separate handler/manager indirection to plug into. Each knows
+/// how to present itself via [show], and how to adapt itself for the current
+/// platform via [adaptiveConversion].
+///
+/// The content to show is *not* part of the configuration — it's supplied
+/// separately as the [WidgetBuilder] argument to [show]/[showOverlay], so a
+/// configuration object (and every knob it carries: alignment, margin,
+/// width constraint, ...) can be built, overridden, or passed around
+/// independently of what it's going to display. Result typing (`T`) belongs
+/// to [show] itself, not the configuration — nothing about *how* an overlay
+/// presents depends on what type its result will be.
 ///
 /// Use [showOverlay] to present a configuration.
 ///
@@ -19,31 +26,56 @@ import '../../../shadcn_flutter.dart';
 ///   context,
 ///   PopoverConfiguration(
 ///     alignment: Alignment.topCenter,
-///     builder: (context) => const Text('Popover content'),
 ///   ),
+///   builder: (context) => const Text('Popover content'),
 /// );
 /// ```
-abstract class OverlayConfiguration<T> {
+abstract class OverlayConfiguration {
   /// Creates an [OverlayConfiguration].
   const OverlayConfiguration();
 
-  /// Actually presents the overlay using this configuration's mechanism.
-  OverlayCompleter<T?> show(BuildContext context);
+  /// Actually presents the overlay using this configuration's mechanism,
+  /// with [builder] as its content.
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder);
 
   /// Returns an equivalent configuration adapted for the current platform,
   /// e.g. a [PopoverConfiguration] becomes a [DrawerConfiguration] on mobile.
   ///
   /// Returns `this` by default (no adaptation). Called by [showOverlay] when
   /// `adaptive: true` (the default).
-  OverlayConfiguration<T> adaptiveConversion(BuildContext context) => this;
+  OverlayConfiguration adaptiveConversion(BuildContext context) => this;
+
+  /// A configuration-level alternative to passing `adaptive: false` at every
+  /// call site: a copy of this configuration whose [adaptiveConversion] is a
+  /// no-op, regardless of the `adaptive`/`adaptiveOverlay` flag passed where
+  /// it's shown.
+  ///
+  /// The base implementation returns `this` unchanged — correct as-is for
+  /// every subclass whose [adaptiveConversion] is already the inherited
+  /// identity (everything except [PopoverConfiguration]). Subclasses with
+  /// real adaptive behavior override this to return an instance of their own
+  /// type (not a wrapper of a different type), so `is` checks — e.g.
+  /// `OverlayConfiguration.maybeOf(context) is SheetConfiguration`, or
+  /// [OverlayController]'s same-runtime-type in-place-update check — keep
+  /// working on the result exactly as they would on the original.
+  OverlayConfiguration get nonAdaptive => this;
+
+  /// Finds the [OverlayConfiguration] responsible for presenting the overlay
+  /// [context] is inside of, if any.
+  ///
+  /// Every `show()` implementation publishes itself into its content's
+  /// subtree, so code inside an overlay's content can ask "what kind of
+  /// overlay am I in" without each configuration hand-rolling its own marker
+  /// — e.g. `OverlayConfiguration.maybeOf(context) is SheetConfiguration` or
+  /// `is DialogConfiguration`.
+  static OverlayConfiguration? maybeOf(BuildContext context) =>
+      Data.maybeOf<OverlayConfiguration>(context);
 }
 
 /// Unified entry point for presenting any [OverlayConfiguration].
 ///
-/// Replaces directly calling `showPopover`/`openDrawer`/`openSheet`/`showDialog`
-/// or reaching for a specific [OverlayHandler]. When [adaptive] is true (the
-/// default), [configuration] is first passed through
-/// [OverlayConfiguration.adaptiveConversion] so it can present itself
+/// When [adaptive] is true (the default), [configuration] is first passed
+/// through [OverlayConfiguration.adaptiveConversion] so it can present itself
 /// differently depending on platform (e.g. a popover becoming a bottom drawer
 /// on mobile), explicitly, per call site, instead of via a single app-wide
 /// default.
@@ -54,33 +86,47 @@ abstract class OverlayConfiguration<T> {
 ///   context,
 ///   PopoverConfiguration(
 ///     alignment: Alignment.topCenter,
-///     builder: (context) => const Text('Popover content'),
 ///   ),
+///   builder: (context) => const Text('Popover content'),
 ///   adaptive: false, // force a popover even on mobile
 /// );
 /// ```
 OverlayCompleter<T?> showOverlay<T>(
   BuildContext context,
-  OverlayConfiguration<T> configuration, {
+  OverlayConfiguration configuration, {
+  required WidgetBuilder builder,
   bool adaptive = true,
 }) {
   final resolved =
       adaptive ? configuration.adaptiveConversion(context) : configuration;
-  return resolved.show(context);
+  return resolved.show<T>(context, builder);
+}
+
+/// Resolves the [BuildContext] to use for theme lookups when presenting an
+/// overlay anchored via [anchor], mirroring how each `show()` resolves its
+/// content's anchor context.
+BuildContext _resolveAnchorContext(BuildContext context, Anchor? anchor) {
+  if (anchor is LinkedAnchor) {
+    final registry = anchor.registry ?? OverlayAnchorRegistry.of(context);
+    return registry.find(anchor.key)?.context ?? context;
+  } else if (anchor is ContextAnchor) {
+    return anchor.context ?? context;
+  }
+  return context;
 }
 
 /// [OverlayConfiguration] that presents its content as a popover.
 ///
 /// On mobile platforms, [adaptiveConversion] converts this into a
 /// [DrawerConfiguration] sliding up from the bottom, matching the historical
-/// default behavior of `showPopover` under [ShadcnLayer]. Pass
-/// `adaptive: false` to [showOverlay] (or call [show] directly) to always get
-/// a real popover regardless of platform.
+/// default behavior under [ShadcnLayer]. Pass `adaptive: false` to
+/// [showOverlay] (or call [show] directly) to always get a real popover
+/// regardless of platform.
 ///
 /// While shown, [OverlayController] can update this overlay in place (new
 /// alignment, margin, etc.) by assigning a new [PopoverConfiguration] to the
 /// live overlay's [OverlayCompleter.config].
-class PopoverConfiguration<T> extends OverlayConfiguration<T> {
+class PopoverConfiguration extends OverlayConfiguration {
   /// The [Anchor] to position/track against ([LinkedAnchor] for an anchor
   /// key registered via [OverlayAnchor], or [ContextAnchor]), if using
   /// anchor-based positioning instead of the [BuildContext] passed to [show].
@@ -88,9 +134,6 @@ class PopoverConfiguration<T> extends OverlayConfiguration<T> {
 
   /// Popover alignment relative to the anchor.
   final AlignmentGeometry alignment;
-
-  /// Builds the popover content.
-  final WidgetBuilder builder;
 
   /// Explicit position, overrides [alignment] if provided.
   final Offset? position;
@@ -158,15 +201,10 @@ class PopoverConfiguration<T> extends OverlayConfiguration<T> {
   /// Custom barrier configuration.
   final OverlayBarrier? overlayBarrier;
 
-  /// Explicit [OverlayHandler] override. If null, resolves the ambient
-  /// [OverlayManager] at [show] time.
-  final OverlayHandler? handler;
-
   /// Creates a [PopoverConfiguration].
   const PopoverConfiguration({
     this.anchor,
     required this.alignment,
-    required this.builder,
     this.position,
     this.anchorAlignment,
     this.widthConstraint = PopoverConstraint.flexible,
@@ -189,14 +227,12 @@ class PopoverConfiguration<T> extends OverlayConfiguration<T> {
     this.showDuration,
     this.dismissDuration,
     this.overlayBarrier,
-    this.handler,
   });
 
   /// Returns a copy of this configuration with the given fields replaced.
-  PopoverConfiguration<T> copyWith({
+  PopoverConfiguration copyWith({
     ValueGetter<Anchor?>? anchor,
     ValueGetter<AlignmentGeometry>? alignment,
-    ValueGetter<WidgetBuilder>? builder,
     ValueGetter<Offset?>? position,
     ValueGetter<AlignmentGeometry?>? anchorAlignment,
     ValueGetter<PopoverConstraint>? widthConstraint,
@@ -219,12 +255,10 @@ class PopoverConfiguration<T> extends OverlayConfiguration<T> {
     ValueGetter<Duration?>? showDuration,
     ValueGetter<Duration?>? dismissDuration,
     ValueGetter<OverlayBarrier?>? overlayBarrier,
-    ValueGetter<OverlayHandler?>? handler,
   }) {
-    return PopoverConfiguration<T>(
+    return PopoverConfiguration(
       anchor: anchor == null ? this.anchor : anchor(),
       alignment: alignment == null ? this.alignment : alignment(),
-      builder: builder == null ? this.builder : builder(),
       position: position == null ? this.position : position(),
       anchorAlignment:
           anchorAlignment == null ? this.anchorAlignment : anchorAlignment(),
@@ -265,65 +299,262 @@ class PopoverConfiguration<T> extends OverlayConfiguration<T> {
           dismissDuration == null ? this.dismissDuration : dismissDuration(),
       overlayBarrier:
           overlayBarrier == null ? this.overlayBarrier : overlayBarrier(),
-      handler: handler == null ? this.handler : handler(),
     );
   }
 
   @override
-  OverlayCompleter<T?> show(BuildContext context) {
-    final resolvedHandler = handler ?? OverlayManager.of(context);
-    return resolvedHandler.show<T>(
-      context: context,
-      anchor: anchor,
-      alignment: alignment,
-      builder: builder,
-      position: position,
-      anchorAlignment: anchorAlignment,
-      widthConstraint: widthConstraint,
-      heightConstraint: heightConstraint,
-      key: key,
-      rootOverlay: rootOverlay,
-      modal: modal,
-      barrierDismissable: barrierDismissable,
-      clipBehavior: clipBehavior,
-      regionGroupId: regionGroupId,
-      offset: offset,
-      transitionAlignment: transitionAlignment,
-      margin: margin,
-      follow: follow,
-      consumeOutsideTaps: consumeOutsideTaps,
-      onTickFollow: onTickFollow,
-      allowInvertHorizontal: allowInvertHorizontal,
-      allowInvertVertical: allowInvertVertical,
-      dismissBackdropFocus: dismissBackdropFocus,
-      showDuration: showDuration,
-      dismissDuration: dismissDuration,
-      overlayBarrier: overlayBarrier,
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder) {
+    Widget wrappedBuilder(BuildContext innerContext) {
+      return Data<OverlayConfiguration>.inherit(
+        data: this,
+        child: Builder(builder: builder),
+      );
+    }
+
+    final Anchor resolvedAnchor =
+        (anchor ?? const ContextAnchor()).resolve(context);
+    final BuildContext resolvedContext = _resolveAnchorContext(
+      context,
+      resolvedAnchor,
     );
+
+    final subscription = resolvedAnchor.subscribe();
+    if (!subscription.isVisible) {
+      final popoverEntry = OverlayPopoverEntry<T>();
+      popoverEntry.completer.complete();
+      popoverEntry.animationCompleter.complete();
+      return popoverEntry;
+    }
+
+    final TextDirection textDirection = Directionality.of(resolvedContext);
+    final Alignment resolvedAlignment = alignment.resolve(textDirection);
+    final AlignmentGeometry effectiveAnchorAlignment =
+        anchorAlignment ?? alignment * -1;
+    final Alignment resolvedAnchorAlignment =
+        effectiveAnchorAlignment.resolve(textDirection);
+    final OverlayState overlay =
+        Overlay.of(resolvedContext, rootOverlay: rootOverlay);
+    final themes =
+        InheritedTheme.capture(from: resolvedContext, to: overlay.context);
+    final data = Data.capture(from: resolvedContext, to: overlay.context);
+
+    Size? anchorSize = subscription.anchorSize;
+    Offset? effectivePosition = position;
+    if (effectivePosition == null) {
+      RenderBox renderBox = resolvedContext.findRenderObject() as RenderBox;
+      Offset pos = renderBox.localToGlobal(Offset.zero);
+      anchorSize ??= renderBox.size;
+      effectivePosition = Offset(
+        pos.dx +
+            anchorSize.width / 2 +
+            anchorSize.width / 2 * resolvedAnchorAlignment.x,
+        pos.dy +
+            anchorSize.height / 2 +
+            anchorSize.height / 2 * resolvedAnchorAlignment.y,
+      );
+    }
+    final OverlayPopoverEntry<T> popoverEntry = OverlayPopoverEntry();
+    final GlobalKey<PopoverOverlayWidgetState> resolvedKey = key
+            is GlobalKey<PopoverOverlayWidgetState>
+        ? key as GlobalKey<PopoverOverlayWidgetState>
+        : GlobalKey<PopoverOverlayWidgetState>(debugLabel: 'PopoverAnchor$key');
+    popoverEntry.stateKey = resolvedKey;
+    final completer = popoverEntry.completer;
+    final animationCompleter = popoverEntry.animationCompleter;
+    ValueNotifier<bool> isClosed = ValueNotifier(false);
+    Future<T?> onClose() {
+      if (isClosed.value) return Future.value();
+      isClosed.value = true;
+      completer.complete();
+      return animationCompleter.future;
+    }
+
+    void onImmediateClose() {
+      popoverEntry.remove();
+      completer.complete();
+    }
+
+    Future<T?> onCloseWithResult(Object? value) {
+      if (isClosed.value) return Future.value();
+      isClosed.value = true;
+      completer.complete(value as T);
+      return animationCompleter.future;
+    }
+
+    popoverEntry.onClose = onClose;
+    popoverEntry.onImmediateClose = onImmediateClose;
+    popoverEntry.onCloseWithResult = onCloseWithResult;
+    OverlayEntry? barrierEntry;
+    late OverlayEntry overlayEntry;
+    if (modal) {
+      if (consumeOutsideTaps) {
+        barrierEntry = OverlayEntry(
+          builder: (context) {
+            return GestureDetector(
+              onTap: () {
+                if (!barrierDismissable || isClosed.value) return;
+                isClosed.value = true;
+                completer.complete();
+              },
+            );
+          },
+        );
+      } else {
+        barrierEntry = OverlayEntry(
+          builder: (context) {
+            return Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerDown: (event) {
+                if (!barrierDismissable || isClosed.value) return;
+                isClosed.value = true;
+                completer.complete();
+              },
+            );
+          },
+        );
+      }
+    }
+
+    overlayEntry = OverlayEntry(
+      builder: (innerContext) {
+        return RepaintBoundary(
+          child: AnimatedBuilder(
+              animation: isClosed,
+              builder: (innerContext, child) {
+                return FocusScope(
+                  autofocus: dismissBackdropFocus,
+                  canRequestFocus: !isClosed.value,
+                  child: AnimatedValueBuilder.animation(
+                      value: isClosed.value ? 0.0 : 1.0,
+                      initialValue: 0.0,
+                      curve: isClosed.value
+                          ? const Interval(0, 2 / 3)
+                          : Curves.linear,
+                      duration: isClosed.value
+                          ? (showDuration ?? kDefaultDuration)
+                          : (dismissDuration ??
+                              const Duration(milliseconds: 100)),
+                      onEnd: (value) {
+                        if (value == 0.0 && isClosed.value) {
+                          popoverEntry.remove();
+                          popoverEntry.dispose();
+                          animationCompleter.complete();
+                        }
+                      },
+                      builder: (innerContext, animation) {
+                        var popoverAnchor = PopoverOverlayWidget(
+                          animation: animation,
+                          onTapOutside: () {
+                            if (isClosed.value) return;
+                            if (!modal) {
+                              isClosed.value = true;
+                              completer.complete();
+                            }
+                          },
+                          key: resolvedKey,
+                          anchor: resolvedAnchor,
+                          position: effectivePosition!,
+                          alignment: resolvedAlignment,
+                          themes: themes,
+                          builder: wrappedBuilder,
+                          anchorSize: anchorSize,
+                          anchorAlignment: resolvedAnchorAlignment,
+                          widthConstraint: widthConstraint,
+                          heightConstraint: heightConstraint,
+                          regionGroupId: regionGroupId,
+                          offset: offset,
+                          transitionAlignment: transitionAlignment,
+                          margin: margin,
+                          follow: follow,
+                          consumeOutsideTaps: consumeOutsideTaps,
+                          onTickFollow: onTickFollow,
+                          allowInvertHorizontal: allowInvertHorizontal,
+                          allowInvertVertical: allowInvertVertical,
+                          data: data,
+                          onClose: onClose,
+                          onImmediateClose: onImmediateClose,
+                          onCloseWithResult: onCloseWithResult,
+                          completer: popoverEntry,
+                        );
+                        return popoverAnchor;
+                      }),
+                );
+              }),
+        );
+      },
+    );
+    popoverEntry.initialize(overlayEntry, barrierEntry);
+    if (barrierEntry != null) {
+      overlay.insert(barrierEntry);
+    }
+    overlay.insert(overlayEntry);
+    return popoverEntry;
   }
 
   @override
-  OverlayConfiguration<T> adaptiveConversion(BuildContext context) {
-    if (handler == null && isMobile(Theme.of(context).platform)) {
+  OverlayConfiguration adaptiveConversion(BuildContext context) {
+    if (isMobile(Theme.of(context).platform)) {
       return toDrawer();
     }
     return this;
   }
 
+  @override
+  OverlayConfiguration get nonAdaptive => _NonAdaptivePopoverConfiguration(this);
+
   /// Converts this configuration into an equivalent [DrawerConfiguration].
   ///
   /// Used automatically by [adaptiveConversion] on mobile platforms; can also
   /// be called directly for manual conversion.
-  DrawerConfiguration<T> toDrawer({
+  DrawerConfiguration toDrawer({
     OverlayPosition position = OverlayPosition.bottom,
   }) {
-    return DrawerConfiguration<T>(
+    return DrawerConfiguration(
       anchor: anchor,
-      builder: builder,
       position: position,
       barrierDismissible: barrierDismissable,
     );
   }
+}
+
+/// [PopoverConfiguration.nonAdaptive]'s result: a [PopoverConfiguration] that
+/// never converts, produced by copying every field of the source rather than
+/// wrapping it — so it stays a real [PopoverConfiguration] and every `is`
+/// check on it behaves exactly as on the original.
+class _NonAdaptivePopoverConfiguration extends PopoverConfiguration {
+  _NonAdaptivePopoverConfiguration(PopoverConfiguration source)
+      : super(
+          anchor: source.anchor,
+          alignment: source.alignment,
+          position: source.position,
+          anchorAlignment: source.anchorAlignment,
+          widthConstraint: source.widthConstraint,
+          heightConstraint: source.heightConstraint,
+          key: source.key,
+          rootOverlay: source.rootOverlay,
+          modal: source.modal,
+          barrierDismissable: source.barrierDismissable,
+          clipBehavior: source.clipBehavior,
+          regionGroupId: source.regionGroupId,
+          offset: source.offset,
+          transitionAlignment: source.transitionAlignment,
+          margin: source.margin,
+          follow: source.follow,
+          consumeOutsideTaps: source.consumeOutsideTaps,
+          onTickFollow: source.onTickFollow,
+          allowInvertHorizontal: source.allowInvertHorizontal,
+          allowInvertVertical: source.allowInvertVertical,
+          dismissBackdropFocus: source.dismissBackdropFocus,
+          showDuration: source.showDuration,
+          dismissDuration: source.dismissDuration,
+          overlayBarrier: source.overlayBarrier,
+        );
+
+  @override
+  OverlayConfiguration adaptiveConversion(BuildContext context) => this;
+
+  @override
+  OverlayConfiguration get nonAdaptive => this;
 }
 
 /// [OverlayConfiguration] that presents its content as a side/bottom drawer
@@ -331,14 +562,11 @@ class PopoverConfiguration<T> extends OverlayConfiguration<T> {
 ///
 /// Already the mobile-appropriate mechanism, so [adaptiveConversion] is the
 /// identity conversion (no adaptation performed).
-class DrawerConfiguration<T> extends OverlayConfiguration<T> {
+class DrawerConfiguration extends OverlayConfiguration {
   /// The [Anchor] to resolve against ([LinkedAnchor] for an anchor key
   /// registered via [OverlayAnchor], or [ContextAnchor]), if using
   /// anchor-based positioning instead of the [BuildContext] passed to [show].
   final Anchor? anchor;
-
-  /// Builds the drawer content.
-  final WidgetBuilder builder;
 
   /// The edge the drawer slides in from.
   final OverlayPosition position;
@@ -394,7 +622,6 @@ class DrawerConfiguration<T> extends OverlayConfiguration<T> {
   /// Creates a [DrawerConfiguration].
   const DrawerConfiguration({
     this.anchor,
-    required this.builder,
     this.position = OverlayPosition.bottom,
     this.expands = false,
     this.draggable = true,
@@ -415,29 +642,50 @@ class DrawerConfiguration<T> extends OverlayConfiguration<T> {
   });
 
   @override
-  OverlayCompleter<T?> show(BuildContext context) {
-    // ignore: deprecated_member_use_from_same_package
-    return openDrawerOverlay<T>(
-      context: context,
-      anchor: anchor,
-      builder: builder,
-      position: position,
-      expands: expands,
-      draggable: draggable,
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder) {
+    final themeContext = _resolveAnchorContext(context, anchor);
+    final theme = ComponentTheme.maybeOf<DrawerTheme>(themeContext);
+    final resolvedShowDragHandle =
+        showDragHandle ?? theme?.showDragHandle ?? true;
+    final resolvedSurfaceOpacity = surfaceOpacity ?? theme?.surfaceOpacity;
+    final resolvedSurfaceBlur = surfaceBlur ?? theme?.surfaceBlur;
+    final resolvedBarrierColor = barrierColor ?? theme?.barrierColor;
+    final resolvedDragHandleSize = dragHandleSize ?? theme?.dragHandleSize;
+    Widget wrappedBuilder(BuildContext innerContext) {
+      return Data<OverlayConfiguration>.inherit(
+        data: this,
+        child: Builder(builder: builder),
+      );
+    }
+    return openRawDrawer<T>(
+      anchor: anchor ?? ContextAnchor(context),
       barrierDismissible: barrierDismissible,
       backdropBuilder: backdropBuilder,
       useSafeArea: useSafeArea,
-      showDragHandle: showDragHandle,
-      borderRadius: borderRadius,
-      dragHandleSize: dragHandleSize,
       transformBackdrop: transformBackdrop,
-      surfaceOpacity: surfaceOpacity,
-      surfaceBlur: surfaceBlur,
-      barrierColor: barrierColor,
       animationController: animationController,
       autoOpen: autoOpen,
       constraints: constraints,
       alignment: alignment,
+      builder: (context, extraSize, size, padding, stackIndex) {
+        return DrawerWrapper(
+          position: position,
+          expands: expands,
+          draggable: draggable,
+          extraSize: extraSize,
+          size: size,
+          showDragHandle: resolvedShowDragHandle,
+          dragHandleSize: resolvedDragHandleSize,
+          padding: padding,
+          borderRadius: borderRadius,
+          surfaceOpacity: resolvedSurfaceOpacity,
+          surfaceBlur: resolvedSurfaceBlur,
+          barrierColor: resolvedBarrierColor,
+          stackIndex: stackIndex,
+          child: Builder(builder: wrappedBuilder),
+        );
+      },
+      position: position,
     );
   }
 }
@@ -447,14 +695,11 @@ class DrawerConfiguration<T> extends OverlayConfiguration<T> {
 ///
 /// Already the mobile-appropriate mechanism, so [adaptiveConversion] is the
 /// identity conversion (no adaptation performed).
-class SheetConfiguration<T> extends OverlayConfiguration<T> {
+class SheetConfiguration extends OverlayConfiguration {
   /// The [Anchor] to resolve against ([LinkedAnchor] for an anchor key
   /// registered via [OverlayAnchor], or [ContextAnchor]), if using
   /// anchor-based positioning instead of the [BuildContext] passed to [show].
   final Anchor? anchor;
-
-  /// Builds the sheet content.
-  final WidgetBuilder builder;
 
   /// The edge the sheet slides in from.
   final OverlayPosition position;
@@ -486,10 +731,17 @@ class SheetConfiguration<T> extends OverlayConfiguration<T> {
   /// Alignment within constraints.
   final AlignmentGeometry? alignment;
 
+  /// Whether to respect device safe areas around the sheet.
+  ///
+  /// Defaults to `false` since [SheetWrapper] handles safe-area padding
+  /// itself for the direct-sheet case. [MenuConfiguration] passes `true`
+  /// here for its mobile fallback presentation, matching the historical
+  /// `SheetOverlayHandler`-as-menu-handler behavior.
+  final bool useSafeArea;
+
   /// Creates a [SheetConfiguration].
   const SheetConfiguration({
     this.anchor,
-    required this.builder,
     this.position = OverlayPosition.bottom,
     this.barrierDismissible = true,
     this.transformBackdrop = false,
@@ -500,25 +752,46 @@ class SheetConfiguration<T> extends OverlayConfiguration<T> {
     this.autoOpen = true,
     this.constraints,
     this.alignment,
+    this.useSafeArea = false,
   });
 
   @override
-  OverlayCompleter<T?> show(BuildContext context) {
-    // ignore: deprecated_member_use_from_same_package
-    return openSheetOverlay<T>(
-      context: context,
-      anchor: anchor,
-      builder: builder,
-      position: position,
-      barrierDismissible: barrierDismissible,
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder) {
+    final themeContext = _resolveAnchorContext(context, anchor);
+    final theme = ComponentTheme.maybeOf<DrawerTheme>(themeContext);
+    final resolvedBarrierColor = barrierColor ?? theme?.barrierColor;
+    Widget wrappedBuilder(BuildContext innerContext) {
+      return Data<OverlayConfiguration>.inherit(
+        data: this,
+        child: Builder(builder: builder),
+      );
+    }
+    return openRawDrawer<T>(
+      anchor: anchor ?? ContextAnchor(context),
       transformBackdrop: transformBackdrop,
+      barrierDismissible: barrierDismissible,
+      useSafeArea: useSafeArea,
       backdropBuilder: backdropBuilder,
-      barrierColor: barrierColor,
-      draggable: draggable,
       animationController: animationController,
       autoOpen: autoOpen,
       constraints: constraints,
       alignment: alignment,
+      builder: (context, extraSize, size, padding, stackIndex) {
+        final theme = Theme.of(context);
+        return SheetWrapper(
+          position: position,
+          gapAfterDragger: 8 * theme.scaling,
+          expands: true,
+          draggable: draggable,
+          extraSize: extraSize,
+          size: size,
+          padding: padding,
+          barrierColor: resolvedBarrierColor,
+          stackIndex: stackIndex,
+          child: Builder(builder: wrappedBuilder),
+        );
+      },
+      position: position,
     );
   }
 }
@@ -529,13 +802,10 @@ class SheetConfiguration<T> extends OverlayConfiguration<T> {
 /// Dialogs are usually an intentional choice regardless of platform, so
 /// [adaptiveConversion] is the identity conversion (no adaptation performed).
 ///
-/// `showDialog` only exposes a [Future], so [OverlayCompleter.remove] and
+/// `Navigator.push` only exposes a [Future], so [OverlayCompleter.remove] and
 /// [OverlayCompleter.dispose] do nothing here. Close the dialog with
 /// `Navigator.pop` or `closeOverlay` instead.
-class DialogConfiguration<T> extends OverlayConfiguration<T> {
-  /// Builds the dialog content.
-  final WidgetBuilder builder;
-
+class DialogConfiguration extends OverlayConfiguration {
   /// Whether to use the root navigator.
   final bool useRootNavigator;
 
@@ -568,7 +838,6 @@ class DialogConfiguration<T> extends OverlayConfiguration<T> {
 
   /// Creates a [DialogConfiguration].
   const DialogConfiguration({
-    required this.builder,
     this.useRootNavigator = true,
     this.barrierDismissible = true,
     this.barrierColor,
@@ -582,7 +851,7 @@ class DialogConfiguration<T> extends OverlayConfiguration<T> {
   });
 
   @override
-  OverlayCompleter<T?> show(BuildContext context) {
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder) {
     final navigatorState = Navigator.of(
       context,
       rootNavigator: useRootNavigator,
@@ -596,9 +865,12 @@ class DialogConfiguration<T> extends OverlayConfiguration<T> {
       builder: (context) {
         return DialogOverlayContent<T>(
           route: ModalRoute.of(context) as DialogRoute<T>,
-          child: Builder(builder: (context) {
-            return builder(context);
-          }),
+          child: Data<OverlayConfiguration>.inherit(
+            data: this,
+            child: Builder(builder: (context) {
+              return builder(context);
+            }),
+          ),
         );
       },
       themes: themes,
@@ -629,16 +901,13 @@ class DialogConfiguration<T> extends OverlayConfiguration<T> {
   }
 }
 
-/// [OverlayConfiguration] that presents its content as a menu via the
-/// ambient [OverlayManager].
+/// [OverlayConfiguration] that presents its content as a menu.
 ///
-/// On mobile platforms, [adaptiveConversion] converts this into a
-/// [DrawerConfiguration], matching the historical default `menuHandler`
-/// behavior under [ShadcnLayer].
-class MenuConfiguration<T> extends OverlayConfiguration<T> {
-  /// Builds the menu content.
-  final WidgetBuilder builder;
-
+/// Presents as a real anchored popover on desktop platforms and as a bottom
+/// sheet on mobile platforms (matching the historical default menu behavior
+/// under [ShadcnLayer]) — this platform branch happens directly inside
+/// [show], so [adaptiveConversion] stays the inherited identity conversion.
+class MenuConfiguration extends OverlayConfiguration {
   /// Menu alignment relative to the anchor.
   final AlignmentGeometry alignment;
 
@@ -654,6 +923,9 @@ class MenuConfiguration<T> extends OverlayConfiguration<T> {
   /// Height constraint mode.
   final PopoverConstraint heightConstraint;
 
+  /// Widget key for the menu overlay.
+  final Key? key;
+
   /// Whether to use the root overlay.
   final bool rootOverlay;
 
@@ -666,41 +938,84 @@ class MenuConfiguration<T> extends OverlayConfiguration<T> {
   /// Clipping behavior for the menu content.
   final Clip clipBehavior;
 
+  /// Region grouping identifier.
+  final Object? regionGroupId;
+
   /// Additional position offset.
   final Offset? offset;
+
+  /// Transition origin alignment.
+  final AlignmentGeometry? transitionAlignment;
+
+  /// Menu margin.
+  final EdgeInsetsGeometry? margin;
 
   /// Whether the menu follows the anchor if it moves.
   final bool follow;
 
+  /// Whether outside taps are consumed.
+  final bool consumeOutsideTaps;
+
+  /// Callback invoked on every follow tick.
+  final ValueChanged<PopoverOverlayWidgetState>? onTickFollow;
+
+  /// Whether horizontal inversion is allowed when space is constrained.
+  final bool allowInvertHorizontal;
+
+  /// Whether vertical inversion is allowed when space is constrained.
+  final bool allowInvertVertical;
+
+  /// Whether to dismiss when backdrop gains focus.
+  final bool dismissBackdropFocus;
+
+  /// Show animation duration.
+  final Duration? showDuration;
+
+  /// Dismiss animation duration.
+  final Duration? dismissDuration;
+
   /// Custom barrier configuration.
   final OverlayBarrier? overlayBarrier;
 
-  /// Widget key for the menu overlay.
-  final Key? key;
-
   /// Creates a [MenuConfiguration].
   const MenuConfiguration({
-    required this.builder,
     this.alignment = Alignment.center,
     this.position,
     this.anchorAlignment,
     this.widthConstraint = PopoverConstraint.flexible,
     this.heightConstraint = PopoverConstraint.flexible,
+    this.key,
     this.rootOverlay = true,
     this.modal = true,
     this.barrierDismissable = true,
     this.clipBehavior = Clip.none,
+    this.regionGroupId,
     this.offset,
+    this.transitionAlignment,
+    this.margin,
     this.follow = true,
+    this.consumeOutsideTaps = true,
+    this.onTickFollow,
+    this.allowInvertHorizontal = true,
+    this.allowInvertVertical = true,
+    this.dismissBackdropFocus = true,
+    this.showDuration,
+    this.dismissDuration,
     this.overlayBarrier,
-    this.key,
   });
 
   @override
-  OverlayCompleter<T?> show(BuildContext context) {
-    return OverlayManager.of(context).showMenu<T>(
-      context: context,
-      builder: builder,
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder) {
+    if (isMobile(Theme.of(context).platform)) {
+      return SheetConfiguration(
+        position: OverlayPosition.bottom,
+        barrierDismissible: barrierDismissable,
+        draggable: barrierDismissable,
+        transformBackdrop: false,
+        useSafeArea: true,
+      ).show<T>(context, builder);
+    }
+    return PopoverConfiguration(
       alignment: alignment,
       position: position,
       anchorAlignment: anchorAlignment,
@@ -711,30 +1026,34 @@ class MenuConfiguration<T> extends OverlayConfiguration<T> {
       modal: modal,
       barrierDismissable: barrierDismissable,
       clipBehavior: clipBehavior,
+      regionGroupId: regionGroupId,
       offset: offset,
+      transitionAlignment: transitionAlignment,
+      margin: margin,
       follow: follow,
+      consumeOutsideTaps: consumeOutsideTaps,
+      onTickFollow: onTickFollow,
+      allowInvertHorizontal: allowInvertHorizontal,
+      allowInvertVertical: allowInvertVertical,
+      dismissBackdropFocus: dismissBackdropFocus,
+      showDuration: showDuration,
+      dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
-    );
-  }
-
-  @override
-  OverlayConfiguration<T> adaptiveConversion(BuildContext context) {
-    if (isMobile(Theme.of(context).platform)) {
-      return DrawerConfiguration<T>(builder: builder);
-    }
-    return this;
+    ).show<T>(context, builder);
   }
 }
 
-/// [OverlayConfiguration] that presents its content as a tooltip via the
-/// ambient [OverlayManager].
+/// [OverlayConfiguration] that presents its content as a tooltip.
 ///
-/// [adaptiveConversion] returns the configuration unchanged. The
-/// `tooltipHandler` that [OverlayManager] injects under [ShadcnLayer] already
-/// picks a fixed tooltip implementation appropriate for mobile.
-class TooltipConfiguration<T> extends OverlayConfiguration<T> {
-  /// Builds the tooltip content.
-  final WidgetBuilder builder;
+/// Presents as a real popover (`modal: false`) on desktop platforms and as a
+/// simplified, non-follow, fixed-position overlay on mobile platforms
+/// (matching the historical `FixedTooltipOverlayHandler`-as-tooltip-handler
+/// default under [ShadcnLayer]). [adaptiveConversion] stays the inherited
+/// identity conversion — a tooltip should never become a bottom drawer.
+class TooltipConfiguration extends OverlayConfiguration {
+  /// The [Anchor] to resolve against, if using anchor-based positioning
+  /// instead of the [BuildContext] passed to [show].
+  final Anchor? anchor;
 
   /// Tooltip alignment relative to the anchor.
   final AlignmentGeometry alignment;
@@ -748,43 +1067,183 @@ class TooltipConfiguration<T> extends OverlayConfiguration<T> {
   /// Additional position offset.
   final Offset? offset;
 
-  /// Whether the tooltip follows the anchor if it moves.
+  /// Whether the tooltip follows the anchor if it moves. Only honored on
+  /// desktop platforms — the mobile presentation never follows.
   final bool follow;
 
   /// Widget key for the tooltip overlay.
   final Key? key;
 
+  /// Show animation duration. Defaults to [kDefaultDuration].
+  final Duration? showDuration;
+
+  /// Dismiss animation duration. Defaults to 100ms.
+  final Duration? dismissDuration;
+
   /// Creates a [TooltipConfiguration].
   const TooltipConfiguration({
-    required this.builder,
+    this.anchor,
     this.alignment = Alignment.center,
     this.position,
     this.anchorAlignment,
     this.offset,
     this.follow = true,
     this.key,
+    this.showDuration,
+    this.dismissDuration,
   });
 
   @override
-  OverlayCompleter<T?> show(BuildContext context) {
-    return OverlayManager.of(context).showTooltip<T>(
-      context: context,
-      builder: builder,
+  OverlayCompleter<T?> show<T>(BuildContext context, WidgetBuilder builder) {
+    if (isMobile(Theme.of(context).platform)) {
+      return _showFixed<T>(context, builder);
+    }
+    return PopoverConfiguration(
+      anchor: anchor,
+      modal: false,
       alignment: alignment,
       position: position,
       anchorAlignment: anchorAlignment,
       offset: offset,
       follow: follow,
       key: key,
-      modal: false,
-      barrierDismissable: false,
-      consumeOutsideTaps: false,
+      dismissBackdropFocus: false,
+      showDuration: showDuration,
+      dismissDuration: dismissDuration,
+    ).show<T>(context, builder);
+  }
+
+  /// The simplified, non-follow, fixed-position mobile presentation
+  /// (absorbed from the historical `FixedTooltipOverlayHandler`): no barrier,
+  /// no anchor-following, a fixed margin around the viewport edges.
+  OverlayCompleter<T?> _showFixed<T>(
+      BuildContext context, WidgetBuilder builder) {
+    Widget wrappedBuilder(BuildContext innerContext) {
+      return Data<OverlayConfiguration>.inherit(
+        data: this,
+        child: Builder(builder: builder),
+      );
+    }
+
+    final Anchor resolvedAnchor =
+        (anchor ?? const ContextAnchor()).resolve(context);
+    final BuildContext resolvedContext = _resolveAnchorContext(
+      context,
+      resolvedAnchor,
     );
+
+    final subscription = resolvedAnchor.subscribe();
+    if (!subscription.isVisible) {
+      final popoverEntry = OverlayPopoverEntry<T>();
+      popoverEntry.completer.complete();
+      popoverEntry.animationCompleter.complete();
+      return popoverEntry;
+    }
+
+    final TextDirection textDirection = Directionality.of(resolvedContext);
+    final Alignment resolvedAlignment = alignment.resolve(textDirection);
+    final AlignmentGeometry effectiveAnchorAlignment =
+        anchorAlignment ?? alignment * -1;
+    final Alignment resolvedAnchorAlignment =
+        effectiveAnchorAlignment.resolve(textDirection);
+    final OverlayState overlay =
+        Overlay.of(resolvedContext, rootOverlay: true);
+    final themes =
+        InheritedTheme.capture(from: resolvedContext, to: overlay.context);
+    final data = Data.capture(from: resolvedContext, to: overlay.context);
+
+    ValueNotifier<bool> isClosed = ValueNotifier(false);
+    late OverlayEntry overlayEntry;
+    final OverlayPopoverEntry<T> popoverEntry = OverlayPopoverEntry();
+    final completer = popoverEntry.completer;
+    final animationCompleter = popoverEntry.animationCompleter;
+    overlayEntry = OverlayEntry(
+      builder: (innerContext) {
+        return RepaintBoundary(
+          child: FocusScope(
+            autofocus: false,
+            child: AnimatedBuilder(
+                animation: isClosed,
+                builder: (innerContext, child) {
+                  return AnimatedValueBuilder.animation(
+                      value: isClosed.value ? 0.0 : 1.0,
+                      initialValue: 0.0,
+                      curve: isClosed.value
+                          ? const Interval(0, 2 / 3)
+                          : Curves.linear,
+                      duration: isClosed.value
+                          ? (showDuration ?? kDefaultDuration)
+                          : (dismissDuration ??
+                              const Duration(milliseconds: 100)),
+                      onEnd: (value) {
+                        if (value == 0.0 && isClosed.value) {
+                          popoverEntry.remove();
+                          popoverEntry.dispose();
+                          animationCompleter.complete();
+                        }
+                      },
+                      builder: (innerContext, animation) {
+                        final theme = Theme.of(innerContext);
+                        var popoverAnchor = PopoverOverlayWidget(
+                          animation: animation,
+                          onTapOutside: () {
+                            if (isClosed.value) return;
+                            isClosed.value = true;
+                            completer.complete();
+                          },
+                          key: key,
+                          anchor: resolvedAnchor,
+                          position: position,
+                          alignment: resolvedAlignment,
+                          themes: themes,
+                          builder: wrappedBuilder,
+                          anchorAlignment: resolvedAnchorAlignment,
+                          widthConstraint: PopoverConstraint.flexible,
+                          heightConstraint: PopoverConstraint.flexible,
+                          offset: offset,
+                          transitionAlignment: Alignment.center,
+                          margin: EdgeInsets.all(
+                              theme.density.baseContentPadding *
+                                  theme.scaling *
+                                  3),
+                          follow: false,
+                          consumeOutsideTaps: false,
+                          allowInvertHorizontal: true,
+                          allowInvertVertical: true,
+                          data: data,
+                          onClose: () {
+                            if (isClosed.value) return Future.value();
+                            isClosed.value = true;
+                            completer.complete();
+                            return animationCompleter.future;
+                          },
+                          onImmediateClose: () {
+                            popoverEntry.remove();
+                            completer.complete();
+                          },
+                          onCloseWithResult: (value) {
+                            if (isClosed.value) return Future.value();
+                            isClosed.value = true;
+                            completer.complete(value as T);
+                            return animationCompleter.future;
+                          },
+                          completer: popoverEntry,
+                        );
+                        return popoverAnchor;
+                      });
+                }),
+          ),
+        );
+      },
+    );
+    popoverEntry.initialize(overlayEntry);
+    overlay.insert(overlayEntry);
+    return popoverEntry;
   }
 }
 
-/// Adapts a plain [Future]-based result (as returned by `showDialog`) to the
-/// [OverlayCompleter] interface expected by [OverlayConfiguration.show].
+/// Adapts a plain [Future]-based result (as returned by [Navigator.push]) to
+/// the [OverlayCompleter] interface expected by [OverlayConfiguration.show].
 ///
 /// [remove] and [dispose] are no-ops since a [Future] alone doesn't expose a
 /// way to imperatively dismiss the underlying route.
@@ -817,10 +1276,6 @@ class _FutureOverlayCompleter<T> extends OverlayCompleter<T?> {
 /// A controller for managing a single overlay's lifecycle, driven by
 /// [OverlayConfiguration] instead of popover-specific parameters.
 ///
-/// Replaces [PopoverController]: [show] accepts any [OverlayConfiguration]
-/// (popover, menu, tooltip, drawer, sheet, dialog), so a single controller
-/// can drive an overlay regardless of its presentation mechanism.
-///
 /// If [show] is called again with the same configuration type (still a
 /// [PopoverConfiguration], say, just with a different
 /// [PopoverConfiguration.alignment]), the open overlay is updated in place
@@ -830,7 +1285,7 @@ class _FutureOverlayCompleter<T> extends OverlayCompleter<T?> {
 ///
 /// Field meanings like "alignment" or "margin" aren't interpreted here.
 /// Each [OverlayCompleter] implementation, for example the one
-/// [PopoverOverlayHandler] returns, reads whatever configuration it's
+/// [PopoverConfiguration.show] returns, reads whatever configuration it's
 /// assigned through [OverlayCompleter.config] on its own terms.
 ///
 /// Example:
@@ -850,8 +1305,8 @@ class _FutureOverlayCompleter<T> extends OverlayCompleter<T?> {
 ///       PopoverConfiguration(
 ///         anchor: LinkedAnchor(#myAnchor),
 ///         alignment: Alignment.bottomStart,
-///         builder: (context) => MyPopoverContent(),
 ///       ),
+///       builder: (context) => MyPopoverContent(),
 ///     );
 ///   }
 /// }
@@ -873,7 +1328,8 @@ class OverlayController extends ChangeNotifier {
   bool get hasMountedOverlay =>
       _completer != null && !_completer!.isAnimationCompleted;
 
-  /// Shows an overlay using the given [configuration], anchored to [context].
+  /// Shows an overlay using the given [configuration], anchored to [context],
+  /// with [builder] as its content.
   ///
   /// If an overlay managed by this controller is already open with a
   /// configuration of the exact same runtime type as [configuration], it's
@@ -882,7 +1338,8 @@ class OverlayController extends ChangeNotifier {
   /// [adaptive] is forwarded to [OverlayConfiguration.adaptiveConversion].
   Future<T?> show<T>(
     BuildContext context,
-    OverlayConfiguration<T> configuration, {
+    OverlayConfiguration configuration, {
+    required WidgetBuilder builder,
     bool adaptive = true,
   }) {
     final resolved =
@@ -901,7 +1358,7 @@ class OverlayController extends ChangeNotifier {
     }
 
     close();
-    final completer = resolved.show(context);
+    final completer = resolved.show<T>(context, builder);
     _completer = completer;
     _config = resolved;
     notifyListeners();

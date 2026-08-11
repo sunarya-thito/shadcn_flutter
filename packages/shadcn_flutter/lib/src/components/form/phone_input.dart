@@ -488,9 +488,11 @@ class _PhoneInputState extends State<PhoneInput>
                 ),
                 themeValue: componentTheme?.borderRadius,
               ),
-              popoverAlignment: Alignment.topLeft,
-              popoverAnchorAlignment: Alignment.bottomLeft,
-              popupWidthConstraint: PopoverConstraint.flexible,
+              overlayConfiguration: const PopoverConfiguration(
+                alignment: Alignment.topLeft,
+                anchorAlignment: Alignment.bottomLeft,
+                widthConstraint: PopoverConstraint.flexible,
+              ),
               onChanged: (value) {
                 if (value != null) {
                   setState(() {

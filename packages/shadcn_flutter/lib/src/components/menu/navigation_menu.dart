@@ -21,6 +21,11 @@ class NavigationMenuTheme extends ComponentThemeData {
   /// Offset for the popover relative to the trigger.
   final Offset? offset;
 
+  /// Whether the popover may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter), when not
+  /// overridden per-instance by [NavigationMenu.adaptiveOverlay].
+  final bool? adaptiveOverlay;
+
   /// Creates a [NavigationMenuTheme] with the specified appearance properties.
   ///
   /// All parameters are optional and will fall back to default values
@@ -32,6 +37,7 @@ class NavigationMenuTheme extends ComponentThemeData {
   /// - [surfaceBlur] (double?, optional): Blur effect intensity for popover
   /// - [margin] (EdgeInsetsGeometry?, optional): Space around the popover
   /// - [offset] (Offset?, optional): Position offset relative to trigger
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   ///
   /// Example:
   /// ```dart
@@ -47,6 +53,7 @@ class NavigationMenuTheme extends ComponentThemeData {
     this.surfaceBlur,
     this.margin,
     this.offset,
+    this.adaptiveOverlay,
   });
 
   /// Returns a copy of this theme with the given fields replaced.
@@ -55,6 +62,7 @@ class NavigationMenuTheme extends ComponentThemeData {
     ValueGetter<double?>? surfaceBlur,
     ValueGetter<EdgeInsetsGeometry?>? margin,
     ValueGetter<Offset?>? offset,
+    ValueGetter<bool?>? adaptiveOverlay,
   }) {
     return NavigationMenuTheme(
       surfaceOpacity:
@@ -62,6 +70,8 @@ class NavigationMenuTheme extends ComponentThemeData {
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
       margin: margin == null ? this.margin : margin(),
       offset: offset == null ? this.offset : offset(),
+      adaptiveOverlay:
+          adaptiveOverlay == null ? this.adaptiveOverlay : adaptiveOverlay(),
     );
   }
 
@@ -72,11 +82,13 @@ class NavigationMenuTheme extends ComponentThemeData {
         other.surfaceOpacity == surfaceOpacity &&
         other.surfaceBlur == surfaceBlur &&
         other.margin == margin &&
-        other.offset == offset;
+        other.offset == offset &&
+        other.adaptiveOverlay == adaptiveOverlay;
   }
 
   @override
-  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur, margin, offset);
+  int get hashCode => Object.hash(
+      surfaceOpacity, surfaceBlur, margin, offset, adaptiveOverlay);
 }
 
 /// An individual menu item within a [NavigationMenu].
@@ -546,6 +558,10 @@ class NavigationMenu extends StatefulWidget {
   /// dropdown functionality or simple press actions.
   final List<Widget> children;
 
+  /// Whether the popover may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter).
+  final bool? adaptiveOverlay;
+
   /// Creates a [NavigationMenu] with the specified items and appearance.
   ///
   /// The [children] parameter is required and should contain
@@ -556,6 +572,7 @@ class NavigationMenu extends StatefulWidget {
   /// - [surfaceOpacity] (double?, optional): Popover background opacity
   /// - [surfaceBlur] (double?, optional): Popover backdrop blur intensity
   /// - [children] (`List<Widget>`, required): Menu items to display
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   ///
   /// Example:
   /// ```dart
@@ -572,6 +589,7 @@ class NavigationMenu extends StatefulWidget {
     this.surfaceOpacity,
     this.surfaceBlur,
     required this.children,
+    this.adaptiveOverlay,
   });
 
   @override
@@ -627,13 +645,16 @@ class NavigationMenuState extends State<NavigationMenu> {
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
+    final adaptiveOverlay = styleValue(
+        widgetValue: widget.adaptiveOverlay,
+        themeValue: compTheme?.adaptiveOverlay,
+        defaultValue: true);
     _overlayController.show(
       context,
       PopoverConfiguration(
         alignment: Alignment.topCenter,
         regionGroupId: this,
         offset: compTheme?.offset ?? Offset(0, densityGap * 0.5),
-        builder: buildPopover,
         modal: false,
         margin:
             requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap),
@@ -645,6 +666,8 @@ class NavigationMenuState extends State<NavigationMenu> {
               EdgeInsets.all(densityGap));
         },
       ),
+      builder: buildPopover,
+      adaptive: adaptiveOverlay,
     );
   }
 
