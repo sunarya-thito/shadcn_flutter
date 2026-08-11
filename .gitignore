@@ -40,3 +40,6 @@ build/
 /.flutter-plugins
 /.flutter-plugins-dependencies
 /test_widgets
+
+# AI Agent
+AGENTS.md

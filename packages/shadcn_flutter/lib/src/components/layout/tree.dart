@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -2270,6 +2272,8 @@ class TreeItem extends StatefulWidget {
 class _TreeItemState extends State<TreeItem> {
   late FocusNode _focusNode;
   final WidgetStatesController _statesController = WidgetStatesController();
+  DateTime? _lastTap;
+  int _tapCount = 0;
 
   TreeNodeData? _data;
 
@@ -2297,8 +2301,109 @@ class _TreeItemState extends State<TreeItem> {
   }
 
   void _onFocusChanged() {
+    _updateState(WidgetState.focused, _focusNode.hasFocus);
     if (_data != null && _focusNode.hasFocus) {
       _data!.onFocusChanged?.call(FocusChangeReason.focusScope);
+    }
+  }
+
+  void _updateState(WidgetState state, bool value) {
+    if (!mounted) return;
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _statesController.update(state, value);
+      });
+      return;
+    }
+    _statesController.update(state, value);
+  }
+
+  void _handleTap() {
+    final data = _data;
+    if (data == null) return;
+    final canExpand = widget.onExpand != null &&
+        (widget.expandable ?? data.node.children.isNotEmpty);
+    final interactive =
+        widget.onPressed != null || widget.onDoublePressed != null || canExpand;
+    if (!interactive) return;
+    final now = DateTime.now();
+    final delta = _lastTap == null ? null : now.difference(_lastTap!);
+    _lastTap = now;
+    if (delta != null && delta < kDoubleTapMinTime) {
+      _tapCount++;
+    } else {
+      _tapCount = 1;
+    }
+    if (_tapCount == 2 && (canExpand || widget.onDoublePressed != null)) {
+      widget.onDoublePressed?.call();
+      if (canExpand) {
+        widget.onExpand!(!data.node.expanded);
+      }
+      _focusNode.requestFocus();
+      _tapCount = 0;
+    } else {
+      widget.onPressed?.call();
+      _feedbackForTap();
+      _focusNode.requestFocus();
+      _data!.onFocusChanged?.call(FocusChangeReason.userInteraction);
+    }
+  }
+
+  KeyEventResult _handleKeyEvent(KeyEvent event) {
+    final data = _data;
+    if (data == null) return KeyEventResult.ignored;
+    // Only handle keys when the item itself has primary focus. When a
+    // descendant (e.g. a TextField/IME) has focus, let keys propagate so they
+    // reach the platform / text input instead of being consumed here.
+    if (!_focusNode.hasPrimaryFocus) return KeyEventResult.ignored;
+    if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
+      return KeyEventResult.ignored;
+    }
+    // Let modified keys (shift+arrow range-select, ctrl+space multi-select at
+    // the Tree level) propagate up rather than consuming them here.
+    if (HardwareKeyboard.instance.isControlPressed ||
+        HardwareKeyboard.instance.isShiftPressed ||
+        HardwareKeyboard.instance.isAltPressed ||
+        HardwareKeyboard.instance.isMetaPressed) {
+      return KeyEventResult.ignored;
+    }
+    final canExpand = widget.onExpand != null &&
+        (widget.expandable ?? data.node.children.isNotEmpty);
+    final key = event.logicalKey;
+    if (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.space) {
+      if (canExpand) {
+        widget.onExpand!(!data.node.expanded);
+      }
+      widget.onPressed?.call();
+      return KeyEventResult.handled;
+    }
+    if (key == LogicalKeyboardKey.arrowUp) {
+      _focusNode.focusInDirection(TraversalDirection.up);
+      return KeyEventResult.handled;
+    }
+    if (key == LogicalKeyboardKey.arrowDown) {
+      _focusNode.focusInDirection(TraversalDirection.down);
+      return KeyEventResult.handled;
+    }
+    if (canExpand) {
+      if (key == LogicalKeyboardKey.arrowRight) {
+        widget.onExpand!(true);
+        return KeyEventResult.handled;
+      }
+      if (key == LogicalKeyboardKey.arrowLeft) {
+        widget.onExpand!(false);
+        return KeyEventResult.handled;
+      }
+    }
+    return KeyEventResult.ignored;
+  }
+
+  void _feedbackForTap() {
+    final platform = Theme.of(context).platform;
+    context.findRenderObject()?.sendSemanticsEvent(const TapSemanticEvent());
+    if (isMobile(platform)) {
+      SystemSound.play(SystemSoundType.click);
     }
   }
 
@@ -2394,106 +2499,68 @@ class _TreeItemState extends State<TreeItem> {
         ),
       ),
     );
+    final canExpand = widget.onExpand != null &&
+        (widget.expandable ?? data.node.children.isNotEmpty);
+    final interactive =
+        widget.onPressed != null || widget.onDoublePressed != null || canExpand;
+    final borderRadius =
+        _borderRadiusFromPosition(data.selectionPosition, theme.radiusMd);
     final content = IntrinsicHeight(
-      child: Clickable(
-        focusNode: _focusNode,
-        focusOutline: !(_data?.node.selected ?? false),
-        disableTransition: true,
-        statesController: _statesController,
-        shortcuts: {
-          if (widget.onExpand != null &&
-              (widget.expandable ?? data.node.children.isNotEmpty))
-            LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                const ExpandTreeNodeIntent(),
-          if (widget.onExpand != null &&
-              (widget.expandable ?? data.node.children.isNotEmpty))
-            LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-                const CollapseTreeNodeIntent(),
+      child: WidgetStatesProvider(
+        controller: _statesController,
+        states: {
+          if (!interactive) WidgetState.disabled,
         },
-        actions: {
-          ActivateIntent: CallbackAction(
-            onInvoke: (e) {
-              if (widget.onExpand != null &&
-                  (widget.expandable ?? data.node.children.isNotEmpty)) {
-                widget.onExpand!(!data.node.expanded);
-              }
-              widget.onPressed?.call();
-              return null;
-            },
-          ),
-          CollapseTreeNodeIntent: CallbackAction(
-            onInvoke: (e) {
-              if (widget.onExpand != null &&
-                  (widget.expandable ?? data.node.children.isNotEmpty)) {
-                widget.onExpand!(false);
-              }
-              return null;
-            },
-          ),
-          ExpandTreeNodeIntent: CallbackAction(
-            onInvoke: (e) {
-              if (widget.onExpand != null &&
-                  (widget.expandable ?? data.node.children.isNotEmpty)) {
-                widget.onExpand!(true);
-              }
-              return null;
-            },
-          ),
-        },
-        decoration: WidgetStateProperty.resolveWith(
-          (states) {
-            if (states.contains(WidgetState.selected)) {
-              if (states.contains(WidgetState.focused)) {
-                return BoxDecoration(
-                  color: theme.colorScheme.primary.scaleAlpha(0.1),
-                  borderRadius: _borderRadiusFromPosition(
-                    data.selectionPosition,
-                    theme.radiusMd,
-                  ),
-                );
-              }
-              return BoxDecoration(
-                color: theme.colorScheme.primary.scaleAlpha(0.05),
-                borderRadius: _borderRadiusFromPosition(
-                  data.selectionPosition,
-                  theme.radiusMd,
-                ),
+        child: ListenableBuilder(
+          listenable: _statesController,
+          builder: (context, child) {
+            final states = _statesController.value;
+            final selected = states.contains(WidgetState.selected);
+            final focused = states.contains(WidgetState.focused);
+            final hovered = states.contains(WidgetState.hovered);
+            final BoxDecoration decoration;
+            if (selected) {
+              decoration = BoxDecoration(
+                color: focused
+                    ? theme.colorScheme.primary.scaleAlpha(0.1)
+                    : theme.colorScheme.primary.scaleAlpha(0.05),
+                borderRadius: borderRadius,
               );
+            } else if ((hovered || focused) && interactive) {
+              decoration = BoxDecoration(
+                color: theme.colorScheme.accent,
+                borderRadius: borderRadius,
+              );
+            } else {
+              decoration = const BoxDecoration();
             }
-            return const BoxDecoration();
+            return FocusOutline(
+              focused: focused && !data.node.selected,
+              borderRadius: borderRadius,
+              child: DecoratedBox(
+                decoration: decoration,
+                child: child,
+              ),
+            );
           },
-        ),
-        behavior: HitTestBehavior.translucent,
-        mouseCursor: widget.onDoublePressed != null ||
-                widget.onPressed != null ||
-                (widget.onExpand != null &&
-                    (widget.expandable ?? data.node.children.isNotEmpty))
-            ? const WidgetStatePropertyAll(SystemMouseCursors.click)
-            : const WidgetStatePropertyAll(SystemMouseCursors.basic),
-        onDoubleTap: () {
-          if (widget.onDoublePressed != null) {
-            widget.onDoublePressed!();
-          }
-          if (widget.onExpand != null &&
-              (widget.expandable ?? data.node.children.isNotEmpty)) {
-            widget.onExpand!(!data.node.expanded);
-          }
-          _focusNode.requestFocus();
-        },
-        onPressed: () {
-          if (widget.onPressed != null) {
-            widget.onPressed!();
-          }
-          _focusNode.requestFocus();
-          _data!.onFocusChanged?.call(FocusChangeReason.userInteraction);
-        },
-        enabled: widget.onPressed != null ||
-            widget.onDoublePressed != null ||
-            (widget.onExpand != null &&
-                (widget.expandable ?? data.node.children.isNotEmpty)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: rowChildren,
+          child: MouseRegion(
+            cursor: interactive
+                ? SystemMouseCursors.click
+                : SystemMouseCursors.basic,
+            onEnter: (_) => _updateState(WidgetState.hovered, true),
+            onExit: (_) => _updateState(WidgetState.hovered, false),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: _handleTap,
+              onTapDown: (_) => _updateState(WidgetState.pressed, true),
+              onTapUp: (_) => _updateState(WidgetState.pressed, false),
+              onTapCancel: () => _updateState(WidgetState.pressed, false),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: rowChildren,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -2515,24 +2582,6 @@ class _TreeItemState extends State<TreeItem> {
       ),
     );
   }
-}
-
-/// Intent to expand a tree node.
-///
-/// Used with Flutter's Actions/Shortcuts system to programmatically
-/// expand a collapsed tree node to show its children.
-class ExpandTreeNodeIntent extends Intent {
-  /// Creates an [ExpandTreeNodeIntent].
-  const ExpandTreeNodeIntent();
-}
-
-/// Intent to collapse a tree node.
-///
-/// Used with Flutter's Actions/Shortcuts system to programmatically
-/// collapse an expanded tree node to hide its children.
-class CollapseTreeNodeIntent extends Intent {
-  /// Creates a [CollapseTreeNodeIntent].
-  const CollapseTreeNodeIntent();
 }
 
 /// Intent to select a tree node.

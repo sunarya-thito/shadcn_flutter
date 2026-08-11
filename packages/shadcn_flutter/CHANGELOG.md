@@ -1,3 +1,16 @@
+## [Unreleased]
+
+### Fixed
+
+- **TreeItem IME/focus isolation**: Replaced the shared `Clickable` widget
+  inside `TreeItem` with a direct `GestureDetector`/`Focus`/`DecoratedBox`
+  composition. Keyboard handling (space/enter activation, arrow
+  expand/collapse and row navigation) now runs on the item's own
+  `Focus.onKeyEvent` gated on `hasPrimaryFocus`, so space/enter and arrow keys
+  are no longer intercepted when a descendant such as a `TextField` has focus.
+  Removed the redundant builder-content `Focus` wrapper and the now-unused
+  `ExpandTreeNodeIntent`/`CollapseTreeNodeIntent` intents.
+
 ## [0.0.53]
 
 ### Added
