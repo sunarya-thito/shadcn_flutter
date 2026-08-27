@@ -118,19 +118,23 @@ class SwiperTheme extends ComponentThemeData {
       barrierDismissible: barrierDismissible == null
           ? this.barrierDismissible
           : barrierDismissible(),
-      backdropBuilder:
-          backdropBuilder == null ? this.backdropBuilder : backdropBuilder(),
+      backdropBuilder: backdropBuilder == null
+          ? this.backdropBuilder
+          : backdropBuilder(),
       useSafeArea: useSafeArea == null ? this.useSafeArea : useSafeArea(),
-      showDragHandle:
-          showDragHandle == null ? this.showDragHandle : showDragHandle(),
+      showDragHandle: showDragHandle == null
+          ? this.showDragHandle
+          : showDragHandle(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
-      dragHandleSize:
-          dragHandleSize == null ? this.dragHandleSize : dragHandleSize(),
+      dragHandleSize: dragHandleSize == null
+          ? this.dragHandleSize
+          : dragHandleSize(),
       transformBackdrop: transformBackdrop == null
           ? this.transformBackdrop
           : transformBackdrop(),
-      surfaceOpacity:
-          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceOpacity: surfaceOpacity == null
+          ? this.surfaceOpacity
+          : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
       barrierColor: barrierColor == null ? this.barrierColor : barrierColor(),
       behavior: behavior == null ? this.behavior : behavior(),
@@ -139,19 +143,20 @@ class SwiperTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      expands,
-      draggable,
-      barrierDismissible,
-      backdropBuilder,
-      useSafeArea,
-      showDragHandle,
-      borderRadius,
-      dragHandleSize,
-      transformBackdrop,
-      surfaceOpacity,
-      surfaceBlur,
-      barrierColor,
-      behavior);
+    expands,
+    draggable,
+    barrierDismissible,
+    backdropBuilder,
+    useSafeArea,
+    showDragHandle,
+    borderRadius,
+    dragHandleSize,
+    transformBackdrop,
+    surfaceOpacity,
+    surfaceBlur,
+    barrierColor,
+    behavior,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -362,7 +367,7 @@ class SheetSwiperHandler extends SwiperHandler {
 ///   position: OverlayPosition.left,
 ///   builder: (context) => NavigationDrawer(),
 ///   child: AppBar(
-///     leading: Icon(Icons.menu),
+///     leading: Icon(LucideIcons.menu),
 ///     title: Text('My App'),
 ///   ),
 /// )
@@ -455,7 +460,7 @@ class Swiper extends StatefulWidget {
   ///   builder: (context) => ActionSheet(),
   ///   child: FloatingActionButton(
   ///     onPressed: null,
-  ///     child: Icon(Icons.more_horiz),
+  ///     child: Icon(LucideIcons.ellipsis),
   ///   ),
   /// )
   /// ```
@@ -582,10 +587,7 @@ class _SwiperState extends State<Swiper> {
     _activeOverlay = widget.handler.openSwiper(
       context: context,
       builder: (context) {
-        return KeyedSubtree(
-          key: _key,
-          child: widget.builder(context),
-        );
+        return KeyedSubtree(key: _key, child: widget.builder(context));
       },
       position: widget.position,
       expands: widget.expands ?? compTheme?.expands,
@@ -605,10 +607,7 @@ class _SwiperState extends State<Swiper> {
     );
   }
 
-  Widget _buildGesture({
-    required Widget child,
-    required bool draggable,
-  }) {
+  Widget _buildGesture({required Widget child, required bool draggable}) {
     final compTheme = ComponentTheme.maybeOf<SwiperTheme>(context);
     final behavior =
         widget.behavior ?? compTheme?.behavior ?? HitTestBehavior.translucent;
@@ -635,9 +634,6 @@ class _SwiperState extends State<Swiper> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildGesture(
-      child: widget.child,
-      draggable: widget.enabled,
-    );
+    return _buildGesture(child: widget.child, draggable: widget.enabled);
   }
 }

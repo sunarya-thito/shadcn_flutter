@@ -42,12 +42,14 @@ class TooltipTheme extends ComponentThemeData {
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
   }) {
     return TooltipTheme(
-      surfaceOpacity:
-          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceOpacity: surfaceOpacity == null
+          ? this.surfaceOpacity
+          : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
       padding: padding == null ? this.padding : padding(),
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      backgroundColor: backgroundColor == null
+          ? this.backgroundColor
+          : backgroundColor(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
     );
   }
@@ -65,7 +67,12 @@ class TooltipTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      surfaceOpacity, surfaceBlur, padding, backgroundColor, borderRadius);
+    surfaceOpacity,
+    surfaceBlur,
+    padding,
+    backgroundColor,
+    borderRadius,
+  );
 }
 
 /// A styled container widget for tooltip content.
@@ -139,29 +146,32 @@ class TooltipContainer extends StatelessWidget {
     final densityContentPadding = theme.density.baseContentPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<TooltipTheme>(context);
     Color backgroundColor = styleValue(
-        widgetValue: this.backgroundColor,
-        themeValue: compTheme?.backgroundColor,
-        defaultValue: theme.colorScheme.primary);
+      widgetValue: this.backgroundColor,
+      themeValue: compTheme?.backgroundColor,
+      defaultValue: theme.colorScheme.primary,
+    );
     var surfaceOpacity = this.surfaceOpacity ?? compTheme?.surfaceOpacity;
     var surfaceBlur = this.surfaceBlur ?? compTheme?.surfaceBlur;
     if (surfaceOpacity != null) {
       backgroundColor = backgroundColor.scaleAlpha(surfaceOpacity);
     }
     final padding = styleValue(
-        widgetValue: this.padding,
-        themeValue: compTheme?.padding,
-        defaultValue: EdgeInsets.symmetric(
-          horizontal: densityContentPadding * 0.75,
-          vertical: densityGap * 0.75,
-        ));
+      widgetValue: this.padding,
+      themeValue: compTheme?.padding,
+      defaultValue: EdgeInsets.symmetric(
+        horizontal: densityContentPadding * 0.75,
+        vertical: densityGap * 0.75,
+      ),
+    );
     final resolvedPadding = resolveEdgeInsets(
       padding,
       densityContentPadding,
     ).resolve(Directionality.of(context));
     final borderRadius = styleValue(
-        widgetValue: this.borderRadius,
-        themeValue: compTheme?.borderRadius,
-        defaultValue: BorderRadius.circular(theme.radiusSm));
+      widgetValue: this.borderRadius,
+      themeValue: compTheme?.borderRadius,
+      defaultValue: BorderRadius.circular(theme.radiusSm),
+    );
     Widget animatedContainer = Container(
       padding: resolvedPadding,
       decoration: BoxDecoration(
@@ -222,7 +232,7 @@ class TooltipContainer extends StatelessWidget {
 ///   alignment: Alignment.topCenter,
 ///   anchorAlignment: Alignment.bottomCenter,
 ///   child: IconButton(
-///     icon: Icon(Icons.warning),
+///     icon: Icon(LucideIcons.triangleAlert),
 ///     onPressed: () => _handleCriticalAction(),
 ///   ),
 /// );
@@ -356,7 +366,7 @@ class InstantTooltip extends StatefulWidget {
   /// ```dart
   /// InstantTooltip(
   ///   tooltipBuilder: (context) => Text('Help text'),
-  ///   child: Icon(Icons.help),
+  ///   child: Icon(LucideIcons.circleHelp),
   /// )
   /// ```
   const InstantTooltip({

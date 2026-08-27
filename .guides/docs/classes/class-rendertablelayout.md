@@ -38,7 +38,7 @@ class RenderTableLayout extends RenderBox with ContainerRenderObjectMixin<Render
   /// - [viewportSize] (Size?): Size of the visible viewport area
   ///
   /// Frozen cells remain visible during scrolling, useful for sticky headers.
-  RenderTableLayout({List<RenderBox>? children, required TableSizeSupplier width, required TableSizeSupplier height, required Clip clipBehavior, CellPredicate? frozenCell, CellPredicate? frozenRow, double? verticalOffset, double? horizontalOffset, Size? viewportSize});
+  RenderTableLayout({List<RenderBox>? children, required TableSizeSupplier width, required TableSizeSupplier height, required Clip clipBehavior, CellPredicate? frozenCell, CellPredicate? frozenRow, double? verticalOffset, double? horizontalOffset, Size? viewportSize, TextDirection textDirection = TextDirection.ltr});
   void setupParentData(RenderObject child);
   bool hitTestChildren(BoxHitTestResult result, {required Offset position});
   double computeMinIntrinsicWidth(double height);

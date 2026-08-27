@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapsibleTrigger"
-description: "A trigger widget that controls the expansion state of its parent [Collapsible].   [CollapsibleTrigger] provides a consistent interface for toggling collapsible  content. It automatically displays the appropriate expand/collapse icon and  handles user interaction to trigger state changes.   ## Features  - **Automatic Icons**: Shows different icons for expanded/collapsed states  - **Integrated Button**: Uses [GhostButton] for consistent interaction styling  - **Responsive Layout**: Automatically sizes and spaces content and icon  - **Theme Integration**: Respects [CollapsibleTheme] configuration   The trigger must be used as a direct child of a [Collapsible] widget to  function properly, as it relies on inherited state data.   Example:  ```dart  CollapsibleTrigger(    child: Row(      children: [        Icon(Icons.folder),        SizedBox(width: 8),        Text('Project Files'),        Spacer(),        Badge(child: Text('12')),      ],    ),  );  ```"
+description: "A trigger widget that controls the expansion state of its parent [Collapsible].   [CollapsibleTrigger] provides a consistent interface for toggling collapsible  content. It automatically displays the appropriate expand/collapse icon and  handles user interaction to trigger state changes.   ## Features  - **Automatic Icons**: Shows different icons for expanded/collapsed states  - **Integrated Button**: Uses [GhostButton] for consistent interaction styling  - **Responsive Layout**: Automatically sizes and spaces content and icon  - **Theme Integration**: Respects [CollapsibleTheme] configuration   The trigger must be used as a direct child of a [Collapsible] widget to  function properly, as it relies on inherited state data.   Example:  ```dart  CollapsibleTrigger(    child: Row(      children: [        Icon(LucideIcons.folder),        SizedBox(width: 8),        Text('Project Files'),        Spacer(),        Badge(child: Text('12')),      ],    ),  );  ```"
 ---
 
 ```dart
@@ -24,7 +24,7 @@ description: "A trigger widget that controls the expansion state of its parent [
 /// CollapsibleTrigger(
 ///   child: Row(
 ///     children: [
-///       Icon(Icons.folder),
+///       Icon(LucideIcons.folder),
 ///       SizedBox(width: 8),
 ///       Text('Project Files'),
 ///       Spacer(),

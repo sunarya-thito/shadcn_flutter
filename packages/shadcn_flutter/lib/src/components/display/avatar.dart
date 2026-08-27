@@ -102,10 +102,12 @@ class AvatarTheme extends ComponentThemeData {
     return AvatarTheme(
       size: size == null ? this.size : size(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
-      badgeAlignment:
-          badgeAlignment == null ? this.badgeAlignment : badgeAlignment(),
+      backgroundColor: backgroundColor == null
+          ? this.backgroundColor
+          : backgroundColor(),
+      badgeAlignment: badgeAlignment == null
+          ? this.badgeAlignment
+          : badgeAlignment(),
       badgeGap: badgeGap == null ? this.badgeGap : badgeGap(),
       textStyle: textStyle == null ? this.textStyle : textStyle(),
     );
@@ -125,13 +127,13 @@ class AvatarTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        size,
-        borderRadius,
-        backgroundColor,
-        badgeAlignment,
-        badgeGap,
-        textStyle,
-      );
+    size,
+    borderRadius,
+    backgroundColor,
+    badgeAlignment,
+    badgeGap,
+    textStyle,
+  );
 }
 
 /// Abstract base class for avatar-related widgets.
@@ -372,10 +374,10 @@ class Avatar extends StatefulWidget implements AvatarWidget {
     int? cacheHeight,
     required String photoUrl,
   }) : provider = ResizeImage.resizeIfNeeded(
-          cacheWidth,
-          cacheHeight,
-          NetworkImage(photoUrl),
-        );
+         cacheWidth,
+         cacheHeight,
+         NetworkImage(photoUrl),
+       );
 
   @override
   State<Avatar> createState() => _AvatarState();
@@ -386,13 +388,15 @@ class _AvatarState extends State<Avatar> {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<AvatarTheme>(context);
     double size = styleValue(
-        widgetValue: widget.size,
-        themeValue: compTheme?.size,
-        defaultValue: theme.scaling * 40);
+      widgetValue: widget.size,
+      themeValue: compTheme?.size,
+      defaultValue: theme.scaling * 40,
+    );
     double borderRadius = styleValue(
-        widgetValue: widget.borderRadius,
-        themeValue: compTheme?.borderRadius,
-        defaultValue: theme.radius * size);
+      widgetValue: widget.borderRadius,
+      themeValue: compTheme?.borderRadius,
+      defaultValue: theme.radius * size,
+    );
     if (widget.provider != null) {
       return SizedBox(
         width: size,
@@ -423,9 +427,10 @@ class _AvatarState extends State<Avatar> {
     return Container(
       decoration: BoxDecoration(
         color: styleValue(
-            widgetValue: widget.backgroundColor,
-            themeValue: compTheme?.backgroundColor,
-            defaultValue: theme.colorScheme.muted),
+          widgetValue: widget.backgroundColor,
+          themeValue: compTheme?.backgroundColor,
+          defaultValue: theme.colorScheme.muted,
+        ),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: FittedBox(
@@ -433,11 +438,7 @@ class _AvatarState extends State<Avatar> {
         child: Padding(
           padding: EdgeInsets.all(densityGap),
           child: DefaultTextStyle.merge(
-            child: Center(
-              child: Text(
-                widget.initials,
-              ),
-            ),
+            child: Center(child: Text(widget.initials)),
             style: styleValue(
               themeValue: compTheme?.textStyle,
               defaultValue: TextStyle(
@@ -459,24 +460,28 @@ class _AvatarState extends State<Avatar> {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<AvatarTheme>(context);
     double size = styleValue(
-        widgetValue: widget.size,
-        themeValue: compTheme?.size,
-        defaultValue: theme.scaling * 40);
+      widgetValue: widget.size,
+      themeValue: compTheme?.size,
+      defaultValue: theme.scaling * 40,
+    );
     double borderRadius = styleValue(
-        widgetValue: widget.borderRadius,
-        themeValue: compTheme?.borderRadius,
-        defaultValue: theme.radius * size);
+      widgetValue: widget.borderRadius,
+      themeValue: compTheme?.borderRadius,
+      defaultValue: theme.radius * size,
+    );
     double badgeSize = widget.badge!.size ?? theme.scaling * 12;
     double offset = size / 2 - badgeSize / 2;
     offset = offset / size;
     final alignment = styleValue(
-        widgetValue: widget.badgeAlignment,
-        themeValue: compTheme?.badgeAlignment,
-        defaultValue: AlignmentDirectional(offset, offset));
+      widgetValue: widget.badgeAlignment,
+      themeValue: compTheme?.badgeAlignment,
+      defaultValue: AlignmentDirectional(offset, offset),
+    );
     final gap = styleValue(
-        widgetValue: widget.badgeGap,
-        themeValue: compTheme?.badgeGap,
-        defaultValue: theme.scaling * 4);
+      widgetValue: widget.badgeGap,
+      themeValue: compTheme?.badgeGap,
+      defaultValue: theme.scaling * 4,
+    );
     return AvatarGroup(
       alignment: alignment,
       gap: gap,
@@ -519,7 +524,7 @@ class _AvatarState extends State<Avatar> {
 /// AvatarBadge(
 ///   size: 16,
 ///   color: Colors.green,
-///   child: Icon(Icons.check, size: 10, color: Colors.white),
+///   child: Icon(LucideIcons.check, size: 10, color: Colors.white),
 /// );
 /// ```
 class AvatarBadge extends StatelessWidget implements AvatarWidget {
@@ -587,8 +592,9 @@ class AvatarBadge extends StatelessWidget implements AvatarWidget {
       height: size,
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.primary,
-        borderRadius:
-            BorderRadius.circular(borderRadius ?? theme.radius * size),
+        borderRadius: BorderRadius.circular(
+          borderRadius ?? theme.radius * size,
+        ),
       ),
       child: child,
     );
@@ -602,11 +608,7 @@ class _AvatarWidget extends StatelessWidget implements AvatarWidget {
   final double? borderRadius;
   final Widget child;
 
-  const _AvatarWidget({
-    required this.child,
-    this.size,
-    this.borderRadius,
-  });
+  const _AvatarWidget({required this.child, this.size, this.borderRadius});
 
   @override
   Widget build(BuildContext context) {
@@ -902,13 +904,7 @@ class AvatarGroup extends StatelessWidget {
       AvatarWidget avatar = this.children[i];
       double size = avatar.size ?? theme.scaling * 40;
       if (i == 0) {
-        children.add(
-          Positioned(
-            left: currentX,
-            top: currentY,
-            child: avatar,
-          ),
-        );
+        children.add(Positioned(left: currentX, top: currentY, child: avatar));
         rect = Rect.fromLTWH(currentX, currentY, size, size);
         currentWidth = size;
         currentHeight = size;
@@ -963,17 +959,15 @@ class AvatarGroup extends StatelessWidget {
       child: Stack(
         clipBehavior: clipBehavior ?? Clip.none,
         alignment: Alignment.center,
-        children: children.map(
-          (e) {
-            return Positioned(
-              left: e.left! - rect.left,
-              top: e.top! - rect.top,
-              width: e.width,
-              height: e.height,
-              child: e.child,
-            );
-          },
-        ).toList(),
+        children: children.map((e) {
+          return Positioned(
+            left: e.left! - rect.left,
+            top: e.top! - rect.top,
+            width: e.width,
+            height: e.height,
+            child: e.child,
+          );
+        }).toList(),
       ),
     );
   }

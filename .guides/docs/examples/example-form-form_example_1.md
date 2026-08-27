@@ -35,8 +35,9 @@ class _FormExample1State extends State<FormExample1> {
           String json = jsonEncode(values.map((key, value) {
             return MapEntry(key.key, value);
           }));
-          showDialog(
-            context: context,
+          showOverlay(
+            context,
+            DialogConfiguration(),
             builder: (context) {
               return AlertDialog(
                 title: const Text('Form Values'),
@@ -64,5 +65,4 @@ class _FormExample1State extends State<FormExample1> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            FormTableLayout(
 ```

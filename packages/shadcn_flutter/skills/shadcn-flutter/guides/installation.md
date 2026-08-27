@@ -4,7 +4,7 @@ Install and configure `shadcn_flutter` in your project.
 
 ## Prerequisites
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) installed and configured.
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) 3.47.0 or newer (Dart 3.13.0), installed and configured.
 - A basic understanding of Flutter development.
 
 ## Quick Start
@@ -28,6 +28,38 @@ Install and configure `shadcn_flutter` in your project.
      );
    }
    ```
+
+## Material and Cupertino
+
+`shadcn_flutter` is built on `package:flutter/widgets.dart` alone and depends on
+neither Material nor Cupertino. If your app also uses widgets from those
+libraries, add the matching companion package:
+
+```bash
+flutter pub add shadcn_flutter_material
+# or
+flutter pub add shadcn_flutter_cupertino
+```
+
+Then swap `ShadcnApp` for `MaterialShadcnApp` (or `CupertinoShadcnApp`), which
+accepts exactly the same parameters and additionally installs the Material theme,
+ancestors and localizations:
+
+```dart
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter_material/shadcn_flutter_material.dart';
+
+void main() {
+  runApp(
+    MaterialShadcnApp(
+      title: 'My App',
+      home: const MyHomePage(),
+    ),
+  );
+}
+```
+
+See [interop.md](./interop.md) for the full migration table.
 
 ## Experimental Version (GitHub)
 
@@ -56,9 +88,10 @@ ShadcnApp(
     Locale('es'),
   ],
   localizationsDelegates: [
-    GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
     // ShadcnLocalizations.delegate is included automatically
+    // Add GlobalMaterialLocalizations.delegate only if you also use
+    // Material widgets, via shadcn_flutter_material.
   ],
   // ...
 )

@@ -18,21 +18,13 @@ class AutoCompleteTheme extends ComponentThemeData {
   /// Controls the maximum/minimum dimensions of the suggestion list popover.
   /// Defaults to a maximum height of 300 logical pixels when null.
   final BoxConstraints? popoverConstraints;
-  /// Width constraint strategy for the autocomplete popover.
-  ///
-  /// Determines how the popover width relates to its anchor (the text field).
-  /// Options include matching anchor width, flexible sizing, or fixed dimensions.
-  final PopoverConstraint? popoverWidthConstraint;
-  /// Alignment point on the anchor widget where the popover attaches.
-  ///
-  /// Specifies which edge/corner of the text field the popover should align to.
-  /// Defaults to bottom-start (bottom-left in LTR, bottom-right in RTL).
-  final AlignmentDirectional? popoverAnchorAlignment;
-  /// Alignment point on the popover that aligns with the anchor point.
-  ///
-  /// Specifies which edge/corner of the popover aligns with the anchor alignment.
-  /// Defaults to top-start (top-left in LTR, top-right in RTL).
-  final AlignmentDirectional? popoverAlignment;
+  /// Overrides the [OverlayConfiguration] used to present the suggestion
+  /// popover, when not overridden per-instance by [AutoComplete.overlayConfiguration].
+  final OverlayConfiguration? overlayConfiguration;
+  /// Whether the suggestion popover may adapt to a different presentation on
+  /// mobile platforms (see [showOverlay]'s `adaptive` parameter), when not
+  /// overridden per-instance by [AutoComplete.adaptiveOverlay].
+  final bool? adaptiveOverlay;
   /// Default mode for how suggestions are applied to text fields.
   ///
   /// Controls the text replacement strategy when a suggestion is selected.
@@ -41,12 +33,12 @@ class AutoCompleteTheme extends ComponentThemeData {
   /// Creates an [AutoCompleteTheme].
   ///
   /// All parameters are optional and will use framework defaults when null.
-  const AutoCompleteTheme({this.popoverConstraints, this.popoverWidthConstraint, this.popoverAnchorAlignment, this.popoverAlignment, this.mode});
+  const AutoCompleteTheme({this.popoverConstraints, this.overlayConfiguration, this.adaptiveOverlay, this.mode});
   /// Creates a copy of this theme with specified properties overridden.
   ///
   /// Each parameter function is called only if provided, allowing selective
   /// overrides while preserving existing values for unspecified properties.
-  AutoCompleteTheme copyWith({ValueGetter<BoxConstraints?>? popoverConstraints, ValueGetter<PopoverConstraint?>? popoverWidthConstraint, ValueGetter<AlignmentDirectional?>? popoverAnchorAlignment, ValueGetter<AlignmentDirectional?>? popoverAlignment, ValueGetter<AutoCompleteMode?>? mode});
+  AutoCompleteTheme copyWith({ValueGetter<BoxConstraints?>? popoverConstraints, ValueGetter<OverlayConfiguration?>? overlayConfiguration, ValueGetter<bool?>? adaptiveOverlay, ValueGetter<AutoCompleteMode?>? mode});
   bool operator ==(Object other);
   int get hashCode;
 }

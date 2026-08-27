@@ -27,6 +27,11 @@ class TextFieldState extends State<TextField> with RestorationMixin, AutomaticKe
   String get autofillId;
   void autofill(TextEditingValue newEditingValue);
   TextInputConfiguration get textInputConfiguration;
+  /// Changes the text of the text field.
+  ///
+  /// [value] The new text for the text field.
+  /// [submit] Whether to submit the text field after changing the text.
+  void changeText(String value, {bool submit = false});
   Widget build(BuildContext context);
   void didReplaceFormValue(String value);
 }

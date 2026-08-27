@@ -67,7 +67,7 @@ class Toggle extends StatefulWidget {
   ///   onChanged: (value) => setState(() => isToggled = value),
   ///   child: Row(
   ///     children: [
-  ///       Icon(Icons.notifications),
+  ///       Icon(LucideIcons.bell),
   ///       Text('Notifications'),
   ///     ],
   ///   ),

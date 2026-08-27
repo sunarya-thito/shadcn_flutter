@@ -32,8 +32,9 @@ class _FormExample3State extends State<FormExample3> {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
+          showOverlay(
+            context,
+            DialogConfiguration(),
             builder: (context) {
               return AlertDialog(
                 title: const Text('Form Values'),
@@ -64,5 +65,4 @@ class _FormExample3State extends State<FormExample3> {
                   hint: const Text('This is your public display name'),
                   // Combine validators: length + async availability check,
                   // but only run the async validator on submit.
-                  validator: const LengthValidator(min: 4) &
 ```

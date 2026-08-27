@@ -28,8 +28,9 @@ class FormExample8 extends StatelessWidget {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
+          showOverlay(
+            context,
+            DialogConfiguration(),
             builder: (context) {
               return AlertDialog(
                 title: const Text('Success'),
@@ -64,5 +65,4 @@ class FormExample8 extends StatelessWidget {
                   validator: const EmailValidator() &
                       ValidationMode(
                         ConditionalValidator((value) async {
-                          await Future.delayed(const Duration(seconds: 1));
 ```

@@ -50,10 +50,7 @@ void main() {
     testWidgets('renders ghost button', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Button.ghost(
-            onPressed: () {},
-            child: Text('Ghost Button'),
-          ),
+          child: Button.ghost(onPressed: () {}, child: Text('Ghost Button')),
         ),
       );
 
@@ -64,10 +61,7 @@ void main() {
     testWidgets('renders link button', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Button.link(
-            onPressed: () {},
-            child: Text('Link Button'),
-          ),
+          child: Button.link(onPressed: () {}, child: Text('Link Button')),
         ),
       );
 
@@ -78,10 +72,7 @@ void main() {
     testWidgets('renders text button', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Button.text(
-            onPressed: () {},
-            child: Text('Text Button'),
-          ),
+          child: Button.text(onPressed: () {}, child: Text('Text Button')),
         ),
       );
 
@@ -92,10 +83,7 @@ void main() {
     testWidgets('renders destructive button', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Button.destructive(
-            onPressed: () {},
-            child: Text('Delete'),
-          ),
+          child: Button.destructive(onPressed: () {}, child: Text('Delete')),
         ),
       );
 
@@ -108,14 +96,14 @@ void main() {
         SimpleApp(
           child: Button.primary(
             onPressed: () {},
-            leading: Icon(Icons.add),
+            leading: Icon(LucideIcons.plus),
             child: Text('Add Item'),
           ),
         ),
       );
 
       expect(find.byType(Button), findsOneWidget);
-      expect(find.byIcon(Icons.add), findsOneWidget);
+      expect(find.byIcon(LucideIcons.plus), findsOneWidget);
       expect(find.text('Add Item'), findsOneWidget);
     });
 
@@ -124,14 +112,14 @@ void main() {
         SimpleApp(
           child: Button.primary(
             onPressed: () {},
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
             child: Text('Continue'),
           ),
         ),
       );
 
       expect(find.byType(Button), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
       expect(find.text('Continue'), findsOneWidget);
     });
 
@@ -140,16 +128,16 @@ void main() {
         SimpleApp(
           child: Button.primary(
             onPressed: () {},
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
+            leading: Icon(LucideIcons.star),
+            trailing: Icon(LucideIcons.arrowRight),
             child: Text('Featured'),
           ),
         ),
       );
 
       expect(find.byType(Button), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
       expect(find.text('Featured'), findsOneWidget);
     });
 
@@ -172,11 +160,7 @@ void main() {
 
     testWidgets('is disabled when onPressed is null', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Button.primary(
-            child: Text('Disabled Button'),
-          ),
-        ),
+        SimpleApp(child: Button.primary(child: Text('Disabled Button'))),
       );
 
       expect(find.byType(Button), findsOneWidget);
@@ -246,7 +230,8 @@ void main() {
             child: Button.primary(
               onPressed: () {},
               child: Text(
-                  'This is a very long button text that should wrap or be handled appropriately'),
+                'This is a very long button text that should wrap or be handled appropriately',
+              ),
             ),
           ),
         ),
@@ -263,7 +248,7 @@ void main() {
             onPressed: () {},
             child: Row(
               children: [
-                Icon(Icons.save),
+                Icon(LucideIcons.save),
                 SizedBox(width: 8),
                 Text('Save Changes'),
               ],
@@ -273,17 +258,14 @@ void main() {
       );
 
       expect(find.byType(Button), findsOneWidget);
-      expect(find.byIcon(Icons.save), findsOneWidget);
+      expect(find.byIcon(LucideIcons.save), findsOneWidget);
       expect(find.text('Save Changes'), findsOneWidget);
     });
 
     testWidgets('maintains proper sizing', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Button.primary(
-            onPressed: () {},
-            child: Text('Button'),
-          ),
+          child: Button.primary(onPressed: () {}, child: Text('Button')),
         ),
       );
 

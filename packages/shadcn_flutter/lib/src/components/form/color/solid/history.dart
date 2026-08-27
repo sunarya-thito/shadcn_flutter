@@ -51,9 +51,7 @@ class ColorHistoryGrid extends StatelessWidget {
       return const AspectRatio(
         aspectRatio: 1,
         child: Button(
-          style: ButtonStyle.outline(
-            density: ButtonDensity.compact,
-          ),
+          style: ButtonStyle.outline(density: ButtonDensity.compact),
           child: SizedBox.shrink(),
         ),
       );
@@ -62,16 +60,16 @@ class ColorHistoryGrid extends StatelessWidget {
       decoration: selectedColor != null && color == selectedColor
           ? BoxDecoration(
               border: Border.all(
-                  color: theme.colorScheme.primary, width: 2 * theme.scaling),
+                color: theme.colorScheme.primary,
+                width: 2 * theme.scaling,
+              ),
               borderRadius: BorderRadius.circular(theme.radiusMd),
             )
           : null,
       child: AspectRatio(
         aspectRatio: 1,
         child: Button(
-          style: const ButtonStyle.outline(
-            density: ButtonDensity.compact,
-          ),
+          style: const ButtonStyle.outline(density: ButtonDensity.compact),
           onPressed: () {
             onColorPicked?.call(color);
           },
@@ -83,16 +81,10 @@ class ColorHistoryGrid extends StatelessWidget {
                 left: selectedColor != null && color == selectedColor ? -2 : 0,
                 child: ClipRRect(
                   borderRadius: theme.borderRadiusSm,
-                  child: CustomPaint(
-                    painter: AlphaPainter(),
-                  ),
+                  child: CustomPaint(painter: AlphaPainter()),
                 ),
               ),
-              Positioned.fill(
-                child: Container(
-                  color: color,
-                ),
-              ),
+              Positioned.fill(child: Container(color: color)),
             ],
           ),
         ),
@@ -105,61 +97,60 @@ class ColorHistoryGrid extends StatelessWidget {
     final theme = Theme.of(context);
     double spacing = this.spacing ?? (4 * theme.scaling);
     return ListenableBuilder(
-        listenable: storage,
-        builder: (context, child) {
-          List<Widget> rows = [];
-          for (int i = 0;
-              i < storage.capacity &&
-                  (maxTotalColors == null || i < maxTotalColors!);
-              i += crossAxisCount) {
-            List<Widget> tiles = [];
-            for (int j = 0; j < crossAxisCount; j++) {
-              final index = i + j;
-              final color = index < storage.recentColors.length
-                  ? storage.recentColors[index]
-                  : null;
-              if (index >= storage.capacity ||
-                  (maxTotalColors != null && index >= maxTotalColors!)) {
-                tiles.add(
-                  const Expanded(
-                    child: SizedBox(),
+      listenable: storage,
+      builder: (context, child) {
+        List<Widget> rows = [];
+        for (
+          int i = 0;
+          i < storage.capacity &&
+              (maxTotalColors == null || i < maxTotalColors!);
+          i += crossAxisCount
+        ) {
+          List<Widget> tiles = [];
+          for (int j = 0; j < crossAxisCount; j++) {
+            final index = i + j;
+            final color = index < storage.recentColors.length
+                ? storage.recentColors[index]
+                : null;
+            if (index >= storage.capacity ||
+                (maxTotalColors != null && index >= maxTotalColors!)) {
+              tiles.add(const Expanded(child: SizedBox()));
+            } else {
+              tiles.add(
+                Expanded(
+                  child: SizedBox(
+                    width: 32 * theme.scaling,
+                    height: 32 * theme.scaling,
+                    child: _buildGridTile(context, color, theme),
                   ),
-                );
-              } else {
-                tiles.add(
-                  Expanded(
-                    child: SizedBox(
-                      width: 32 * theme.scaling,
-                      height: 32 * theme.scaling,
-                      child: _buildGridTile(context, color, theme),
-                    ),
-                  ),
-                );
-              }
-              if (j < crossAxisCount - 1) {
-                tiles.add(Gap(spacing));
-              }
+                ),
+              );
             }
-            rows.add(IntrinsicHeight(
+            if (j < crossAxisCount - 1) {
+              tiles.add(Gap(spacing));
+            }
+          }
+          rows.add(
+            IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: tiles,
               ),
-            ));
-            if (i < storage.capacity - crossAxisCount) {
-              rows.add(Gap(spacing));
-            }
-          }
-          return IntrinsicWidth(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: rows,
             ),
           );
-        }).constrained(
-      minHeight: 100,
-    );
+          if (i < storage.capacity - crossAxisCount) {
+            rows.add(Gap(spacing));
+          }
+        }
+        return IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: rows,
+          ),
+        );
+      },
+    ).constrained(minHeight: 100);
   }
 }
 
@@ -316,10 +307,7 @@ class RecentColorsScopeState extends State<RecentColorsScope>
   Widget build(BuildContext context) {
     return ForwardableData<ColorHistoryStorage>(
       data: this,
-      child: Data<ColorHistoryStorage>.inherit(
-        data: this,
-        child: widget.child,
-      ),
+      child: Data<ColorHistoryStorage>.inherit(data: this, child: widget.child),
     );
   }
 

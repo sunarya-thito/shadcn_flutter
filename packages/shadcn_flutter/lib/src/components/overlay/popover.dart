@@ -445,24 +445,28 @@ class PopoverOverlayWidgetState extends State<PopoverOverlayWidget> {
               widthConstraint: _widthConstraint,
               heightConstraint: _heightConstraint,
               offset: _offset,
-              margin: _margin?.optionallyResolve(context) ??
+              margin:
+                  _margin?.optionallyResolve(context) ??
                   EdgeInsets.all(densityGap),
               scale: tweenValue(0.9, 1.0, widget.animation.value),
               scaleAlignment: (widget.transitionAlignment ?? _alignment)
                   .optionallyResolve(context),
               allowInvertVertical: _allowInvertVertical,
               allowInvertHorizontal: _allowInvertHorizontal,
-              liveAnchor:
-                  _useCompositeTracking ? () => _subscription.currentAnchorBox : null,
+              liveAnchor: _useCompositeTracking
+                  ? () => _subscription.currentAnchorBox
+                  : null,
               onAnchorLost: _useCompositeTracking ? _handleAnchorLost : null,
               child: child!,
             );
           },
           child: FadeTransition(
             opacity: widget.animation,
-            child: Builder(builder: (context) {
-              return widget.builder(context);
-            }),
+            child: Builder(
+              builder: (context) {
+                return widget.builder(context);
+              },
+            ),
           ),
         ),
       ),
@@ -687,7 +691,9 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant PopoverLayoutRender renderObject) {
+    BuildContext context,
+    covariant PopoverLayoutRender renderObject,
+  ) {
     bool hasChanged = false;
     if (renderObject._alignment != alignment) {
       renderObject._alignment = alignment;
@@ -803,37 +809,22 @@ class PopoverLayoutRender extends RenderShiftedBox {
   /// to its anchor.
   PopoverLayoutRender({
     RenderBox? child,
-    required Alignment alignment,
-    required Offset? position,
-    required Alignment anchorAlignment,
-    required PopoverConstraint widthConstraint,
-    required PopoverConstraint heightConstraint,
-    Size? anchorSize,
-    Offset? offset,
-    EdgeInsets margin = const EdgeInsets.all(8),
-    required double scale,
-    required Alignment scaleAlignment,
-    FilterQuality? filterQuality,
-    bool allowInvertHorizontal = true,
-    bool allowInvertVertical = true,
-    RenderBox? Function()? liveAnchor,
-    VoidCallback? onAnchorLost,
-  })  : _alignment = alignment,
-        _position = position,
-        _anchorAlignment = anchorAlignment,
-        _widthConstraint = widthConstraint,
-        _heightConstraint = heightConstraint,
-        _anchorSize = anchorSize,
-        _offset = offset,
-        _liveAnchor = liveAnchor,
-        _onAnchorLost = onAnchorLost,
-        _margin = margin,
-        _scale = scale,
-        _scaleAlignment = scaleAlignment,
-        _filterQuality = filterQuality,
-        _allowInvertHorizontal = allowInvertHorizontal,
-        _allowInvertVertical = allowInvertVertical,
-        super(child);
+    required this._alignment,
+    required this._position,
+    required this._anchorAlignment,
+    required this._widthConstraint,
+    required this._heightConstraint,
+    this._anchorSize,
+    this._offset,
+    this._margin = const EdgeInsets.all(8),
+    required this._scale,
+    required this._scaleAlignment,
+    this._filterQuality,
+    this._allowInvertHorizontal = true,
+    this._allowInvertVertical = true,
+    this._liveAnchor,
+    this._onAnchorLost,
+  }) : super(child);
 
   @override
   Size computeDryLayout(covariant BoxConstraints constraints) {
@@ -853,7 +844,11 @@ class PopoverLayoutRender extends RenderShiftedBox {
   /// scale-in-place transform. For live tracking [targetOffset] is the popover's
   /// freshly-computed placement for the anchor's current position.
   Matrix4 _buildTransform(
-      Offset paintedOffset, Offset targetOffset, bool invertX, bool invertY) {
+    Offset paintedOffset,
+    Offset targetOffset,
+    bool invertX,
+    bool invertY,
+  ) {
     Size childSize = child!.size;
     var scaleAlignment = _scaleAlignment;
     if (invertX || invertY) {
@@ -867,10 +862,18 @@ class PopoverLayoutRender extends RenderShiftedBox {
     Offset alignmentTranslation = scaleAlignment.alongSize(childSize);
     transform.translateByDouble(targetOffset.dx, targetOffset.dy, 0, 1);
     transform.translateByDouble(
-        alignmentTranslation.dx, alignmentTranslation.dy, 0, 1);
+      alignmentTranslation.dx,
+      alignmentTranslation.dy,
+      0,
+      1,
+    );
     transform.scaleByDouble(_scale, _scale, 1, 1);
     transform.translateByDouble(
-        -alignmentTranslation.dx, -alignmentTranslation.dy, 0, 1);
+      -alignmentTranslation.dx,
+      -alignmentTranslation.dy,
+      0,
+      1,
+    );
     transform.translateByDouble(-targetOffset.dx, -targetOffset.dy, 0, 1);
     // Innermost: shift the child from its laid-out spot to the live target.
     transform.translateByDouble(delta.dx, delta.dy, 0, 1);
@@ -883,7 +886,11 @@ class PopoverLayoutRender extends RenderShiftedBox {
       // Use the placement computed on the last scene build so hit-testing and
       // ancestor transforms follow where the popover is actually drawn.
       return _buildTransform(
-          baseOffset, _liveOffset ?? baseOffset, _liveInvertX, _liveInvertY);
+        baseOffset,
+        _liveOffset ?? baseOffset,
+        _liveInvertX,
+        _liveInvertY,
+      );
     }
     return _buildTransform(baseOffset, baseOffset, _invertX, _invertY);
   }
@@ -988,12 +995,16 @@ class PopoverLayoutRender extends RenderShiftedBox {
   /// Returns box constraints with min/max values for width and height.
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     double minWidth = 0;
-    final double availableMaxWidth =
-        max(0.0, constraints.maxWidth - _margin.horizontal);
+    final double availableMaxWidth = max(
+      0.0,
+      constraints.maxWidth - _margin.horizontal,
+    );
     double maxWidth = availableMaxWidth;
     double minHeight = 0;
-    final double availableMaxHeight =
-        max(0.0, constraints.maxHeight - _margin.vertical);
+    final double availableMaxHeight = max(
+      0.0,
+      constraints.maxHeight - _margin.vertical,
+    );
     double maxHeight = availableMaxHeight;
     if (_widthConstraint == PopoverConstraint.anchorFixedSize) {
       assert(_anchorSize != null, 'anchorSize must not be null');
@@ -1045,17 +1056,22 @@ class PopoverLayoutRender extends RenderShiftedBox {
   /// [_position]) and at composite time (against the anchor's live position),
   /// keeping the two perfectly consistent.
   ({Offset offset, bool invertX, bool invertY}) _computePlacement(
-      Offset? position, Size childSize, Size? anchorSize) {
+    Offset? position,
+    Size childSize,
+    Size? anchorSize,
+  ) {
     double offsetX = _offset?.dx ?? 0;
     double offsetY = _offset?.dy ?? 0;
     position ??= Offset(
       size.width / 2 + size.width / 2 * _anchorAlignment.x,
       size.height / 2 + size.height / 2 * _anchorAlignment.y,
     );
-    double x = position.dx -
+    double x =
+        position.dx -
         childSize.width / 2 -
         (childSize.width / 2 * _alignment.x);
-    double y = position.dy -
+    double y =
+        position.dy -
         childSize.height / 2 -
         (childSize.height / 2 * _alignment.y);
     double left = x - _margin.left;
@@ -1065,7 +1081,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
     bool invertX = false;
     bool invertY = false;
     if ((left < 0 || right > size.width) && _allowInvertHorizontal) {
-      double invertedX = position.dx -
+      double invertedX =
+          position.dx -
           childSize.width / 2 -
           (childSize.width / 2 * -_alignment.x);
       if (anchorSize != null) {
@@ -1091,7 +1108,8 @@ class PopoverLayoutRender extends RenderShiftedBox {
       }
     }
     if ((top < 0 || bottom > size.height) && _allowInvertVertical) {
-      double invertedY = position.dy -
+      double invertedY =
+          position.dy -
           childSize.height / 2 -
           (childSize.height / 2 * -_alignment.y);
       if (anchorSize != null) {
@@ -1115,13 +1133,13 @@ class PopoverLayoutRender extends RenderShiftedBox {
     final double dx = left < 0
         ? -left
         : right > size.width
-            ? size.width - right
-            : 0;
+        ? size.width - right
+        : 0;
     final double dy = top < 0
         ? -top
         : bottom > size.height
-            ? size.height - bottom
-            : 0;
+        ? size.height - bottom
+        : 0;
     return (
       offset: Offset(x + dx + offsetX, y + dy + offsetY),
       invertX: invertX,
@@ -1161,14 +1179,20 @@ class PopoverLayoutRender extends RenderShiftedBox {
     // compositing, and this reflects the current frame's scroll offset.
     final Size anchorSize = box.size;
     final Offset anchorPoint = _anchorAlignment.alongSize(anchorSize);
-    final Offset live =
-        MatrixUtils.transformPoint(box.getTransformTo(this), anchorPoint);
+    final Offset live = MatrixUtils.transformPoint(
+      box.getTransformTo(this),
+      anchorPoint,
+    );
     final placement = _computePlacement(live, child!.size, anchorSize);
     _liveOffset = placement.offset;
     _liveInvertX = placement.invertX;
     _liveInvertY = placement.invertY;
     return _buildTransform(
-        baseOffset, placement.offset, placement.invertX, placement.invertY);
+      baseOffset,
+      placement.offset,
+      placement.invertX,
+      placement.invertY,
+    );
   }
 
   void _scheduleAnchorLost() {

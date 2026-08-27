@@ -88,12 +88,15 @@ class HoverCardTheme extends ComponentThemeData {
     return HoverCardTheme(
       debounce: debounce == null ? this.debounce : debounce(),
       wait: wait == null ? this.wait : wait(),
-      popoverAlignment:
-          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
-      anchorAlignment:
-          anchorAlignment == null ? this.anchorAlignment : anchorAlignment(),
-      popoverOffset:
-          popoverOffset == null ? this.popoverOffset : popoverOffset(),
+      popoverAlignment: popoverAlignment == null
+          ? this.popoverAlignment
+          : popoverAlignment(),
+      anchorAlignment: anchorAlignment == null
+          ? this.anchorAlignment
+          : anchorAlignment(),
+      popoverOffset: popoverOffset == null
+          ? this.popoverOffset
+          : popoverOffset(),
       behavior: behavior == null ? this.behavior : behavior(),
     );
   }
@@ -111,13 +114,13 @@ class HoverCardTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        debounce,
-        wait,
-        popoverAlignment,
-        anchorAlignment,
-        popoverOffset,
-        behavior,
-      );
+    debounce,
+    wait,
+    popoverAlignment,
+    anchorAlignment,
+    popoverOffset,
+    behavior,
+  );
 }
 
 /// A widget that displays a popover when hovered or long-pressed.
@@ -146,7 +149,7 @@ class HoverCardTheme extends ComponentThemeData {
 ///       child: Text('Additional info appears on hover'),
 ///     ),
 ///   ),
-///   child: Icon(Icons.help_outline),
+///   child: Icon(LucideIcons.circleHelp),
 /// )
 /// ```
 class HoverCard extends StatefulWidget {
@@ -204,7 +207,7 @@ class HoverCard extends StatefulWidget {
   /// HoverCard(
   ///   debounce: Duration(milliseconds: 300),
   ///   hoverBuilder: (context) => Tooltip(message: 'Help text'),
-  ///   child: Icon(Icons.info),
+  ///   child: Icon(LucideIcons.info),
   /// )
   /// ```
   const HoverCard({
@@ -256,29 +259,35 @@ class _HoverCardState extends State<HoverCard> {
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<HoverCardTheme>(context);
     final debounce = styleValue(
-        widgetValue: widget.debounce,
-        themeValue: compTheme?.debounce,
-        defaultValue: const Duration(milliseconds: 500));
+      widgetValue: widget.debounce,
+      themeValue: compTheme?.debounce,
+      defaultValue: const Duration(milliseconds: 500),
+    );
     final wait = styleValue(
-        widgetValue: widget.wait,
-        themeValue: compTheme?.wait,
-        defaultValue: const Duration(milliseconds: 500));
+      widgetValue: widget.wait,
+      themeValue: compTheme?.wait,
+      defaultValue: const Duration(milliseconds: 500),
+    );
     final popoverAlignment = styleValue(
-        widgetValue: widget.popoverAlignment,
-        themeValue: compTheme?.popoverAlignment,
-        defaultValue: Alignment.topCenter);
+      widgetValue: widget.popoverAlignment,
+      themeValue: compTheme?.popoverAlignment,
+      defaultValue: Alignment.topCenter,
+    );
     final anchorAlignment = styleValue(
-        widgetValue: widget.anchorAlignment,
-        themeValue: compTheme?.anchorAlignment,
-        defaultValue: Alignment.bottomCenter);
+      widgetValue: widget.anchorAlignment,
+      themeValue: compTheme?.anchorAlignment,
+      defaultValue: Alignment.bottomCenter,
+    );
     final popoverOffset = styleValue(
-        widgetValue: widget.popoverOffset,
-        themeValue: compTheme?.popoverOffset,
-        defaultValue: const Offset(0, 8));
+      widgetValue: widget.popoverOffset,
+      themeValue: compTheme?.popoverOffset,
+      defaultValue: const Offset(0, 8),
+    );
     final behavior = styleValue(
-        widgetValue: widget.behavior,
-        themeValue: compTheme?.behavior,
-        defaultValue: HitTestBehavior.deferToChild);
+      widgetValue: widget.behavior,
+      themeValue: compTheme?.behavior,
+      defaultValue: HitTestBehavior.deferToChild,
+    );
     return MouseRegion(
       hitTestBehavior: behavior,
       onEnter: (_) {
@@ -287,11 +296,13 @@ class _HoverCardState extends State<HoverCard> {
           if (count == _hoverCount &&
               !_controller.hasOpenOverlay &&
               context.mounted) {
-            _showPopover(context,
-                alignment: popoverAlignment,
-                anchorAlignment: anchorAlignment,
-                offset: popoverOffset,
-                debounce: debounce);
+            _showPopover(
+              context,
+              alignment: popoverAlignment,
+              anchorAlignment: anchorAlignment,
+              offset: popoverOffset,
+              debounce: debounce,
+            );
           }
         });
       },
@@ -306,22 +317,26 @@ class _HoverCardState extends State<HoverCard> {
       child: GestureDetector(
         onLongPress: () {
           // open popover on long press
-          _showPopover(context,
-              alignment: popoverAlignment,
-              anchorAlignment: anchorAlignment,
-              offset: popoverOffset,
-              debounce: debounce);
+          _showPopover(
+            context,
+            alignment: popoverAlignment,
+            anchorAlignment: anchorAlignment,
+            offset: popoverOffset,
+            debounce: debounce,
+          );
         },
         child: widget.child,
       ),
     );
   }
 
-  void _showPopover(BuildContext context,
-      {required AlignmentGeometry alignment,
-      AlignmentGeometry? anchorAlignment,
-      required Offset offset,
-      required Duration debounce}) {
+  void _showPopover(
+    BuildContext context, {
+    required AlignmentGeometry alignment,
+    AlignmentGeometry? anchorAlignment,
+    required Offset offset,
+    required Duration debounce,
+  }) {
     _controller.show(
       context,
       TooltipConfiguration(

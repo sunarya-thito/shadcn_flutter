@@ -1,0 +1,34 @@
+name: shadcn_flutter_material
+description: "Material Design integration for shadcn_flutter: use material_ui widgets alongside shadcn_flutter components with a shared theme."
+version: 0.0.54
+homepage: "https://github.com/sunarya-thito/shadcn_flutter"
+documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
+repository: "https://github.com/sunarya-thito/shadcn_flutter"
+issue_tracker: "https://github.com/sunarya-thito/shadcn_flutter/issues"
+
+environment:
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: ^1.1.0
+  shadcn_flutter: '>=0.0.54 <0.1.0'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+topics:
+- widgets
+- user-interface
+- material-design
+- shadcn-ui
+- interop

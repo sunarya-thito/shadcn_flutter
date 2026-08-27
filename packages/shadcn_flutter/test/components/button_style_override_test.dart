@@ -90,17 +90,14 @@ void main() {
     });
 
     testWidgets('applies icon theme override', (tester) async {
-      const testIconTheme = IconThemeData(
-        color: Colors.green,
-        size: 24,
-      );
+      const testIconTheme = IconThemeData(color: Colors.green, size: 24);
 
       await tester.pumpWidget(
         SimpleApp(
           child: ButtonStyleOverride(
             iconTheme: (context, state, value) => testIconTheme,
             child: Button.outline(
-              leading: Icon(Icons.add),
+              leading: Icon(LucideIcons.plus),
               child: Text('Test Button'),
             ),
           ),
@@ -109,7 +106,7 @@ void main() {
 
       expect(find.byType(ButtonStyleOverride), findsOneWidget);
       expect(find.byType(Button), findsOneWidget);
-      expect(find.byIcon(Icons.add), findsOneWidget);
+      expect(find.byIcon(LucideIcons.plus), findsOneWidget);
     });
 
     testWidgets('applies margin override', (tester) async {
@@ -211,14 +208,9 @@ void main() {
           child: ButtonStyleOverride(
             padding: (context, state, value) => const EdgeInsets.all(16),
             child: Button.outline(
-              leading: Icon(Icons.star),
-              trailing: Icon(Icons.arrow_forward),
-              child: Column(
-                children: [
-                  Text('Title'),
-                  Text('Subtitle'),
-                ],
-              ),
+              leading: Icon(LucideIcons.star),
+              trailing: Icon(LucideIcons.arrowRight),
+              child: Column(children: [Text('Title'), Text('Subtitle')]),
             ),
           ),
         ),
@@ -226,22 +218,16 @@ void main() {
 
       expect(find.byType(ButtonStyleOverride), findsOneWidget);
       expect(find.byType(Button), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
       expect(find.text('Subtitle'), findsOneWidget);
     });
 
     testWidgets('ButtonStyleOverrideData equality works', (tester) async {
-      const data1 = ButtonStyleOverrideData(
-        padding: null,
-        decoration: null,
-      );
+      const data1 = ButtonStyleOverrideData(padding: null, decoration: null);
 
-      const data2 = ButtonStyleOverrideData(
-        padding: null,
-        decoration: null,
-      );
+      const data2 = ButtonStyleOverrideData(padding: null, decoration: null);
 
       final data3 = ButtonStyleOverrideData(
         padding: (context, states, value) => const EdgeInsets.all(10),

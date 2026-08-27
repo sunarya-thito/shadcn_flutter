@@ -61,6 +61,9 @@ class NavigationMenu extends StatefulWidget {
   /// menu's structure and behavior. Items can have content for
   /// dropdown functionality or simple press actions.
   final List<Widget> children;
+  /// Whether the popover may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter).
+  final bool? adaptiveOverlay;
   /// Creates a [NavigationMenu] with the specified items and appearance.
   ///
   /// The [children] parameter is required and should contain
@@ -71,6 +74,7 @@ class NavigationMenu extends StatefulWidget {
   /// - [surfaceOpacity] (double?, optional): Popover background opacity
   /// - [surfaceBlur] (double?, optional): Popover backdrop blur intensity
   /// - [children] (`List<Widget>`, required): Menu items to display
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   ///
   /// Example:
   /// ```dart
@@ -82,7 +86,7 @@ class NavigationMenu extends StatefulWidget {
   ///   ],
   /// )
   /// ```
-  const NavigationMenu({super.key, this.surfaceOpacity, this.surfaceBlur, required this.children});
+  const NavigationMenu({super.key, this.surfaceOpacity, this.surfaceBlur, required this.children, this.adaptiveOverlay});
   State<NavigationMenu> createState();
 }
 ```

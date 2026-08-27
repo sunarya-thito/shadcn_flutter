@@ -141,6 +141,7 @@
   "menuCopy": "Copy",
   "menuPaste": "Paste",
   "menuSelectAll": "Select All",
+  "noSpellCheckReplacements": "No Replacements Found",
   "menuUndo": "Undo",
   "menuRedo": "Redo",
   "menuDelete": "Delete",

@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class RebuildCounter extends StatefulWidget {
-  const RebuildCounter({Key? key}) : super(key: key);
+  const RebuildCounter({super.key});
 
   @override
   State<RebuildCounter> createState() => _RebuildCounterState();

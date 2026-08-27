@@ -28,7 +28,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 // Move to previous item (upwards).
                 controller.animatePrevious(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_upward)),
+              child: const Icon(LucideIcons.arrowUp)),
           const Gap(24),
           Expanded(
             child: SizedBox(
@@ -55,7 +55,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 // Move to next item (downwards).
                 controller.animateNext(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_downward)),
+              child: const Icon(LucideIcons.arrowDown)),
         ],
       ),
     );

@@ -11,8 +11,13 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// - [size]: total size constraints for the drawer
 /// - [padding]: safe area padding to respect
 /// - [stackIndex]: index in the drawer stack (for layered drawers)
-typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
-    Size size, EdgeInsets padding, int stackIndex);
+typedef DrawerBuilder = Widget Function(
+  BuildContext context,
+  Size extraSize,
+  Size size,
+  EdgeInsets padding,
+  int stackIndex,
+);
 
 /// Theme configuration for drawer and sheet overlays.
 ///
@@ -99,14 +104,17 @@ class DrawerTheme extends ComponentThemeData {
     ValueGetter<Size?>? dragHandleSize,
   }) {
     return DrawerTheme(
-      surfaceOpacity:
-          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceOpacity: surfaceOpacity == null
+          ? this.surfaceOpacity
+          : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
       barrierColor: barrierColor == null ? this.barrierColor : barrierColor(),
-      showDragHandle:
-          showDragHandle == null ? this.showDragHandle : showDragHandle(),
-      dragHandleSize:
-          dragHandleSize == null ? this.dragHandleSize : dragHandleSize(),
+      showDragHandle: showDragHandle == null
+          ? this.showDragHandle
+          : showDragHandle(),
+      dragHandleSize: dragHandleSize == null
+          ? this.dragHandleSize
+          : dragHandleSize(),
     );
   }
 
@@ -120,8 +128,13 @@ class DrawerTheme extends ComponentThemeData {
       other.dragHandleSize == dragHandleSize;
 
   @override
-  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur, barrierColor,
-      showDragHandle, dragHandleSize);
+  int get hashCode => Object.hash(
+    surfaceOpacity,
+    surfaceBlur,
+    barrierColor,
+    showDragHandle,
+    dragHandleSize,
+  );
 
   @override
   String toString() =>
@@ -202,14 +215,16 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
 }) {
   BuildContext? resolvedContext = context;
   if (anchor is LinkedAnchor) {
-    final registry = anchor.registry ??
+    final registry =
+        anchor.registry ??
         (context != null
             ? OverlayAnchorRegistry.of(context)
             : OverlayAnchorRegistry.global);
     final entry = registry.find(anchor.key);
     if (entry == null) {
       throw FlutterError(
-          'No OverlayAnchor found for the given symbol: ${anchor.key}');
+        'No OverlayAnchor found for the given symbol: ${anchor.key}',
+      );
     }
     resolvedContext = entry.context;
   } else if (anchor is ContextAnchor) {
@@ -251,9 +266,11 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
         surfaceBlur: surfaceBlur,
         barrierColor: barrierColor,
         stackIndex: stackIndex,
-        child: Builder(builder: (context) {
-          return builder(context);
-        }),
+        child: Builder(
+          builder: (context) {
+            return builder(context);
+          },
+        ),
       );
     },
     position: position,
@@ -318,14 +335,16 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
 }) {
   BuildContext? resolvedContext = context;
   if (anchor is LinkedAnchor) {
-    final registry = anchor.registry ??
+    final registry =
+        anchor.registry ??
         (context != null
             ? OverlayAnchorRegistry.of(context)
             : OverlayAnchorRegistry.global);
     final entry = registry.find(anchor.key);
     if (entry == null) {
       throw FlutterError(
-          'No OverlayAnchor found for the given symbol: ${anchor.key}');
+        'No OverlayAnchor found for the given symbol: ${anchor.key}',
+      );
     }
     resolvedContext = entry.context;
   } else if (anchor is ContextAnchor) {
@@ -358,9 +377,11 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
         padding: padding,
         barrierColor: barrierColor,
         stackIndex: stackIndex,
-        child: Builder(builder: (context) {
-          return builder(context);
-        }),
+        child: Builder(
+          builder: (context) {
+            return builder(context);
+          },
+        ),
       );
     },
     position: position,
@@ -480,7 +501,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
   @override
   void initState() {
     super.initState();
-    _controller = widget.animationController ??
+    _controller =
+        widget.animationController ??
         AnimationController(
           vsync: this,
           duration: const Duration(milliseconds: 350),
@@ -522,7 +544,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       if (oldWidget.animationController == null) {
         _controller.dispose();
       }
-      _controller = widget.animationController ??
+      _controller =
+          widget.animationController ??
           AnimationController(
             vsync: this,
             duration: const Duration(milliseconds: 350),
@@ -556,14 +579,17 @@ class _DrawerWrapperState extends State<DrawerWrapper>
   /// Wraps the inner handle+content [layout] with the drag gesture, driving the
   /// entry's [controlled] animation and the local overscroll [_extraOffset].
   Widget _wrapGesture(
-      BuildContext context, ControlledAnimation controlled, Widget layout) {
+    BuildContext context,
+    ControlledAnimation controlled,
+    Widget layout,
+  ) {
     final position = resolvedPosition;
     final isVertical =
         position == OverlayPosition.top || position == OverlayPosition.bottom;
     final sign =
         (position == OverlayPosition.left || position == OverlayPosition.top)
-            ? 1.0
-            : -1.0;
+        ? 1.0
+        : -1.0;
     void onUpdate(DragUpdateDetails details) {
       final size = getSize(context);
       final axis = isVertical ? size.height : size.width;
@@ -610,7 +636,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
       builder: (context, _) {
         final gestureWrapper = (widget.draggable && animation != null)
             ? (BuildContext ctx, Widget layout) =>
-                _wrapGesture(ctx, animation, layout)
+                  _wrapGesture(ctx, animation, layout)
             : null;
         if (isSheet) {
           return SheetRawContainer(
@@ -833,10 +859,7 @@ class BackdropTransformData {
 class _DrawerOverlayWrapper extends StatefulWidget {
   final Widget child;
   final Completer completer;
-  const _DrawerOverlayWrapper({
-    required this.child,
-    required this.completer,
-  });
+  const _DrawerOverlayWrapper({required this.child, required this.completer});
 
   @override
   State<_DrawerOverlayWrapper> createState() => _DrawerOverlayWrapperState();
@@ -954,14 +977,16 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
 }) {
   BuildContext? resolvedContext = context;
   if (anchor is LinkedAnchor) {
-    final registry = anchor.registry ??
+    final registry =
+        anchor.registry ??
         (context != null
             ? OverlayAnchorRegistry.of(context)
             : OverlayAnchorRegistry.global);
     final entry = registry.find(anchor.key);
     if (entry == null) {
       throw FlutterError(
-          'No OverlayAnchor found for the given symbol: ${anchor.key}');
+        'No OverlayAnchor found for the given symbol: ${anchor.key}',
+      );
     }
     resolvedContext = entry.context;
   } else if (anchor is ContextAnchor) {
@@ -969,20 +994,27 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
   }
   if (resolvedContext == null) {
     throw FlutterError(
-        'Either context or anchor must be provided to openRawDrawer.');
+      'Either context or anchor must be provided to openRawDrawer.',
+    );
   }
 
-  DrawerLayerData? parentLayer =
-      DrawerOverlay.maybeFind(resolvedContext, useRootDrawerOverlay);
+  DrawerLayerData? parentLayer = DrawerOverlay.maybeFind(
+    resolvedContext,
+    useRootDrawerOverlay,
+  );
   CapturedThemes? themes;
   CapturedData? data;
   if (parentLayer != null) {
     themes = InheritedTheme.capture(
-        from: resolvedContext, to: parentLayer.overlay.context);
+      from: resolvedContext,
+      to: parentLayer.overlay.context,
+    );
     data = Data.capture(from: resolvedContext, to: parentLayer.overlay.context);
   } else {
-    parentLayer =
-        DrawerOverlay.maybeFindMessenger(resolvedContext, useRootDrawerOverlay);
+    parentLayer = DrawerOverlay.maybeFindMessenger(
+      resolvedContext,
+      useRootDrawerOverlay,
+    );
   }
   assert(parentLayer != null, 'No DrawerOverlay found in the widget tree');
   final completer = Completer<T?>();
@@ -992,9 +1024,11 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
     builder: (context, extraSize, size, padding, stackIndex) {
       return _DrawerOverlayWrapper(
         completer: completer,
-        child: Builder(builder: (context) {
-          return builder(context, extraSize, size, padding, stackIndex);
-        }),
+        child: Builder(
+          builder: (context) {
+            return builder(context, extraSize, size, padding, stackIndex);
+          },
+        ),
       );
     },
     modal: modal,
@@ -1008,33 +1042,42 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
             const transform = ScaleBackdropTransform();
             final existingData = Data.maybeOf<BackdropTransformData>(context);
             final isRoot = stackIndex == 0;
-            return LayoutBuilder(builder: (context, constraints) {
-              return AnimatedBuilder(
-                animation: animation,
-                builder: (context, child) {
-                  final size = constraints.biggest;
-                  final t = animation.value;
-                  var extraSize =
-                      transform.resolveExtraSize(size, t, isRoot: isRoot);
-                  if (existingData != null) {
-                    extraSize = Size(
-                      extraSize.width +
-                          existingData.sizeDifference.width /
-                              kBackdropScaleDown,
-                      extraSize.height +
-                          existingData.sizeDifference.height /
-                              kBackdropScaleDown,
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) {
+                    final size = constraints.biggest;
+                    final t = animation.value;
+                    var extraSize = transform.resolveExtraSize(
+                      size,
+                      t,
+                      isRoot: isRoot,
                     );
-                  }
-                  return Data.inherit(
-                    data: BackdropTransformData(extraSize),
-                    child: transform.wrapBackdrop(context, child!, t,
-                        isRoot: isRoot),
-                  );
-                },
-                child: child,
-              );
-            });
+                    if (existingData != null) {
+                      extraSize = Size(
+                        extraSize.width +
+                            existingData.sizeDifference.width /
+                                kBackdropScaleDown,
+                        extraSize.height +
+                            existingData.sizeDifference.height /
+                                kBackdropScaleDown,
+                      );
+                    }
+                    return Data.inherit(
+                      data: BackdropTransformData(extraSize),
+                      child: transform.wrapBackdrop(
+                        context,
+                        child!,
+                        t,
+                        isRoot: isRoot,
+                      ),
+                    );
+                  },
+                  child: child,
+                );
+              },
+            );
           }
         : (context, child, animation, stackIndex) => child,
     barrierBuilder: (context, child, animation, stackIndex) {
@@ -1061,9 +1104,7 @@ DrawerOverlayCompleter<T?> openRawDrawer<T>({
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: barrierDismissible ? () => closeDrawer(context) : null,
-              child: Container(
-                child: backdropBuilder?.call(context),
-              ),
+              child: Container(child: backdropBuilder?.call(context)),
             ),
           ),
         ),
@@ -1199,8 +1240,10 @@ class DrawerOverlay extends StatefulWidget {
   /// - [root] (bool): Whether to find root layer, defaults to false
   ///
   /// Returns [DrawerLayerData] or null if not found.
-  static DrawerLayerData? maybeFindMessenger(BuildContext context,
-      [bool root = false]) {
+  static DrawerLayerData? maybeFindMessenger(
+    BuildContext context, [
+    bool root = false,
+  ]) {
     var data = Data.maybeFindMessenger<DrawerLayerData>(context);
     if (root) {
       while (data?.parent != null) {
@@ -1275,10 +1318,7 @@ class DrawerOverlayState extends State<DrawerOverlay> {
   @override
   Widget build(BuildContext context) {
     final parentLayer = Data.maybeOf<DrawerLayerData>(context);
-    Widget child = KeyedSubtree(
-      key: backdropKey,
-      child: widget.child,
-    );
+    Widget child = KeyedSubtree(key: backdropKey, child: widget.child);
     int index = 0;
     for (final entry in _entries) {
       child = DrawerEntryWidget(
@@ -1410,9 +1450,12 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
   @override
   void initState() {
     super.initState();
-    _controller = widget.animationController ??
+    _controller =
+        widget.animationController ??
         AnimationController(
-            vsync: this, duration: const Duration(milliseconds: 350));
+          vsync: this,
+          duration: const Duration(milliseconds: 350),
+        );
 
     _controlledAnimation = ControlledAnimation(_controller);
     if (widget.animationController == null && widget.autoOpen) {
@@ -1437,7 +1480,8 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
       if (oldWidget.animationController == null) {
         _controller.dispose();
       }
-      _controller = widget.animationController ??
+      _controller =
+          widget.animationController ??
           AnimationController(
             vsync: this,
             duration: const Duration(milliseconds: 350),
@@ -1506,123 +1550,138 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
         data: widget.data,
         child: Data.inherit(
           data: _MountedOverlayEntryData(this),
-          child: Builder(builder: (context) {
-            Widget barrier = (widget.modal
-                    ? widget.barrierBuilder(context, widget.backdrop,
-                        _controlledAnimation, widget.stackIndex)
-                    : null) ??
-                Positioned(
-                  top: -9999,
-                  left: -9999,
-                  right: -9999,
-                  bottom: -9999,
-                  child: GestureDetector(
-                    onTap: () {
-                      close();
-                    },
-                  ),
-                );
-            final extraSize =
-                Data.maybeOf<BackdropTransformData>(context)?.sizeDifference;
-            Size additionalSize;
-            Offset additionalOffset;
-            bool insetTop =
-                widget.useSafeArea && position == OverlayPosition.top;
-            bool insetBottom =
-                widget.useSafeArea && position == OverlayPosition.bottom;
-            bool insetLeft =
-                widget.useSafeArea && position == OverlayPosition.left;
-            bool insetRight =
-                widget.useSafeArea && position == OverlayPosition.right;
-            MediaQueryData mediaQueryData = MediaQuery.of(context);
-            EdgeInsets padding =
-                mediaQueryData.padding + mediaQueryData.viewInsets;
-            if (extraSize == null) {
-              additionalSize = Size.zero;
-              additionalOffset = Offset.zero;
-            } else {
-              switch (position) {
-                case OverlayPosition.left:
-                  additionalSize = Size(extraSize.width / 2, 0);
-                  additionalOffset = Offset(-additionalSize.width, 0);
-                  break;
-                case OverlayPosition.right:
-                  additionalSize = Size(extraSize.width / 2, 0);
-                  additionalOffset = Offset(additionalSize.width, 0);
-                  break;
-                case OverlayPosition.top:
-                  additionalSize = Size(0, extraSize.height / 2);
-                  additionalOffset = Offset(0, -additionalSize.height);
-                  break;
-                case OverlayPosition.bottom:
-                  additionalSize = Size(0, extraSize.height / 2);
-                  additionalOffset = Offset(0, additionalSize.height);
-                  break;
-                default:
-                  throw UnimplementedError('Unknown position');
+          child: Builder(
+            builder: (context) {
+              Widget barrier =
+                  (widget.modal
+                      ? widget.barrierBuilder(
+                          context,
+                          widget.backdrop,
+                          _controlledAnimation,
+                          widget.stackIndex,
+                        )
+                      : null) ??
+                  Positioned(
+                    top: -9999,
+                    left: -9999,
+                    right: -9999,
+                    bottom: -9999,
+                    child: GestureDetector(
+                      onTap: () {
+                        close();
+                      },
+                    ),
+                  );
+              final extraSize = Data.maybeOf<BackdropTransformData>(context)
+                  ?.sizeDifference;
+              Size additionalSize;
+              Offset additionalOffset;
+              bool insetTop =
+                  widget.useSafeArea && position == OverlayPosition.top;
+              bool insetBottom =
+                  widget.useSafeArea && position == OverlayPosition.bottom;
+              bool insetLeft =
+                  widget.useSafeArea && position == OverlayPosition.left;
+              bool insetRight =
+                  widget.useSafeArea && position == OverlayPosition.right;
+              MediaQueryData mediaQueryData = MediaQuery.of(context);
+              EdgeInsets padding =
+                  mediaQueryData.padding + mediaQueryData.viewInsets;
+              if (extraSize == null) {
+                additionalSize = Size.zero;
+                additionalOffset = Offset.zero;
+              } else {
+                switch (position) {
+                  case OverlayPosition.left:
+                    additionalSize = Size(extraSize.width / 2, 0);
+                    additionalOffset = Offset(-additionalSize.width, 0);
+                    break;
+                  case OverlayPosition.right:
+                    additionalSize = Size(extraSize.width / 2, 0);
+                    additionalOffset = Offset(additionalSize.width, 0);
+                    break;
+                  case OverlayPosition.top:
+                    additionalSize = Size(0, extraSize.height / 2);
+                    additionalOffset = Offset(0, -additionalSize.height);
+                    break;
+                  case OverlayPosition.bottom:
+                    additionalSize = Size(0, extraSize.height / 2);
+                    additionalOffset = Offset(0, additionalSize.height);
+                    break;
+                  default:
+                    throw UnimplementedError('Unknown position');
+                }
               }
-            }
-            return Stack(
-              clipBehavior: Clip.none,
-              fit: StackFit.passthrough,
-              children: [
-                IgnorePointer(
-                  child: widget.backdropBuilder(context, widget.backdrop,
-                      _controlledAnimation, widget.stackIndex),
-                ),
-                barrier,
-                Positioned.fill(
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    return MediaQuery(
-                      data: widget.useSafeArea
-                          ? mediaQueryData.removePadding(
-                              removeTop: true,
-                              removeBottom: true,
-                              removeLeft: true,
-                              removeRight: true,
-                            )
-                          : mediaQueryData,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: padTop ? padding.top : 0,
-                          bottom: padBottom ? padding.bottom : 0,
-                          left: padLeft ? padding.left : 0,
-                          right: padRight ? padding.right : 0,
-                        ),
-                        child: Align(
-                          alignment: alignment,
-                          child: AnimatedBuilder(
-                            animation: _controlledAnimation,
-                            builder: (context, child) {
-                              return FractionalTranslation(
-                                translation: startFractionalOffset *
-                                    (1 - _controlledAnimation.value),
-                                child: child,
-                              );
-                            },
-                            child: Transform.translate(
-                              offset: additionalOffset / kBackdropScaleDown,
-                              child: widget.builder(
-                                  context,
-                                  additionalSize,
-                                  constraints.biggest,
-                                  EdgeInsets.only(
-                                    top: insetTop ? padding.top : 0,
-                                    bottom: insetBottom ? padding.bottom : 0,
-                                    left: insetLeft ? padding.left : 0,
-                                    right: insetRight ? padding.right : 0,
+              return Stack(
+                clipBehavior: Clip.none,
+                fit: StackFit.passthrough,
+                children: [
+                  IgnorePointer(
+                    child: widget.backdropBuilder(
+                      context,
+                      widget.backdrop,
+                      _controlledAnimation,
+                      widget.stackIndex,
+                    ),
+                  ),
+                  barrier,
+                  Positioned.fill(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return MediaQuery(
+                          data: widget.useSafeArea
+                              ? mediaQueryData.removePadding(
+                                  removeTop: true,
+                                  removeBottom: true,
+                                  removeLeft: true,
+                                  removeRight: true,
+                                )
+                              : mediaQueryData,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: padTop ? padding.top : 0,
+                              bottom: padBottom ? padding.bottom : 0,
+                              left: padLeft ? padding.left : 0,
+                              right: padRight ? padding.right : 0,
+                            ),
+                            child: Align(
+                              alignment: alignment,
+                              child: AnimatedBuilder(
+                                animation: _controlledAnimation,
+                                builder: (context, child) {
+                                  return FractionalTranslation(
+                                    translation:
+                                        startFractionalOffset *
+                                        (1 - _controlledAnimation.value),
+                                    child: child,
+                                  );
+                                },
+                                child: Transform.translate(
+                                  offset: additionalOffset / kBackdropScaleDown,
+                                  child: widget.builder(
+                                    context,
+                                    additionalSize,
+                                    constraints.biggest,
+                                    EdgeInsets.only(
+                                      top: insetTop ? padding.top : 0,
+                                      bottom: insetBottom ? padding.bottom : 0,
+                                      left: insetLeft ? padding.left : 0,
+                                      right: insetRight ? padding.right : 0,
+                                    ),
+                                    widget.stackIndex,
                                   ),
-                                  widget.stackIndex),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            );
-          }),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -1641,8 +1700,12 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
 /// - [stackIndex] (int): Index of the drawer in the stack
 ///
 /// Returns the transformed backdrop widget.
-typedef BackdropBuilder = Widget Function(BuildContext context, Widget child,
-    Animation<double> animation, int stackIndex);
+typedef BackdropBuilder = Widget Function(
+  BuildContext context,
+  Widget child,
+  Animation<double> animation,
+  int stackIndex,
+);
 
 /// Builder function for drawer modal barriers.
 ///
@@ -1656,8 +1719,12 @@ typedef BackdropBuilder = Widget Function(BuildContext context, Widget child,
 /// - [stackIndex] (int): Index of the drawer in the stack
 ///
 /// Returns the barrier widget or null if no barrier needed.
-typedef BarrierBuilder = Widget? Function(BuildContext context, Widget child,
-    Animation<double> animation, int stackIndex);
+typedef BarrierBuilder = Widget? Function(
+  BuildContext context,
+  Widget child,
+  Animation<double> animation,
+  int stackIndex,
+);
 
 /// Data class representing a drawer overlay entry in the stack.
 ///

@@ -53,7 +53,7 @@ description: "A text widget that supports text selection by users.   Displays te
 /// - [Text] for non-selectable text display
 /// - [TextField] for editable text input
 /// - [SelectableTextTheme] for theming selection appearance
-class SelectableText extends StatelessWidget {
+class SelectableText extends StatefulWidget {
   /// Creates selectable text from a plain string.
   ///
   /// The [data] parameter is the text to display. All other parameters
@@ -86,10 +86,9 @@ class SelectableText extends StatelessWidget {
   /// - [textHeightBehavior]: How to handle line heights
   /// - [textWidthBasis]: Basis for measuring text width
   /// - [onSelectionChanged]: Callback when selection changes
-  /// - [useNativeContextMenu]: Use platform context menu (defaults to `false`)
   /// - [contextMenuBuilder]: Custom context menu builder
   /// - [magnifierConfiguration]: Text magnifier configuration
-  const SelectableText(String this.data, {super.key, this.focusNode, this.style, this.strutStyle, this.textAlign, this.textDirection, this.textScaler, this.showCursor = false, this.autofocus = false, this.minLines, this.maxLines, this.cursorWidth = 2.0, this.cursorHeight, this.cursorRadius, this.cursorColor, this.selectionHeightStyle = ui.BoxHeightStyle.tight, this.selectionWidthStyle = ui.BoxWidthStyle.tight, this.dragStartBehavior = DragStartBehavior.start, this.enableInteractiveSelection = true, this.selectionControls, this.onTap, this.scrollPhysics, this.semanticsLabel, this.textHeightBehavior, this.textWidthBasis, this.onSelectionChanged, this.useNativeContextMenu = false, this.contextMenuBuilder = _defaultContextMenuBuilder, this.magnifierConfiguration});
+  const SelectableText(String this.data, {super.key, this.focusNode, this.style, this.strutStyle, this.textAlign, this.textDirection, this.textScaler, this.showCursor = false, this.autofocus = false, this.minLines, this.maxLines, this.cursorWidth = 2.0, this.cursorHeight, this.cursorRadius, this.cursorColor, this.selectionHeightStyle = ui.BoxHeightStyle.tight, this.selectionWidthStyle = ui.BoxWidthStyle.tight, this.dragStartBehavior = DragStartBehavior.start, this.enableInteractiveSelection = true, this.selectionControls, this.onTap, this.scrollPhysics, this.semanticsLabel, this.textHeightBehavior, this.textWidthBasis, this.onSelectionChanged, this.contextMenuBuilder = _defaultContextMenuBuilder, this.magnifierConfiguration});
   /// Creates selectable text from a [TextSpan] for styled/rich text.
   ///
   /// Use this constructor when you need to display text with multiple styles,
@@ -115,7 +114,7 @@ class SelectableText extends StatelessWidget {
   ///   ),
   /// )
   /// ```
-  const SelectableText.rich(TextSpan this.textSpan, {super.key, this.focusNode, this.style, this.strutStyle, this.textAlign, this.textDirection, this.textScaler, this.showCursor = false, this.autofocus = false, this.minLines, this.maxLines, this.cursorWidth = 2.0, this.cursorHeight, this.cursorRadius, this.cursorColor, this.selectionHeightStyle = ui.BoxHeightStyle.tight, this.selectionWidthStyle = ui.BoxWidthStyle.tight, this.dragStartBehavior = DragStartBehavior.start, this.enableInteractiveSelection = true, this.selectionControls, this.onTap, this.scrollPhysics, this.semanticsLabel, this.textHeightBehavior, this.textWidthBasis, this.onSelectionChanged, this.useNativeContextMenu = false, this.contextMenuBuilder = _defaultContextMenuBuilder, this.magnifierConfiguration});
+  const SelectableText.rich(TextSpan this.textSpan, {super.key, this.focusNode, this.style, this.strutStyle, this.textAlign, this.textDirection, this.textScaler, this.showCursor = false, this.autofocus = false, this.minLines, this.maxLines, this.cursorWidth = 2.0, this.cursorHeight, this.cursorRadius, this.cursorColor, this.selectionHeightStyle = ui.BoxHeightStyle.tight, this.selectionWidthStyle = ui.BoxWidthStyle.tight, this.dragStartBehavior = DragStartBehavior.start, this.enableInteractiveSelection = true, this.selectionControls, this.onTap, this.scrollPhysics, this.semanticsLabel, this.textHeightBehavior, this.textWidthBasis, this.onSelectionChanged, this.contextMenuBuilder = _defaultContextMenuBuilder, this.magnifierConfiguration});
   /// The plain text string to display.
   ///
   /// Either [data] or [textSpan] must be non-null, but not both.
@@ -130,11 +129,6 @@ class SelectableText extends StatelessWidget {
   ///
   /// If `null`, a focus node is created internally.
   final FocusNode? focusNode;
-  /// Whether to use the platform's native context menu.
-  ///
-  /// When `true`, uses the operating system's built-in context menu.
-  /// When `false`, uses Flutter's custom context menu.
-  final bool useNativeContextMenu;
   /// The text style to apply to the text.
   ///
   /// If `null`, uses the default text style from the theme.
@@ -217,6 +211,6 @@ class SelectableText extends StatelessWidget {
   ///
   /// {@macro flutter.widgets.magnifier.intro}
   final TextMagnifierConfiguration? magnifierConfiguration;
-  Widget build(BuildContext context);
+  State<SelectableText> createState();
 }
 ```

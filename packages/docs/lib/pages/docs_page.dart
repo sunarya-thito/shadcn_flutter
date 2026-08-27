@@ -147,7 +147,7 @@ class ShadcnDocsSection {
   final List<ShadcnDocsPage> pages;
   final IconData icon;
 
-  ShadcnDocsSection(this.title, this.pages, [this.icon = Icons.book]);
+  ShadcnDocsSection(this.title, this.pages, [this.icon = LucideIcons.book]);
 }
 
 class DocsPageState extends State<DocsPage> {
@@ -166,9 +166,10 @@ class DocsPageState extends State<DocsPage> {
           ShadcnDocsPage('Colors', 'colors'),
           ShadcnDocsPage('Material/Cupertino', 'external'),
           ShadcnDocsPage('State Management', 'state'),
+          ShadcnDocsPage('Localizations', 'localizations'),
           ShadcnDocsPage('GenUI', 'genui', ShadcnFeatureTag.experimental),
         ]),
-        Icons.book),
+        LucideIcons.book),
     // COMPONENTS BEGIN
     ShadcnDocsSection(
       'Application',
@@ -558,7 +559,7 @@ class DocsPageState extends State<DocsPage> {
                                     onPressed: () {
                                       _openDrawer(context);
                                     },
-                                    child: const Icon(Icons.menu),
+                                    child: const Icon(LucideIcons.menu),
                                   ),
                                 ),
                               ],
@@ -606,7 +607,7 @@ class DocsPageState extends State<DocsPage> {
                                     onPressed: () {
                                       showSearchBar();
                                     },
-                                    trailing: const Icon(Icons.search)
+                                    trailing: const Icon(LucideIcons.search)
                                         .iconSmall()
                                         .iconMutedForeground(),
                                     child: Row(
@@ -830,7 +831,7 @@ class DocsPageState extends State<DocsPage> {
                 showSearchBar();
               },
               trailing:
-                  const Icon(Icons.search).iconSmall().iconMutedForeground(),
+                  const Icon(LucideIcons.search).iconSmall().iconMutedForeground(),
               child: Row(
                 spacing: 16,
                 children: [
@@ -910,7 +911,7 @@ class DocsPageState extends State<DocsPage> {
                     onPressed: () {
                       closeDrawer(context);
                     },
-                    child: const Icon(Icons.close),
+                    child: const Icon(LucideIcons.x),
                   ),
                 ],
               ).withPadding(left: 32 * scaling, right: 32 * scaling),

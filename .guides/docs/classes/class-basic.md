@@ -1,6 +1,6 @@
 ---
 title: "Class: Basic"
-description: "A versatile layout widget for arranging leading, title, subtitle, content, and trailing elements.   Provides a flexible row-based layout commonly used for list items, cards, or  any UI requiring a structured arrangement of multiple content sections. Each  section can be independently aligned and spaced.   Example:  ```dart  Basic(    leading: Icon(Icons.person),    title: Text('John Doe'),    subtitle: Text('john@example.com'),    trailing: Icon(Icons.chevron_right),  )  ```"
+description: "A versatile layout widget for arranging leading, title, subtitle, content, and trailing elements.   Provides a flexible row-based layout commonly used for list items, cards, or  any UI requiring a structured arrangement of multiple content sections. Each  section can be independently aligned and spaced.   Example:  ```dart  Basic(    leading: Icon(LucideIcons.user),    title: Text('John Doe'),    subtitle: Text('john@example.com'),    trailing: Icon(LucideIcons.chevronRight),  )  ```"
 ---
 
 ```dart
@@ -13,10 +13,10 @@ description: "A versatile layout widget for arranging leading, title, subtitle, 
 /// Example:
 /// ```dart
 /// Basic(
-///   leading: Icon(Icons.person),
+///   leading: Icon(LucideIcons.user),
 ///   title: Text('John Doe'),
 ///   subtitle: Text('john@example.com'),
-///   trailing: Icon(Icons.chevron_right),
+///   trailing: Icon(LucideIcons.chevronRight),
 /// )
 /// ```
 class Basic extends StatelessWidget {

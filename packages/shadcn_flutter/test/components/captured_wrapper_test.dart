@@ -1,17 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 import '../test_helper.dart';
 
 void main() {
   group('CapturedWrapper', () {
     testWidgets('renders child widget', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            child: Text('Test Child'),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(child: Text('Test Child'))),
       );
 
       expect(find.byType(CapturedWrapper), findsOneWidget);
@@ -37,11 +33,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: CapturedWrapper(
-            child: Container(
-              width: 100,
-              height: 100,
-              color: material.Colors.blue,
-            ),
+            child: Container(width: 100, height: 100, color: Colors.blue),
           ),
         ),
       );
@@ -60,7 +52,7 @@ void main() {
               key: key,
               width: 100,
               height: 100,
-              color: material.Colors.red,
+              color: Colors.red,
             ),
           ),
         ),
@@ -74,36 +66,27 @@ void main() {
     testWidgets('handles different child types', (tester) async {
       // Test with Text widget
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            child: Text('Text Child'),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(child: Text('Text Child'))),
       );
       expect(find.text('Text Child'), findsOneWidget);
 
       // Test with Container widget
       await tester.pumpWidget(
         SimpleApp(
-          child: CapturedWrapper(
-            child: SizedBox(width: 50, height: 50),
-          ),
+          child: CapturedWrapper(child: SizedBox(width: 50, height: 50)),
         ),
       );
       expect(find.byType(CapturedWrapper), findsOneWidget);
-      expect(find.byType(Container),
-          findsWidgets); // May find multiple due to SimpleApp
+      expect(
+        find.byType(Container),
+        findsWidgets,
+      ); // May find multiple due to SimpleApp
 
       // Test with Column widget
       await tester.pumpWidget(
         SimpleApp(
           child: CapturedWrapper(
-            child: Column(
-              children: [
-                Text('Item 1'),
-                Text('Item 2'),
-              ],
-            ),
+            child: Column(children: [Text('Item 1'), Text('Item 2')]),
           ),
         ),
       );
@@ -113,11 +96,7 @@ void main() {
 
     testWidgets('creates state correctly', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            child: Text('State Test'),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(child: Text('State Test'))),
       );
 
       final state = tester.state(find.byType(CapturedWrapper));
@@ -126,22 +105,14 @@ void main() {
 
     testWidgets('handles state updates', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            child: Text('Initial'),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(child: Text('Initial'))),
       );
 
       expect(find.text('Initial'), findsOneWidget);
 
       // Rebuild with different child
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            child: Text('Updated'),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(child: Text('Updated'))),
       );
 
       expect(find.text('Updated'), findsOneWidget);
@@ -165,7 +136,11 @@ void main() {
         SimpleApp(
           child: CapturedWrapper(
             child: Container(
-                key: key, width: 100, height: 100, color: material.Colors.blue),
+              key: key,
+              width: 100,
+              height: 100,
+              color: Colors.blue,
+            ),
           ),
         ),
       );
@@ -179,17 +154,8 @@ void main() {
           child: CapturedWrapper(
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Text('Nested'),
-                    Icon(Icons.star),
-                  ],
-                ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  color: material.Colors.green,
-                ),
+                Row(children: [Text('Nested'), Icon(LucideIcons.star)]),
+                Container(width: 50, height: 50, color: Colors.green),
               ],
             ),
           ),
@@ -197,7 +163,7 @@ void main() {
       );
 
       expect(find.text('Nested'), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       // Container may appear multiple times due to SimpleApp
       expect(find.byType(Container), findsWidgets);
       expect(find.byType(Row), findsOneWidget);
@@ -209,10 +175,7 @@ void main() {
       // Test with null themes (default)
       await tester.pumpWidget(
         SimpleApp(
-          child: CapturedWrapper(
-            themes: null,
-            child: Text('Null Themes'),
-          ),
+          child: CapturedWrapper(themes: null, child: Text('Null Themes')),
         ),
       );
       expect(find.text('Null Themes'), findsOneWidget);
@@ -225,12 +188,7 @@ void main() {
     testWidgets('works with different data parameter types', (tester) async {
       // Test with null data (default)
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            data: null,
-            child: Text('Null Data'),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(data: null, child: Text('Null Data'))),
       );
       expect(find.text('Null Data'), findsOneWidget);
 
@@ -241,11 +199,7 @@ void main() {
 
     testWidgets('handles empty child', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: CapturedWrapper(
-            child: SizedBox.shrink(),
-          ),
-        ),
+        SimpleApp(child: CapturedWrapper(child: SizedBox.shrink())),
       );
 
       expect(find.byType(CapturedWrapper), findsOneWidget);

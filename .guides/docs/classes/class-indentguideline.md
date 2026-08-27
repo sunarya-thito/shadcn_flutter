@@ -1,6 +1,6 @@
 ---
 title: "Class: IndentGuideLine"
-description: "Branch line implementation with simple vertical lines.   Displays vertical lines alongside tree nodes to indicate hierarchy levels.  Does not draw horizontal connections.   Example:  ```dart  TreeView(    branchLine: BranchLine.line,    // or with custom color:    branchLine: IndentGuideLine(color: Colors.blue),  );  ```"
+description: "Branch line implementation with simple vertical lines.   Displays vertical lines alongside tree nodes to indicate hierarchy levels.  Does not draw horizontal connections.   Example:  ```dart  Tree(    branchLine: BranchLine.line,    // or with custom color:    branchLine: IndentGuideLine(color: Colors.blue),  );  ```"
 ---
 
 ```dart
@@ -11,7 +11,7 @@ description: "Branch line implementation with simple vertical lines.   Displays 
 ///
 /// Example:
 /// ```dart
-/// TreeView(
+/// Tree(
 ///   branchLine: BranchLine.line,
 ///   // or with custom color:
 ///   branchLine: IndentGuideLine(color: Colors.blue),

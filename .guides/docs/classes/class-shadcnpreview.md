@@ -15,11 +15,6 @@ class ShadcnPreview extends Preview {
   /// Parameters:
   /// - [colorScheme] (`ColorScheme?`, optional): The color scheme to use for the preview.
   const ShadcnPreview({super.name, super.group, super.size, super.textScaleFactor, super.wrapper, super.brightness, super.localizations, this.colorScheme});
-  /// The theme builder for the [ShadcnPreview].
-  ///
-  /// Returns:
-  /// A [PreviewThemeData] instance.
-  static PreviewThemeData themeBuilder();
   Preview transform();
 }
 ```

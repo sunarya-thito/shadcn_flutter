@@ -31,7 +31,7 @@ abstract class ToastOverlay {
   ///   return AlertCard(
   ///     title: 'Auto-close',
   ///     trailing: IconButton(
-  ///       icon: Icon(Icons.close),
+  ///       icon: Icon(LucideIcons.x),
   ///       onPressed: overlay.close,
   ///     ),
   ///   );

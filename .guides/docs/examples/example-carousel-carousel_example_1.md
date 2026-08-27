@@ -34,7 +34,7 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 // Animate to previous slide.
                 controller.animatePrevious(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_back)),
+              child: const Icon(LucideIcons.arrowLeft)),
           const Gap(24),
           Expanded(
             child: SizedBox(
@@ -64,5 +64,5 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 // Animate to next slide.
                 controller.animateNext(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_forward)),
+              child: const Icon(LucideIcons.arrowRight)),
 ```

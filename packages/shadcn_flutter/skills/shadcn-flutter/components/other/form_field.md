@@ -34,8 +34,10 @@ ObjectFormField<DateTime>(
 | `trailing` | `Widget?` | Optional trailing widget (e.g., dropdown arrow). |
 | `mode` | `PromptMode` | How the editor is presented (dialog or popover). |
 | `editorBuilder` | `Widget Function(BuildContext context, ObjectFormHandler<T> handler)` | Builds the editor widget. |
-| `popoverAlignment` | `AlignmentGeometry?` | Popover alignment relative to the trigger. |
-| `popoverAnchorAlignment` | `AlignmentGeometry?` | Anchor alignment for popover positioning. |
+| `overlayConfiguration` | `OverlayConfiguration?` | Overrides the [OverlayConfiguration] used to present the popover editor (only relevant when [mode] is [PromptMode.popover]). When null, a default [PopoverConfiguration] is used, positioned via [popoverAlignment] / [popoverAnchorAlignment]. |
+| `adaptiveOverlay` | `bool?` | Whether the popover/dialog editor may adapt to a different presentation on mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults to `true` when null. |
+| `popoverAlignment` | `AlignmentGeometry?` | Popover alignment relative to the trigger. Ignored when [overlayConfiguration] is set. |
+| `popoverAnchorAlignment` | `AlignmentGeometry?` | Anchor alignment for popover positioning. Ignored when [overlayConfiguration] is set. |
 | `popoverPadding` | `EdgeInsetsGeometry?` | Padding inside the popover. |
 | `dialogTitle` | `Widget?` | Title for the dialog mode. |
 | `size` | `ButtonSize?` | Button size for the trigger. |

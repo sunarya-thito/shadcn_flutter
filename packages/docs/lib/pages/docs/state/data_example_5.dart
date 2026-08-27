@@ -28,7 +28,7 @@ class DataExample5State extends State<DataExample5> {
                 });
               },
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             )
           ],
         ),
@@ -102,7 +102,7 @@ class _MostInnerWidgetState extends State<MostInnerWidget> {
                   setState(() {});
                 },
                 density: ButtonDensity.icon,
-                child: const Icon(Icons.refresh),
+                child: const Icon(LucideIcons.refreshCw),
               ),
             ],
           ),

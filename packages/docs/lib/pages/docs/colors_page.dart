@@ -224,7 +224,7 @@ class ColorsPageState extends State<ColorsPage> {
                       child: Visibility(
                         visible: _hoverIndex == shade,
                         child: Icon(
-                          Icons.edit,
+                          LucideIcons.pencil,
                           size: 24,
                           color: swatch[shade].getContrastColor(0.8),
                         ),
@@ -326,7 +326,7 @@ class ColorsPageState extends State<ColorsPage> {
                         },
                         size: ButtonSize.xSmall,
                         density: ButtonDensity.icon,
-                        child: const Icon(Icons.edit),
+                        child: const Icon(LucideIcons.pencil),
                       ),
                     ],
                   ),
@@ -519,7 +519,7 @@ class ColorsPageState extends State<ColorsPage> {
                       },
                     );
                   },
-                  leading: const Icon(Icons.restore),
+                  leading: const Icon(LucideIcons.history),
                   child: const Text('Reset'),
                 ),
               ],

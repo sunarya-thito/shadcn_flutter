@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationRail"
-description: "A standard navigation rail component for sidebar-style navigation.   Provides a compact vertical navigation bar (rail) typically used on the side  of a screen. It can be configured with or without labels, support multiple  alignment modes, and manage its own selection state. Navigation items  are defined through the [children] and [footer] properties.   Features:  - Supports both vertical and horizontal orientations  - Configurable alignment (start, center, end)  - Flexible label display modes (always, never, selected)  - Optional header and footer sections  - Built-in expansion and collapse animations  - Customizable background, surface effects, and constraints   Example:  ```dart  NavigationRail(    selectedKey: ValueKey('home'),    onSelected: (key) => setState(() => selectedKey = key),    children: [      NavigationItem(        key: ValueKey('home'),        icon: Icon(Icons.home),        label: Text('Home'),      ),      NavigationItem(        key: ValueKey('search'),        icon: Icon(Icons.search),        label: Text('Search'),      ),    ],  )  ```"
+description: "A standard navigation rail component for sidebar-style navigation.   Provides a compact vertical navigation bar (rail) typically used on the side  of a screen. It can be configured with or without labels, support multiple  alignment modes, and manage its own selection state. Navigation items  are defined through the [children] and [footer] properties.   Features:  - Supports both vertical and horizontal orientations  - Configurable alignment (start, center, end)  - Flexible label display modes (always, never, selected)  - Optional header and footer sections  - Built-in expansion and collapse animations  - Customizable background, surface effects, and constraints   Example:  ```dart  NavigationRail(    selectedKey: ValueKey('home'),    onSelected: (key) => setState(() => selectedKey = key),    children: [      NavigationItem(        key: ValueKey('home'),        icon: Icon(LucideIcons.house),        label: Text('Home'),      ),      NavigationItem(        key: ValueKey('search'),        icon: Icon(LucideIcons.search),        label: Text('Search'),      ),    ],  )  ```"
 ---
 
 ```dart
@@ -27,12 +27,12 @@ description: "A standard navigation rail component for sidebar-style navigation.
 ///   children: [
 ///     NavigationItem(
 ///       key: ValueKey('home'),
-///       icon: Icon(Icons.home),
+///       icon: Icon(LucideIcons.house),
 ///       label: Text('Home'),
 ///     ),
 ///     NavigationItem(
 ///       key: ValueKey('search'),
-///       icon: Icon(Icons.search),
+///       icon: Icon(LucideIcons.search),
 ///       label: Text('Search'),
 ///     ),
 ///   ],

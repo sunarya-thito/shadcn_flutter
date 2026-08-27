@@ -47,8 +47,8 @@ class IconsPageState extends State<IconsPage> {
       DialogConfiguration(),
       builder: (context) {
         return AlertDialog(
-          title: Text(
-              capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
+          title:
+              Text(capitalizeWords(_separateByCamelCase(entry.key)).join(' ')),
           leading: Icon(entry.value, size: 48),
           content: IntrinsicWidth(
             child: Column(
@@ -129,143 +129,141 @@ class IconsPageState extends State<IconsPage> {
               return DefaultTextStyle.merge(
                 maxLines: 1,
                 child: CustomScrollView(slivers: [
-                  SliverAppBar(
+                  SliverPersistentHeader(
                     pinned: true,
-                    backgroundColor: theme.colorScheme.background,
-                    automaticallyImplyLeading: false,
-                    toolbarHeight: 36,
-                    collapsedHeight: 36,
-                    expandedHeight: 255,
-                    surfaceTintColor: theme.colorScheme.background,
-                    flexibleSpace: Stack(
-                      fit: StackFit.passthrough,
-                      children: [
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          child: ShadcnUI(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                const Text('Icons').h1(),
-                                const Text(
-                                        'Use bundled icons in your application')
-                                    .lead(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Card(
-                                        clipBehavior: Clip.antiAlias,
-                                        child: Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('${kRadixIcons.length}')
-                                                    .textLarge(),
-                                                const Text('Radix Icons')
-                                                    .muted()
-                                                    .textSmall(),
-                                              ],
-                                            ),
-                                            Positioned(
-                                              right: -32,
-                                              bottom: -48,
-                                              child: const Icon(
-                                                RadixIcons.iconjarLogo,
-                                                size: 96,
-                                              )
-                                                  .iconMutedForeground()
-                                                  .withOpacity(0.3),
-                                            ),
-                                          ],
+                    delegate: _IconsPageHeader(
+                      background: theme.colorScheme.background,
+                      child: Stack(
+                        fit: StackFit.passthrough,
+                        children: [
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: ShadcnUI(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const Text('Icons').h1(),
+                                  const Text(
+                                          'Use bundled icons in your application')
+                                      .lead(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Card(
+                                          clipBehavior: Clip.antiAlias,
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('${kRadixIcons.length}')
+                                                      .textLarge(),
+                                                  const Text('Radix Icons')
+                                                      .muted()
+                                                      .textSmall(),
+                                                ],
+                                              ),
+                                              Positioned(
+                                                right: -32,
+                                                bottom: -48,
+                                                child: const Icon(
+                                                  RadixIcons.iconjarLogo,
+                                                  size: 96,
+                                                )
+                                                    .iconMutedForeground()
+                                                    .withOpacity(0.3),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: Card(
-                                        clipBehavior: Clip.antiAlias,
-                                        child: Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('${kBootstrapIcons.length}')
-                                                    .textLarge(),
-                                                const Text('Bootstrap Icons')
-                                                    .muted()
-                                                    .textSmall(),
-                                              ],
-                                            ),
-                                            Positioned(
-                                              right: -32,
-                                              bottom: -48,
-                                              child: const Icon(
-                                                BootstrapIcons.bootstrap,
-                                                size: 96,
-                                              )
-                                                  .iconMutedForeground()
-                                                  .withOpacity(0.3),
-                                            ),
-                                          ],
+                                      Expanded(
+                                        child: Card(
+                                          clipBehavior: Clip.antiAlias,
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('${kBootstrapIcons.length}')
+                                                      .textLarge(),
+                                                  const Text('Bootstrap Icons')
+                                                      .muted()
+                                                      .textSmall(),
+                                                ],
+                                              ),
+                                              Positioned(
+                                                right: -32,
+                                                bottom: -48,
+                                                child: const Icon(
+                                                  BootstrapIcons.bootstrap,
+                                                  size: 96,
+                                                )
+                                                    .iconMutedForeground()
+                                                    .withOpacity(0.3),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: Card(
-                                        clipBehavior: Clip.antiAlias,
-                                        child: Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('${kLucideIcons.length}')
-                                                    .textLarge(),
-                                                const Text('Lucide Icons')
-                                                    .muted()
-                                                    .textSmall(),
-                                              ],
-                                            ),
-                                            Positioned(
-                                              right: -32,
-                                              bottom: -48,
-                                              child: const Icon(
-                                                LucideIcons.badgeInfo,
-                                                size: 96,
-                                              )
-                                                  .iconMutedForeground()
-                                                  .withOpacity(0.3),
-                                            ),
-                                          ],
+                                      Expanded(
+                                        child: Card(
+                                          clipBehavior: Clip.antiAlias,
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('${kLucideIcons.length}')
+                                                      .textLarge(),
+                                                  const Text('Lucide Icons')
+                                                      .muted()
+                                                      .textSmall(),
+                                                ],
+                                              ),
+                                              Positioned(
+                                                right: -32,
+                                                bottom: -48,
+                                                child: const Icon(
+                                                  LucideIcons.badgeInfo,
+                                                  size: 96,
+                                                )
+                                                    .iconMutedForeground()
+                                                    .withOpacity(0.3),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ).gap(12).p(),
-                                const Gap(32),
-                                TextField(
-                                  placeholder: const Text('Search icons'),
-                                  controller: _controller,
-                                  features: const [
-                                    InputFeature.leading(Icon(Icons.search)),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ).gap(12).p(),
+                                  const Gap(32),
+                                  TextField(
+                                    placeholder: const Text('Search icons'),
+                                    controller: _controller,
+                                    features: const [
+                                      InputFeature.leading(
+                                          Icon(LucideIcons.search)),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   if (filteredRadixIcons.isNotEmpty) ...[
@@ -410,5 +408,46 @@ class _Header extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant _Header oldDelegate) {
     return text != oldDelegate.text;
+  }
+}
+
+/// The collapsing header at the top of the icons page.
+///
+/// Replaces the Material `SliverAppBar` this page used before Material was
+/// split out of shadcn_flutter: it pins at [minExtent] while scrolling and
+/// expands to [maxExtent] at rest, laying the title, the per-family counts and
+/// the search field out bottom-aligned so the search field is what survives the
+/// collapse.
+class _IconsPageHeader extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final Color background;
+
+  _IconsPageHeader({required this.child, required this.background});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: background,
+      // The header is laid out at maxExtent and clipped from the top as it
+      // collapses, which keeps the bottom-aligned search field on screen.
+      child: OverflowBox(
+        alignment: Alignment.bottomCenter,
+        minHeight: maxExtent,
+        maxHeight: maxExtent,
+        child: child,
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 255;
+
+  @override
+  double get minExtent => 36;
+
+  @override
+  bool shouldRebuild(covariant _IconsPageHeader oldDelegate) {
+    return background != oldDelegate.background || child != oldDelegate.child;
   }
 }

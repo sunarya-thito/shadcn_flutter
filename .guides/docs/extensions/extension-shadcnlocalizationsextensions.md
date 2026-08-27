@@ -1,10 +1,36 @@
 ---
 title: "Extension: ShadcnLocalizationsExtensions"
-description: "Extension methods for [ShadcnLocalizations] to provide additional formatting and utility functions."
+description: "Formatting helpers layered on top of the translated strings in [ShadcnLocalizations]."
 ---
 
 ```dart
-/// Extension methods for [ShadcnLocalizations] to provide additional formatting and utility functions.
+/// Formatting helpers layered on top of the translated strings in
+/// [ShadcnLocalizations].
+///
+/// [ShadcnLocalizations] is generated from `lib/l10n/shadcn_en.arb` and holds
+/// only individual strings. Everything that has to *combine* those strings —
+/// naming a month from its number, laying out a date, rendering a duration —
+/// lives here instead, so that the generated class stays a pure string table.
+///
+/// ## What a translation can and cannot change
+///
+/// The lookups route through members of [ShadcnLocalizations] itself, so a
+/// subclass controls them: override [ShadcnLocalizations.monthJanuary] and
+/// [getMonth] follows. Component strings work the same way.
+///
+/// The members declared *here* are a different matter. Dart resolves extension
+/// members against the static type, and widgets hold their localizations as
+/// [ShadcnLocalizations] — so declaring [datePartsOrder] or [formatDateTime] on
+/// a subclass does not override anything, and these defaults apply to every
+/// locale:
+///
+/// - [datePartsOrder] is month/day/year.
+/// - [dateYearAbbreviation], [dateMonthAbbreviation] and [dateDayAbbreviation]
+///   are `YYYY`, `MM` and `DD`.
+/// - [formatDateTime] renders dates as `January 1, 2024`.
+///
+/// Widgets that need a different order or layout take it as a parameter rather
+/// than reading it from here.
 extension ShadcnLocalizationsExtensions on ShadcnLocalizations {
   /// The order of date parts for the current locale.
   ///

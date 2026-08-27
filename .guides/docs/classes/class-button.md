@@ -1,6 +1,6 @@
 ---
 title: "Class: Button"
-description: "A versatile, customizable button widget with comprehensive styling and interaction support.   [Button] is the foundational interactive widget in the shadcn_flutter design system,  providing a consistent and accessible button implementation with extensive customization  options. It supports multiple visual variants, sizes, shapes, and interaction patterns  while maintaining design system consistency.   ## Key Features  - **Multiple Variants**: Primary, secondary, outline, ghost, link, text, destructive, and more  - **Flexible Sizing**: From extra small to extra large with custom scaling  - **Shape Options**: Rectangle and circle shapes with customizable borders  - **Rich Interactions**: Hover, focus, press, and long press support  - **Accessibility**: Full keyboard navigation and screen reader support  - **Theming**: Deep integration with the design system theme  - **Form Integration**: Works seamlessly with form validation and state management   ## Visual Variants  The button supports various visual styles through named constructors:  - [Button.primary]: Prominent primary actions with filled background  - [Button.secondary]: Secondary actions with muted background  - [Button.outline]: Actions with outline border and transparent background  - [Button.ghost]: Subtle actions with minimal visual weight  - [Button.link]: Text-only actions that appear as links  - [Button.text]: Plain text actions with hover effects  - [Button.destructive]: Dangerous actions with destructive styling  - [Button.card]: Card-like appearance for container buttons   ## Layout and Content  Buttons can contain text, icons, or a combination of both using [leading] and [trailing]  widgets. The [child] widget is automatically aligned and sized according to the button's  style and density settings.   ## Interaction Handling  The button provides comprehensive gesture support including tap, long press, secondary  clicks, and tertiary clicks. All interactions respect the [enabled] state and provide  appropriate visual and haptic feedback.   Example:  ```dart  Button.primary(    onPressed: () => print('Primary action'),    leading: Icon(Icons.add),    trailing: Icon(Icons.arrow_forward),    child: Text('Create New'),  );  ```"
+description: "A versatile, customizable button widget with comprehensive styling and interaction support.   [Button] is the foundational interactive widget in the shadcn_flutter design system,  providing a consistent and accessible button implementation with extensive customization  options. It supports multiple visual variants, sizes, shapes, and interaction patterns  while maintaining design system consistency.   ## Key Features  - **Multiple Variants**: Primary, secondary, outline, ghost, link, text, destructive, and more  - **Flexible Sizing**: From extra small to extra large with custom scaling  - **Shape Options**: Rectangle and circle shapes with customizable borders  - **Rich Interactions**: Hover, focus, press, and long press support  - **Accessibility**: Full keyboard navigation and screen reader support  - **Theming**: Deep integration with the design system theme  - **Form Integration**: Works seamlessly with form validation and state management   ## Visual Variants  The button supports various visual styles through named constructors:  - [Button.primary]: Prominent primary actions with filled background  - [Button.secondary]: Secondary actions with muted background  - [Button.outline]: Actions with outline border and transparent background  - [Button.ghost]: Subtle actions with minimal visual weight  - [Button.link]: Text-only actions that appear as links  - [Button.text]: Plain text actions with hover effects  - [Button.destructive]: Dangerous actions with destructive styling  - [Button.card]: Card-like appearance for container buttons   ## Layout and Content  Buttons can contain text, icons, or a combination of both using [leading] and [trailing]  widgets. The [child] widget is automatically aligned and sized according to the button's  style and density settings.   ## Interaction Handling  The button provides comprehensive gesture support including tap, long press, secondary  clicks, and tertiary clicks. All interactions respect the [enabled] state and provide  appropriate visual and haptic feedback.   Example:  ```dart  Button.primary(    onPressed: () => print('Primary action'),    leading: Icon(LucideIcons.plus),    trailing: Icon(LucideIcons.arrowRight),    child: Text('Create New'),  );  ```"
 ---
 
 ```dart
@@ -45,8 +45,8 @@ description: "A versatile, customizable button widget with comprehensive styling
 /// ```dart
 /// Button.primary(
 ///   onPressed: () => print('Primary action'),
-///   leading: Icon(Icons.add),
-///   trailing: Icon(Icons.arrow_forward),
+///   leading: Icon(LucideIcons.plus),
+///   trailing: Icon(LucideIcons.arrowRight),
 ///   child: Text('Create New'),
 /// );
 /// ```
@@ -222,7 +222,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button(
   ///   style: ButtonStyle.primary(),
-  ///   leading: Icon(Icons.save),
+  ///   leading: Icon(LucideIcons.save),
   ///   onPressed: () => saveDocument(),
   ///   child: Text('Save Document'),
   /// );
@@ -286,7 +286,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button.ghost(
   ///   onPressed: () => showHelp(),
-  ///   leading: Icon(Icons.help_outline),
+  ///   leading: Icon(LucideIcons.circleHelp),
   ///   child: Text('Help'),
   /// );
   /// ```
@@ -329,7 +329,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button.destructive(
   ///   onPressed: () => deleteItem(),
-  ///   leading: Icon(Icons.delete),
+  ///   leading: Icon(LucideIcons.trash),
   ///   child: Text('Delete'),
   /// );
   /// ```
@@ -344,7 +344,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button.fixed(
   ///   onPressed: () => performAction(),
-  ///   child: Icon(Icons.add),
+  ///   child: Icon(LucideIcons.plus),
   /// );
   /// ```
   const Button.fixed({super.key, this.statesController, this.leading, this.trailing, this.leadingGap, this.trailingGap, required this.child, this.onPressed, this.focusNode, this.alignment, this.enabled, this.style = ButtonVariance.fixed, this.disableTransition = false, this.onFocus, this.onHover, this.disableHoverEffect = false, this.enableFeedback, this.onTapDown, this.onTapUp, this.onTapCancel, this.onSecondaryTapDown, this.onSecondaryTapUp, this.onSecondaryTapCancel, this.onTertiaryTapDown, this.onTertiaryTapUp, this.onTertiaryTapCancel, this.onLongPressStart, this.onLongPressUp, this.onLongPressMoveUpdate, this.onLongPressEnd, this.onSecondaryLongPress, this.onTertiaryLongPress, this.marginAlignment, this.disableFocusOutline = false});
@@ -360,7 +360,7 @@ class Button extends StatefulWidget {
   ///   onPressed: () => selectOption(),
   ///   child: Column(
   ///     children: [
-  ///       Icon(Icons.star),
+  ///       Icon(LucideIcons.star),
   ///       Text('Premium'),
   ///     ],
   ///   ),

@@ -6,11 +6,7 @@ import '../test_helper.dart';
 void main() {
   group('Breadcrumb', () {
     testWidgets('renders with empty children list', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: Breadcrumb(children: []),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: Breadcrumb(children: [])));
 
       expect(find.byType(Breadcrumb), findsOneWidget);
       // Should render as empty scroll view
@@ -18,11 +14,7 @@ void main() {
 
     testWidgets('renders with single child', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Breadcrumb(
-            children: [Text('Home')],
-          ),
-        ),
+        SimpleApp(child: Breadcrumb(children: [Text('Home')])),
       );
 
       expect(find.byType(Breadcrumb), findsOneWidget);
@@ -33,11 +25,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Breadcrumb(
-            children: [
-              Text('Home'),
-              Text('Category'),
-              Text('Product'),
-            ],
+            children: [Text('Home'), Text('Category'), Text('Product')],
           ),
         ),
       );
@@ -51,12 +39,7 @@ void main() {
     testWidgets('uses default arrow separator', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Breadcrumb(
-            children: [
-              Text('Home'),
-              Text('Category'),
-            ],
-          ),
+          child: Breadcrumb(children: [Text('Home'), Text('Category')]),
         ),
       );
 
@@ -68,17 +51,14 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Breadcrumb(
-            separator: Icon(Icons.chevron_right),
-            children: [
-              Text('Home'),
-              Text('Category'),
-            ],
+            separator: Icon(LucideIcons.chevronRight),
+            children: [Text('Home'), Text('Category')],
           ),
         ),
       );
 
       expect(find.byType(Breadcrumb), findsOneWidget);
-      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+      expect(find.byIcon(LucideIcons.chevronRight), findsOneWidget);
       expect(find.byIcon(RadixIcons.chevronRight), findsNothing);
     });
 
@@ -87,10 +67,7 @@ void main() {
         SimpleApp(
           child: Breadcrumb(
             separator: Breadcrumb.slashSeparator,
-            children: [
-              Text('Home'),
-              Text('Category'),
-            ],
+            children: [Text('Home'), Text('Category')],
           ),
         ),
       );
@@ -117,11 +94,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Breadcrumb(
-            children: [
-              Text('Home'),
-              Text('Category'),
-              Text('Current'),
-            ],
+            children: [Text('Home'), Text('Category'), Text('Current')],
           ),
         ),
       );
@@ -131,16 +104,13 @@ void main() {
       // The last child should be styled differently (foreground color)
     });
 
-    testWidgets('intermediate children are styled as navigation',
-        (tester) async {
+    testWidgets('intermediate children are styled as navigation', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: Breadcrumb(
-            children: [
-              Text('Home'),
-              Text('Category'),
-              Text('Current'),
-            ],
+            children: [Text('Home'), Text('Category'), Text('Current')],
           ),
         ),
       );
@@ -174,16 +144,13 @@ void main() {
       // Should be scrollable horizontally
     });
 
-    testWidgets('positions separators between navigation items',
-        (tester) async {
+    testWidgets('positions separators between navigation items', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: Breadcrumb(
-            children: [
-              Text('Home'),
-              Text('Category'),
-              Text('Product'),
-            ],
+            children: [Text('Home'), Text('Category'), Text('Product')],
           ),
         ),
       );
@@ -214,12 +181,7 @@ void main() {
     testWidgets('maintains proper spacing and layout', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Breadcrumb(
-            children: [
-              Text('Home'),
-              Text('Category'),
-            ],
-          ),
+          child: Breadcrumb(children: [Text('Home'), Text('Category')]),
         ),
       );
 
@@ -241,12 +203,7 @@ void main() {
         SimpleApp(
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: Breadcrumb(
-              children: [
-                Text('Home'),
-                Text('Category'),
-              ],
-            ),
+            child: Breadcrumb(children: [Text('Home'), Text('Category')]),
           ),
         ),
       );
@@ -258,11 +215,7 @@ void main() {
 
     testWidgets('works with theme integration', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Breadcrumb(
-            children: [Text('Home')],
-          ),
-        ),
+        SimpleApp(child: Breadcrumb(children: [Text('Home')])),
       );
 
       expect(find.byType(Breadcrumb), findsOneWidget);

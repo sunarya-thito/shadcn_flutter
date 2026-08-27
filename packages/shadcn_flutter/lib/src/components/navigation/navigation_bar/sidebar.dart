@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 import 'misc.dart';
 
 /// A full-width navigation sidebar component for comprehensive navigation.
@@ -27,18 +28,18 @@ import 'misc.dart';
 ///   children: [
 ///     NavigationItem(
 ///       key: ValueKey('dashboard'),
-///       icon: Icon(Icons.dashboard),
+///       icon: Icon(LucideIcons.layoutDashboard),
 ///       label: Text('Dashboard'),
 ///       badge: Badge(child: Text('New')),
 ///     ),
 ///     NavigationItem(
 ///       key: ValueKey('analytics'),
-///       icon: Icon(Icons.analytics),
+///       icon: Icon(LucideIcons.chartLine),
 ///       label: Text('Analytics'),
 ///     ),
 ///     NavigationItem(
 ///       key: ValueKey('settings'),
-///       icon: Icon(Icons.settings),
+///       icon: Icon(LucideIcons.settings),
 ///       label: Text('Settings'),
 ///     ),
 ///   ],
@@ -206,7 +207,8 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
 
     final footerChildren = widget.footer ?? [];
 
-    var parentPadding = widget.padding ??
+    var parentPadding =
+        widget.padding ??
         EdgeInsets.symmetric(
           vertical: densityGap,
           horizontal: densityContentPadding * 0.75,
@@ -255,15 +257,17 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
                         scrollDirection: direction,
                         slivers: [
                           SliverGap(startPadding(resolvedPadding, direction)),
-                          ...bodyChildren.map((e) {
-                            return SliverPadding(
-                              padding: _childPadding(
-                                resolvedPadding,
-                                direction,
-                              ),
-                              sliver: e,
-                            ) as Widget;
-                          }).joinSeparator(SliverGap(widget.spacing ?? 0)),
+                          ...bodyChildren
+                              .map((e) {
+                                return SliverPadding(
+                                  padding: _childPadding(
+                                    resolvedPadding,
+                                    direction,
+                                  ),
+                                  sliver: e,
+                                ) as Widget;
+                              })
+                              .joinSeparator(SliverGap(widget.spacing ?? 0)),
                           SliverGap(endPadding(resolvedPadding, direction)),
                         ],
                       ),
@@ -312,12 +316,14 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
         scrollDirection: Axis.vertical,
         slivers: [
           SliverGap(startPadding(resolvedPadding, Axis.vertical)),
-          ...items.map((e) {
-            return SliverPadding(
-              padding: _childPadding(resolvedPadding, Axis.vertical),
-              sliver: e,
-            ) as Widget;
-          }).joinSeparator(SliverGap(widget.spacing ?? 0)),
+          ...items
+              .map((e) {
+                return SliverPadding(
+                  padding: _childPadding(resolvedPadding, Axis.vertical),
+                  sliver: e,
+                ) as Widget;
+              })
+              .joinSeparator(SliverGap(widget.spacing ?? 0)),
           SliverGap(endPadding(resolvedPadding, Axis.vertical)),
         ],
       ),

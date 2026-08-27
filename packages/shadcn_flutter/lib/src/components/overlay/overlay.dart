@@ -116,10 +116,7 @@ class OverlayAnchorEntry {
   final BuildContext context;
 
   /// Creates an [OverlayAnchorEntry].
-  const OverlayAnchorEntry({
-    required this.renderBox,
-    required this.context,
-  });
+  const OverlayAnchorEntry({required this.renderBox, required this.context});
 }
 
 /// A registry mapping anchor keys to their [OverlayAnchor] entries.
@@ -196,7 +193,8 @@ class _OverlayAnchorScopeState extends State<OverlayAnchorScope> {
     // Chain to the enclosing scope (or the global registry) so a lookup that
     // misses here falls back outward. maybeOf establishes a dependency, so this
     // re-resolves if an ancestor scope is inserted/removed.
-    _registry.parent = Data.maybeOf<OverlayAnchorRegistry>(context) ??
+    _registry.parent =
+        Data.maybeOf<OverlayAnchorRegistry>(context) ??
         OverlayAnchorRegistry.global;
   }
 
@@ -236,7 +234,9 @@ class OverlayAnchor extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderOverlayAnchor renderObject) {
+    BuildContext context,
+    covariant RenderOverlayAnchor renderObject,
+  ) {
     renderObject.update(
       anchor: anchor,
       anchorContext: context,
@@ -258,14 +258,11 @@ class RenderOverlayAnchor extends RenderProxyBox {
 
   /// Creates a [RenderOverlayAnchor].
   RenderOverlayAnchor({
-    required Object anchor,
-    required BuildContext anchorContext,
-    required OverlayAnchorRegistry registry,
+    required this._anchor,
+    required this._anchorContext,
+    required this._registry,
     RenderBox? child,
-  })  : _anchor = anchor,
-        _anchorContext = anchorContext,
-        _registry = registry,
-        super(child);
+  }) : super(child);
 
   /// Updates properties and registry.
   void update({
@@ -288,10 +285,7 @@ class RenderOverlayAnchor extends RenderProxyBox {
   void _register() {
     _registry.register(
       _anchor,
-      OverlayAnchorEntry(
-        renderBox: this,
-        context: _anchorContext,
-      ),
+      OverlayAnchorEntry(renderBox: this, context: _anchorContext),
     );
   }
 

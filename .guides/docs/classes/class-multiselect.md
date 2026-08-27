@@ -25,18 +25,19 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final FocusNode? focusNode;
   final BoxConstraints? constraints;
   final BoxConstraints? popupConstraints;
-  final PopoverConstraint popupWidthConstraint;
+  final OverlayConfiguration? overlayConfiguration;
+  final bool? adaptiveOverlay;
   /// The currently selected values.
   final Iterable<T>? value;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
-  final AlignmentGeometry popoverAlignment;
-  final AlignmentGeometry? popoverAnchorAlignment;
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
   final bool disableHoverEffect;
   final bool canUnselect;
   final bool? autoClosePopover;
   /// Whether the multi-select is enabled for user interaction.
   final bool? enabled;
+  final Widget? expandIcon;
   final SelectPopupBuilder popup;
   SelectValueBuilder<Iterable<T>> get itemBuilder;
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
@@ -57,13 +58,12 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   /// - [focusNode] (FocusNode?): Focus node for keyboard interaction
   /// - [constraints] (BoxConstraints?): Size constraints for the select button
   /// - [popupConstraints] (BoxConstraints?): Size constraints for the popup menu
-  /// - [popupWidthConstraint] (PopoverConstraint): Width constraint mode for popup, defaults to `PopoverConstraint.anchorFixedSize`
+  /// - [overlayConfiguration] (OverlayConfiguration?): overrides the popup presentation
   /// - [value] (`Iterable<T>`): Required currently selected values
   /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
   /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
   /// - [padding] (EdgeInsetsGeometry?): Custom padding
-  /// - [popoverAlignment] (AlignmentGeometry): Popup alignment, defaults to `Alignment.topCenter`
-  /// - [popoverAnchorAlignment] (AlignmentGeometry?): Anchor alignment for popup positioning
+  /// - [decoration] (`WidgetStatePropertyDelegate<Decoration>?`): Per-state override of the trigger decoration
   /// - [canUnselect] (bool): Whether user can deselect items, defaults to true
   /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to false
   /// - [enabled] (bool?): Whether multi-select is enabled for interaction
@@ -72,7 +72,9 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   /// - [showValuePredicate] (`Predicate<Iterable<T>>?`): Predicate for showing items
   /// - [popup] (SelectPopupBuilder): Required builder for popup content
   /// - [itemBuilder] (`SelectValueBuilder<T>`): Required builder for individual chip items
-  const MultiSelect({super.key, this.onChanged, this.placeholder, this.filled = false, this.focusNode, this.constraints, this.popupConstraints, this.popupWidthConstraint = PopoverConstraint.anchorFixedSize, required this.value, this.disableHoverEffect = false, this.borderRadius, this.padding, this.popoverAlignment = Alignment.topCenter, this.popoverAnchorAlignment, this.canUnselect = true, this.autoClosePopover = false, this.enabled, this.valueSelectionHandler, this.valueSelectionPredicate, this.showValuePredicate, required this.popup, required SelectValueBuilder<T> itemBuilder});
+  /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
+  /// - [adaptiveOverlay] (bool?): whether `adaptiveConversion` runs for this overlay
+  const MultiSelect({super.key, this.onChanged, this.placeholder, this.filled = false, this.focusNode, this.constraints, this.popupConstraints, this.overlayConfiguration, required this.value, this.disableHoverEffect = false, this.borderRadius, this.padding, this.decoration, this.canUnselect = true, this.autoClosePopover = false, this.enabled, this.valueSelectionHandler, this.valueSelectionPredicate, this.showValuePredicate, this.expandIcon = const SelectExpandIcon(), required this.popup, required SelectValueBuilder<T> itemBuilder, this.adaptiveOverlay});
   Widget build(BuildContext context);
 }
 ```

@@ -1,6 +1,6 @@
 ---
 title: "Class: Alert"
-description: "A versatile alert component for displaying important messages or notifications.   The Alert widget provides a flexible layout for presenting information to users  with optional leading icons, title text, content description, and trailing actions.  Supports both normal and destructive styling modes for different message types.   The component uses a [Basic] layout internally and wraps content in an  [OutlinedContainer] for consistent visual presentation. Text and icon colors  automatically adapt based on the destructive mode and current theme.   Key features:  - Flexible content layout with optional elements  - Destructive styling for error/warning messages  - Theme integration with customizable styling  - Responsive scaling based on theme configuration  - Automatic color adaptation for text and icons   Example:  ```dart  Alert(    leading: Icon(Icons.info),    title: Text('Information'),    content: Text('This is an informational alert message.'),    trailing: IconButton(      icon: Icon(Icons.close),      onPressed: () {},    ),  );  ```"
+description: "A versatile alert component for displaying important messages or notifications.   The Alert widget provides a flexible layout for presenting information to users  with optional leading icons, title text, content description, and trailing actions.  Supports both normal and destructive styling modes for different message types.   The component uses a [Basic] layout internally and wraps content in an  [OutlinedContainer] for consistent visual presentation. Text and icon colors  automatically adapt based on the destructive mode and current theme.   Key features:  - Flexible content layout with optional elements  - Destructive styling for error/warning messages  - Theme integration with customizable styling  - Responsive scaling based on theme configuration  - Automatic color adaptation for text and icons   Example:  ```dart  Alert(    leading: Icon(LucideIcons.info),    title: Text('Information'),    content: Text('This is an informational alert message.'),    trailing: IconButton(      icon: Icon(LucideIcons.x),      onPressed: () {},    ),  );  ```"
 ---
 
 ```dart
@@ -24,11 +24,11 @@ description: "A versatile alert component for displaying important messages or n
 /// Example:
 /// ```dart
 /// Alert(
-///   leading: Icon(Icons.info),
+///   leading: Icon(LucideIcons.info),
 ///   title: Text('Information'),
 ///   content: Text('This is an informational alert message.'),
 ///   trailing: IconButton(
-///     icon: Icon(Icons.close),
+///     icon: Icon(LucideIcons.x),
 ///     onPressed: () {},
 ///   ),
 /// );
@@ -93,7 +93,7 @@ class Alert extends StatelessWidget {
   /// Example:
   /// ```dart
   /// Alert.destructive(
-  ///   leading: Icon(Icons.error),
+  ///   leading: Icon(LucideIcons.circleAlert),
   ///   title: Text('Error'),
   ///   content: Text('Something went wrong. Please try again.'),
   /// );

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart' as m;
+import 'package:material_ui/material_ui.dart' as m;
+import 'package:shadcn_flutter_material/shadcn_flutter_material.dart';
 import 'package:genui/genui.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_genui/shadcn_flutter_genui.dart';
@@ -222,10 +223,12 @@ class _ChatPageState extends State<ChatPage> {
     if (isErrorReport) {
       if (_errorRetries >= _maxErrorRetries) {
         _errorRetries = 0;
-        _append(_AssistantText(
-          'Stopped auto-retrying — the generated UI kept failing validation.',
-          isError: true,
-        ));
+        _append(
+          _AssistantText(
+            'Stopped auto-retrying — the generated UI kept failing validation.',
+            isError: true,
+          ),
+        );
         return;
       }
       _errorRetries++;
@@ -343,9 +346,7 @@ class _ChatPageState extends State<ChatPage> {
       return ChatGroup(
         color: colors.primary,
         alignment: AxisAlignmentDirectional.end,
-        type: ChatBubbleType.tail.copyWith(
-          position: () => AxisDirectional.end,
-        ),
+        type: ChatBubbleType.tail.copyWith(position: () => AxisDirectional.end),
         children: bubbles,
       );
     }
@@ -370,19 +371,14 @@ class _ChatPageState extends State<ChatPage> {
     switch (item) {
       case _UserText(:final text):
         return ChatBubble(
-          child: Text(
-            text,
-            style: TextStyle(color: colors.primaryForeground),
-          ),
+          child: Text(text, style: TextStyle(color: colors.primaryForeground)),
         );
       case _AssistantText(:final text, :final isError):
         return ChatBubble(
           color: isError ? colors.destructive : null,
           child: Text(
             text,
-            style: TextStyle(
-              color: isError ? Colors.white : colors.foreground,
-            ),
+            style: TextStyle(color: isError ? Colors.white : colors.foreground),
           ),
         );
       case _AssistantSurface(:final surfaceId):
@@ -391,9 +387,7 @@ class _ChatPageState extends State<ChatPage> {
           type: PlainChatBubbleType(border: BorderSide(color: colors.border)),
           widthFactor: 0.85,
           child: _MaterialHost(
-            child: Surface(
-              surfaceContext: _controller.contextFor(surfaceId),
-            ),
+            child: Surface(surfaceContext: _controller.contextFor(surfaceId)),
           ),
         );
     }
@@ -443,19 +437,19 @@ class _MaterialHost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    return m.Theme(
-      data: m.ThemeData(
+    // MaterialLayer installs the Theme, Material and ScaffoldMessenger
+    // ancestors that Material widgets need. ShadcnApp no longer provides them:
+    // shadcn_flutter does not depend on Material. Passing `theme` overrides the
+    // one that would otherwise be derived from the ambient shadcn theme.
+    return MaterialLayer(
+      theme: m.ThemeData(
         brightness: brightness,
-        useMaterial3: true,
         colorScheme: m.ColorScheme.fromSeed(
-          seedColor: const m.Color(0xFF6366F1),
+          seedColor: const Color(0xFF6366F1),
           brightness: brightness,
         ),
       ),
-      child: m.Material(
-        type: m.MaterialType.transparency,
-        child: child,
-      ),
+      child: child,
     );
   }
 }

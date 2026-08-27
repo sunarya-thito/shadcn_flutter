@@ -30,11 +30,13 @@ class StepsTheme extends ComponentThemeData {
     ValueGetter<double?>? connectorThickness,
   }) {
     return StepsTheme(
-      indicatorSize:
-          indicatorSize == null ? this.indicatorSize : indicatorSize(),
+      indicatorSize: indicatorSize == null
+          ? this.indicatorSize
+          : indicatorSize(),
       spacing: spacing == null ? this.spacing : spacing(),
-      indicatorColor:
-          indicatorColor == null ? this.indicatorColor : indicatorColor(),
+      indicatorColor: indicatorColor == null
+          ? this.indicatorColor
+          : indicatorColor(),
       connectorThickness: connectorThickness == null
           ? this.connectorThickness
           : connectorThickness(),
@@ -127,10 +129,7 @@ class Steps extends StatelessWidget {
   ///   ],
   /// )
   /// ```
-  const Steps({
-    super.key,
-    required this.children,
-  });
+  const Steps({super.key, required this.children});
 
   @override
   Widget build(BuildContext context) {
@@ -146,45 +145,46 @@ class Steps extends StatelessWidget {
     final connectorThickness = compTheme?.connectorThickness ?? 1 * scaling;
     List<Widget> mapped = [];
     for (var i = 0; i < children.length; i++) {
-      mapped.add(IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: indicatorColor,
-                    shape: BoxShape.circle,
+      mapped.add(
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: indicatorColor,
+                      shape: BoxShape.circle,
+                    ),
+                    width: indicatorSize,
+                    height: indicatorSize,
+                    child: Center(
+                      child: Text((i + 1).toString()).mono().bold(),
+                    ),
                   ),
-                  width: indicatorSize,
-                  height: indicatorSize,
-                  child: Center(
-                    child: Text(
-                      (i + 1).toString(),
-                    ).mono().bold(),
-                  ),
-                ),
-                Gap(densityGap * 0.5),
-                Expanded(
+                  Gap(densityGap * 0.5),
+                  Expanded(
                     child: VerticalDivider(
-                  thickness: connectorThickness,
-                  color: indicatorColor,
-                )),
-                Gap(densityGap * 0.5),
-              ],
-            ),
-            Gap(spacing),
-            Expanded(
-              child: children[i].withPadding(
-                bottom: densityContainerPadding * 2,
+                      thickness: connectorThickness,
+                      color: indicatorColor,
+                    ),
+                  ),
+                  Gap(densityGap * 0.5),
+                ],
               ),
-            ),
-          ],
+              Gap(spacing),
+              Expanded(
+                child: children[i].withPadding(
+                  bottom: densityContainerPadding * 2,
+                ),
+              ),
+            ],
+          ),
         ),
-      ));
+      );
     }
     return IntrinsicWidth(
       child: Column(
@@ -220,20 +220,13 @@ class StepItem extends StatelessWidget {
   final List<Widget> content;
 
   /// Creates a [StepItem].
-  const StepItem({
-    super.key,
-    required this.title,
-    required this.content,
-  });
+  const StepItem({super.key, required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        title.h4(),
-        ...content,
-      ],
+      children: [title.h4(), ...content],
     );
   }
 }

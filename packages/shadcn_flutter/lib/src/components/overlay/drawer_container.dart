@@ -395,9 +395,7 @@ class DrawerRawContainer extends StatelessWidget {
     }
     final densityGap = theme.density.baseGap * theme.scaling;
     final over = max(0.0, overscroll);
-    final handle = <Widget>[
-      if (showDragHandle) buildDragHandle(theme),
-    ];
+    final handle = <Widget>[if (showDragHandle) buildDragHandle(theme)];
     final gapAfter = gapAfterDragger ?? densityGap * 2;
     final gapBefore = gapBeforeDragger ?? densityGap * 1.5;
     switch (position) {
@@ -415,11 +413,7 @@ class DrawerRawContainer extends StatelessWidget {
                 child: child,
               ),
             ),
-            if (showDragHandle) ...[
-              Gap(gapAfter),
-              ...handle,
-              Gap(gapBefore),
-            ],
+            if (showDragHandle) ...[Gap(gapAfter), ...handle, Gap(gapBefore)],
           ],
         );
       case OverlayPosition.right:
@@ -427,11 +421,7 @@ class DrawerRawContainer extends StatelessWidget {
           textDirection: TextDirection.ltr,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (showDragHandle) ...[
-              Gap(gapBefore),
-              ...handle,
-              Gap(gapAfter),
-            ],
+            if (showDragHandle) ...[Gap(gapBefore), ...handle, Gap(gapAfter)],
             Flexible(
               child: _OverscrollScale(
                 overscroll: overscroll,
@@ -456,22 +446,14 @@ class DrawerRawContainer extends StatelessWidget {
                 child: child,
               ),
             ),
-            if (showDragHandle) ...[
-              Gap(gapAfter),
-              ...handle,
-              Gap(gapBefore),
-            ],
+            if (showDragHandle) ...[Gap(gapAfter), ...handle, Gap(gapBefore)],
           ],
         );
       case OverlayPosition.bottom:
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (showDragHandle) ...[
-              Gap(gapBefore),
-              ...handle,
-              Gap(gapAfter),
-            ],
+            if (showDragHandle) ...[Gap(gapBefore), ...handle, Gap(gapAfter)],
             Flexible(
               child: _OverscrollScale(
                 overscroll: overscroll,
@@ -499,7 +481,10 @@ class DrawerRawContainer extends StatelessWidget {
       : EdgeInsets.only(top: startPadding, bottom: endPadding);
 
   Widget _buildDecorated(
-      BuildContext context, double? crossWidth, double? crossHeight) {
+    BuildContext context,
+    double? crossWidth,
+    double? crossHeight,
+  ) {
     final theme = Theme.of(context);
     final blur = surfaceBlur ?? theme.surfaceBlur;
     final opacity = surfaceOpacity ?? theme.surfaceOpacity;
@@ -561,47 +546,50 @@ class DrawerRawContainer extends StatelessWidget {
         expands ? _expandingHeight : null,
       );
     }
-    return LayoutBuilder(builder: (context, constraints) {
-      final crossAvailRaw =
-          _crossIsHorizontal ? constraints.maxWidth : constraints.maxHeight;
-      final crossAvail = crossAvailRaw.isFinite
-          ? crossAvailRaw
-          : (_crossIsHorizontal ? size.width : size.height);
-      final paddedAvail = max(0.0, crossAvail - startPadding - endPadding);
-      double? crossExtent;
-      if (crossAxisSize != null) {
-        crossExtent = min(crossAxisSize!.resolve(paddedAvail), paddedAvail);
-      } else if (expands) {
-        crossExtent = paddedAvail;
-      }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAvailRaw = _crossIsHorizontal
+            ? constraints.maxWidth
+            : constraints.maxHeight;
+        final crossAvail = crossAvailRaw.isFinite
+            ? crossAvailRaw
+            : (_crossIsHorizontal ? size.width : size.height);
+        final paddedAvail = max(0.0, crossAvail - startPadding - endPadding);
+        double? crossExtent;
+        if (crossAxisSize != null) {
+          crossExtent = min(crossAxisSize!.resolve(paddedAvail), paddedAvail);
+        } else if (expands) {
+          crossExtent = paddedAvail;
+        }
 
-      Widget decorated = _buildDecorated(
-        context,
-        _crossIsHorizontal ? crossExtent : null,
-        _crossIsHorizontal ? null : crossExtent,
-      );
+        Widget decorated = _buildDecorated(
+          context,
+          _crossIsHorizontal ? crossExtent : null,
+          _crossIsHorizontal ? null : crossExtent,
+        );
 
-      if (startPadding != 0 || endPadding != 0) {
-        decorated = Padding(padding: _crossPadding, child: decorated);
-      }
+        if (startPadding != 0 || endPadding != 0) {
+          decorated = Padding(padding: _crossPadding, child: decorated);
+        }
 
-      final align = crossAxisAlignment.clamp(-1.0, 1.0);
-      final mainAxisAlignment = align < 0
-          ? MainAxisAlignment.start
-          : (align > 0 ? MainAxisAlignment.end : MainAxisAlignment.center);
+        final align = crossAxisAlignment.clamp(-1.0, 1.0);
+        final mainAxisAlignment = align < 0
+            ? MainAxisAlignment.start
+            : (align > 0 ? MainAxisAlignment.end : MainAxisAlignment.center);
 
-      return _crossIsHorizontal
-          ? Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: mainAxisAlignment,
-              children: [decorated],
-            )
-          : Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: mainAxisAlignment,
-              children: [decorated],
-            );
-    });
+        return _crossIsHorizontal
+            ? Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: mainAxisAlignment,
+                children: [decorated],
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: mainAxisAlignment,
+                children: [decorated],
+              );
+      },
+    );
   }
 }
 
@@ -667,10 +655,7 @@ class SheetRawContainer extends DrawerRawContainer {
       }
       backgroundColor = backgroundColor.scaleAlpha(opacity);
     }
-    return BoxDecoration(
-      color: backgroundColor,
-      border: getBorder(theme),
-    );
+    return BoxDecoration(color: backgroundColor, border: getBorder(theme));
   }
 }
 
@@ -1009,7 +994,9 @@ class _OverscrollScale extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderOverscrollScale renderObject) {
+    BuildContext context,
+    _RenderOverscrollScale renderObject,
+  ) {
     renderObject
       ..overscroll = overscroll
       ..axis = axis
@@ -1019,12 +1006,10 @@ class _OverscrollScale extends SingleChildRenderObjectWidget {
 
 class _RenderOverscrollScale extends RenderProxyBox {
   _RenderOverscrollScale({
-    required double overscroll,
-    required Axis axis,
-    required Alignment alignment,
-  })  : _overscroll = overscroll,
-        _axis = axis,
-        _alignment = alignment;
+    required this._overscroll,
+    required this._axis,
+    required this._alignment,
+  });
 
   double _overscroll;
   set overscroll(double value) {
@@ -1052,7 +1037,9 @@ class _RenderOverscrollScale extends RenderProxyBox {
   Matrix4 _transform() {
     final child = this.child;
     final childSize = child?.size ?? Size.zero;
-    final divisor = _axis == Axis.horizontal ? childSize.width : childSize.height;
+    final divisor = _axis == Axis.horizontal
+        ? childSize.width
+        : childSize.height;
     final scale = divisor > 0 ? 1 + _overscroll / divisor / 4 : 1.0;
     final scaleX = _axis == Axis.horizontal ? scale : 1.0;
     final scaleY = _axis == Axis.vertical ? scale : 1.0;

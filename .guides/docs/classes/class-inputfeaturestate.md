@@ -92,5 +92,13 @@ abstract class InputFeatureState<T extends InputFeature> {
   ///
   /// Throws: AssertionError if feature is not attached.
   void setState(VoidCallback fn);
+  /// Changes the text of the attached text field.
+  ///
+  /// Parameters:
+  /// - [value] (`String`, required): The new text value.
+  /// - [submit] (`bool`, optional): Whether to submit the form after changing the text.
+  ///
+  /// Throws: AssertionError if feature is not attached.
+  void changeText(String value, {bool submit = false});
 }
 ```

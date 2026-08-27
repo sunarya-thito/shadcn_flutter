@@ -7,8 +7,8 @@ repository: "https://github.com/sunarya-thito/shadcn_flutter"
 issue_tracker: "https://github.com/sunarya-thito/shadcn_flutter/issues"
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
-  flutter: ">=3.32.3"
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: ">=3.47.0"
 
 resolution: workspace
 
@@ -22,7 +22,6 @@ dependencies:
   skeletonizer: ^2.1.0+1
   country_flags: ^4.1.0
   phonecodes: ^0.0.4
-  cross_file: ^0.3.4+2
   web: ^1.1.1
   data_widget: ^0.0.3
   gap: ^3.0.1
@@ -40,7 +39,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   generate: true
-  uses-material-design: true
   assets:
   - pubspec.yaml
   fonts:

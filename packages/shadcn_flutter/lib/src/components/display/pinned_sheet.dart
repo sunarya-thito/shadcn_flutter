@@ -50,7 +50,8 @@ class _PaintOnlyAnimation extends Animation<double>
     final isForward = _value > 0;
     if (wasForward != isForward) {
       notifyStatusListeners(
-          isForward ? AnimationStatus.completed : AnimationStatus.dismissed);
+        isForward ? AnimationStatus.completed : AnimationStatus.dismissed,
+      );
     }
   }
 
@@ -136,8 +137,10 @@ abstract class SheetStage {
       FixedSheetStage;
 
   /// A stage pinned at a [fraction] (0..1) of the sheet's axis extent.
-  const factory SheetStage.fraction(double fraction,
-      {double? backdropTransform}) = FractionSheetStage;
+  const factory SheetStage.fraction(
+    double fraction, {
+    double? backdropTransform,
+  }) = FractionSheetStage;
 
   /// A stage that peeks only the drag handle. For containers without a drag
   /// handle the handle extent is 0, so this behaves like [SheetStage.closed].
@@ -466,8 +469,7 @@ class SheetController extends ChangeNotifier {
   Future<void> close({
     Duration duration = kDefaultDuration,
     Curve curve = Curves.easeOut,
-  }) =>
-      animateTo(const SheetStage.closed(), duration: duration, curve: curve);
+  }) => animateTo(const SheetStage.closed(), duration: duration, curve: curve);
 }
 
 /// A controller-driven, gesture-driven sheet that snaps between [SheetStage]s.
@@ -647,11 +649,15 @@ class _PinnedSheetState extends State<PinnedSheet>
   @override
   void initState() {
     super.initState();
-    _slideController =
-        AnimationController(vsync: this, duration: widget.duration);
+    _slideController = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
     _anim = ControlledAnimation(_slideController);
-    _overscrollController =
-        AnimationController(vsync: this, duration: widget.duration);
+    _overscrollController = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
     _overscroll = ControlledAnimation(_overscrollController);
     _initialStage = widget.initialStage ?? effectiveStages.first;
     _anim.addListener(_onAnimTick);
@@ -770,7 +776,9 @@ class _PinnedSheetState extends State<PinnedSheet>
       _resolvePosition(widget.position, Directionality.of(context));
 
   static OverlayPosition _resolvePosition(
-      OverlayPosition position, TextDirection direction) {
+    OverlayPosition position,
+    TextDirection direction,
+  ) {
     if (position == OverlayPosition.start) {
       return direction == TextDirection.ltr
           ? OverlayPosition.left
@@ -805,7 +813,8 @@ class _PinnedSheetState extends State<PinnedSheet>
     if (!widget.showDragHandle) return 0;
     final theme = Theme.of(context);
     final densityGap = theme.density.baseGap * theme.scaling;
-    final isVertical = resolvedPosition == OverlayPosition.top ||
+    final isVertical =
+        resolvedPosition == OverlayPosition.top ||
         resolvedPosition == OverlayPosition.bottom;
     final handleMain = isVertical
         ? (widget.dragHandleSize?.height ?? densityGap * 0.75)
@@ -818,10 +827,10 @@ class _PinnedSheetState extends State<PinnedSheet>
 
   /// The resolution context describing the current sheet geometry.
   SheetStageResolution get resolution => SheetStageResolution(
-        size: _effectiveContentSize,
-        position: resolvedPosition,
-        dragHandleExtent: _dragHandleExtent,
-      );
+    size: _effectiveContentSize,
+    position: resolvedPosition,
+    dragHandleExtent: _dragHandleExtent,
+  );
 
   double get _axis => max(1.0, resolution.axisExtent);
 
@@ -886,9 +895,7 @@ class _PinnedSheetState extends State<PinnedSheet>
   double _normalizedForBestEffort(SheetStage stage) {
     double normalizedAt(double placeholderAxis) {
       final res = SheetStageResolution(
-        size: _isVertical
-            ? Size(0, placeholderAxis)
-            : Size(placeholderAxis, 0),
+        size: _isVertical ? Size(0, placeholderAxis) : Size(placeholderAxis, 0),
         position: resolvedPosition,
         dragHandleExtent: _dragHandleExtent,
       );
@@ -1014,8 +1021,11 @@ class _PinnedSheetState extends State<PinnedSheet>
   void _snapToNearest() {
     _overscroll.forward(0, Curves.easeOut);
     final index = _nearestStageIndex(_anim.value);
-    animateToStage(effectiveStages[index],
-        duration: widget.duration, curve: Curves.easeOut);
+    animateToStage(
+      effectiveStages[index],
+      duration: widget.duration,
+      curve: Curves.easeOut,
+    );
   }
 
   void _onDragStart(DragStartDetails details) {
@@ -1071,34 +1081,43 @@ class _PinnedSheetState extends State<PinnedSheet>
       if (widget.draggable && widget.draggableBackdrop) {
         backdropContent = _wrapGesture(resolved, backdropContent);
       }
-      children.add(Positioned.fill(
-        child: AnimatedBuilder(
-          animation: _anim,
-          builder: (context, child) {
-            final t = currentBackdropTransform.clamp(0.0, 1.0);
-            final size = _lastAvailableSize;
-            var extra = transform.resolveExtraSize(size, t,
-                isRoot: existing == null);
-            if (existing != null) {
-              extra = Size(
-                extra.width +
-                    existing.sizeDifference.width / kBackdropScaleDown,
-                extra.height +
-                    existing.sizeDifference.height / kBackdropScaleDown,
+      children.add(
+        Positioned.fill(
+          child: AnimatedBuilder(
+            animation: _anim,
+            builder: (context, child) {
+              final t = currentBackdropTransform.clamp(0.0, 1.0);
+              final size = _lastAvailableSize;
+              var extra = transform.resolveExtraSize(
+                size,
+                t,
+                isRoot: existing == null,
               );
-            }
-            return Data.inherit(
-              data: BackdropTransformData(extra),
-              child: Data.inherit(
-                data: _PinnedSheetStackData(stackIndex + 1, this),
-                child: transform.wrapBackdrop(context, child!, t,
-                    isRoot: existing == null),
-              ),
-            );
-          },
-          child: backdropContent,
+              if (existing != null) {
+                extra = Size(
+                  extra.width +
+                      existing.sizeDifference.width / kBackdropScaleDown,
+                  extra.height +
+                      existing.sizeDifference.height / kBackdropScaleDown,
+                );
+              }
+              return Data.inherit(
+                data: BackdropTransformData(extra),
+                child: Data.inherit(
+                  data: _PinnedSheetStackData(stackIndex + 1, this),
+                  child: transform.wrapBackdrop(
+                    context,
+                    child!,
+                    t,
+                    isRoot: existing == null,
+                  ),
+                ),
+              );
+            },
+            child: backdropContent,
+          ),
         ),
-      ));
+      );
     }
 
     // 2. Modal barrier (transparent tap target; the visual dim is painted
@@ -1120,24 +1139,31 @@ class _PinnedSheetState extends State<PinnedSheet>
     // semantics — a minor accessibility nuance, and the tap itself is an
     // inert no-op while closed either way.
     if (widget.modal) {
-      children.add(Positioned.fill(
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: widget.barrierDismissible
-              ? () {
-                  if (_anim.value <= 0) return;
-                  animateToStage(const SheetStage.closed(),
-                      duration: widget.duration, curve: Curves.easeOut);
-                }
-              : null,
+      children.add(
+        Positioned.fill(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: widget.barrierDismissible
+                ? () {
+                    if (_anim.value <= 0) return;
+                    animateToStage(
+                      const SheetStage.closed(),
+                      duration: widget.duration,
+                      curve: Curves.easeOut,
+                    );
+                  }
+                : null,
+          ),
         ),
-      ));
+      );
     }
 
     // 3. The sheet content: slide + backdrop-hug offset + container + drag.
-    children.add(Positioned.fill(
-      child: _buildSheet(context, resolved, existing, stackIndex),
-    ));
+    children.add(
+      Positioned.fill(
+        child: _buildSheet(context, resolved, existing, stackIndex),
+      ),
+    );
 
     return Stack(
       clipBehavior: Clip.none,
@@ -1146,8 +1172,12 @@ class _PinnedSheetState extends State<PinnedSheet>
     );
   }
 
-  Widget _buildSheet(BuildContext context, OverlayPosition resolved,
-      BackdropTransformData? existing, int stackIndex) {
+  Widget _buildSheet(
+    BuildContext context,
+    OverlayPosition resolved,
+    BackdropTransformData? existing,
+    int stackIndex,
+  ) {
     // Layout adjustment from the parent sheet's backdrop transform (nesting).
     Size additionalSize = Size.zero;
     Offset additionalOffset = Offset.zero;
@@ -1308,7 +1338,9 @@ class _PinnedSheetSlide extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderPinnedSheetSlide renderObject) {
+    BuildContext context,
+    _RenderPinnedSheetSlide renderObject,
+  ) {
     renderObject
       ..expands = expands
       ..intrinsic = intrinsic
@@ -1326,15 +1358,11 @@ class _PinnedSheetSlide extends SingleChildRenderObjectWidget {
 class _RenderPinnedSheetSlide extends RenderShiftedBox {
   _RenderPinnedSheetSlide({
     required this.state,
-    required bool expands,
-    required bool intrinsic,
-    required OverlayPosition position,
-    required Offset additionalOffset,
-  })  : _expands = expands,
-        _intrinsic = intrinsic,
-        _position = position,
-        _additionalOffset = additionalOffset,
-        super(null);
+    required this._expands,
+    required this._intrinsic,
+    required this._position,
+    required this._additionalOffset,
+  }) : super(null);
 
   /// The state this render object drives. Note `state` is stable for the
   /// lifetime of this render object (a given [PinnedSheet] element always
@@ -1423,10 +1451,11 @@ class _RenderPinnedSheetSlide extends RenderShiftedBox {
     // the content would never shrink.
     double floor = 0;
     if (_intrinsic) {
-      floor = (_vertical
-              ? child.getMaxIntrinsicHeight(cross)
-              : child.getMaxIntrinsicWidth(cross))
-          .clamp(0.0, maxMain);
+      floor =
+          (_vertical
+                  ? child.getMaxIntrinsicHeight(cross)
+                  : child.getMaxIntrinsicWidth(cross))
+              .clamp(0.0, maxMain);
     }
 
     // Phase 1 (visible >= floor): child fills the box exactly, so a

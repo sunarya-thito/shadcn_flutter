@@ -12,7 +12,9 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Returns a widget that visualizes the refresh state.
 typedef RefreshIndicatorBuilder = Widget Function(
-    BuildContext context, RefreshTriggerStage stage);
+  BuildContext context,
+  RefreshTriggerStage stage,
+);
 
 /// Callback for async refresh operations.
 ///
@@ -78,11 +80,13 @@ class RefreshTriggerTheme extends ComponentThemeData {
     return RefreshTriggerTheme(
       minExtent: minExtent == null ? this.minExtent : minExtent(),
       maxExtent: maxExtent == null ? this.maxExtent : maxExtent(),
-      indicatorBuilder:
-          indicatorBuilder == null ? this.indicatorBuilder : indicatorBuilder(),
+      indicatorBuilder: indicatorBuilder == null
+          ? this.indicatorBuilder
+          : indicatorBuilder(),
       curve: curve == null ? this.curve : curve(),
-      completeDuration:
-          completeDuration == null ? this.completeDuration : completeDuration(),
+      completeDuration: completeDuration == null
+          ? this.completeDuration
+          : completeDuration(),
     );
   }
 
@@ -99,7 +103,12 @@ class RefreshTriggerTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      minExtent, maxExtent, indicatorBuilder, curve, completeDuration);
+    minExtent,
+    maxExtent,
+    indicatorBuilder,
+    curve,
+    completeDuration,
+  );
 
   @override
   String toString() {
@@ -179,7 +188,9 @@ class RefreshTrigger extends StatefulWidget {
   /// Displays a platform-appropriate circular progress indicator that rotates
   /// based on pull extent and animates during refresh.
   static Widget defaultIndicatorBuilder(
-      BuildContext context, RefreshTriggerStage stage) {
+    BuildContext context,
+    RefreshTriggerStage stage,
+  ) {
     return DefaultRefreshIndicator(stage: stage);
   }
 
@@ -319,19 +330,20 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
           width: densityGap * 1.5,
           height: densityGap,
           child: AnimatedValueBuilder(
-              initialValue: 0.0,
-              value: 1.0,
-              duration: const Duration(milliseconds: 300),
-              curve: const Interval(0.5, 1.0),
-              builder: (context, value, _) {
-                return CustomPaint(
-                  painter: AnimatedCheckPainter(
-                    progress: value,
-                    color: theme.colorScheme.foreground,
-                    strokeWidth: 1.5 * theme.scaling,
-                  ),
-                );
-              }),
+            initialValue: 0.0,
+            value: 1.0,
+            duration: const Duration(milliseconds: 300),
+            curve: const Interval(0.5, 1.0),
+            builder: (context, value, _) {
+              return CustomPaint(
+                painter: AnimatedCheckPainter(
+                  progress: value,
+                  color: theme.colorScheme.foreground,
+                  strokeWidth: 1.5 * theme.scaling,
+                ),
+              );
+            },
+          ),
         ),
       ],
     ).gap(densityGap);
@@ -342,34 +354,38 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
     final theme = Theme.of(context);
     final densityGap = theme.density.baseGap * theme.scaling;
     return AnimatedBuilder(
-        animation: widget.stage.extent,
-        builder: (context, child) {
-          double angle;
-          if (widget.stage.direction == Axis.vertical) {
-            // 0 -> 1 (0 -> 180)
-            angle = -pi * widget.stage.extentValue.clamp(0, 1);
-          } else {
-            // 0 -> 1 (90 -> 270)
-            angle = -pi / 2 + -pi * widget.stage.extentValue.clamp(0, 1);
-          }
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Transform.rotate(
-                angle: angle,
-                child: const Icon(Icons.arrow_downward),
+      animation: widget.stage.extent,
+      builder: (context, child) {
+        double angle;
+        if (widget.stage.direction == Axis.vertical) {
+          // 0 -> 1 (0 -> 180)
+          angle = -pi * widget.stage.extentValue.clamp(0, 1);
+        } else {
+          // 0 -> 1 (90 -> 270)
+          angle = -pi / 2 + -pi * widget.stage.extentValue.clamp(0, 1);
+        }
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Transform.rotate(
+              angle: angle,
+              child: const Icon(LucideIcons.arrowDown),
+            ),
+            Flexible(
+              child: Text(
+                widget.stage.extentValue < 1
+                    ? localizations.refreshTriggerPull
+                    : localizations.refreshTriggerRelease,
               ),
-              Flexible(
-                  child: Text(widget.stage.extentValue < 1
-                      ? localizations.refreshTriggerPull
-                      : localizations.refreshTriggerRelease)),
-              Transform.rotate(
-                angle: angle,
-                child: const Icon(Icons.arrow_downward),
-              ),
-            ],
-          ).gap(densityGap);
-        });
+            ),
+            Transform.rotate(
+              angle: angle,
+              child: const Icon(LucideIcons.arrowDown),
+            ),
+          ],
+        ).gap(densityGap);
+      },
+    );
   }
 
   Widget buildIdleContent(BuildContext context) {
@@ -378,9 +394,7 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
     final densityGap = theme.density.baseGap * theme.scaling;
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(child: Text(localizations.refreshTriggerPull)),
-      ],
+      children: [Flexible(child: Text(localizations.refreshTriggerPull))],
     ).gap(densityGap);
   }
 
@@ -413,10 +427,7 @@ class _DefaultRefreshIndicatorState extends State<DefaultRefreshIndicator> {
               ),
         borderRadius: theme.borderRadiusXl,
         child: CrossFadedTransition(
-          child: KeyedSubtree(
-            key: ValueKey(widget.stage.stage),
-            child: child,
-          ),
+          child: KeyedSubtree(key: ValueKey(widget.stage.stage), child: child),
         ),
       ),
     );
@@ -473,18 +484,22 @@ class RefreshTriggerState extends State<RefreshTrigger>
         theme.density.baseContainerPadding * theme.scaling;
 
     _minExtent = styleValue(
-        widgetValue: widget.minExtent,
-        themeValue: compTheme?.minExtent,
-        defaultValue: densityContainerPadding * 4.6875);
+      widgetValue: widget.minExtent,
+      themeValue: compTheme?.minExtent,
+      defaultValue: densityContainerPadding * 4.6875,
+    );
     _maxExtent = styleValue(
-        widgetValue: widget.maxExtent,
-        themeValue: compTheme?.maxExtent,
-        defaultValue: densityContainerPadding * 9.375);
-    _indicatorBuilder = widget.indicatorBuilder ??
+      widgetValue: widget.maxExtent,
+      themeValue: compTheme?.maxExtent,
+      defaultValue: densityContainerPadding * 9.375,
+    );
+    _indicatorBuilder =
+        widget.indicatorBuilder ??
         compTheme?.indicatorBuilder ??
         RefreshTrigger.defaultIndicatorBuilder;
     _curve = widget.curve ?? compTheme?.curve ?? Curves.easeOutSine;
-    _completeDuration = widget.completeDuration ??
+    _completeDuration =
+        widget.completeDuration ??
         compTheme?.completeDuration ??
         const Duration(milliseconds: 500);
   }
@@ -541,8 +556,9 @@ class RefreshTriggerState extends State<RefreshTrigger>
     }
     if (notification is ScrollEndNotification && _scrolling) {
       setState(() {
-        double normalizedExtent =
-            widget.reverse ? -_currentExtent : _currentExtent;
+        double normalizedExtent = widget.reverse
+            ? -_currentExtent
+            : _currentExtent;
         if (normalizedExtent >= _minExtent) {
           _scrolling = false;
           refresh();
@@ -555,7 +571,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
       final delta = notification.scrollDelta;
       if (delta != null) {
         final axisDirection = notification.metrics.axisDirection;
-        final normalizedDelta = (axisDirection == AxisDirection.down ||
+        final normalizedDelta =
+            (axisDirection == AxisDirection.down ||
                 axisDirection == AxisDirection.right)
             ? -delta
             : delta;
@@ -564,8 +581,9 @@ class RefreshTriggerState extends State<RefreshTrigger>
           if ((forward && _userScrollDirection == ScrollDirection.forward) ||
               (!forward && _userScrollDirection == ScrollDirection.reverse)) {
             setState(() {
-              _currentExtent +=
-                  widget.reverse ? -normalizedDelta : normalizedDelta;
+              _currentExtent += widget.reverse
+                  ? -normalizedDelta
+                  : normalizedDelta;
             });
           } else {
             if (_currentExtent >= _minExtent) {
@@ -573,8 +591,9 @@ class RefreshTriggerState extends State<RefreshTrigger>
               refresh();
             } else {
               setState(() {
-                _currentExtent +=
-                    widget.reverse ? -normalizedDelta : normalizedDelta;
+                _currentExtent += widget.reverse
+                    ? -normalizedDelta
+                    : normalizedDelta;
               });
             }
           }
@@ -594,7 +613,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
       _userScrollDirection = notification.direction;
     } else if (notification is OverscrollNotification) {
       final axisDirection = notification.metrics.axisDirection;
-      final overscroll = (axisDirection == AxisDirection.down ||
+      final overscroll =
+          (axisDirection == AxisDirection.down ||
               axisDirection == AxisDirection.right)
           ? -notification.overscroll
           : notification.overscroll;
@@ -671,7 +691,8 @@ class RefreshTriggerState extends State<RefreshTrigger>
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: AnimatedValueBuilder.animation(
-        value: _stage == TriggerStage.refreshing ||
+        value:
+            _stage == TriggerStage.refreshing ||
                 _stage == TriggerStage.completed
             ? _minExtent
             : _currentExtent,
@@ -695,25 +716,30 @@ class RefreshTriggerState extends State<RefreshTrigger>
                 ),
                 builder: (context, child) {
                   return Positioned.fill(
-                      child: ClipRect(
-                    child: Stack(
-                      children: [
-                        _wrapPositioned(
-                          FractionalTranslation(
-                            translation: _offset,
-                            child: Transform.translate(
-                              offset: widget.direction == Axis.vertical
-                                  ? Offset(
-                                      0, _calculateSafeExtent(animation.value))
-                                  : Offset(
-                                      _calculateSafeExtent(animation.value), 0),
-                              child: child,
+                    child: ClipRect(
+                      child: Stack(
+                        children: [
+                          _wrapPositioned(
+                            FractionalTranslation(
+                              translation: _offset,
+                              child: Transform.translate(
+                                offset: widget.direction == Axis.vertical
+                                    ? Offset(
+                                        0,
+                                        _calculateSafeExtent(animation.value),
+                                      )
+                                    : Offset(
+                                        _calculateSafeExtent(animation.value),
+                                        0,
+                                      ),
+                                child: child,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ));
+                  );
                 },
               ),
             ],
@@ -767,7 +793,11 @@ class RefreshTriggerStage {
 
   /// Creates a refresh trigger stage snapshot.
   const RefreshTriggerStage(
-      this.stage, this.extent, this.direction, this.reverse);
+    this.stage,
+    this.extent,
+    this.direction,
+    this.reverse,
+  );
 
   /// Current numeric value of the pull extent.
   ///

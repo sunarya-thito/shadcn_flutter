@@ -32,7 +32,7 @@ enum InputFeaturePosition {
 ///   features: [
 ///     InputHintFeature(
 ///       popupBuilder: (context) => const Text('Enter your email'),
-///       icon: Icon(Icons.help),
+///       icon: Icon(LucideIcons.circleHelp),
 ///     ),
 ///   ],
 /// )
@@ -97,13 +97,15 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
   @override
   Iterable<Widget> buildTrailing() sync* {
     if (feature.position == InputFeaturePosition.trailing) {
-      yield Builder(builder: (context) {
-        return IconButton.text(
-          icon: feature.icon ?? const Icon(LucideIcons.info),
-          onPressed: () => _showPopup(context),
-          density: ButtonDensity.compact,
-        );
-      });
+      yield Builder(
+        builder: (context) {
+          return IconButton.text(
+            icon: feature.icon ?? const Icon(LucideIcons.info),
+            onPressed: () => _showPopup(context),
+            density: ButtonDensity.compact,
+          );
+        },
+      );
     }
   }
 
@@ -137,9 +139,10 @@ class _InputHintFeatureState extends InputFeatureState<InputHintFeature> {
           onInvoke: (intent, [context]) {
             if (context == null) {
               throw FlutterError(
-                  'CallbackContextAction was invoked without a valid BuildContext. '
-                  'This likely indicates a problem in the action system. '
-                  'Context must not be null when invoking InputShowHintIntent.');
+                'CallbackContextAction was invoked without a valid BuildContext. '
+                'This likely indicates a problem in the action system. '
+                'Context must not be null when invoking InputShowHintIntent.',
+              );
             }
             _showPopup(context);
             return true;
@@ -285,9 +288,7 @@ class _InputPasswordToggleFeatureState
 
   @override
   TextField interceptInput(TextField input) {
-    return input.copyWith(
-      obscureText: () => _obscureText ?? false,
-    );
+    return input.copyWith(obscureText: () => _obscureText ?? false);
   }
 }
 
@@ -545,8 +546,9 @@ class InputAutoCompleteFeature extends InputFeature {
 class _AutoCompleteFeatureState
     extends InputFeatureState<InputAutoCompleteFeature> {
   final GlobalKey _key = GlobalKey();
-  final ValueNotifier<FutureOr<Iterable<String>>?> _suggestions =
-      ValueNotifier(null);
+  final ValueNotifier<FutureOr<Iterable<String>>?> _suggestions = ValueNotifier(
+    null,
+  );
 
   @override
   void onTextChanged(String text) {
@@ -565,8 +567,9 @@ class _AutoCompleteFeatureState
             builder: (context, snapshot) {
               return AutoComplete(
                 key: _key,
-                suggestions:
-                    snapshot.hasData ? snapshot.requireData.toList() : const [],
+                suggestions: snapshot.hasData
+                    ? snapshot.requireData.toList()
+                    : const [],
                 popoverConstraints: feature.popoverConstraints,
                 overlayConfiguration: feature.overlayConfiguration,
                 adaptiveOverlay: feature.adaptiveOverlay,
@@ -740,50 +743,53 @@ class _InputSpinnerFeatureState extends InputFeatureState<InputSpinnerFeature> {
   }
 
   Widget _buildButtons() {
-    return Builder(builder: (context) {
-      final theme = Theme.of(context);
-      return ValueListenableBuilder<TextEditingValue>(
-        valueListenable: controller,
-        builder: (context, value, child) {
-          final currentValue = _effectiveValue();
-          final clampedValue =
-              currentValue == null ? null : _clampValue(currentValue);
-          final canIncrease = _canIncrease(clampedValue);
-          final canDecrease = _canDecrease(clampedValue);
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              IconButton.text(
-                icon: Transform.translate(
-                  offset: Offset(0, -1 * theme.scaling),
-                  child: Transform.scale(
-                    alignment: Alignment.center,
-                    scale: 1.5,
-                    child: const Icon(LucideIcons.chevronUp),
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        return ValueListenableBuilder<TextEditingValue>(
+          valueListenable: controller,
+          builder: (context, value, child) {
+            final currentValue = _effectiveValue();
+            final clampedValue = currentValue == null
+                ? null
+                : _clampValue(currentValue);
+            final canIncrease = _canIncrease(clampedValue);
+            final canDecrease = _canDecrease(clampedValue);
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                IconButton.text(
+                  icon: Transform.translate(
+                    offset: Offset(0, -1 * theme.scaling),
+                    child: Transform.scale(
+                      alignment: Alignment.center,
+                      scale: 1.5,
+                      child: const Icon(LucideIcons.chevronUp),
+                    ),
                   ),
+                  onPressed: canIncrease ? _increase : null,
+                  density: ButtonDensity.compact,
+                  size: ButtonSize.xSmall,
                 ),
-                onPressed: canIncrease ? _increase : null,
-                density: ButtonDensity.compact,
-                size: ButtonSize.xSmall,
-              ),
-              IconButton.text(
-                icon: Transform.translate(
-                  offset: Offset(0, 1 * theme.scaling),
-                  child: Transform.scale(
-                    alignment: Alignment.center,
-                    scale: 1.5,
-                    child: const Icon(LucideIcons.chevronDown),
+                IconButton.text(
+                  icon: Transform.translate(
+                    offset: Offset(0, 1 * theme.scaling),
+                    child: Transform.scale(
+                      alignment: Alignment.center,
+                      scale: 1.5,
+                      child: const Icon(LucideIcons.chevronDown),
+                    ),
                   ),
+                  onPressed: canDecrease ? _decrease : null,
+                  density: ButtonDensity.compact,
+                  size: ButtonSize.xSmall,
                 ),
-                onPressed: canDecrease ? _decrease : null,
-                density: ButtonDensity.compact,
-                size: ButtonSize.xSmall,
-              ),
-            ],
-          );
-        },
-      );
-    });
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -938,8 +944,9 @@ class _InputStepperButtonFeatureState
       valueListenable: controller,
       builder: (context, value, child) {
         final currentValue = _effectiveValue();
-        final clampedValue =
-            currentValue == null ? null : _clampValue(currentValue);
+        final clampedValue = currentValue == null
+            ? null
+            : _clampValue(currentValue);
         final canApplyStep = _canApplyStep(clampedValue);
         return AspectRatio(
           aspectRatio: 1,
@@ -1047,7 +1054,7 @@ class _InputCopyFeatureState extends InputFeatureState<InputCopyFeature> {
 /// TextField(
 ///   features: [
 ///     InputLeadingFeature(
-///       Icon(Icons.search),
+///       Icon(LucideIcons.search),
 ///     ),
 ///   ],
 /// )
@@ -1089,7 +1096,7 @@ class _InputLeadingFeatureState extends InputFeatureState<InputLeadingFeature> {
 /// TextField(
 ///   features: [
 ///     InputTrailingFeature(
-///       Icon(Icons.arrow_forward),
+///       Icon(LucideIcons.arrowRight),
 ///     ),
 ///   ],
 /// )

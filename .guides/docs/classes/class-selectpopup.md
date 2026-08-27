@@ -39,7 +39,12 @@ class SelectPopup<T> extends StatefulWidget {
   /// Whether to disable item virtualization.
   final bool disableVirtualization;
   /// Creates a select popup with a dynamic builder.
-  const SelectPopup.builder({super.key, required this.builder, this.searchController, this.searchPlaceholder, this.emptyBuilder, this.loadingBuilder, this.surfaceBlur, this.surfaceOpacity, this.autoClose, this.canUnselect, this.enableSearch = true, this.errorBuilder, this.scrollController});
+  ///
+  /// Set [shrinkWrap] when the popup should size itself to its items — for
+  /// instance when the delegate mixes selectable items with a trailing action
+  /// such as a "create new item" button, where a fixed-height list would leave
+  /// the action floating in empty space.
+  const SelectPopup.builder({super.key, required this.builder, this.searchController, this.searchPlaceholder, this.emptyBuilder, this.loadingBuilder, this.surfaceBlur, this.surfaceOpacity, this.autoClose, this.canUnselect, this.enableSearch = true, this.errorBuilder, this.scrollController, this.shrinkWrap = false});
   /// Creates a select popup with static items.
   const SelectPopup({super.key, this.items, this.searchController, this.searchPlaceholder, this.emptyBuilder, this.loadingBuilder, this.errorBuilder, this.surfaceBlur, this.surfaceOpacity, this.autoClose, this.canUnselect, this.scrollController, this.shrinkWrap = true});
   /// Creates a select popup without virtualization optimization.

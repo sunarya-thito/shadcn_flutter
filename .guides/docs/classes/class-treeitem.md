@@ -1,91 +1,116 @@
 ---
 title: "Class: TreeItem"
-description: "A concrete tree node implementation that holds data and state.   TreeItem represents a data-bearing node in the tree structure with support  for hierarchical organization, expansion/collapse state, and selection state.  It implements the immutable pattern where state changes return new instances.   Each TreeItem contains user data of type [T], a list of child nodes, and  boolean flags for expansion and selection state. The class provides equality  comparison based on all properties and implements proper hash codes.   TreeItem supports deep hierarchies through its children list, which can  contain other TreeItem instances or TreeRoot containers. The expansion state  controls visibility of children in tree views.   Example:  ```dart  // Create a simple item  TreeItem<String> item = TreeItem(    data: 'Document',    expanded: true,    selected: false,    children: [      TreeItem(data: 'Chapter 1'),      TreeItem(data: 'Chapter 2'),    ],  );   // Update its state  TreeItem<String> selected = item.updateState(selected: true);  ```"
+description: "A comprehensive tree item widget with interaction, expansion, and selection support.   TreeItem provides a complete tree item interface that handles user  interaction, visual feedback, expansion/collapse behavior, and keyboard  navigation. It's designed to work within a [Tree] context but can be  used independently for custom tree implementations.   The widget supports both single and double-click interactions, optional  leading and trailing widgets, expandable content, and focus management.  It automatically integrates with the tree's selection and expansion state  when used within a [Tree].   Features:  - Click and double-click interaction support  - Optional expand/collapse functionality for nodes with children  - Leading and trailing widget support for icons or actions  - Keyboard navigation with arrow keys and space bar  - Visual selection feedback with customizable styling  - Focus management and accessibility support  - Integration with tree branch lines and indentation   The widget automatically applies appropriate styling based on selection state,  focus state, and tree depth. It handles the visual representation of tree  hierarchy through indentation and branch line integration.   Example:  ```dart  TreeItem(    leading: Icon(isDirectory ? LucideIcons.folder : LucideIcons.file),    trailing: PopupMenuButton(items: contextMenuItems),    expandable: hasChildren,    onPressed: () => selectItem(item),    onDoublePressed: () => openItem(item),    onExpand: (expanded) => toggleExpansion(item, expanded),    child: Text(item.name),  )  ```"
 ---
 
 ```dart
-/// A concrete tree node implementation that holds data and state.
+/// A comprehensive tree item widget with interaction, expansion, and selection support.
 ///
-/// TreeItem represents a data-bearing node in the tree structure with support
-/// for hierarchical organization, expansion/collapse state, and selection state.
-/// It implements the immutable pattern where state changes return new instances.
+/// TreeItem provides a complete tree item interface that handles user
+/// interaction, visual feedback, expansion/collapse behavior, and keyboard
+/// navigation. It's designed to work within a [Tree] context but can be
+/// used independently for custom tree implementations.
 ///
-/// Each TreeItem contains user data of type [T], a list of child nodes, and
-/// boolean flags for expansion and selection state. The class provides equality
-/// comparison based on all properties and implements proper hash codes.
+/// The widget supports both single and double-click interactions, optional
+/// leading and trailing widgets, expandable content, and focus management.
+/// It automatically integrates with the tree's selection and expansion state
+/// when used within a [Tree].
 ///
-/// TreeItem supports deep hierarchies through its children list, which can
-/// contain other TreeItem instances or TreeRoot containers. The expansion state
-/// controls visibility of children in tree views.
+/// Features:
+/// - Click and double-click interaction support
+/// - Optional expand/collapse functionality for nodes with children
+/// - Leading and trailing widget support for icons or actions
+/// - Keyboard navigation with arrow keys and space bar
+/// - Visual selection feedback with customizable styling
+/// - Focus management and accessibility support
+/// - Integration with tree branch lines and indentation
+///
+/// The widget automatically applies appropriate styling based on selection state,
+/// focus state, and tree depth. It handles the visual representation of tree
+/// hierarchy through indentation and branch line integration.
 ///
 /// Example:
 /// ```dart
-/// // Create a simple item
-/// TreeItem<String> item = TreeItem(
-///   data: 'Document',
-///   expanded: true,
-///   selected: false,
-///   children: [
-///     TreeItem(data: 'Chapter 1'),
-///     TreeItem(data: 'Chapter 2'),
-///   ],
-/// );
-///
-/// // Update its state
-/// TreeItem<String> selected = item.updateState(selected: true);
+/// TreeItem(
+///   leading: Icon(isDirectory ? LucideIcons.folder : LucideIcons.file),
+///   trailing: PopupMenuButton(items: contextMenuItems),
+///   expandable: hasChildren,
+///   onPressed: () => selectItem(item),
+///   onDoublePressed: () => openItem(item),
+///   onExpand: (expanded) => toggleExpansion(item, expanded),
+///   child: Text(item.name),
+/// )
 /// ```
-class TreeItem<T> extends TreeNode<T> {
-  /// The data value stored in this tree item.
+class TreeItem extends StatefulWidget {
+  /// The main content widget for this tree item.
   ///
-  /// Type: `T`. This is the actual content that the tree item represents,
-  /// such as a string, object, or any other data type.
-  final T data;
-  /// List of child nodes beneath this item in the tree hierarchy.
+  /// Type: `Widget`. This widget represents the primary content of the tree item,
+  /// typically text or a combination of text and icons.
+  final Widget child;
+  /// Optional widget displayed at the leading edge of the item.
   ///
-  /// Type: `List<TreeNode<T>>`. Empty list indicates a leaf node. Children
-  /// are only visible when this item's [expanded] state is true.
-  final List<TreeNode<T>> children;
-  /// Whether this item is currently expanded to show its children.
+  /// Type: `Widget?`. Commonly used for icons that represent the item type,
+  /// such as folder or file icons. Positioned before the main content.
+  final Widget? leading;
+  /// Optional widget displayed at the trailing edge of the item.
   ///
-  /// Type: `bool`. When true, child nodes are visible in tree views.
-  /// When false, children are hidden but still present in the data structure.
-  final bool expanded;
-  /// Whether this item is currently selected.
+  /// Type: `Widget?`. Commonly used for action buttons, status indicators,
+  /// or context menus. Positioned after the main content.
+  final Widget? trailing;
+  /// Callback invoked when the tree item is pressed/clicked.
   ///
-  /// Type: `bool`. Selection affects visual appearance and can trigger
-  /// recursive selection of children depending on tree configuration.
-  final bool selected;
-  /// Creates a [TreeItem] with the specified data and configuration.
+  /// Type: `VoidCallback?`. Called for single-click interactions. If null,
+  /// the item will not respond to press gestures.
+  final VoidCallback? onPressed;
+  /// Callback invoked when the tree item is double-pressed/double-clicked.
   ///
-  /// Constructs a tree item node with user data and optional children,
-  /// expansion state, and selection state.
+  /// Type: `VoidCallback?`. Called for double-click interactions. If null,
+  /// the item will not respond to double-click gestures.
+  final VoidCallback? onDoublePressed;
+  /// Callback invoked when the expand/collapse state should change.
+  ///
+  /// Type: `ValueChanged<bool>?`. Called with the desired expansion state
+  /// when the user interacts with expand controls or uses keyboard shortcuts.
+  final ValueChanged<bool>? onExpand;
+  /// Whether this item can be expanded to show children.
+  ///
+  /// Type: `bool?`. If null, determined automatically based on whether the
+  /// tree node has children. When true, expand/collapse controls are shown.
+  final bool? expandable;
+  /// Optional focus node for keyboard navigation and focus management.
+  ///
+  /// Type: `FocusNode?`. If null, a focus node is created automatically.
+  /// Allows external control of focus state for this tree item.
+  final FocusNode? focusNode;
+  /// Creates a [TreeItem] with comprehensive tree item functionality.
+  ///
+  /// Configures a tree item widget with interaction support, optional expansion,
+  /// and customizable leading/trailing elements.
   ///
   /// Parameters:
-  /// - [data] (T, required): The data value to store in this tree item
-  /// - [children] (`List<TreeNode<T>>`, default: []): Child nodes list
-  /// - [expanded] (bool, default: false): Initial expansion state
-  /// - [selected] (bool, default: false): Initial selection state
+  /// - [key] (Key?): Widget identifier for the widget tree
+  /// - [child] (Widget, required): Main content widget for the tree item
+  /// - [leading] (Widget?, optional): Widget displayed before the content
+  /// - [trailing] (Widget?, optional): Widget displayed after the content
+  /// - [onPressed] (VoidCallback?, optional): Callback for press/click events
+  /// - [onDoublePressed] (VoidCallback?, optional): Callback for double-click events
+  /// - [onExpand] (`ValueChanged<bool>?`, optional): Callback for expansion changes
+  /// - [expandable] (bool?, optional): Whether the item can be expanded
+  /// - [focusNode] (FocusNode?, optional): Focus node for keyboard navigation
   ///
   /// Example:
   /// ```dart
-  /// // Simple leaf item
-  /// TreeItem<String> leaf = TreeItem(data: 'Leaf Node');
-  ///
-  /// // Parent with children
-  /// TreeItem<String> parent = TreeItem(
-  ///   data: 'Parent Node',
-  ///   expanded: true,
-  ///   children: [
-  ///     TreeItem(data: 'Child 1'),
-  ///     TreeItem(data: 'Child 2'),
-  ///   ],
-  /// );
+  /// TreeItem(
+  ///   leading: Icon(LucideIcons.folder),
+  ///   trailing: Badge(child: Text('3')),
+  ///   expandable: true,
+  ///   onPressed: () => handleSelection(),
+  ///   onDoublePressed: () => handleOpen(),
+  ///   onExpand: (expanded) => handleExpansion(expanded),
+  ///   child: Text('Project Folder'),
+  /// )
   /// ```
-  TreeItem({required this.data, this.children = const [], this.expanded = false, this.selected = false});
-  TreeItem<T> updateState({bool? expanded, bool? selected});
-  TreeItem<T> updateChildren(List<TreeNode<T>> children);
-  bool operator ==(Object other);
-  int get hashCode;
-  String toString();
+  const TreeItem({super.key, required this.child, this.leading, this.trailing, this.onPressed, this.onDoublePressed, this.onExpand, this.expandable, this.focusNode});
+  State<TreeItem> createState();
 }
 ```

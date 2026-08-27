@@ -9,6 +9,7 @@ A Material Design slider widget for selecting values or ranges.
 import 'package:docs/pages/docs/components/slider/slider_example_1.dart';
 import 'package:docs/pages/docs/components/slider/slider_example_2.dart';
 import 'package:docs/pages/docs/components/slider/slider_example_3.dart';
+import 'package:docs/pages/docs/components/slider/slider_example_4.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import '../../widget_usage_example.dart';
@@ -39,6 +40,11 @@ class SliderExample extends StatelessWidget {
           title: 'Slider with Divisions Example',
           path: 'lib/pages/docs/components/slider/slider_example_3.dart',
           child: SliderExample3(),
+        ),
+        WidgetUsageExample(
+          title: 'Slider with Value Indicator Example',
+          path: 'lib/pages/docs/components/slider/slider_example_4.dart',
+          child: SliderExample4(),
         ),
       ],
     );
@@ -154,6 +160,39 @@ class _SliderExample3State extends State<SliderExample3> {
 
 ```
 
+### Slider Example 4
+```dart
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class SliderExample4 extends StatefulWidget {
+  const SliderExample4({super.key});
+
+  @override
+  State<SliderExample4> createState() => _SliderExample4State();
+}
+
+class _SliderExample4State extends State<SliderExample4> {
+  // A single-value slider in the 0–1 range (default).
+  SliderValue value = const SliderValue.single(0.5);
+  @override
+  Widget build(BuildContext context) {
+    return Slider(
+      value: value,
+      valueIndicatorBuilder: (context, value) {
+        return SliderValueIndicator(value: value);
+      },
+      onChanged: (value) {
+        setState(() {
+          // Update local state when the thumb is dragged.
+          this.value = value;
+        });
+      },
+    );
+  }
+}
+
+```
+
 ### Slider Tile
 ```dart
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -204,3 +243,4 @@ class SliderTile extends StatelessWidget implements IComponentPage {
 | `increaseStep` | `double?` | The step size for keyboard increment actions.  Used when the user triggers increase actions via keyboard. If `null`, a default step is calculated based on the slider range. |
 | `decreaseStep` | `double?` | The step size for keyboard decrement actions.  Used when the user triggers decrease actions via keyboard. If `null`, a default step is calculated based on the slider range. |
 | `enabled` | `bool?` | Whether the slider is interactive.  When `false` or `null` with no [onChanged] callback, the slider is displayed in a disabled state and does not respond to user input. |
+| `valueIndicatorBuilder` | `SliderValueIndicatorBuilder?` | Optional builder for a bubble shown above a thumb while it's being dragged or is keyboard-focused, displaying the thumb's current value.  If both this and [SliderTheme.valueIndicatorBuilder] are `null` (the default), no indicator is shown. Pass [SliderValueIndicator] for the default bubble styling, e.g.: `valueIndicatorBuilder: (context, value) => SliderValueIndicator(value: value)`. |

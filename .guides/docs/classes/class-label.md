@@ -1,6 +1,6 @@
 ---
 title: "Class: Label"
-description: "A layout widget for labels with optional leading and trailing elements.   Arranges a main label with optional leading and trailing widgets in a  horizontal layout with consistent spacing.   Example:  ```dart  Label(    leading: Icon(Icons.person),    child: Text('Name'),    trailing: Icon(Icons.edit),  )  ```"
+description: "A layout widget for labels with optional leading and trailing elements.   Arranges a main label with optional leading and trailing widgets in a  horizontal layout with consistent spacing.   Example:  ```dart  Label(    leading: Icon(LucideIcons.user),    child: Text('Name'),    trailing: Icon(LucideIcons.pencil),  )  ```"
 ---
 
 ```dart
@@ -12,9 +12,9 @@ description: "A layout widget for labels with optional leading and trailing elem
 /// Example:
 /// ```dart
 /// Label(
-///   leading: Icon(Icons.person),
+///   leading: Icon(LucideIcons.user),
 ///   child: Text('Name'),
-///   trailing: Icon(Icons.edit),
+///   trailing: Icon(LucideIcons.pencil),
 /// )
 /// ```
 class Label extends StatelessWidget {

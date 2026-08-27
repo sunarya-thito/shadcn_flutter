@@ -21,8 +21,9 @@ class AlertDialogExample1 extends StatelessWidget {
       child: const Text('Click Here'),
       onPressed: () {
         // Standard Flutter API to present a dialog above the current route.
-        showDialog(
-          context: context,
+        showOverlay(
+          context,
+          DialogConfiguration(),
           builder: (context) {
             return AlertDialog(
               title: const Text('Alert title'),

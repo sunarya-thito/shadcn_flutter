@@ -35,7 +35,7 @@ class MenuRadioGroup<T> extends StatelessWidget implements MenuItem {
   /// - [children] (`List<Widget>`): Radio button children
   const MenuRadioGroup({super.key, required this.value, required this.onChanged, required this.children});
   bool get hasLeading;
-  PopoverController? get popoverController;
+  OverlayController? get overlayController;
   Widget build(BuildContext context);
 }
 ```

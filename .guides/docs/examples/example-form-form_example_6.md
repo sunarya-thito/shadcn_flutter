@@ -27,8 +27,9 @@ class FormExample6 extends StatelessWidget {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
+          showOverlay(
+            context,
+            DialogConfiguration(),
             builder: (context) {
               return AlertDialog(
                 title: const Text('Submitted'),
@@ -64,5 +65,4 @@ class FormExample6 extends StatelessWidget {
                         }, message: 'Email already taken'),
                         // This validator only RUNS on submit
                         mode: {FormValidationMode.submitted},
-                      ),
 ```

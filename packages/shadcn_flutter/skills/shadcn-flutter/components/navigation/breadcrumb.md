@@ -78,7 +78,6 @@ class BreadcrumbExample1 extends StatelessWidget {
 ```dart
 import 'package:docs/pages/docs/components_page.dart';
 import 'package:docs/pages/docs/components/breadcrumb/breadcrumb_example_1.dart';
-import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class BreadcrumbTile extends StatelessWidget implements IComponentPage {

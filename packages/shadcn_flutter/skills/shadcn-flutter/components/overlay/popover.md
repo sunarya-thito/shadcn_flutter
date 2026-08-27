@@ -1,6 +1,6 @@
-# Popover
+# PopoverOverlayWidget
 
-A comprehensive popover overlay system for displaying contextual content.
+Internal widget for rendering popover overlays.
 
 ## Usage
 
@@ -49,80 +49,86 @@ class PopoverExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryButton(
-      onPressed: () {
-        showPopover(
-          context: context,
-          // Position the popover above the button, shifted by 8px.
-          alignment: Alignment.topCenter,
-          offset: const Offset(0, 8),
-          builder: (context) {
-            return ModalContainer(
-              child: SizedBox(
-                width: 300,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text('Dimensions').large().medium(),
-                    const Text('Set the dimensions for the layer.').muted(),
-                    Form(
-                      controller: FormController(),
-                      // Compact grid layout for label/field rows.
-                      child: const FormTableLayout(
-                        rows: [
-                          FormField<double>(
-                            key: FormKey(#width),
-                            label: Text('Width'),
-                            child: TextField(
-                              initialValue: '100%',
+    return OverlayAnchor(
+      anchor: #popoverButton,
+      child: PrimaryButton(
+        onPressed: () {
+          showOverlay(
+            context,
+            PopoverConfiguration(
+              anchor: LinkedAnchor(#popoverButton),
+              // Position the popover above the button, shifted by 8px.
+              alignment: Alignment.topCenter,
+              offset: const Offset(0, 8),
+            ),
+            builder: (context) {
+              return ModalContainer(
+                child: SizedBox(
+                  width: 300,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('Dimensions').large().medium(),
+                      const Text('Set the dimensions for the layer.').muted(),
+                      Form(
+                        controller: FormController(),
+                        // Compact grid layout for label/field rows.
+                        child: const FormTableLayout(
+                          rows: [
+                            FormField<double>(
+                              key: FormKey(#width),
+                              label: Text('Width'),
+                              child: TextField(
+                                initialValue: '100%',
+                              ),
                             ),
-                          ),
-                          FormField<double>(
-                            key: FormKey(#maxWidth),
-                            label: Text('Max. Width'),
-                            child: TextField(
-                              initialValue: '300px',
+                            FormField<double>(
+                              key: FormKey(#maxWidth),
+                              label: Text('Max. Width'),
+                              child: TextField(
+                                initialValue: '300px',
+                              ),
                             ),
-                          ),
-                          FormField<double>(
-                            key: FormKey(#height),
-                            label: Text('Height'),
-                            child: TextField(
-                              initialValue: '25px',
+                            FormField<double>(
+                              key: FormKey(#height),
+                              label: Text('Height'),
+                              child: TextField(
+                                initialValue: '25px',
+                              ),
                             ),
-                          ),
-                          FormField<double>(
-                            key: FormKey(#maxHeight),
-                            label: Text('Max. Height'),
-                            child: TextField(
-                              initialValue: 'none',
+                            FormField<double>(
+                              key: FormKey(#maxHeight),
+                              label: Text('Max. Height'),
+                              child: TextField(
+                                initialValue: 'none',
+                              ),
                             ),
-                          ),
-                        ],
-                        spacing: 8,
+                          ],
+                          spacing: 8,
+                        ),
+                      ).withPadding(vertical: 16),
+                      PrimaryButton(
+                        onPressed: () {
+                          // Close the popover and resolve the returned future.
+                          closeOverlay(context);
+                        },
+                        child: const Text('Submit'),
                       ),
-                    ).withPadding(vertical: 16),
-                    PrimaryButton(
-                      onPressed: () {
-                        // Close the popover and resolve the returned future.
-                        closeOverlay(context);
-                      },
-                      child: const Text('Submit'),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        ).future.then((_) {
-          // Optional completion hook after the popover is dismissed.
-          if (kDebugMode) {
-            print('Popover closed');
-          }
-        });
-      },
-      child: const Text('Open popover'),
+              );
+            },
+          ).future.then((_) {
+            // Optional completion hook after the popover is dismissed.
+            if (kDebugMode) {
+              print('Popover closed');
+            }
+          });
+        },
+        child: const Text('Open popover'),
+      ),
     );
   }
 }
@@ -184,5 +190,28 @@ class PopoverTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `key` | `GlobalKey<OverlayHandlerStateMixin>` | Global key for accessing the overlay handler state. |
-| `entry` | `OverlayCompleter` | The overlay completer that manages this popover's lifecycle. |
+| `position` | `Offset?` | Explicit position for the popover. |
+| `alignment` | `AlignmentGeometry` | Alignment of the popover relative to the anchor. |
+| `anchorAlignment` | `AlignmentGeometry` | Alignment point on the anchor widget. |
+| `themes` | `CapturedThemes?` | Captured theme data from context. |
+| `data` | `CapturedData?` | Captured inherited data from context. |
+| `builder` | `WidgetBuilder` | Builder function for popover content. |
+| `anchorSize` | `Size?` | Size of the anchor widget. |
+| `animation` | `Animation<double>` | Animation controller for show/hide transitions. |
+| `widthConstraint` | `PopoverConstraint` | Width constraint mode for the popover. |
+| `heightConstraint` | `PopoverConstraint` | Height constraint mode for the popover. |
+| `onClose` | `FutureVoidCallback?` | Callback when popover is closing. |
+| `onImmediateClose` | `VoidCallback?` | Callback for immediate close without animation. |
+| `onTapOutside` | `VoidCallback?` | Callback when user taps outside the popover. |
+| `regionGroupId` | `Object?` | Region group identifier for coordinating multiple overlays. |
+| `offset` | `Offset?` | Additional offset applied to popover position. |
+| `transitionAlignment` | `AlignmentGeometry?` | Alignment for transition animations. |
+| `margin` | `EdgeInsetsGeometry?` | Margin around the popover. |
+| `follow` | `bool` | Whether popover follows anchor movement. |
+| `anchor` | `Anchor` | The anchor this popover is positioned/tracked against. |
+| `consumeOutsideTaps` | `bool` | Whether to consume taps outside the popover. |
+| `onTickFollow` | `ValueChanged<PopoverOverlayWidgetState>?` | Callback on each frame when following anchor. |
+| `allowInvertHorizontal` | `bool` | Allow horizontal inversion when constrained. |
+| `allowInvertVertical` | `bool` | Allow vertical inversion when constrained. |
+| `onCloseWithResult` | `PopoverFutureVoidCallback<Object?>?` | Callback when closing with a result value. |
+| `completer` | `OverlayCompleter?` | The completer that manages this popover's lifecycle, if shown via [PopoverConfiguration.show]. When non-null, it's inherited into the content subtree so [closeOverlay] can find it from within. |

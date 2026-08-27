@@ -1,5 +1,6 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/src/components/layout/hidden.dart';
+
 import 'misc.dart';
 
 /// A navigation item that can expand to reveal nested navigation items.
@@ -186,9 +187,11 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
     final densityGap = theme.density.baseGap * scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     final direction = data?.direction ?? Axis.vertical;
-    final showLabel = labelType == NavigationLabelType.all ||
+    final showLabel =
+        labelType == NavigationLabelType.all ||
         (labelType == NavigationLabelType.expanded && data?.expanded == true);
-    final canShowLabel = labelType == NavigationLabelType.expanded ||
+    final canShowLabel =
+        labelType == NavigationLabelType.expanded ||
         labelType == NavigationLabelType.all ||
         labelType == NavigationLabelType.selected;
     final label = DefaultTextStyle.merge(
@@ -212,11 +215,13 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
       child: widget.leading ?? const SizedBox.shrink(),
     );
 
-    AbstractButtonStyle style = widget.style ??
+    AbstractButtonStyle style =
+        widget.style ??
         (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.ghost(density: ButtonDensity.icon)
             : const ButtonStyle.ghost());
-    AbstractButtonStyle selectedStyle = widget.selectedStyle ??
+    AbstractButtonStyle selectedStyle =
+        widget.selectedStyle ??
         (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.secondary(density: ButtonDensity.icon)
             : const ButtonStyle.secondary());
@@ -248,7 +253,8 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
         : null;
 
     final parentExpanded = data?.expanded ?? true;
-    final isSelected = widget.selected ??
+    final isSelected =
+        widget.selected ??
         (widget.key != null && widget.key == data?.selectedKey);
 
     Widget header = SelectedButton(
@@ -265,17 +271,18 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
       },
       style: style,
       selectedStyle: selectedStyle,
-      alignment: widget.alignment ??
+      alignment:
+          widget.alignment ??
           (data?.containerType == NavigationContainerType.sidebar &&
                   data?.labelDirection == Axis.horizontal
               ? (data?.parentLabelPosition == NavigationLabelPosition.start
-                  ? AlignmentDirectional.centerEnd
-                  : AlignmentDirectional.centerStart)
+                    ? AlignmentDirectional.centerEnd
+                    : AlignmentDirectional.centerStart)
               : null),
       child: Row(
         children: [
           Expanded(child: content),
-          if (trailing != null) trailing,
+          ?trailing,
         ],
       ),
     );
@@ -337,13 +344,7 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
       final decoratedChildren = <Widget>[];
       for (var i = 0; i < children.length; i++) {
         decoratedChildren.add(
-          _wrapGroupChild(
-            context,
-            children[i],
-            i,
-            children.length,
-            direction,
-          ),
+          _wrapGroupChild(context, children[i], i, children.length, direction),
         );
       }
       final slivers = <Widget>[
@@ -352,10 +353,7 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
           ...decoratedChildren.map(
             (child) => SliverPadding(
               padding: indentPadding,
-              sliver: Data.inherit(
-                data: childControlData,
-                child: child,
-              ),
+              sliver: Data.inherit(data: childControlData, child: child),
             ),
           ),
       ];
@@ -365,13 +363,7 @@ class _NavigationCollapsibleState extends State<NavigationCollapsible> {
     final decoratedChildren = <Widget>[];
     for (var i = 0; i < children.length; i++) {
       decoratedChildren.add(
-        _wrapGroupChild(
-          context,
-          children[i],
-          i,
-          children.length,
-          direction,
-        ),
+        _wrapGroupChild(context, children[i], i, children.length, direction),
       );
     }
     final childList = Data.inherit(

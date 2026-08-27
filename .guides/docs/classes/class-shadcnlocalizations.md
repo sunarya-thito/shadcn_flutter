@@ -108,6 +108,16 @@ abstract class ShadcnLocalizations {
   /// In en, this message translates to:
   /// **'Must be less than or equal to {value}'**
   String formLessThanOrEqualTo(double value);
+  /// No description provided for @formPhoneNumberInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is invalid'**
+  String get formPhoneNumberInvalid;
+  /// No description provided for @formPhoneNumberEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get formPhoneNumberEmpty;
   /// No description provided for @formGreaterThanOrEqualTo.
   ///
   /// In en, this message translates to:
@@ -418,6 +428,11 @@ abstract class ShadcnLocalizations {
   /// In en, this message translates to:
   /// **'Select All'**
   String get menuSelectAll;
+  /// No description provided for @noSpellCheckReplacements.
+  ///
+  /// In en, this message translates to:
+  /// **'No Replacements Found'**
+  String get noSpellCheckReplacements;
   /// No description provided for @menuUndo.
   ///
   /// In en, this message translates to:

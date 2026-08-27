@@ -49,18 +49,21 @@ description: "A highly customizable single-line text input widget with extensive
 /// );
 /// ```
 class TextField extends TextInputStatefulWidget {
-  /// Returns a native platform context menu builder.
+  /// Called when a drag-to-select gesture starts inside this field.
   ///
-  /// Uses the platform's default text selection toolbar.
-  static EditableTextContextMenuBuilder nativeContextMenuBuilder();
-  /// Returns a Cupertino-style context menu builder.
+  /// Mirrors [TextSelectionGestureDetectorBuilder.onDragSelectionStart] so
+  /// callers composing several [TextField]s together (e.g. [FormattedInput])
+  /// can track a drag that may continue outside this field's own bounds.
+  /// This does not replace the field's own default drag-selection handling.
+  final ValueChanged<TapDragStartDetails>? onDragSelectionStart;
+  /// Called on every update of a drag-to-select gesture started in this field.
   ///
-  /// Uses iOS-style text selection toolbar.
-  static EditableTextContextMenuBuilder cupertinoContextMenuBuilder();
-  /// Returns a Material Design context menu builder.
+  /// See [onDragSelectionStart].
+  final ValueChanged<TapDragUpdateDetails>? onDragSelectionUpdate;
+  /// Called when a drag-to-select gesture started in this field ends.
   ///
-  /// Uses Material Design text selection toolbar.
-  static EditableTextContextMenuBuilder materialContextMenuBuilder();
+  /// See [onDragSelectionStart].
+  final ValueChanged<TapDragEndDetails>? onDragSelectionEnd;
   /// Creates a text input field widget.
   ///
   /// A comprehensive text field implementation with support for various input
@@ -83,7 +86,7 @@ class TextField extends TextInputStatefulWidget {
   /// ```
   ///
   /// See [TextInputStatefulWidget] and [TextInput] for parameter details.
-  const TextField({super.key, super.groupId, super.controller, super.initialValue, super.focusNode, super.undoController, super.decoration, super.padding, super.placeholder, super.crossAxisAlignment, super.clearButtonSemanticLabel, super.keyboardType, super.textInputAction, super.textCapitalization, super.style, super.strutStyle, super.textAlign, super.textAlignVertical, super.textDirection, super.readOnly, super.showCursor, super.autofocus, super.obscuringCharacter, super.obscureText, super.autocorrect, super.smartDashesType, super.smartQuotesType, super.enableSuggestions, super.maxLines, super.minLines, super.expands, super.maxLength, super.maxLengthEnforcement, super.onChanged, super.onEditingComplete, super.onSubmitted, super.onTapOutside, super.onTapUpOutside, super.inputFormatters, super.enabled, super.cursorWidth, super.cursorHeight, super.cursorRadius, super.cursorOpacityAnimates, super.cursorColor, super.selectionHeightStyle, super.selectionWidthStyle, super.keyboardAppearance, super.scrollPadding, super.enableInteractiveSelection, super.selectionControls, super.dragStartBehavior, super.scrollController, super.scrollPhysics, super.onTap, super.autofillHints, super.clipBehavior, super.restorationId, super.stylusHandwritingEnabled, super.enableIMEPersonalizedLearning, super.contentInsertionConfiguration, super.contextMenuBuilder = defaultContextMenuBuilder, super.hintText, super.border, super.borderRadius, super.filled, super.statesController, super.magnifierConfiguration, super.spellCheckConfiguration, super.features, super.submitFormatters, super.skipInputFeatureFocusTraversal});
+  const TextField({super.key, super.groupId, super.controller, super.initialValue, super.focusNode, super.undoController, super.decoration, super.padding, super.placeholder, super.crossAxisAlignment, super.clearButtonSemanticLabel, super.keyboardType, super.textInputAction, super.textCapitalization, super.style, super.strutStyle, super.textAlign, super.textAlignVertical, super.textDirection, super.readOnly, super.showCursor, super.autofocus, super.obscuringCharacter, super.obscureText, super.autocorrect, super.smartDashesType, super.smartQuotesType, super.enableSuggestions, super.maxLines, super.minLines, super.expands, super.maxLength, super.maxLengthEnforcement, super.onChanged, super.onEditingComplete, super.onSubmitted, super.onTapOutside, super.onTapUpOutside, super.inputFormatters, super.enabled, super.cursorWidth, super.cursorHeight, super.cursorRadius, super.cursorOpacityAnimates, super.cursorColor, super.selectionHeightStyle, super.selectionWidthStyle, super.keyboardAppearance, super.scrollPadding, super.enableInteractiveSelection, super.selectionControls, super.dragStartBehavior, super.scrollController, super.scrollPhysics, super.onTap, super.autofillHints, super.clipBehavior, super.restorationId, super.stylusHandwritingEnabled, super.enableIMEPersonalizedLearning, super.contentInsertionConfiguration, super.contextMenuBuilder = defaultContextMenuBuilder, super.hintText, super.border, super.borderRadius, super.filled, super.statesController, super.magnifierConfiguration, super.spellCheckConfiguration, super.features, super.submitFormatters, super.skipInputFeatureFocusTraversal, this.onDragSelectionStart, this.onDragSelectionUpdate, this.onDragSelectionEnd});
   /// Default context menu builder for editable text.
   ///
   /// Builds the standard context menu for text selection operations.

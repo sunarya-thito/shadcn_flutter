@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/src/components/form/color/solid/slider/color_field.dart';
 
 /// A slider widget for adjusting HSL color components.
 ///
@@ -76,12 +77,14 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
   }
 
   void _updateColor(Offset localPosition, Size size) {
-    _currentHorizontal = ((localPosition.dx - widget.padding.left) /
-            (size.width - widget.padding.horizontal))
-        .clamp(0, 1);
-    _currentVertical = ((localPosition.dy - widget.padding.top) /
-            (size.height - widget.padding.vertical))
-        .clamp(0, 1);
+    _currentHorizontal =
+        ((localPosition.dx - widget.padding.left) /
+                (size.width - widget.padding.horizontal))
+            .clamp(0, 1);
+    _currentVertical =
+        ((localPosition.dy - widget.padding.top) /
+                (size.height - widget.padding.vertical))
+            .clamp(0, 1);
     if (widget.reverse) {
       if (widget.sliderType == HSLColorSliderType.hueSat) {
         _hue = _currentHorizontal * 360;
@@ -139,12 +142,14 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
         _alpha = _currentVertical;
       }
     }
-    widget.onChanging?.call(HSLColor.fromAHSL(
-      _alpha.clamp(0, 1),
-      _hue.clamp(0, 360),
-      _saturation.clamp(0, 1),
-      _lightness.clamp(0, 1),
-    ));
+    widget.onChanging?.call(
+      HSLColor.fromAHSL(
+        _alpha.clamp(0, 1),
+        _hue.clamp(0, 360),
+        _saturation.clamp(0, 1),
+        _lightness.clamp(0, 1),
+      ),
+    );
   }
 
   @override
@@ -176,12 +181,14 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
     return GestureDetector(
       onTapDown: (details) {
         _updateColor(details.localPosition, context.size!);
-        widget.onChanged?.call(HSLColor.fromAHSL(
-          _alpha.clamp(0, 1),
-          _hue.clamp(0, 360),
-          _saturation.clamp(0, 1),
-          _lightness.clamp(0, 1),
-        ));
+        widget.onChanged?.call(
+          HSLColor.fromAHSL(
+            _alpha.clamp(0, 1),
+            _hue.clamp(0, 360),
+            _saturation.clamp(0, 1),
+            _lightness.clamp(0, 1),
+          ),
+        );
       },
       onPanUpdate: (details) {
         setState(() {
@@ -189,12 +196,14 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
         });
       },
       onPanEnd: (details) {
-        widget.onChanged?.call(HSLColor.fromAHSL(
-          _alpha.clamp(0, 1),
-          _hue.clamp(0, 360),
-          _saturation.clamp(0, 1),
-          _lightness.clamp(0, 1),
-        ));
+        widget.onChanged?.call(
+          HSLColor.fromAHSL(
+            _alpha.clamp(0, 1),
+            _hue.clamp(0, 360),
+            _saturation.clamp(0, 1),
+            _lightness.clamp(0, 1),
+          ),
+        );
       },
       child: Stack(
         clipBehavior: Clip.none,
@@ -203,9 +212,7 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
             child: RepaintBoundary(
               child: ClipRRect(
                 borderRadius: BorderRadius.all(widget.radius),
-                child: CustomPaint(
-                  painter: AlphaPainter(),
-                ),
+                child: CustomPaint(painter: AlphaPainter()),
               ),
             ),
           ),
@@ -235,58 +242,61 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
             right: -cursorRadius / radDiv,
             child: isSingleChannel
                 ? (widget.reverse
-                    ? Padding(
-                        padding: EdgeInsets.only(
-                          left: widget.padding.left,
-                          right: widget.padding.right,
-                        ),
-                        child: Align(
-                          alignment: Alignment(
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                            left: widget.padding.left,
+                            right: widget.padding.right,
+                          ),
+                          child: Align(
+                            alignment: Alignment(
                               (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                              (_currentVertical.clamp(0, 1) * 2) - 1),
-                          child: Container(
-                            width: cursorRadius,
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              color: widget.color.toColor(),
-                              border: Border.all(
-                                color: Colors.white,
-                                width: theme.scaling * 2,
+                              (_currentVertical.clamp(0, 1) * 2) - 1,
+                            ),
+                            child: Container(
+                              width: cursorRadius,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: widget.color.toColor(),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: theme.scaling * 2,
+                                ),
+                                borderRadius: BorderRadius.all(widget.radius),
                               ),
-                              borderRadius: BorderRadius.all(widget.radius),
                             ),
                           ),
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(
-                          top: widget.padding.top,
-                          bottom: widget.padding.bottom,
-                        ),
-                        child: Align(
-                          alignment: Alignment(
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(
+                            top: widget.padding.top,
+                            bottom: widget.padding.bottom,
+                          ),
+                          child: Align(
+                            alignment: Alignment(
                               (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                              (_currentVertical.clamp(0, 1) * 2) - 1),
-                          child: Container(
-                            height: cursorRadius,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: widget.color.toColor(),
-                              border: Border.all(
-                                color: Colors.white,
-                                width: theme.scaling * 2,
+                              (_currentVertical.clamp(0, 1) * 2) - 1,
+                            ),
+                            child: Container(
+                              height: cursorRadius,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: widget.color.toColor(),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: theme.scaling * 2,
+                                ),
+                                borderRadius: BorderRadius.all(widget.radius),
                               ),
-                              borderRadius: BorderRadius.all(widget.radius),
                             ),
                           ),
-                        ),
-                      ))
+                        ))
                 : Padding(
                     padding: widget.padding,
                     child: Align(
                       alignment: Alignment(
-                          (_currentHorizontal.clamp(0, 1) * 2) - 1,
-                          (_currentVertical.clamp(0, 1) * 2) - 1),
+                        (_currentHorizontal.clamp(0, 1) * 2) - 1,
+                        (_currentVertical.clamp(0, 1) * 2) - 1,
+                      ),
                       child: Container(
                         width: cursorRadius,
                         height: cursorRadius,
@@ -408,6 +418,55 @@ class _HSLColorSliderState extends State<HSLColorSlider> {
   }
 }
 
+/// Which axis each HSL channel runs along for a given slider type.
+///
+/// For the two-channel types the first channel in the name runs down the field
+/// and the second runs across it; [HSLColorSliderPainter.reverse] swaps them.
+/// Single-channel types run down the field unless reversed. Channels that do
+/// not appear in the type are held constant.
+class _HSLAxes {
+  final ColorFieldAxis hue;
+  final ColorFieldAxis saturation;
+  final ColorFieldAxis lightness;
+  final ColorFieldAxis alpha;
+
+  const _HSLAxes({
+    this.hue = ColorFieldAxis.none,
+    this.saturation = ColorFieldAxis.none,
+    this.lightness = ColorFieldAxis.none,
+    this.alpha = ColorFieldAxis.none,
+  });
+
+  factory _HSLAxes.of(HSLColorSliderType type, bool reverse) {
+    final first = reverse ? ColorFieldAxis.horizontal : ColorFieldAxis.vertical;
+    final second = reverse
+        ? ColorFieldAxis.vertical
+        : ColorFieldAxis.horizontal;
+    switch (type) {
+      case HSLColorSliderType.hueSat:
+        return _HSLAxes(hue: first, saturation: second);
+      case HSLColorSliderType.hueLum:
+        return _HSLAxes(hue: first, lightness: second);
+      case HSLColorSliderType.hueAlpha:
+        return _HSLAxes(hue: first, alpha: second);
+      case HSLColorSliderType.satLum:
+        return _HSLAxes(saturation: first, lightness: second);
+      case HSLColorSliderType.satAlpha:
+        return _HSLAxes(saturation: first, alpha: second);
+      case HSLColorSliderType.lumAlpha:
+        return _HSLAxes(lightness: first, alpha: second);
+      case HSLColorSliderType.hue:
+        return _HSLAxes(hue: first);
+      case HSLColorSliderType.sat:
+        return _HSLAxes(saturation: first);
+      case HSLColorSliderType.lum:
+        return _HSLAxes(lightness: first);
+      case HSLColorSliderType.alpha:
+        return _HSLAxes(alpha: first);
+    }
+  }
+}
+
 /// A custom painter for rendering HSL color slider gradients.
 ///
 /// [HSLColorSliderPainter] draws the gradient background for HSL color sliders,
@@ -432,345 +491,20 @@ class HSLColorSliderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // disable anti-aliasing
-    var pp = Paint();
-    pp.isAntiAlias = false;
-    pp.style = PaintingStyle.fill;
-    var canvasHeight = size.height;
-    var canvasWidth = size.width;
-    if (sliderType == HSLColorSliderType.hueSat) {
-      // if reverse, then its sat hue
-      if (reverse) {
-        double width = canvasWidth / 360;
-        double height = canvasHeight / 100;
-        // vertical for hue and horizontal for saturation
-        for (var i = 0; i < 360; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result =
-                HSLColor.fromAHSL(1, i.toDouble(), j / 100, color.lightness);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      } else {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 360;
-        // horizontal for hue and vertical for saturation
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 360; j++) {
-            final result =
-                HSLColor.fromAHSL(1, j.toDouble(), i / 100, color.lightness);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.hueLum) {
-      // if reverse, then its lum hue
-      if (reverse) {
-        double width = canvasWidth / 360;
-        double height = canvasHeight / 100;
-        // vertical for hue and horizontal for lightness
-        for (var i = 0; i < 360; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result =
-                HSLColor.fromAHSL(1, i.toDouble(), color.saturation, j / 100.0);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      } else {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 360;
-        // horizontal for hue and vertical for lightness
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 360; j++) {
-            final result =
-                HSLColor.fromAHSL(1, j.toDouble(), color.saturation, i / 100);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.satLum) {
-      // if reverse, then its lum sat
-      if (reverse) {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 100;
-        // horizontal for saturation and vertical for lightness
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result = HSLColor.fromAHSL(1, color.hue, i / 100, j / 100);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      } else {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 100;
-        // horizontal for saturation and vertical for lightness
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result = HSLColor.fromAHSL(1, color.hue, j / 100, i / 100);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.hueAlpha) {
-      // if reverse, then its alpha hue
-      if (reverse) {
-        double width = canvasWidth / 360;
-        double height = canvasHeight / 100;
-        // vertical for hue and horizontal for alpha
-        for (var i = 0; i < 360; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result = HSLColor.fromAHSL(
-                j / 100.0, i.toDouble(), color.saturation, color.lightness);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      } else {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 360;
-        // horizontal for hue and vertical for alpha
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 360; j++) {
-            final result = HSLColor.fromAHSL(
-                i / 100, j.toDouble(), color.saturation, color.lightness);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.satAlpha) {
-      // if reverse, then its alpha sat
-      if (reverse) {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 100;
-        // horizontal for saturation and vertical for alpha
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result =
-                HSLColor.fromAHSL(j / 100, color.hue, i / 100, color.lightness);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      } else {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 100;
-        // horizontal for saturation and vertical for alpha
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result =
-                HSLColor.fromAHSL(i / 100, color.hue, j / 100, color.lightness);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.lumAlpha) {
-      // if reverse, then its alpha lum
-      if (reverse) {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 100;
-        // horizontal for lightness and vertical for alpha
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result = HSLColor.fromAHSL(
-                j / 100, color.hue, color.saturation, i / 100);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      } else {
-        double width = canvasWidth / 100;
-        double height = canvasHeight / 100;
-        // horizontal for lightness and vertical for alpha
-        for (var i = 0; i < 100; i++) {
-          for (var j = 0; j < 100; j++) {
-            final result = HSLColor.fromAHSL(
-                i / 100, color.hue, color.saturation, j / 100);
-            final paint = pp
-              ..color = result.toColor()
-              ..style = PaintingStyle.fill;
-            canvas.drawRect(
-              Rect.fromLTWH(i * width, j * height, width, height),
-              paint,
-            );
-          }
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.hue) {
-      if (reverse) {
-        double width = canvasWidth / 360;
-        for (var i = 0; i < 360; i++) {
-          final result = HSLColor.fromAHSL(
-              1, i.toDouble(), color.saturation, color.lightness.clamp(0, 1));
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, canvasHeight),
-            paint,
-          );
-        }
-      } else {
-        double height = canvasHeight / 360;
-        for (var i = 0; i < 360; i++) {
-          final result = HSLColor.fromAHSL(
-              1, i.toDouble(), color.saturation, color.lightness.clamp(0, 1));
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(0, i * height, canvasWidth, height),
-            paint,
-          );
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.sat) {
-      if (reverse) {
-        double width = canvasWidth / 100;
-        for (var i = 0; i < 100; i++) {
-          final result = HSLColor.fromAHSL(
-              1, color.hue, i / 100, color.lightness.clamp(0, 1));
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, canvasHeight),
-            paint,
-          );
-        }
-      } else {
-        double height = canvasHeight / 100;
-        for (var i = 0; i < 100; i++) {
-          final result = HSLColor.fromAHSL(
-              1, color.hue, i / 100, color.lightness.clamp(0, 1));
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(0, i * height, canvasWidth, height),
-            paint,
-          );
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.lum) {
-      if (reverse) {
-        double width = canvasWidth / 100;
-        for (var i = 0; i < 100; i++) {
-          final result =
-              HSLColor.fromAHSL(1, color.hue, color.saturation, i / 100);
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, canvasHeight),
-            paint,
-          );
-        }
-      } else {
-        double height = canvasHeight / 100;
-        for (var i = 0; i < 100; i++) {
-          final result =
-              HSLColor.fromAHSL(1, color.hue, color.saturation, i / 100);
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(0, i * height, canvasWidth, height),
-            paint,
-          );
-        }
-      }
-    } else if (sliderType == HSLColorSliderType.alpha) {
-      if (reverse) {
-        double width = canvasWidth / 100;
-        for (var i = 0; i < 100; i++) {
-          final result = HSLColor.fromAHSL(i / 100, color.hue, color.saturation,
-              color.lightness.clamp(0, 1));
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(i * width, 0, width, canvasHeight),
-            paint,
-          );
-        }
-      } else {
-        double height = canvasHeight / 100;
-        for (var i = 0; i < 100; i++) {
-          final result = HSLColor.fromAHSL(i / 100, color.hue, color.saturation,
-              color.lightness.clamp(0, 1));
-          final paint = pp
-            ..color = result.toColor()
-            ..style = PaintingStyle.fill;
-          canvas.drawRect(
-            Rect.fromLTWH(0, i * height, canvasWidth, height),
-            paint,
-          );
-        }
-      }
-    }
+    final axes = _HSLAxes.of(sliderType, reverse);
+    paintHSLColorField(
+      canvas,
+      size,
+      // Sliders that do not carry the alpha channel show the color at full
+      // opacity, so the transparency of [color] does not wash them out.
+      color: axes.alpha == ColorFieldAxis.none
+          ? HSLColor.fromAHSL(1, color.hue, color.saturation, color.lightness)
+          : color,
+      hueAxis: axes.hue,
+      saturationAxis: axes.saturation,
+      lightnessAxis: axes.lightness,
+      alphaAxis: axes.alpha,
+    );
   }
 
   @override
@@ -779,32 +513,14 @@ class HSLColorSliderPainter extends CustomPainter {
         oldDelegate.sliderType != sliderType) {
       return true;
     }
-    if (sliderType == HSLColorSliderType.hueSat) {
-      return oldDelegate.color.lightness != color.lightness;
-    } else if (sliderType == HSLColorSliderType.hueLum) {
-      return oldDelegate.color.saturation != color.saturation;
-    } else if (sliderType == HSLColorSliderType.satLum) {
-      return oldDelegate.color.hue != color.hue;
-    } else if (sliderType == HSLColorSliderType.alpha) {
-      return oldDelegate.color.lightness != color.lightness ||
-          oldDelegate.color.saturation != color.saturation ||
-          oldDelegate.color.hue != color.hue;
-    } else if (sliderType == HSLColorSliderType.hue) {
-      return oldDelegate.color.lightness != color.lightness ||
-          oldDelegate.color.saturation != color.saturation;
-    } else if (sliderType == HSLColorSliderType.sat) {
-      return oldDelegate.color.hue != color.hue ||
-          oldDelegate.color.lightness != color.lightness;
-    } else if (sliderType == HSLColorSliderType.lum) {
-      return oldDelegate.color.hue != color.hue ||
-          oldDelegate.color.saturation != color.saturation;
-    } else if (sliderType == HSLColorSliderType.hueAlpha) {
-      return oldDelegate.color.lightness != color.lightness;
-    } else if (sliderType == HSLColorSliderType.satAlpha) {
-      return oldDelegate.color.hue != color.hue;
-    } else if (sliderType == HSLColorSliderType.lumAlpha) {
-      return oldDelegate.color.hue != color.hue;
-    }
-    return false;
+    // Only the channels held constant are baked into the gradient; the ones
+    // that ramp across the field look the same whatever their current value.
+    final axes = _HSLAxes.of(sliderType, reverse);
+    const none = ColorFieldAxis.none;
+    return (axes.hue == none && oldDelegate.color.hue != color.hue) ||
+        (axes.saturation == none &&
+            oldDelegate.color.saturation != color.saturation) ||
+        (axes.lightness == none &&
+            oldDelegate.color.lightness != color.lightness);
   }
 }

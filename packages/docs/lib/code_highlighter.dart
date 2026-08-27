@@ -149,7 +149,7 @@ class CodeBlock extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         spacing: 8,
                         children: [
-                          Icon(Icons.check),
+                          Icon(LucideIcons.check),
                           Text('Copied to clipboard'),
                         ],
                       ),
@@ -160,7 +160,7 @@ class CodeBlock extends StatelessWidget {
             });
           },
           icon: const Icon(
-            Icons.copy,
+            LucideIcons.copy,
             size: 16,
           ),
         ),

@@ -13,8 +13,8 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// ComponentTheme<CollapsibleTheme>(
 ///   data: CollapsibleTheme(
 ///     padding: 12.0,
-///     iconExpanded: Icons.keyboard_arrow_up,
-///     iconCollapsed: Icons.keyboard_arrow_down,
+///     iconExpanded: LucideIcons.chevronUp,
+///     iconCollapsed: LucideIcons.chevronDown,
 ///     iconGap: 8.0,
 ///     crossAxisAlignment: CrossAxisAlignment.start,
 ///   ),
@@ -30,12 +30,12 @@ class CollapsibleTheme extends ComponentThemeData {
 
   /// Icon displayed in the trigger when the collapsible is expanded.
   ///
-  /// If null, defaults to [Icons.unfold_less].
+  /// If null, defaults to [LucideIcons.chevronsDownUp].
   final IconData? iconExpanded;
 
   /// Icon displayed in the trigger when the collapsible is collapsed.
   ///
-  /// If null, defaults to [Icons.unfold_more].
+  /// If null, defaults to [LucideIcons.chevronsUpDown].
   final IconData? iconCollapsed;
 
   /// Cross-axis alignment for children in the [Collapsible] column.
@@ -100,8 +100,9 @@ class CollapsibleTheme extends ComponentThemeData {
     return CollapsibleTheme(
       padding: padding == null ? this.padding : padding(),
       iconExpanded: iconExpanded == null ? this.iconExpanded : iconExpanded(),
-      iconCollapsed:
-          iconCollapsed == null ? this.iconCollapsed : iconCollapsed(),
+      iconCollapsed: iconCollapsed == null
+          ? this.iconCollapsed
+          : iconCollapsed(),
       crossAxisAlignment: crossAxisAlignment == null
           ? this.crossAxisAlignment
           : crossAxisAlignment(),
@@ -162,7 +163,7 @@ class CollapsibleTheme extends ComponentThemeData {
 ///     CollapsibleTrigger(
 ///       child: Row(
 ///         children: [
-///           Icon(Icons.settings),
+///           Icon(LucideIcons.settings),
 ///           SizedBox(width: 8),
 ///           Text('Advanced Settings'),
 ///         ],
@@ -291,8 +292,10 @@ class CollapsibleState extends State<Collapsible> {
     final compTheme = ComponentTheme.maybeOf<CollapsibleTheme>(context);
 
     return Data.inherit(
-      data:
-          CollapsibleStateData(isExpanded: _isExpanded, handleTap: _handleTap),
+      data: CollapsibleStateData(
+        isExpanded: _isExpanded,
+        handleTap: _handleTap,
+      ),
       child: IntrinsicWidth(
         child: Column(
           crossAxisAlignment:
@@ -355,7 +358,7 @@ class CollapsibleStateData {
 /// CollapsibleTrigger(
 ///   child: Row(
 ///     children: [
-///       Icon(Icons.folder),
+///       Icon(LucideIcons.folder),
 ///       SizedBox(width: 8),
 ///       Text('Project Files'),
 ///       Spacer(),
@@ -401,20 +404,21 @@ class CollapsibleTrigger extends StatelessWidget {
 
     final compTheme = ComponentTheme.maybeOf<CollapsibleTheme>(context);
 
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      Expanded(child: child.small().semiBold()),
-      Gap(compTheme?.iconGap ?? densityGap * 2),
-      GhostButton(
-        onPressed: state.handleTap,
-        child: Icon(
-          state.isExpanded
-              ? compTheme?.iconExpanded ?? Icons.unfold_less
-              : compTheme?.iconCollapsed ?? Icons.unfold_more,
-        ).iconXSmall(),
-      ),
-    ]).withPadding(
-      horizontal: compTheme?.padding ?? densityContentPadding,
-    );
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(child: child.small().semiBold()),
+        Gap(compTheme?.iconGap ?? densityGap * 2),
+        GhostButton(
+          onPressed: state.handleTap,
+          child: Icon(
+            state.isExpanded
+                ? compTheme?.iconExpanded ?? LucideIcons.chevronsDownUp
+                : compTheme?.iconCollapsed ?? LucideIcons.chevronsUpDown,
+          ).iconXSmall(),
+        ),
+      ],
+    ).withPadding(horizontal: compTheme?.padding ?? densityContentPadding);
   }
 }
 
@@ -495,9 +499,6 @@ class CollapsibleContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = Data.of<CollapsibleStateData>(context);
-    return Offstage(
-      offstage: !state.isExpanded && collapsible,
-      child: child,
-    );
+    return Offstage(offstage: !state.isExpanded && collapsible, child: child);
   }
 }

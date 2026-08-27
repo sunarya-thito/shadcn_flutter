@@ -106,7 +106,7 @@ class _LeafWidgetState extends State<LeafWidget> {
                   model.value = model.value + 1;
                   // or model.data++ works too
                 },
-                child: const Icon(Icons.add),
+                child: const Icon(LucideIcons.plus),
               ),
             ],
           );

@@ -39,8 +39,10 @@ class _ListState extends State<_List> {
                   children: [
                     if (widget.useHandle)
                       SortableDragHandle(
-                        child: Icon(Icons.drag_handle,
-                            key: ValueKey('h${names[i].data}')),
+                        child: Icon(
+                          LucideIcons.gripHorizontal,
+                          key: ValueKey('h${names[i].data}'),
+                        ),
                       ),
                     Expanded(child: Center(child: Text(names[i].data))),
                   ],
@@ -66,15 +68,20 @@ List<String> _order(WidgetTester tester) {
   return entries.map((e) => e.$2).toList();
 }
 
-Future<List<String>> _drag(WidgetTester tester,
-    {required bool useHandle}) async {
+Future<List<String>> _drag(
+  WidgetTester tester, {
+  required bool useHandle,
+}) async {
   await tester.pumpWidget(SimpleApp(child: _List(useHandle: useHandle)));
   await tester.pumpAndSettle();
 
   final grab = useHandle
       ? tester.getCenter(find.byKey(const ValueKey('hA')))
       : tester.getCenter(find.text('A'));
-  final gesture = await tester.startGesture(grab, kind: PointerDeviceKind.touch);
+  final gesture = await tester.startGesture(
+    grab,
+    kind: PointerDeviceKind.touch,
+  );
   await tester.pump(const Duration(milliseconds: 50));
   for (int i = 0; i < 6; i++) {
     await gesture.moveBy(const Offset(0, 12));
@@ -94,8 +101,9 @@ void main() {
   // A SortableDragHandle re-parents the child into the ghost overlay on drag
   // start; the handle must keep its owning Sortable (via Data) so its pan
   // callbacks survive and the drag actually tracks/reorders.
-  testWidgets('drag handle reorders (and leaves no stuck ghost)',
-      (tester) async {
+  testWidgets('drag handle reorders (and leaves no stuck ghost)', (
+    tester,
+  ) async {
     expect(await _drag(tester, useHandle: true), ['B', 'C', 'A', 'D']);
   });
 }

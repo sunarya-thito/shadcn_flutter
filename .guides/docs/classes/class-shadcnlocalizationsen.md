@@ -14,6 +14,8 @@ class ShadcnLocalizationsEn extends ShadcnLocalizations {
   String formLessThan(double value);
   String formGreaterThan(double value);
   String formLessThanOrEqualTo(double value);
+  String get formPhoneNumberInvalid;
+  String get formPhoneNumberEmpty;
   String formGreaterThanOrEqualTo(double value);
   String formBetweenInclusively(double min, double max);
   String formBetweenExclusively(double min, double max);
@@ -76,6 +78,7 @@ class ShadcnLocalizationsEn extends ShadcnLocalizations {
   String get menuCopy;
   String get menuPaste;
   String get menuSelectAll;
+  String get noSpellCheckReplacements;
   String get menuUndo;
   String get menuRedo;
   String get menuDelete;

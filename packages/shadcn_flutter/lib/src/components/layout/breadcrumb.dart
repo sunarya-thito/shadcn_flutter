@@ -142,7 +142,7 @@ class Breadcrumb extends StatelessWidget {
   /// Example:
   /// ```dart
   /// Breadcrumb(
-  ///   separator: Icon(Icons.chevron_right),
+  ///   separator: Icon(LucideIcons.chevronRight),
   ///   children: [
   ///     TextButton(onPressed: goHome, child: Text('Home')),
   ///     TextButton(onPressed: goToCategory, child: Text('Category')),
@@ -167,9 +167,8 @@ class Breadcrumb extends StatelessWidget {
       defaultValue: EdgeInsets.zero,
     );
     return ScrollConfiguration(
-      behavior: ScrollConfiguration.of(
-        context,
-      ).copyWith(scrollbars: false, dragDevices: {PointerDeviceKind.touch}),
+      behavior: ScrollConfiguration.of(context)
+          .copyWith(scrollbars: false, dragDevices: {PointerDeviceKind.touch}),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Padding(

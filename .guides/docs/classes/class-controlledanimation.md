@@ -67,6 +67,19 @@ class ControlledAnimation extends Animation<double> {
   /// ```
   TickerFuture forward(double to, [Curve? curve]);
   set value(double value);
+  /// Sets [value] without touching the underlying [AnimationController] —
+  /// unlike the [value] setter, this never calls `notifyListeners()`.
+  ///
+  /// Use this only to seed the *initial* resting value before anything has
+  /// had a chance to listen (e.g. before a dependent `AnimatedBuilder` has
+  /// built for the first time). Calling the regular [value] setter once a
+  /// listener is already attached mid-frame trips Flutter's "Build
+  /// scheduled during frame" guard, since it requests a rebuild for
+  /// something already being processed this frame; [seed] sidesteps that
+  /// because it notifies no one, which also means it should not be used to
+  /// report an actual, listener-visible change — only to establish a
+  /// starting value nothing has read yet.
+  void seed(double value);
   void addListener(VoidCallback listener);
   void addStatusListener(AnimationStatusListener listener);
   void removeListener(VoidCallback listener);

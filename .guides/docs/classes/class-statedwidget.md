@@ -60,10 +60,10 @@ abstract class StatedWidget extends StatelessWidget {
   /// Example:
   /// ```dart
   /// StatedWidget(
-  ///   child: Icon(Icons.star_border),
-  ///   selected: Icon(Icons.star, color: Colors.yellow),
-  ///   hovered: Icon(Icons.star_border, color: Colors.grey),
-  ///   disabled: Icon(Icons.star_border, color: Colors.grey.shade300),
+  ///   child: Icon(LucideIcons.star),
+  ///   selected: Icon(LucideIcons.star, color: Colors.yellow),
+  ///   hovered: Icon(LucideIcons.star, color: Colors.grey),
+  ///   disabled: Icon(LucideIcons.star, color: Colors.grey.shade300),
   /// )
   /// ```
   factory StatedWidget({Key? key, required Widget child, List<WidgetState> order, Widget? disabled, Widget? selected, Widget? pressed, Widget? hovered, Widget? focused, Widget? error});
@@ -86,11 +86,11 @@ abstract class StatedWidget extends StatelessWidget {
   /// ```dart
   /// StatedWidget.map(
   ///   states: {
-  ///     WidgetState.selected: Icon(Icons.check_circle, color: Colors.green),
-  ///     WidgetState.error: Icon(Icons.error, color: Colors.red),
-  ///     'custom': Icon(Icons.star, color: Colors.blue),
+  ///     WidgetState.selected: Icon(LucideIcons.circleCheck, color: Colors.green),
+  ///     WidgetState.error: Icon(LucideIcons.circleAlert, color: Colors.red),
+  ///     'custom': Icon(LucideIcons.star, color: Colors.blue),
   ///   },
-  ///   child: Icon(Icons.circle_outlined),
+  ///   child: Icon(LucideIcons.circle),
   /// )
   /// ```
   factory StatedWidget.map({Key? key, required Map<Object, Widget> states, Widget? child});
@@ -113,15 +113,15 @@ abstract class StatedWidget extends StatelessWidget {
   /// StatedWidget.builder(
   ///   builder: (context, states) {
   ///     if (states.contains(WidgetState.disabled)) {
-  ///       return Opacity(opacity: 0.5, child: Icon(Icons.block));
+  ///       return Opacity(opacity: 0.5, child: Icon(LucideIcons.ban));
   ///     }
   ///     if (states.contains(WidgetState.selected)) {
-  ///       return Icon(Icons.check_circle, color: Colors.green);
+  ///       return Icon(LucideIcons.circleCheck, color: Colors.green);
   ///     }
   ///     if (states.contains(WidgetState.hovered)) {
-  ///       return AnimatedScale(scale: 1.1, child: Icon(Icons.star));
+  ///       return AnimatedScale(scale: 1.1, child: Icon(LucideIcons.star));
   ///     }
-  ///     return Icon(Icons.star_border);
+  ///     return Icon(LucideIcons.star);
   ///   },
   /// )
   /// ```

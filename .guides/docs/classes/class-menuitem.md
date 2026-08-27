@@ -21,6 +21,6 @@ abstract class MenuItem extends Widget {
   /// Whether this menu item has a leading widget (icon, checkbox indicator, etc.).
   bool get hasLeading;
   /// Optional popover controller for submenu functionality.
-  PopoverController? get popoverController;
+  OverlayController? get overlayController;
 }
 ```

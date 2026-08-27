@@ -30,6 +30,32 @@ class SelectTheme extends ComponentThemeData {
   /// Padding inside select items.
   final EdgeInsetsGeometry? padding;
 
+  /// Overrides the decoration of the select trigger.
+  ///
+  /// Resolved per [WidgetState], so a single delegate covers the idle, hovered,
+  /// focused and disabled appearance — border color, background color and
+  /// anything else a [BoxDecoration] carries. It receives the decoration the
+  /// trigger would otherwise use, so it can adjust rather than replace it:
+  ///
+  /// ```dart
+  /// SelectTheme(
+  ///   decoration: (context, states, value) {
+  ///     final decoration = value as BoxDecoration;
+  ///     return decoration.copyWith(
+  ///       border: Border.all(
+  ///         color: states.contains(WidgetState.focused)
+  ///             ? Colors.blue
+  ///             : Colors.gray,
+  ///       ),
+  ///     );
+  ///   },
+  /// )
+  /// ```
+  ///
+  /// Applied after [borderRadius], so a delegate that rewrites the border
+  /// radius wins over it.
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
+
   /// Whether to disable hover effects on items.
   final bool? disableHoverEffect;
 
@@ -46,6 +72,7 @@ class SelectTheme extends ComponentThemeData {
     this.adaptiveOverlay,
     this.borderRadius,
     this.padding,
+    this.decoration,
     this.disableHoverEffect,
     this.canUnselect,
     this.autoClosePopover,
@@ -58,26 +85,31 @@ class SelectTheme extends ComponentThemeData {
     ValueGetter<bool?>? adaptiveOverlay,
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
     ValueGetter<EdgeInsetsGeometry?>? padding,
+    ValueGetter<WidgetStatePropertyDelegate<Decoration>?>? decoration,
     ValueGetter<bool?>? disableHoverEffect,
     ValueGetter<bool?>? canUnselect,
     ValueGetter<bool?>? autoClosePopover,
   }) {
     return SelectTheme(
-      popupConstraints:
-          popupConstraints == null ? this.popupConstraints : popupConstraints(),
+      popupConstraints: popupConstraints == null
+          ? this.popupConstraints
+          : popupConstraints(),
       overlayConfiguration: overlayConfiguration == null
           ? this.overlayConfiguration
           : overlayConfiguration(),
-      adaptiveOverlay:
-          adaptiveOverlay == null ? this.adaptiveOverlay : adaptiveOverlay(),
+      adaptiveOverlay: adaptiveOverlay == null
+          ? this.adaptiveOverlay
+          : adaptiveOverlay(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
       padding: padding == null ? this.padding : padding(),
+      decoration: decoration == null ? this.decoration : decoration(),
       disableHoverEffect: disableHoverEffect == null
           ? this.disableHoverEffect
           : disableHoverEffect(),
       canUnselect: canUnselect == null ? this.canUnselect : canUnselect(),
-      autoClosePopover:
-          autoClosePopover == null ? this.autoClosePopover : autoClosePopover(),
+      autoClosePopover: autoClosePopover == null
+          ? this.autoClosePopover
+          : autoClosePopover(),
     );
   }
 
@@ -89,6 +121,7 @@ class SelectTheme extends ComponentThemeData {
         other.adaptiveOverlay == adaptiveOverlay &&
         other.borderRadius == borderRadius &&
         other.padding == padding &&
+        other.decoration == decoration &&
         other.disableHoverEffect == disableHoverEffect &&
         other.canUnselect == canUnselect &&
         other.autoClosePopover == autoClosePopover;
@@ -96,15 +129,16 @@ class SelectTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        popupConstraints,
-        overlayConfiguration,
-        adaptiveOverlay,
-        borderRadius,
-        padding,
-        disableHoverEffect,
-        canUnselect,
-        autoClosePopover,
-      );
+    popupConstraints,
+    overlayConfiguration,
+    adaptiveOverlay,
+    borderRadius,
+    padding,
+    decoration,
+    disableHoverEffect,
+    canUnselect,
+    autoClosePopover,
+  );
 }
 
 /// Controller for managing [ControlledSelect] state programmatically.
@@ -207,6 +241,8 @@ class ControlledSelect<T> extends StatelessWidget
   @override
   final EdgeInsetsGeometry? padding;
   @override
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
+  @override
   final bool disableHoverEffect;
   @override
   final bool canUnselect;
@@ -244,6 +280,7 @@ class ControlledSelect<T> extends StatelessWidget
   /// - [overlayConfiguration] (OverlayConfiguration?, optional): overrides the popup presentation
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
   /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
+  /// - [decoration] (`WidgetStatePropertyDelegate<Decoration>?`, optional): override the trigger decoration per state
   /// - [disableHoverEffect] (bool, default: false): disable item hover effects
   /// - [canUnselect] (bool, default: false): allow deselecting current item
   /// - [autoClosePopover] (bool, default: true): close popup after selection
@@ -278,6 +315,7 @@ class ControlledSelect<T> extends StatelessWidget
     this.overlayConfiguration,
     this.borderRadius,
     this.padding,
+    this.decoration,
     this.disableHoverEffect = false,
     this.canUnselect = false,
     this.autoClosePopover = true,
@@ -305,6 +343,7 @@ class ControlledSelect<T> extends StatelessWidget
           value: data.value,
           borderRadius: borderRadius,
           padding: padding,
+          decoration: decoration,
           disableHoverEffect: disableHoverEffect,
           canUnselect: canUnselect,
           autoClosePopover: autoClosePopover,
@@ -428,6 +467,8 @@ class ControlledMultiSelect<T> extends StatelessWidget
   @override
   final EdgeInsetsGeometry? padding;
   @override
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
+  @override
   final bool disableHoverEffect;
   @override
   final bool canUnselect;
@@ -437,8 +478,8 @@ class ControlledMultiSelect<T> extends StatelessWidget
   final SelectPopupBuilder popup;
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
-        return MultiSelect._buildItem(multiItemBuilder, context, value);
-      };
+    return MultiSelect._buildItem(multiItemBuilder, context, value);
+  };
   @override
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   @override
@@ -470,6 +511,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
   /// - [overlayConfiguration] (OverlayConfiguration?, optional): overrides the popup presentation
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
   /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
+  /// - [decoration] (`WidgetStatePropertyDelegate<Decoration>?`, optional): override the trigger decoration per state
   /// - [disableHoverEffect] (bool, default: false): disable item hover effects
   /// - [canUnselect] (bool, default: false): allow deselecting all items
   /// - [autoClosePopover] (bool, default: false): close popup after each selection
@@ -510,6 +552,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
     this.overlayConfiguration,
     this.borderRadius,
     this.padding,
+    this.decoration,
     this.disableHoverEffect = false,
     this.canUnselect = true,
     this.autoClosePopover = false,
@@ -537,6 +580,7 @@ class ControlledMultiSelect<T> extends StatelessWidget
       overlayConfiguration: overlayConfiguration,
       borderRadius: borderRadius,
       padding: padding,
+      decoration: decoration,
       disableHoverEffect: disableHoverEffect,
       canUnselect: canUnselect,
       autoClosePopover: autoClosePopover,
@@ -595,36 +639,36 @@ class SelectItemButton<T> extends StatelessWidget {
           },
         ),
       },
-      child: SubFocus(builder: (context, subFocusState) {
-        return WidgetStatesProvider(
-          states: {
-            if (subFocusState.isFocused) WidgetState.hovered,
-          },
-          child: Button(
-            enabled: enabled,
-            disableTransition: true,
-            alignment: AlignmentDirectional.centerStart,
-            onPressed: () {
-              data?.selectItem(value, !isSelected);
-            },
-            style: style.copyWith(
-              padding: (context, states, value) => EdgeInsets.symmetric(
-                vertical: 8 * scaling,
-                horizontal: 8 * scaling,
-              ),
-              mouseCursor: (context, states, value) {
-                return SystemMouseCursors.basic;
+      child: SubFocus(
+        builder: (context, subFocusState) {
+          return WidgetStatesProvider(
+            states: {if (subFocusState.isFocused) WidgetState.hovered},
+            child: Button(
+              enabled: enabled,
+              disableTransition: true,
+              alignment: AlignmentDirectional.centerStart,
+              onPressed: () {
+                data?.selectItem(value, !isSelected);
               },
+              style: style.copyWith(
+                padding: (context, states, value) => EdgeInsets.symmetric(
+                  vertical: 8 * scaling,
+                  horizontal: 8 * scaling,
+                ),
+                mouseCursor: (context, states, value) {
+                  return SystemMouseCursors.basic;
+                },
+              ),
+              trailing: isSelected
+                  ? const Icon(LucideIcons.check).iconSmall()
+                  : hasSelection
+                  ? SizedBox(width: 16 * scaling)
+                  : null,
+              child: child.normal(),
             ),
-            trailing: isSelected
-                ? const Icon(LucideIcons.check).iconSmall()
-                : hasSelection
-                    ? SizedBox(width: 16 * scaling)
-                    : null,
-            child: child.normal(),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
@@ -655,11 +699,7 @@ class SelectGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (headers != null) ...headers!,
-        ...children,
-        if (footers != null) ...footers!,
-      ],
+      children: [...?headers, ...children, ...?footers],
     );
   }
 }
@@ -757,7 +797,10 @@ typedef SelectValueBuilder<T> = Widget Function(BuildContext context, T value);
 ///
 /// Returns: `T?` — the new selection state.
 typedef SelectValueSelectionHandler<T> = T? Function(
-    T? oldValue, Object? value, bool selected);
+  T? oldValue,
+  Object? value,
+  bool selected,
+);
 
 /// Predicate for testing value selection state.
 ///
@@ -767,7 +810,9 @@ typedef SelectValueSelectionHandler<T> = T? Function(
 ///
 /// Returns: `bool` — true if test matches selection.
 typedef SelectValueSelectionPredicate<T> = bool Function(
-    T? value, Object? test);
+  T? value,
+  Object? test,
+);
 
 T? _defaultSingleSelectValueSelectionHandler<T>(
   T? oldValue,
@@ -854,6 +899,10 @@ mixin SelectBase<T> {
 
   /// Internal padding of the select trigger.
   EdgeInsetsGeometry? get padding;
+
+  /// Overrides the decoration of the select trigger, resolved per
+  /// [WidgetState]. See [SelectTheme.decoration].
+  WidgetStatePropertyDelegate<Decoration>? get decoration;
 
   /// Whether to disable hover effects.
   bool get disableHoverEffect;
@@ -967,6 +1016,8 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   @override
   final EdgeInsetsGeometry? padding;
   @override
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
+  @override
   final bool disableHoverEffect;
   @override
   final bool canUnselect;
@@ -1006,6 +1057,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
   /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
   /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
   /// - [padding] (EdgeInsetsGeometry?): Custom padding
+  /// - [decoration] (`WidgetStatePropertyDelegate<Decoration>?`): Per-state override of the trigger decoration
   /// - [canUnselect] (bool): Whether user can deselect current value, defaults to false
   /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to true
   /// - [enabled] (bool?): Whether select is enabled for interaction
@@ -1029,6 +1081,7 @@ class Select<T> extends StatefulWidget with SelectBase<T> {
     this.disableHoverEffect = false,
     this.borderRadius,
     this.padding,
+    this.decoration,
     this.canUnselect = false,
     this.autoClosePopover = true,
     this.enabled,
@@ -1075,49 +1128,55 @@ class SelectState<T> extends State<Select<T>>
   }
 
   BoxConstraints? get _popupConstraints => styleValue(
-        widgetValue: widget.popupConstraints,
-        themeValue: _theme?.popupConstraints,
-        defaultValue: null,
-      );
+    widgetValue: widget.popupConstraints,
+    themeValue: _theme?.popupConstraints,
+    defaultValue: null,
+  );
 
   OverlayConfiguration? get _overlayConfigurationOverride =>
       widget.overlayConfiguration ?? _theme?.overlayConfiguration;
 
   bool get _adaptiveOverlay => styleValue(
-        widgetValue: widget.adaptiveOverlay,
-        themeValue: _theme?.adaptiveOverlay,
-        defaultValue: true,
-      );
+    widgetValue: widget.adaptiveOverlay,
+    themeValue: _theme?.adaptiveOverlay,
+    defaultValue: true,
+  );
 
   BorderRadiusGeometry? get _borderRadius => styleValue(
-        widgetValue: widget.borderRadius,
-        themeValue: _theme?.borderRadius,
-        defaultValue: null,
-      );
+    widgetValue: widget.borderRadius,
+    themeValue: _theme?.borderRadius,
+    defaultValue: null,
+  );
 
   EdgeInsetsGeometry? get _padding => styleValue(
-        widgetValue: widget.padding,
-        themeValue: _theme?.padding,
-        defaultValue: null,
-      );
+    widgetValue: widget.padding,
+    themeValue: _theme?.padding,
+    defaultValue: null,
+  );
+
+  WidgetStatePropertyDelegate<Decoration>? get _decoration => styleValue(
+    widgetValue: widget.decoration,
+    themeValue: _theme?.decoration,
+    defaultValue: null,
+  );
 
   bool get _disableHoverEffect => styleValue(
-        widgetValue: widget.disableHoverEffect,
-        themeValue: _theme?.disableHoverEffect,
-        defaultValue: false,
-      );
+    widgetValue: widget.disableHoverEffect,
+    themeValue: _theme?.disableHoverEffect,
+    defaultValue: false,
+  );
 
   bool get _canUnselect => styleValue(
-        widgetValue: widget.canUnselect,
-        themeValue: _theme?.canUnselect,
-        defaultValue: false,
-      );
+    widgetValue: widget.canUnselect,
+    themeValue: _theme?.canUnselect,
+    defaultValue: false,
+  );
 
   bool get _autoClosePopover => styleValue(
-        widgetValue: widget.autoClosePopover,
-        themeValue: _theme?.autoClosePopover,
-        defaultValue: true,
-      );
+    widgetValue: widget.autoClosePopover,
+    themeValue: _theme?.autoClosePopover,
+    defaultValue: true,
+  );
 
   @override
   void initState() {
@@ -1172,12 +1231,18 @@ class SelectState<T> extends State<Select<T>>
     super.dispose();
   }
 
-  BoxDecoration _overrideBorderRadius(
+  /// Applies [Select.borderRadius] and then [Select.decoration], so a decoration
+  /// delegate sees — and can override — the border radius the select resolved.
+  Decoration _overrideDecoration(
     BuildContext context,
     Set<WidgetState> states,
     Decoration value,
   ) {
-    return (value as BoxDecoration).copyWith(borderRadius: _borderRadius);
+    var result = value;
+    if (_borderRadius != null) {
+      result = (result as BoxDecoration).copyWith(borderRadius: _borderRadius);
+    }
+    return _decoration?.call(context, states, result) ?? result;
   }
 
   EdgeInsetsGeometry _overridePadding(
@@ -1192,7 +1257,8 @@ class SelectState<T> extends State<Select<T>>
     if (!selected && !_canUnselect) {
       return false;
     }
-    var selectionHandler = widget.valueSelectionHandler ??
+    var selectionHandler =
+        widget.valueSelectionHandler ??
         _defaultSingleSelectValueSelectionHandler;
     var newValue = selectionHandler(widget.value, value, selected);
     widget.onChanged?.call(newValue);
@@ -1200,7 +1266,8 @@ class SelectState<T> extends State<Select<T>>
   }
 
   bool _isSelected(Object? value) {
-    final selectionPredicate = widget.valueSelectionPredicate ??
+    final selectionPredicate =
+        widget.valueSelectionPredicate ??
         _defaultSingleSelectValueSelectionPredicate;
     return selectionPredicate(widget.value, value);
   }
@@ -1222,13 +1289,16 @@ class SelectState<T> extends State<Select<T>>
             enabled: enabled,
             disableHoverEffect: _disableHoverEffect,
             focusNode: _focusNode,
-            style: (widget.filled
-                    ? ButtonVariance.secondary
-                    : ButtonVariance.outline)
-                .copyWith(
-              decoration: _borderRadius != null ? _overrideBorderRadius : null,
-              padding: _padding != null ? _overridePadding : null,
-            ),
+            style:
+                (widget.filled
+                        ? ButtonVariance.secondary
+                        : ButtonVariance.outline)
+                    .copyWith(
+                      decoration: _borderRadius != null || _decoration != null
+                          ? _overrideDecoration
+                          : null,
+                      padding: _padding != null ? _overridePadding : null,
+                    ),
             onPressed: widget.onChanged == null
                 ? null
                 : () {
@@ -1237,55 +1307,60 @@ class SelectState<T> extends State<Select<T>>
                     GlobalKey popupKey = GlobalKey();
                     _popoverController
                         .show(
-                      context,
-                      _overlayConfigurationOverride ??
-                          PopoverConfiguration(
-                            offset: Offset(0, densityGap),
-                            alignment: Alignment.topCenter,
-                            widthConstraint: PopoverConstraint.anchorFixedSize,
-                            overlayBarrier: OverlayBarrier(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: densityGap),
-                              borderRadius:
-                                  BorderRadius.circular(theme.radiusLg),
-                            ),
-                          ),
-                      builder: (context) {
-                        return ConstrainedBox(
-                          constraints: _popupConstraints ??
-                              BoxConstraints(
-                                maxHeight:
-                                    Select.kDefaultSelectMaxHeight * scaling,
+                          context,
+                          _overlayConfigurationOverride ??
+                              PopoverConfiguration(
+                                offset: Offset(0, densityGap),
+                                alignment: Alignment.topCenter,
+                                widthConstraint:
+                                    PopoverConstraint.anchorFixedSize,
+                                overlayBarrier: OverlayBarrier(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: densityGap,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    theme.radiusLg,
+                                  ),
+                                ),
                               ),
-                          child: ListenableBuilder(
-                            listenable: _valueNotifier,
-                            builder: (context, _) {
-                              return Data.inherit(
-                                key: ValueKey(widget.value),
-                                data: SelectData(
-                                  enabled: enabled,
-                                  autoClose: _autoClosePopover,
-                                  isSelected: _isSelected,
-                                  onChanged: _onChanged,
-                                  hasSelection: widget.value != null,
-                                  expandIcon: widget.expandIcon,
-                                ),
-                                child: Builder(
-                                  key: popupKey,
-                                  builder: (context) {
-                                    return widget.popup(context);
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      adaptive: _adaptiveOverlay,
-                    )
+                          builder: (context) {
+                            return ConstrainedBox(
+                              constraints:
+                                  _popupConstraints ??
+                                  BoxConstraints(
+                                    maxHeight:
+                                        Select.kDefaultSelectMaxHeight *
+                                        scaling,
+                                  ),
+                              child: ListenableBuilder(
+                                listenable: _valueNotifier,
+                                builder: (context, _) {
+                                  return Data.inherit(
+                                    key: ValueKey(widget.value),
+                                    data: SelectData(
+                                      enabled: enabled,
+                                      autoClose: _autoClosePopover,
+                                      isSelected: _isSelected,
+                                      onChanged: _onChanged,
+                                      hasSelection: widget.value != null,
+                                      expandIcon: widget.expandIcon,
+                                    ),
+                                    child: Builder(
+                                      key: popupKey,
+                                      builder: (context) {
+                                        return widget.popup(context);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          adaptive: _adaptiveOverlay,
+                        )
                         .then((value) {
-                      _focusNode.requestFocus();
-                    });
+                          _focusNode.requestFocus();
+                        });
                   },
             child: WidgetStatesProvider.boundary(
               child: widget.expandIcon != null
@@ -1302,7 +1377,8 @@ class SelectState<T> extends State<Select<T>>
                             expandIcon: widget.expandIcon,
                           ),
                           child: Expanded(
-                            child: widget.value != null &&
+                            child:
+                                widget.value != null &&
                                     (widget.showValuePredicate?.call(
                                           widget.value as T,
                                         ) ??
@@ -1337,7 +1413,8 @@ class SelectState<T> extends State<Select<T>>
                         hasSelection: widget.value != null,
                         expandIcon: widget.expandIcon,
                       ),
-                      child: widget.value != null &&
+                      child:
+                          widget.value != null &&
                               (widget.showValuePredicate?.call(
                                     widget.value as T,
                                   ) ??
@@ -1459,8 +1536,7 @@ class MultiSelectChip extends StatelessWidget {
 /// ```
 class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
-  final ValueChanged<Iterable<T>?>?
-      onChanged; // if null, then it's a disabled combobox
+  final ValueChanged<Iterable<T>?>? onChanged; // if null, then it's a disabled combobox
   @override
   final Widget? placeholder; // placeholder when value is null
   @override
@@ -1484,6 +1560,8 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   @override
   final EdgeInsetsGeometry? padding;
   @override
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
+  @override
   final bool disableHoverEffect;
   @override
   final bool canUnselect;
@@ -1500,8 +1578,8 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   final SelectPopupBuilder popup;
   @override
   SelectValueBuilder<Iterable<T>> get itemBuilder => (context, value) {
-        return _buildItem(multiItemBuilder, context, value);
-      };
+    return _buildItem(multiItemBuilder, context, value);
+  };
   @override
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   @override
@@ -1531,6 +1609,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
   /// - [disableHoverEffect] (bool): Whether to disable hover visual feedback, defaults to false
   /// - [borderRadius] (BorderRadiusGeometry?): Custom border radius
   /// - [padding] (EdgeInsetsGeometry?): Custom padding
+  /// - [decoration] (`WidgetStatePropertyDelegate<Decoration>?`): Per-state override of the trigger decoration
   /// - [canUnselect] (bool): Whether user can deselect items, defaults to true
   /// - [autoClosePopover] (bool?): Whether popup closes after selection, defaults to false
   /// - [enabled] (bool?): Whether multi-select is enabled for interaction
@@ -1554,6 +1633,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
     this.disableHoverEffect = false,
     this.borderRadius,
     this.padding,
+    this.decoration,
     this.canUnselect = true,
     this.autoClosePopover = false,
     this.enabled,
@@ -1597,6 +1677,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
       value: value,
       borderRadius: borderRadius,
       padding: padding,
+      decoration: decoration,
       disableHoverEffect: disableHoverEffect,
       canUnselect: canUnselect,
       autoClosePopover: autoClosePopover ?? true,
@@ -1664,7 +1745,13 @@ class SelectData {
 
   @override
   int get hashCode => Object.hash(
-      isSelected, onChanged, autoClose, hasSelection, enabled, expandIcon);
+    isSelected,
+    onChanged,
+    autoClose,
+    hasSelection,
+    enabled,
+    expandIcon,
+  );
 }
 
 /// Builder function type for creating select item delegates.
@@ -1726,6 +1813,11 @@ class SelectPopup<T> extends StatefulWidget {
   final bool disableVirtualization;
 
   /// Creates a select popup with a dynamic builder.
+  ///
+  /// Set [shrinkWrap] when the popup should size itself to its items — for
+  /// instance when the delegate mixes selectable items with a trailing action
+  /// such as a "create new item" button, where a fixed-height list would leave
+  /// the action floating in empty space.
   const SelectPopup.builder({
     super.key,
     required this.builder,
@@ -1740,9 +1832,9 @@ class SelectPopup<T> extends StatefulWidget {
     this.enableSearch = true,
     this.errorBuilder,
     this.scrollController,
-  })  : items = null,
-        shrinkWrap = false,
-        disableVirtualization = false;
+    this.shrinkWrap = false,
+  }) : items = null,
+       disableVirtualization = false;
 
   /// Creates a select popup with static items.
   const SelectPopup({
@@ -1759,9 +1851,9 @@ class SelectPopup<T> extends StatefulWidget {
     this.canUnselect,
     this.scrollController,
     this.shrinkWrap = true,
-  })  : builder = null,
-        enableSearch = false,
-        disableVirtualization = false;
+  }) : builder = null,
+       enableSearch = false,
+       disableVirtualization = false;
 
   /// Creates a select popup without virtualization optimization.
   const SelectPopup.noVirtualization({
@@ -1777,10 +1869,10 @@ class SelectPopup<T> extends StatefulWidget {
     this.autoClose,
     this.canUnselect,
     this.scrollController,
-  })  : builder = null,
-        enableSearch = false,
-        disableVirtualization = true,
-        shrinkWrap = false;
+  }) : builder = null,
+       enableSearch = false,
+       disableVirtualization = true,
+       shrinkWrap = false;
 
   /// A method used to implement SelectPopupBuilder
   SelectPopup<T> call(BuildContext context) {
@@ -1803,6 +1895,25 @@ mixin SelectPopupHandle {
 
   /// Whether any items are currently selected.
   bool get hasSelection;
+
+  /// Closes the popup, completing it with [value].
+  ///
+  /// Unlike [selectItem] this does not change the selection, so a widget
+  /// inside the popup that is not an item — a "create new item" action, say —
+  /// can run its own work and dismiss the popup on its own terms rather than
+  /// waiting for `autoClose` to fire as a side effect of a selection:
+  ///
+  /// ```dart
+  /// Button.ghost(
+  ///   onPressed: () async {
+  ///     final handle = SelectPopupHandle.of(context);
+  ///     handle.close();
+  ///     await createNewItem(context);
+  ///   },
+  ///   child: const Text('Create new'),
+  /// )
+  /// ```
+  void close([Object? value]);
 
   /// Retrieves the nearest SelectPopupHandle from the widget tree.
   static SelectPopupHandle of(BuildContext context) {
@@ -1862,148 +1973,123 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
   }
 
   @override
+  void close([Object? value]) {
+    closeOverlay(context, value);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return SubFocusScope(builder: (context, subFocusScope) {
-      return Actions(
-        actions: {
-          NextItemIntent: CallbackAction<NextItemIntent>(
-            onInvoke: (intent) {
-              subFocusScope.nextFocus();
-              return null;
-            },
-          ),
-          PreviousItemIntent: CallbackAction<PreviousItemIntent>(
-            onInvoke: (intent) {
-              subFocusScope.nextFocus(TraversalDirection.up);
-              return null;
-            },
-          ),
-          CloseMenuIntent: CallbackAction<CloseMenuIntent>(
-            onInvoke: (intent) {
-              closeOverlay(context);
-              return null;
-            },
-          ),
-          ActivateIntent: CallbackAction<ActivateIntent>(
-            onInvoke: (intent) {
-              subFocusScope.invokeActionOnFocused(intent);
-              return null;
-            },
-          ),
-        },
-        child: Shortcuts(
-          shortcuts: {
-            LogicalKeySet(LogicalKeyboardKey.tab): const NextItemIntent(),
-            LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
-                const PreviousItemIntent(),
-            LogicalKeySet(LogicalKeyboardKey.escape): const CloseMenuIntent(),
-            LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
-            LogicalKeySet(LogicalKeyboardKey.numpadEnter):
-                const ActivateIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowDown): const NextItemIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                const PreviousItemIntent(),
+    return SubFocusScope(
+      builder: (context, subFocusScope) {
+        return Actions(
+          actions: {
+            NextItemIntent: CallbackAction<NextItemIntent>(
+              onInvoke: (intent) {
+                subFocusScope.nextFocus();
+                return null;
+              },
+            ),
+            PreviousItemIntent: CallbackAction<PreviousItemIntent>(
+              onInvoke: (intent) {
+                subFocusScope.nextFocus(TraversalDirection.up);
+                return null;
+              },
+            ),
+            CloseMenuIntent: CallbackAction<CloseMenuIntent>(
+              onInvoke: (intent) {
+                closeOverlay(context);
+                return null;
+              },
+            ),
+            ActivateIntent: CallbackAction<ActivateIntent>(
+              onInvoke: (intent) {
+                subFocusScope.invokeActionOnFocused(intent);
+                return null;
+              },
+            ),
           },
-          child: Focus(
-            autofocus: !widget
-                .enableSearch, // autofocus on TextField when search enabled instead
-            child: Data<SelectPopupHandle>.inherit(
-              data: this,
-              child: ModalContainer(
-                clipBehavior: Clip.hardEdge,
-                surfaceBlur: widget.surfaceBlur,
-                surfaceOpacity: widget.surfaceOpacity,
-                padding: EdgeInsets.zero,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.enableSearch)
-                      ComponentTheme(
-                        data: const FocusOutlineTheme(
-                          border: Border.fromBorderSide(BorderSide.none),
+          child: Shortcuts(
+            shortcuts: {
+              LogicalKeySet(LogicalKeyboardKey.tab): const NextItemIntent(),
+              LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
+                  const PreviousItemIntent(),
+              LogicalKeySet(LogicalKeyboardKey.escape): const CloseMenuIntent(),
+              LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
+              LogicalKeySet(LogicalKeyboardKey.numpadEnter):
+                  const ActivateIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                  const NextItemIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                  const PreviousItemIntent(),
+            },
+            child: Focus(
+              autofocus: !widget.enableSearch, // autofocus on TextField when search enabled instead
+              child: Data<SelectPopupHandle>.inherit(
+                data: this,
+                child: ModalContainer(
+                  clipBehavior: Clip.hardEdge,
+                  surfaceBlur: widget.surfaceBlur,
+                  surfaceOpacity: widget.surfaceOpacity,
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.enableSearch)
+                        ComponentTheme(
+                          data: const FocusOutlineTheme(
+                            border: Border.fromBorderSide(BorderSide.none),
+                          ),
+                          child: TextField(
+                            controller: _searchController,
+                            border: const Border.fromBorderSide(
+                              BorderSide.none,
+                            ),
+                            borderRadius: BorderRadius.zero,
+                            features: [
+                              InputFeature.leading(
+                                const Icon(LucideIcons.search)
+                                    .iconSmall()
+                                    .iconMutedForeground(),
+                              ),
+                            ],
+                            autofocus: true,
+                            placeholder: widget.searchPlaceholder,
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 12,
+                                ) *
+                                scaling,
+                          ),
                         ),
-                        child: TextField(
-                          controller: _searchController,
-                          border: const Border.fromBorderSide(BorderSide.none),
-                          borderRadius: BorderRadius.zero,
-                          features: [
-                            InputFeature.leading(
-                              const Icon(
-                                LucideIcons.search,
-                              ).iconSmall().iconMutedForeground(),
-                            )
-                          ],
-                          autofocus: true,
-                          placeholder: widget.searchPlaceholder,
-                          padding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 12) *
-                              scaling,
-                        ),
-                      ),
-                    Flexible(
-                      child: ListenableBuilder(
-                        listenable: _searchController,
-                        builder: (context, _) {
-                          return CachedValueWidget(
-                            value: _searchController.text.isEmpty
-                                ? null
-                                : _searchController.text,
-                            builder: (context, searchQuery) {
-                              return FutureOrBuilder<SelectItemDelegate?>(
-                                future: widget.builder != null
-                                    ? widget.builder!.call(context, searchQuery)
-                                    : widget.items != null
-                                        ? widget.items!
-                                        : SelectItemDelegate.empty,
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    Widget? loadingBuilder =
-                                        widget.loadingBuilder?.call(context);
-                                    if (loadingBuilder != null) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          if (widget.enableSearch)
-                                            const Divider(),
-                                          Flexible(child: loadingBuilder),
-                                        ],
-                                      );
-                                    }
-                                    return const SizedBox();
-                                  }
-                                  if (snapshot.hasError) {
-                                    Widget? errorBuilder =
-                                        widget.errorBuilder?.call(
-                                      context,
-                                      snapshot.error!,
-                                      snapshot.stackTrace,
-                                    );
-                                    if (errorBuilder != null) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          if (widget.enableSearch)
-                                            const Divider(),
-                                          Flexible(child: errorBuilder),
-                                        ],
-                                      );
-                                    }
-                                    return const SizedBox();
-                                  }
-                                  if (snapshot.hasData &&
-                                      snapshot.data?.estimatedChildCount != 0) {
-                                    var data = snapshot.data!;
-                                    return CachedValueWidget(
-                                      value: data,
-                                      builder: (context, data) {
+                      Flexible(
+                        child: ListenableBuilder(
+                          listenable: _searchController,
+                          builder: (context, _) {
+                            return CachedValueWidget(
+                              value: _searchController.text.isEmpty
+                                  ? null
+                                  : _searchController.text,
+                              builder: (context, searchQuery) {
+                                return FutureOrBuilder<SelectItemDelegate?>(
+                                  future: widget.builder != null
+                                      ? widget.builder!.call(
+                                          context,
+                                          searchQuery,
+                                        )
+                                      : widget.items != null
+                                      ? widget.items!
+                                      : SelectItemDelegate.empty,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      Widget? loadingBuilder = widget
+                                          .loadingBuilder
+                                          ?.call(context);
+                                      if (loadingBuilder != null) {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
@@ -2011,211 +2097,256 @@ class _SelectPopupState<T> extends State<SelectPopup<T>>
                                           children: [
                                             if (widget.enableSearch)
                                               const Divider(),
-                                            Flexible(
-                                              child: Stack(
-                                                fit: StackFit.passthrough,
-                                                children: [
-                                                  if (widget
-                                                      .disableVirtualization)
-                                                    SingleChildScrollView(
-                                                      controller:
-                                                          _scrollController,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                                  4) *
-                                                              scaling,
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .stretch,
-                                                        children: [
-                                                          for (var i = 0;
+                                            Flexible(child: loadingBuilder),
+                                          ],
+                                        );
+                                      }
+                                      return const SizedBox();
+                                    }
+                                    if (snapshot.hasError) {
+                                      Widget? errorBuilder = widget.errorBuilder
+                                          ?.call(
+                                            context,
+                                            snapshot.error!,
+                                            snapshot.stackTrace,
+                                          );
+                                      if (errorBuilder != null) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            if (widget.enableSearch)
+                                              const Divider(),
+                                            Flexible(child: errorBuilder),
+                                          ],
+                                        );
+                                      }
+                                      return const SizedBox();
+                                    }
+                                    if (snapshot.hasData &&
+                                        snapshot.data?.estimatedChildCount !=
+                                            0) {
+                                      var data = snapshot.data!;
+                                      return CachedValueWidget(
+                                        value: data,
+                                        builder: (context, data) {
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              if (widget.enableSearch)
+                                                const Divider(),
+                                              Flexible(
+                                                child: Stack(
+                                                  fit: StackFit.passthrough,
+                                                  children: [
+                                                    if (widget
+                                                        .disableVirtualization)
+                                                      SingleChildScrollView(
+                                                        controller:
+                                                            _scrollController,
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                              4,
+                                                            ) *
+                                                            scaling,
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .stretch,
+                                                          children: [
+                                                            for (
+                                                              var i = 0;
                                                               i <
                                                                   (data as SelectItemList)
                                                                       .children
                                                                       .length;
-                                                              i++)
-                                                            data.build(
-                                                                context, i),
-                                                        ],
+                                                              i++
+                                                            )
+                                                              data.build(
+                                                                context,
+                                                                i,
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    else
+                                                      ListView.builder(
+                                                        controller:
+                                                            _scrollController,
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                              4,
+                                                            ) *
+                                                            scaling,
+                                                        itemBuilder: data.build,
+                                                        shrinkWrap:
+                                                            widget.shrinkWrap,
+                                                        itemCount: data
+                                                            .estimatedChildCount,
                                                       ),
-                                                    )
-                                                  else
-                                                    ListView.builder(
-                                                      controller:
+                                                    ListenableBuilder(
+                                                      listenable:
                                                           _scrollController,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                                  4) *
-                                                              scaling,
-                                                      itemBuilder: data.build,
-                                                      shrinkWrap:
-                                                          widget.shrinkWrap,
-                                                      itemCount: data
-                                                          .estimatedChildCount,
+                                                      builder: (context, child) {
+                                                        return Visibility(
+                                                          visible:
+                                                              _scrollController
+                                                                  .offset >
+                                                              0,
+                                                          child: Positioned(
+                                                            top: 0,
+                                                            left: 0,
+                                                            right: 0,
+                                                            child: HoverActivity(
+                                                              hitTestBehavior:
+                                                                  HitTestBehavior
+                                                                      .translucent,
+                                                              debounceDuration:
+                                                                  const Duration(
+                                                                    milliseconds:
+                                                                        16,
+                                                                  ),
+                                                              onHover: () {
+                                                                // decrease scroll offset
+                                                                var value =
+                                                                    _scrollController
+                                                                        .offset -
+                                                                    8;
+                                                                value = value.clamp(
+                                                                  0.0,
+                                                                  _scrollController
+                                                                      .position
+                                                                      .maxScrollExtent,
+                                                                );
+                                                                _scrollController
+                                                                    .jumpTo(
+                                                                      value,
+                                                                    );
+                                                              },
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          4,
+                                                                    ) *
+                                                                    scaling,
+                                                                child: const Icon(
+                                                                  RadixIcons
+                                                                      .chevronUp,
+                                                                ).iconX3Small(),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
-                                                  ListenableBuilder(
-                                                    listenable:
-                                                        _scrollController,
-                                                    builder: (context, child) {
-                                                      return Visibility(
-                                                        visible:
-                                                            _scrollController
-                                                                    .offset >
-                                                                0,
-                                                        child: Positioned(
-                                                          top: 0,
-                                                          left: 0,
-                                                          right: 0,
-                                                          child: HoverActivity(
-                                                            hitTestBehavior:
-                                                                HitTestBehavior
-                                                                    .translucent,
-                                                            debounceDuration:
-                                                                const Duration(
-                                                              milliseconds: 16,
-                                                            ),
-                                                            onHover: () {
-                                                              // decrease scroll offset
-                                                              var value =
-                                                                  _scrollController
-                                                                          .offset -
-                                                                      8;
-                                                              value =
-                                                                  value.clamp(
-                                                                0.0,
-                                                                _scrollController
-                                                                    .position
-                                                                    .maxScrollExtent,
-                                                              );
+                                                    ListenableBuilder(
+                                                      listenable:
+                                                          _scrollController,
+                                                      builder: (context, child) {
+                                                        return Visibility(
+                                                          visible:
                                                               _scrollController
-                                                                  .jumpTo(
-                                                                value,
-                                                              );
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                        vertical:
-                                                                            4,
-                                                                      ) *
-                                                                      scaling,
-                                                              child: const Icon(
-                                                                RadixIcons
-                                                                    .chevronUp,
-                                                              ).iconX3Small(),
+                                                                  .hasClients &&
+                                                              _scrollController
+                                                                  .position
+                                                                  .hasContentDimensions &&
+                                                              _scrollController
+                                                                      .offset <
+                                                                  _scrollController
+                                                                      .position
+                                                                      .maxScrollExtent,
+                                                          child: Positioned(
+                                                            bottom: 0,
+                                                            left: 0,
+                                                            right: 0,
+                                                            child: HoverActivity(
+                                                              hitTestBehavior:
+                                                                  HitTestBehavior
+                                                                      .translucent,
+                                                              debounceDuration:
+                                                                  const Duration(
+                                                                    milliseconds:
+                                                                        16,
+                                                                  ),
+                                                              onHover: () {
+                                                                // increase scroll offset
+                                                                var value =
+                                                                    _scrollController
+                                                                        .offset +
+                                                                    8;
+                                                                value = value.clamp(
+                                                                  0.0,
+                                                                  _scrollController
+                                                                      .position
+                                                                      .maxScrollExtent,
+                                                                );
+                                                                _scrollController
+                                                                    .jumpTo(
+                                                                      value,
+                                                                    );
+                                                              },
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          4,
+                                                                    ) *
+                                                                    scaling,
+                                                                child: const Icon(
+                                                                  RadixIcons
+                                                                      .chevronDown,
+                                                                ).iconX3Small(),
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                  ListenableBuilder(
-                                                    listenable:
-                                                        _scrollController,
-                                                    builder: (context, child) {
-                                                      return Visibility(
-                                                        visible: _scrollController
-                                                                .hasClients &&
-                                                            _scrollController
-                                                                .position
-                                                                .hasContentDimensions &&
-                                                            _scrollController
-                                                                    .offset <
-                                                                _scrollController
-                                                                    .position
-                                                                    .maxScrollExtent,
-                                                        child: Positioned(
-                                                          bottom: 0,
-                                                          left: 0,
-                                                          right: 0,
-                                                          child: HoverActivity(
-                                                            hitTestBehavior:
-                                                                HitTestBehavior
-                                                                    .translucent,
-                                                            debounceDuration:
-                                                                const Duration(
-                                                              milliseconds: 16,
-                                                            ),
-                                                            onHover: () {
-                                                              // increase scroll offset
-                                                              var value =
-                                                                  _scrollController
-                                                                          .offset +
-                                                                      8;
-                                                              value =
-                                                                  value.clamp(
-                                                                0.0,
-                                                                _scrollController
-                                                                    .position
-                                                                    .maxScrollExtent,
-                                                              );
-                                                              _scrollController
-                                                                  .jumpTo(
-                                                                value,
-                                                              );
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                        vertical:
-                                                                            4,
-                                                                      ) *
-                                                                      scaling,
-                                                              child: const Icon(
-                                                                RadixIcons
-                                                                    .chevronDown,
-                                                              ).iconX3Small(),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
-                                  Widget? emptyBuilder =
-                                      widget.emptyBuilder?.call(
-                                    context,
-                                  );
-                                  if (emptyBuilder != null) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        if (widget.enableSearch)
-                                          const Divider(),
-                                        Flexible(child: emptyBuilder),
-                                      ],
-                                    );
-                                  }
-                                  return const SizedBox();
-                                },
-                              );
-                            },
-                          );
-                        },
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                    Widget? emptyBuilder = widget.emptyBuilder
+                                        ?.call(context);
+                                    if (emptyBuilder != null) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          if (widget.enableSearch)
+                                            const Divider(),
+                                          Flexible(child: emptyBuilder),
+                                        ],
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -2261,7 +2392,9 @@ class EmptySelectItem extends SelectItemDelegate {
 ///
 /// Takes the build context and item index, returns the widget for that item.
 typedef SelectItemWidgetBuilder = Widget Function(
-    BuildContext context, int index);
+  BuildContext context,
+  int index,
+);
 
 /// A select item delegate that uses a builder function.
 ///

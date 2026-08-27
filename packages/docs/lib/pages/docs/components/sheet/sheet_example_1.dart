@@ -51,7 +51,7 @@ class _SheetExample1State extends State<SheetExample1> {
                 ),
                 TextButton(
                   density: ButtonDensity.icon,
-                  child: const Icon(Icons.close),
+                  child: const Icon(LucideIcons.x),
                   onPressed: () {
                     // Close the sheet without saving.
                     closeSheet(context);

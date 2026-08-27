@@ -9,67 +9,89 @@ extension IconExtension on Widget {
   /// Wraps the icon with extra-extra-extra-extra small size theme.
   WrappedIcon get iconX4Small {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.x4Small, child: this);
+      data: (context, theme) => theme.iconTheme.x4Small,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra-extra-extra small size theme.
   WrappedIcon get iconX3Small {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.x3Small, child: this);
+      data: (context, theme) => theme.iconTheme.x3Small,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra-extra small size theme.
   WrappedIcon get iconX2Small {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.x2Small, child: this);
+      data: (context, theme) => theme.iconTheme.x2Small,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra small size theme.
   WrappedIcon get iconXSmall {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.xSmall, child: this);
+      data: (context, theme) => theme.iconTheme.xSmall,
+      child: this,
+    );
   }
 
   /// Wraps the icon with small size theme.
   WrappedIcon get iconSmall {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.small, child: this);
+      data: (context, theme) => theme.iconTheme.small,
+      child: this,
+    );
   }
 
   /// Wraps the icon with medium size theme.
   WrappedIcon get iconMedium {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.medium, child: this);
+      data: (context, theme) => theme.iconTheme.medium,
+      child: this,
+    );
   }
 
   /// Wraps the icon with large size theme.
   WrappedIcon get iconLarge {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.large, child: this);
+      data: (context, theme) => theme.iconTheme.large,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra large size theme.
   WrappedIcon get iconXLarge {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.xLarge, child: this);
+      data: (context, theme) => theme.iconTheme.xLarge,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra-extra large size theme.
   WrappedIcon get iconX2Large {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.x2Large, child: this);
+      data: (context, theme) => theme.iconTheme.x2Large,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra-extra-extra large size theme.
   WrappedIcon get iconX3Large {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.x3Large, child: this);
+      data: (context, theme) => theme.iconTheme.x3Large,
+      child: this,
+    );
   }
 
   /// Wraps the icon with extra-extra-extra-extra large size theme.
   WrappedIcon get iconX4Large {
     return WrappedIcon(
-        data: (context, theme) => theme.iconTheme.x4Large, child: this);
+      data: (context, theme) => theme.iconTheme.x4Large,
+      child: this,
+    );
   }
 
   /// Wraps the icon with muted foreground color.
@@ -77,9 +99,10 @@ extension IconExtension on Widget {
   /// Applies a subdued color suitable for secondary or less prominent icons.
   WrappedIcon get iconMutedForeground {
     return WrappedIcon(
-        data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.mutedForeground),
-        child: this);
+      data: (context, theme) =>
+          IconThemeData(color: theme.colorScheme.mutedForeground),
+      child: this,
+    );
   }
 
   /// Wraps the icon with destructive foreground color.
@@ -88,9 +111,10 @@ extension IconExtension on Widget {
   @Deprecated('Legacy color')
   WrappedIcon get iconDestructiveForeground {
     return WrappedIcon(
-        data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.destructiveForeground),
-        child: this);
+      data: (context, theme) =>
+          IconThemeData(color: theme.colorScheme.destructiveForeground),
+      child: this,
+    );
   }
 
   /// Wraps the icon with primary foreground color.
@@ -98,9 +122,10 @@ extension IconExtension on Widget {
   /// Typically used for icons on primary-colored backgrounds.
   WrappedIcon get iconPrimaryForeground {
     return WrappedIcon(
-        data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.primaryForeground),
-        child: this);
+      data: (context, theme) =>
+          IconThemeData(color: theme.colorScheme.primaryForeground),
+      child: this,
+    );
   }
 
   /// Wraps the icon with primary color.
@@ -108,9 +133,9 @@ extension IconExtension on Widget {
   /// Applies the theme's primary accent color to the icon.
   WrappedIcon get iconPrimary {
     return WrappedIcon(
-        data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.primary),
-        child: this);
+      data: (context, theme) => IconThemeData(color: theme.colorScheme.primary),
+      child: this,
+    );
   }
 
   /// Wraps the icon with secondary color.
@@ -118,9 +143,10 @@ extension IconExtension on Widget {
   /// Applies the theme's secondary accent color to the icon.
   WrappedIcon get iconSecondary {
     return WrappedIcon(
-        data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.secondary),
-        child: this);
+      data: (context, theme) =>
+          IconThemeData(color: theme.colorScheme.secondary),
+      child: this,
+    );
   }
 
   /// Wraps the icon with secondary foreground color.
@@ -128,9 +154,10 @@ extension IconExtension on Widget {
   /// Typically used for icons on secondary-colored backgrounds.
   WrappedIcon get iconSecondaryForeground {
     return WrappedIcon(
-        data: (context, theme) =>
-            IconThemeData(color: theme.colorScheme.secondaryForeground),
-        child: this);
+      data: (context, theme) =>
+          IconThemeData(color: theme.colorScheme.secondaryForeground),
+      child: this,
+    );
   }
 }
 
@@ -142,7 +169,9 @@ extension IconExtension on Widget {
 ///
 /// Returns: `T` — typically [IconThemeData].
 typedef WrappedIconDataBuilder<T> = T Function(
-    BuildContext context, ThemeData theme);
+  BuildContext context,
+  ThemeData theme,
+);
 
 /// A widget that wraps an icon with custom theme data.
 ///
@@ -157,7 +186,7 @@ typedef WrappedIconDataBuilder<T> = T Function(
 ///     size: 24,
 ///     color: theme.colorScheme.primary,
 ///   ),
-///   child: Icon(Icons.star),
+///   child: Icon(LucideIcons.star),
 /// )
 /// ```
 class WrappedIcon extends StatelessWidget {
@@ -172,11 +201,7 @@ class WrappedIcon extends StatelessWidget {
   /// Parameters:
   /// - [data] (`WrappedIconDataBuilder<IconThemeData>`, required): Theme builder.
   /// - [child] (`Widget`, required): Icon widget to wrap.
-  const WrappedIcon({
-    super.key,
-    required this.data,
-    required this.child,
-  });
+  const WrappedIcon({super.key, required this.data, required this.child});
 
   /// Returns this widget (callable syntax support).
   ///
@@ -189,10 +214,7 @@ class WrappedIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final iconTheme = data(context, theme);
-    return IconTheme.merge(
-      data: iconTheme,
-      child: child,
-    );
+    return IconTheme.merge(data: iconTheme, child: child);
   }
 
   /// Creates a copy of this wrapped icon with modified icon theme data.
@@ -201,9 +223,7 @@ class WrappedIcon extends StatelessWidget {
   /// - [data] (`WrappedIconDataBuilder<IconThemeData>?`, optional): New icon theme data builder.
   ///
   /// Returns: A new [WrappedIcon] with merged theme data.
-  WrappedIcon copyWith({
-    WrappedIconDataBuilder<IconThemeData>? data,
-  }) {
+  WrappedIcon copyWith({WrappedIconDataBuilder<IconThemeData>? data}) {
     return WrappedIcon(
       data: (context, theme) {
         return data?.call(context, theme).merge(this.data(context, theme)) ??

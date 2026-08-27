@@ -127,7 +127,7 @@ class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
                 density: ButtonDensity.icon,
                 onPressed: _refresh,
                 child: const Icon(
-                  Icons.refresh,
+                  LucideIcons.refreshCw,
                   size: 16,
                 ),
               ),
@@ -150,7 +150,7 @@ class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
                     launchUrlString(url);
                   },
                   child: const Icon(
-                    Icons.open_in_new,
+                    LucideIcons.externalLink,
                     size: 16,
                   ),
                 ),
@@ -172,7 +172,7 @@ class _CodeBlockFutureBuilderState extends State<CodeBlockFutureBuilder> {
                   launchUrlString(url);
                 },
                 child: const Icon(
-                  Icons.open_in_new,
+                  LucideIcons.externalLink,
                   size: 16,
                 ),
               )

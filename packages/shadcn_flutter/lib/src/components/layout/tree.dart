@@ -101,8 +101,9 @@ class TreeTheme extends ComponentThemeData {
       branchLine: branchLine == null ? this.branchLine : branchLine(),
       padding: padding == null ? this.padding : padding(),
       expandIcon: expandIcon == null ? this.expandIcon : expandIcon(),
-      allowMultiSelect:
-          allowMultiSelect == null ? this.allowMultiSelect : allowMultiSelect(),
+      allowMultiSelect: allowMultiSelect == null
+          ? this.allowMultiSelect
+          : allowMultiSelect(),
       recursiveSelection: recursiveSelection == null
           ? this.recursiveSelection
           : recursiveSelection(),
@@ -120,7 +121,12 @@ class TreeTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      branchLine, padding, expandIcon, allowMultiSelect, recursiveSelection);
+    branchLine,
+    padding,
+    expandIcon,
+    allowMultiSelect,
+    recursiveSelection,
+  );
 
   @override
   String toString() =>
@@ -196,10 +202,7 @@ abstract class TreeNode<T> {
   /// TreeNode<String> selectedNode = node.updateState(selected: true);
   /// TreeNode<String> both = node.updateState(expanded: true, selected: true);
   /// ```
-  TreeNode<T> updateState({
-    bool? expanded,
-    bool? selected,
-  });
+  TreeNode<T> updateState({bool? expanded, bool? selected});
 
   /// Creates a new instance with updated children list.
   ///
@@ -311,10 +314,7 @@ class TreeItemNode<T> extends TreeNode<T> {
   });
 
   @override
-  TreeItemNode<T> updateState({
-    bool? expanded,
-    bool? selected,
-  }) {
+  TreeItemNode<T> updateState({bool? expanded, bool? selected}) {
     return TreeItemNode(
       data: data,
       children: children,
@@ -422,23 +422,16 @@ class TreeRootNode<T> extends TreeNode<T> {
   ///   ],
   /// );
   /// ```
-  TreeRootNode({
-    required this.children,
-  });
+  TreeRootNode({required this.children});
 
   @override
-  TreeRootNode<T> updateState({
-    bool? expanded,
-    bool? selected,
-  }) {
+  TreeRootNode<T> updateState({bool? expanded, bool? selected}) {
     return this;
   }
 
   @override
   TreeRootNode<T> updateChildren(List<TreeNode<T>> children) {
-    return TreeRootNode(
-      children: children,
-    );
+    return TreeRootNode(children: children);
   }
 
   @override
@@ -488,7 +481,9 @@ enum FocusChangeReason {
 }
 
 BorderRadius _borderRadiusFromPosition(
-    SelectionPosition? position, double value) {
+  SelectionPosition? position,
+  double value,
+) {
   if (position == SelectionPosition.start) {
     return BorderRadius.vertical(top: Radius.circular(value));
   } else if (position == SelectionPosition.end) {
@@ -526,8 +521,14 @@ class TreeNodeData<T> {
   SelectionPosition? selectionPosition;
 
   /// Creates a [TreeNodeData] with the specified properties.
-  TreeNodeData(this.depth, this.node, this.indentGuide, this.expanded,
-      this.expandIcon, this.onFocusChanged);
+  TreeNodeData(
+    this.depth,
+    this.node,
+    this.indentGuide,
+    this.expanded,
+    this.expandIcon,
+    this.onFocusChanged,
+  );
 }
 
 /// Represents depth information for a tree node.
@@ -556,7 +557,9 @@ typedef TreeNodeUnaryOperator<K> = TreeNode<K>? Function(TreeNode<K> node);
 /// Similar to [TreeNodeUnaryOperator] but provides access to the parent node.
 /// Useful for operations that need parent-child relationship information.
 typedef TreeNodeUnaryOperatorWithParent<K> = TreeNode<K>? Function(
-    TreeNode<K>? parent, TreeNode<K> node);
+  TreeNode<K>? parent,
+  TreeNode<K> node,
+);
 
 /// Extension methods for manipulating lists of tree nodes.
 ///
@@ -832,7 +835,8 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
   ///
   /// Returns: `List<TreeNode<K>>` — new tree with transformed nodes.
   List<TreeNode<K>> replaceNodesWithParent(
-      TreeNodeUnaryOperatorWithParent<K> operator) {
+    TreeNodeUnaryOperatorWithParent<K> operator,
+  ) {
     return Tree.replaceNodesWithParent(this, operator);
   }
 
@@ -853,7 +857,10 @@ extension TreeNodeListExtension<K> on List<TreeNode<K>> {
 /// - [multiSelect]: Whether the operation allows multiple selection
 /// - [selected]: Whether the nodes are being selected (true) or deselected (false)
 typedef TreeNodeSelectionChanged<T> = void Function(
-    List<TreeNode<T>> selectedNodes, bool multiSelect, bool selected);
+  List<TreeNode<T>> selectedNodes,
+  bool multiSelect,
+  bool selected,
+);
 
 /// Default handler for tree node selection changes.
 ///
@@ -1000,7 +1007,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns a `TreeNodeSelectionChanged<K>` function that handles selection changes.
   static TreeNodeSelectionChanged<K> defaultSelectionHandler<K>(
-      List<TreeNode<K>> nodes, ValueChanged<List<TreeNode<K>>> onChanged) {
+    List<TreeNode<K>> nodes,
+    ValueChanged<List<TreeNode<K>>> onChanged,
+  ) {
     return TreeSelectionDefaultHandler(nodes, onChanged).call;
   }
 
@@ -1015,20 +1024,27 @@ class Tree<T> extends StatefulWidget {
   /// - [onChanged] (`ValueChanged<List<TreeNode<K>>>`, required): Callback when nodes change
   ///
   /// Returns a `ValueChanged<bool>` function that handles expand/collapse events.
-  static ValueChanged<bool> defaultItemExpandHandler<K>(List<TreeNode<K>> nodes,
-      TreeNode<K> target, ValueChanged<List<TreeNode<K>>> onChanged) {
+  static ValueChanged<bool> defaultItemExpandHandler<K>(
+    List<TreeNode<K>> nodes,
+    TreeNode<K> target,
+    ValueChanged<List<TreeNode<K>>> onChanged,
+  ) {
     return TreeItemExpandDefaultHandler(nodes, target, onChanged).call;
   }
 
   static List<TreeNode<K>>? _replaceNodes<K>(
-      List<TreeNode<K>> nodes, TreeNodeUnaryOperator<K> operator) {
+    List<TreeNode<K>> nodes,
+    TreeNodeUnaryOperator<K> operator,
+  ) {
     List<TreeNode<K>> newNodes = List.from(nodes);
     bool changed = false;
     for (int i = 0; i < newNodes.length; i++) {
       final node = newNodes[i];
       var newNode = operator(node);
-      List<TreeNode<K>>? newChildren =
-          _replaceNodes((newNode ?? node).children, operator);
+      List<TreeNode<K>>? newChildren = _replaceNodes(
+        (newNode ?? node).children,
+        operator,
+      );
       if (newChildren != null) {
         newNode = (newNode ?? node).updateChildren(newChildren);
       }
@@ -1040,15 +1056,21 @@ class Tree<T> extends StatefulWidget {
     return changed ? newNodes : null;
   }
 
-  static List<TreeNode<K>>? _replaceNodesWithParent<K>(TreeNode<K>? parent,
-      List<TreeNode<K>> nodes, TreeNodeUnaryOperatorWithParent<K> operator) {
+  static List<TreeNode<K>>? _replaceNodesWithParent<K>(
+    TreeNode<K>? parent,
+    List<TreeNode<K>> nodes,
+    TreeNodeUnaryOperatorWithParent<K> operator,
+  ) {
     List<TreeNode<K>> newNodes = List.from(nodes);
     bool changed = false;
     for (int i = 0; i < newNodes.length; i++) {
       final node = newNodes[i];
       var newNode = operator(parent, node);
       List<TreeNode<K>>? newChildren = _replaceNodesWithParent(
-          newNode ?? node, (newNode ?? node).children, operator);
+        newNode ?? node,
+        (newNode ?? node).children,
+        operator,
+      );
       if (newChildren != null) {
         newNode = (newNode ?? node).updateChildren(newChildren);
       }
@@ -1068,7 +1090,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodes<K>(
-      List<TreeNode<K>> nodes, TreeNodeUnaryOperator<K> operator) {
+    List<TreeNode<K>> nodes,
+    TreeNodeUnaryOperator<K> operator,
+  ) {
     return _replaceNodes(nodes, operator) ?? nodes;
   }
 
@@ -1080,7 +1104,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — transformed tree.
   static List<TreeNode<K>> replaceNodesWithParent<K>(
-      List<TreeNode<K>> nodes, TreeNodeUnaryOperatorWithParent<K> operator) {
+    List<TreeNode<K>> nodes,
+    TreeNodeUnaryOperatorWithParent<K> operator,
+  ) {
     return _replaceNodesWithParent(null, nodes, operator) ?? nodes;
   }
 
@@ -1093,7 +1119,10 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with node replaced.
   static List<TreeNode<K>> replaceNode<K>(
-      List<TreeNode<K>> nodes, TreeNode<K> oldNode, TreeNode<K> newNode) {
+    List<TreeNode<K>> nodes,
+    TreeNode<K> oldNode,
+    TreeNode<K> newNode,
+  ) {
     return replaceNodes(nodes, (node) {
       return node == oldNode ? newNode : null;
     });
@@ -1108,7 +1137,10 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with item replaced.
   static List<TreeNode<K>> replaceItem<K>(
-      List<TreeNode<K>> nodes, K oldItem, TreeNode<K> newItem) {
+    List<TreeNode<K>> nodes,
+    K oldItem,
+    TreeNode<K> newItem,
+  ) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItemNode<K> && node.data == oldItem) {
         return newItem;
@@ -1124,7 +1156,8 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with updated selection.
   static List<TreeNode<K>> updateRecursiveSelection<K>(
-      List<TreeNode<K>> nodes) {
+    List<TreeNode<K>> nodes,
+  ) {
     return replaceNodesWithParent(nodes, (parent, node) {
       if (node is TreeItemNode<K> &&
           !node.selected &&
@@ -1192,7 +1225,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with node expanded.
   static List<TreeNode<K>> expandNode<K>(
-      List<TreeNode<K>> nodes, TreeNode<K> target) {
+    List<TreeNode<K>> nodes,
+    TreeNode<K> target,
+  ) {
     return replaceNodes(nodes, (node) {
       return node == target ? node.updateState(expanded: true) : null;
     });
@@ -1222,7 +1257,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with node collapsed.
   static List<TreeNode<K>> collapseNode<K>(
-      List<TreeNode<K>> nodes, TreeNode<K> target) {
+    List<TreeNode<K>> nodes,
+    TreeNode<K> target,
+  ) {
     return replaceNodes(nodes, (node) {
       return node == target ? node.updateState(expanded: false) : null;
     });
@@ -1252,7 +1289,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with node selected.
   static List<TreeNode<K>> selectNode<K>(
-      List<TreeNode<K>> nodes, TreeNode<K> target) {
+    List<TreeNode<K>> nodes,
+    TreeNode<K> target,
+  ) {
     return replaceNodes(nodes, (node) {
       return node == target ? node.updateState(selected: true) : null;
     });
@@ -1282,7 +1321,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with node deselected.
   static List<TreeNode<K>> deselectNode<K>(
-      List<TreeNode<K>> nodes, TreeNode<K> target) {
+    List<TreeNode<K>> nodes,
+    TreeNode<K> target,
+  ) {
     return replaceNodes(nodes, (node) {
       return node == target ? node.updateState(selected: false) : null;
     });
@@ -1312,7 +1353,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with node selection toggled.
   static List<TreeNode<K>> toggleSelectNode<K>(
-      List<TreeNode<K>> nodes, TreeNode<K> target) {
+    List<TreeNode<K>> nodes,
+    TreeNode<K> target,
+  ) {
     return replaceNodes(nodes, (node) {
       return node == target ? node.updateState(selected: !node.selected) : null;
     });
@@ -1326,7 +1369,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with nodes toggled.
   static List<TreeNode<K>> toggleSelectNodes<K>(
-      List<TreeNode<K>> nodes, Iterable<TreeNode<K>> targets) {
+    List<TreeNode<K>> nodes,
+    Iterable<TreeNode<K>> targets,
+  ) {
     return replaceNodes(nodes, (node) {
       return targets.contains(node)
           ? node.updateState(selected: !node.selected)
@@ -1342,7 +1387,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with item toggled.
   static List<TreeNode<K>> toggleSelectItem<K>(
-      List<TreeNode<K>> nodes, K target) {
+    List<TreeNode<K>> nodes,
+    K target,
+  ) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItemNode<K> && node.data == target) {
         return node.updateState(selected: !node.selected);
@@ -1359,7 +1406,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with items toggled.
   static List<TreeNode<K>> toggleSelectItems<K>(
-      List<TreeNode<K>> nodes, Iterable<K> targets) {
+    List<TreeNode<K>> nodes,
+    Iterable<K> targets,
+  ) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItemNode<K> && targets.contains(node.data)) {
         return node.updateState(selected: !node.selected);
@@ -1412,7 +1461,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with specified nodes selected.
   static List<TreeNode<K>> selectNodes<K>(
-      List<TreeNode<K>> nodes, Iterable<TreeNode<K>> selectedNodes) {
+    List<TreeNode<K>> nodes,
+    Iterable<TreeNode<K>> selectedNodes,
+  ) {
     return replaceNodes(nodes, (node) {
       return selectedNodes.contains(node)
           ? node.updateState(selected: true)
@@ -1428,7 +1479,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with specified items selected.
   static List<TreeNode<K>> selectItems<K>(
-      List<TreeNode<K>> nodes, Iterable<K> selectedItems) {
+    List<TreeNode<K>> nodes,
+    Iterable<K> selectedItems,
+  ) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItemNode<K> && selectedItems.contains(node.data)) {
         return node.updateState(selected: true);
@@ -1445,7 +1498,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with specified nodes deselected.
   static List<TreeNode<K>> deselectNodes<K>(
-      List<TreeNode<K>> nodes, Iterable<TreeNode<K>> deselectedNodes) {
+    List<TreeNode<K>> nodes,
+    Iterable<TreeNode<K>> deselectedNodes,
+  ) {
     return replaceNodes(nodes, (node) {
       return deselectedNodes.contains(node)
           ? node.updateState(selected: false)
@@ -1461,7 +1516,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with specified items deselected.
   static List<TreeNode<K>> deselectItems<K>(
-      List<TreeNode<K>> nodes, Iterable<K> deselectedItems) {
+    List<TreeNode<K>> nodes,
+    Iterable<K> deselectedItems,
+  ) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItemNode<K> && deselectedItems.contains(node.data)) {
         return node.updateState(selected: false);
@@ -1478,7 +1535,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with only specified nodes selected.
   static List<TreeNode<K>> setSelectedNodes<K>(
-      List<TreeNode<K>> nodes, Iterable<TreeNode<K>> selectedNodes) {
+    List<TreeNode<K>> nodes,
+    Iterable<TreeNode<K>> selectedNodes,
+  ) {
     return replaceNodes(nodes, (node) {
       return node.updateState(selected: selectedNodes.contains(node));
     });
@@ -1492,7 +1551,9 @@ class Tree<T> extends StatefulWidget {
   ///
   /// Returns: `List<TreeNode<K>>` — tree with only specified items selected.
   static List<TreeNode<K>> setSelectedItems<K>(
-      List<TreeNode<K>> nodes, Iterable<K> selectedItems) {
+    List<TreeNode<K>> nodes,
+    Iterable<K> selectedItems,
+  ) {
     return replaceNodes(nodes, (node) {
       if (node is TreeItemNode<K>) {
         return node.updateState(selected: selectedItems.contains(node.data));
@@ -1595,7 +1656,7 @@ class Tree<T> extends StatefulWidget {
   ///   recursiveSelection: true,
   ///   branchLine: BranchLine.path,
   ///   builder: (context, item) => ListTile(
-  ///     leading: Icon(item.data.isDirectory ? Icons.folder : Icons.file_copy),
+  ///     leading: Icon(item.data.isDirectory ? LucideIcons.folder : LucideIcons.copy),
   ///     title: Text(item.data.name),
   ///     subtitle: Text(item.data.path),
   ///   ),
@@ -1624,7 +1685,10 @@ class Tree<T> extends StatefulWidget {
 }
 
 typedef _TreeWalker<T> = void Function(
-    bool parentExpanded, TreeNode<T> node, List<TreeNodeDepth> depth);
+  bool parentExpanded,
+  TreeNode<T> node,
+  List<TreeNodeDepth> depth,
+);
 
 typedef _NodeWalker<T> = void Function(TreeNode<T> node);
 
@@ -1648,7 +1712,11 @@ class _TreeState<T> extends State<Tree<T>> {
         newDepth.add(TreeNodeDepth(i, nodes.length));
         walker(parentExpanded, node, newDepth);
         _walkFlattened(
-            walker, node.children, parentExpanded && node.expanded, newDepth);
+          walker,
+          node.children,
+          parentExpanded && node.expanded,
+          newDepth,
+        );
       } else if (node is TreeRootNode<T>) {
         _walkFlattened(walker, node.children, parentExpanded, depth);
       }
@@ -1668,7 +1736,11 @@ class _TreeState<T> extends State<Tree<T>> {
   }
 
   void _onChangeSelectionRange(
-      List<TreeNodeData<T>> children, int start, int end, bool recursive) {
+    List<TreeNodeData<T>> children,
+    int start,
+    int end,
+    bool recursive,
+  ) {
     if (start > end) {
       final temp = start;
       start = end;
@@ -1700,43 +1772,49 @@ class _TreeState<T> extends State<Tree<T>> {
     final padding = widget.padding ?? compTheme?.padding;
     List<TreeNodeData<T>> children = [];
     int index = 0;
-    _walkFlattened((expanded, node, depth) {
-      if (node is! TreeItemNode<T>) return;
-      final int currentIndex = index++;
-      children.add(TreeNodeData(
-        depth,
-        node,
-        branchLine,
-        expanded,
-        expandIcon,
-        (reason) {
-          if (reason == FocusChangeReason.focusScope) {
-            _startFocusedIndex = currentIndex;
-            _currentFocusedIndex = currentIndex;
-            return;
-          }
-          _currentFocusedIndex = currentIndex;
-          if (_rangeMultiSelect && _startFocusedIndex != null) {
-            var start = _startFocusedIndex!;
-            var end = _currentFocusedIndex!;
-            _onChangeSelectionRange(children, start, end, recursiveSelection);
-          } else {
-            _startFocusedIndex = currentIndex;
-            if (recursiveSelection) {
-              final selectedItems = <TreeNode<T>>[];
-              _walkNodes((node) {
-                selectedItems.add(node);
-              }, [node]);
-              widget.onSelectionChanged
-                  ?.call(selectedItems, _multiSelect, !node.selected);
-            } else {
-              widget.onSelectionChanged
-                  ?.call([node], _multiSelect, !node.selected);
+    _walkFlattened(
+      (expanded, node, depth) {
+        if (node is! TreeItemNode<T>) return;
+        final int currentIndex = index++;
+        children.add(
+          TreeNodeData(depth, node, branchLine, expanded, expandIcon, (reason) {
+            if (reason == FocusChangeReason.focusScope) {
+              _startFocusedIndex = currentIndex;
+              _currentFocusedIndex = currentIndex;
+              return;
             }
-          }
-        },
-      ));
-    }, widget.nodes, true, []);
+            _currentFocusedIndex = currentIndex;
+            if (_rangeMultiSelect && _startFocusedIndex != null) {
+              var start = _startFocusedIndex!;
+              var end = _currentFocusedIndex!;
+              _onChangeSelectionRange(children, start, end, recursiveSelection);
+            } else {
+              _startFocusedIndex = currentIndex;
+              if (recursiveSelection) {
+                final selectedItems = <TreeNode<T>>[];
+                _walkNodes((node) {
+                  selectedItems.add(node);
+                }, [node]);
+                widget.onSelectionChanged?.call(
+                  selectedItems,
+                  _multiSelect,
+                  !node.selected,
+                );
+              } else {
+                widget.onSelectionChanged?.call(
+                  [node],
+                  _multiSelect,
+                  !node.selected,
+                );
+              }
+            }
+          }),
+        );
+      },
+      widget.nodes,
+      true,
+      [],
+    );
     int selectedCount = 0;
     for (int i = 0; i < children.length; i++) {
       final child = children[i];
@@ -1784,28 +1862,42 @@ class _TreeState<T> extends State<Tree<T>> {
           LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.arrowDown):
               const DirectionalSelectTreeNodeIntent(true),
           LogicalKeySet(
-                  LogicalKeyboardKey.shiftLeft, LogicalKeyboardKey.arrowUp):
-              const DirectionalSelectTreeNodeIntent(false),
+            LogicalKeyboardKey.shiftLeft,
+            LogicalKeyboardKey.arrowUp,
+          ): const DirectionalSelectTreeNodeIntent(
+            false,
+          ),
           LogicalKeySet(
-                  LogicalKeyboardKey.shiftLeft, LogicalKeyboardKey.arrowDown):
-              const DirectionalSelectTreeNodeIntent(true),
+            LogicalKeyboardKey.shiftLeft,
+            LogicalKeyboardKey.arrowDown,
+          ): const DirectionalSelectTreeNodeIntent(
+            true,
+          ),
           LogicalKeySet(
-                  LogicalKeyboardKey.shiftRight, LogicalKeyboardKey.arrowUp):
-              const DirectionalSelectTreeNodeIntent(false),
+            LogicalKeyboardKey.shiftRight,
+            LogicalKeyboardKey.arrowUp,
+          ): const DirectionalSelectTreeNodeIntent(
+            false,
+          ),
           LogicalKeySet(
-                  LogicalKeyboardKey.shiftRight, LogicalKeyboardKey.arrowDown):
-              const DirectionalSelectTreeNodeIntent(true),
+            LogicalKeyboardKey.shiftRight,
+            LogicalKeyboardKey.arrowDown,
+          ): const DirectionalSelectTreeNodeIntent(
+            true,
+          ),
 
           // multi select
           LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.space):
               const SelectTreeNodeIntent(),
           LogicalKeySet(
-                  LogicalKeyboardKey.controlLeft, LogicalKeyboardKey.space):
-              const SelectTreeNodeIntent(),
+            LogicalKeyboardKey.controlLeft,
+            LogicalKeyboardKey.space,
+          ): const SelectTreeNodeIntent(),
           LogicalKeySet(
-                  LogicalKeyboardKey.controlRight, LogicalKeyboardKey.space):
-              const SelectTreeNodeIntent(),
-        }
+            LogicalKeyboardKey.controlRight,
+            LogicalKeyboardKey.space,
+          ): const SelectTreeNodeIntent(),
+        },
       },
       child: Actions(
         actions: {
@@ -1819,10 +1911,16 @@ class _TreeState<T> extends State<Tree<T>> {
                     selectedItems.add(node);
                   }, [selectedNode.node]);
                   widget.onSelectionChanged?.call(
-                      selectedItems, _multiSelect, !selectedNode.node.selected);
+                    selectedItems,
+                    _multiSelect,
+                    !selectedNode.node.selected,
+                  );
                 } else {
-                  widget.onSelectionChanged?.call([selectedNode.node],
-                      _multiSelect, !selectedNode.node.selected);
+                  widget.onSelectionChanged?.call(
+                    [selectedNode.node],
+                    _multiSelect,
+                    !selectedNode.node.selected,
+                  );
                 }
               }
               return null;
@@ -1842,8 +1940,8 @@ class _TreeState<T> extends State<Tree<T>> {
                       (equalSelection
                           ? !children[i].node.selected
                           : (reverseSelection
-                              ? children[i].node.selected
-                              : !children[i].node.selected))) {
+                                ? children[i].node.selected
+                                : !children[i].node.selected))) {
                     _currentFocusedIndex = i;
                     break;
                   }
@@ -1855,15 +1953,19 @@ class _TreeState<T> extends State<Tree<T>> {
                       (equalSelection
                           ? !children[i].node.selected
                           : (reverseSelection
-                              ? !children[i].node.selected
-                              : children[i].node.selected))) {
+                                ? !children[i].node.selected
+                                : children[i].node.selected))) {
                     _currentFocusedIndex = i;
                     break;
                   }
                 }
               }
-              _onChangeSelectionRange(children, _startFocusedIndex!,
-                  _currentFocusedIndex!, recursiveSelection);
+              _onChangeSelectionRange(
+                children,
+                _startFocusedIndex!,
+                _currentFocusedIndex!,
+                recursiveSelection,
+              );
               return null;
             },
           ),
@@ -1904,9 +2006,14 @@ class _TreeState<T> extends State<Tree<T>> {
               final data = children[index];
               return Data<TreeNodeData>.inherit(
                 data: data,
-                child: Builder(builder: (context) {
-                  return widget.builder(context, data.node as TreeItemNode<T>);
-                }),
+                child: Builder(
+                  builder: (context) {
+                    return widget.builder(
+                      context,
+                      data.node as TreeItemNode<T>,
+                    );
+                  },
+                ),
               );
             },
           ),
@@ -2165,7 +2272,7 @@ class _PathPainter extends CustomPainter {
 /// Example:
 /// ```dart
 /// TreeItem(
-///   leading: Icon(isDirectory ? Icons.folder : Icons.insert_drive_file),
+///   leading: Icon(isDirectory ? LucideIcons.folder : LucideIcons.file),
 ///   trailing: PopupMenuButton(items: contextMenuItems),
 ///   expandable: hasChildren,
 ///   onPressed: () => selectItem(item),
@@ -2242,7 +2349,7 @@ class TreeItem extends StatefulWidget {
   /// Example:
   /// ```dart
   /// TreeItem(
-  ///   leading: Icon(Icons.folder),
+  ///   leading: Icon(LucideIcons.folder),
   ///   trailing: Badge(child: Text('3')),
   ///   expandable: true,
   ///   onPressed: () => handleSelection(),
@@ -2328,14 +2435,12 @@ class _TreeItemState extends State<TreeItem> {
         continue; // skip the first depth
       }
       if (!data.expandIcon) rowChildren.add(SizedBox(width: densityGap));
-      rowChildren.add(SizedBox(
-        width: densityGap * 2,
-        child: data.indentGuide.build(
-          context,
-          data.depth,
-          i,
+      rowChildren.add(
+        SizedBox(
+          width: densityGap * 2,
+          child: data.indentGuide.build(context, data.depth, i),
         ),
-      ));
+      );
     }
     List<Widget> subRowChildren = [];
     if (data.expandIcon) {
@@ -2350,24 +2455,20 @@ class _TreeItemState extends State<TreeItem> {
             child: AnimatedRotation(
               duration: kDefaultDuration,
               turns: data.node.expanded ? 0.25 : 0,
-              child: const Icon(Icons.chevron_right).iconSmall(),
+              child: const Icon(LucideIcons.chevronRight).iconSmall(),
             ),
           ),
         );
       } else {
         if (data.depth.length > 1) {
-          rowChildren.add(SizedBox(
-            width: densityGap * 2,
-            child: data.indentGuide.build(
-              context,
-              data.depth,
-              -1,
+          rowChildren.add(
+            SizedBox(
+              width: densityGap * 2,
+              child: data.indentGuide.build(context, data.depth, -1),
             ),
-          ));
+          );
         } else {
-          rowChildren.add(SizedBox(
-            width: densityGap * 2,
-          ));
+          rowChildren.add(SizedBox(width: densityGap * 2));
         }
       }
     }
@@ -2440,31 +2541,30 @@ class _TreeItemState extends State<TreeItem> {
             },
           ),
         },
-        decoration: WidgetStateProperty.resolveWith(
-          (states) {
-            if (states.contains(WidgetState.selected)) {
-              if (states.contains(WidgetState.focused)) {
-                return BoxDecoration(
-                  color: theme.colorScheme.primary.scaleAlpha(0.1),
-                  borderRadius: _borderRadiusFromPosition(
-                    data.selectionPosition,
-                    theme.radiusMd,
-                  ),
-                );
-              }
+        decoration: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            if (states.contains(WidgetState.focused)) {
               return BoxDecoration(
-                color: theme.colorScheme.primary.scaleAlpha(0.05),
+                color: theme.colorScheme.primary.scaleAlpha(0.1),
                 borderRadius: _borderRadiusFromPosition(
                   data.selectionPosition,
                   theme.radiusMd,
                 ),
               );
             }
-            return const BoxDecoration();
-          },
-        ),
+            return BoxDecoration(
+              color: theme.colorScheme.primary.scaleAlpha(0.05),
+              borderRadius: _borderRadiusFromPosition(
+                data.selectionPosition,
+                theme.radiusMd,
+              ),
+            );
+          }
+          return const BoxDecoration();
+        }),
         behavior: HitTestBehavior.translucent,
-        mouseCursor: widget.onDoublePressed != null ||
+        mouseCursor:
+            widget.onDoublePressed != null ||
                 widget.onPressed != null ||
                 (widget.onExpand != null &&
                     (widget.expandable ?? data.node.children.isNotEmpty))
@@ -2487,7 +2587,8 @@ class _TreeItemState extends State<TreeItem> {
           _focusNode.requestFocus();
           _data!.onFocusChanged?.call(FocusChangeReason.userInteraction);
         },
-        enabled: widget.onPressed != null ||
+        enabled:
+            widget.onPressed != null ||
             widget.onDoublePressed != null ||
             (widget.onExpand != null &&
                 (widget.expandable ?? data.node.children.isNotEmpty)),

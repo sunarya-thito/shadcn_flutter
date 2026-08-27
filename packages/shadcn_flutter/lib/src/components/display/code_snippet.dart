@@ -105,8 +105,9 @@ class CodeSnippetTheme extends ComponentThemeData {
     ValueGetter<EdgeInsetsGeometry?>? padding,
   }) {
     return CodeSnippetTheme(
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      backgroundColor: backgroundColor == null
+          ? this.backgroundColor
+          : backgroundColor(),
       borderColor: borderColor == null ? this.borderColor : borderColor(),
       borderWidth: borderWidth == null ? this.borderWidth : borderWidth(),
       borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
@@ -127,12 +128,12 @@ class CodeSnippetTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        backgroundColor,
-        borderColor,
-        borderWidth,
-        borderRadius,
-        padding,
-      );
+    backgroundColor,
+    borderColor,
+    borderWidth,
+    borderRadius,
+    padding,
+  );
 }
 
 /// A syntax-highlighted code display widget with copy functionality.
@@ -172,7 +173,7 @@ class CodeSnippetTheme extends ComponentThemeData {
 ///   constraints: BoxConstraints(maxHeight: 200),
 ///   actions: [
 ///     IconButton(
-///       icon: Icon(Icons.share),
+///       icon: Icon(LucideIcons.share2),
 ///       onPressed: () => shareCode(),
 ///     ),
 ///   ],
@@ -321,10 +322,7 @@ class _CodeSnippetState extends State<CodeSnippet> {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        border: Border.all(color: borderColor, width: borderWidth),
         borderRadius: borderRadius,
       ),
       child: Stack(

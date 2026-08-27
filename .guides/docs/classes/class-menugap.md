@@ -18,6 +18,6 @@ class MenuGap extends StatelessWidget implements MenuItem {
   const MenuGap(this.size, {super.key});
   Widget build(BuildContext context);
   bool get hasLeading;
-  PopoverController? get popoverController;
+  OverlayController? get overlayController;
 }
 ```

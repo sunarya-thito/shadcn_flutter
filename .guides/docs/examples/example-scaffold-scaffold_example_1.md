@@ -37,19 +37,19 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
             OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
-              child: const Icon(Icons.menu),
+              child: const Icon(LucideIcons.menu),
             ),
           ],
           trailing: [
             OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
-              child: const Icon(Icons.search),
+              child: const Icon(LucideIcons.search),
             ),
             OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             ),
           ],
         ),

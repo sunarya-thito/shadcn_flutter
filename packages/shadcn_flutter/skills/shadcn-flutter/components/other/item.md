@@ -9,7 +9,7 @@ Selectable navigation item with selection state management.
 NavigationItem(
   key: ValueKey('home'),
   label: Text('Home'),
-  child: Icon(Icons.home),
+  child: Icon(LucideIcons.house),
   selected: selectedKey == ValueKey('home'),
   onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),
 )

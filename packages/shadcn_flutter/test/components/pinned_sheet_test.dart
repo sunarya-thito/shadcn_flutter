@@ -38,15 +38,19 @@ void main() {
       expect(const SheetStage.fraction(0.5).resolveBackdropTransform(res), 0.5);
       // explicit value wins.
       expect(
-          const SheetStage.expanded(backdropTransform: 0.2)
-              .resolveBackdropTransform(res),
-          0.2);
+        const SheetStage.expanded(backdropTransform: 0.2)
+            .resolveBackdropTransform(res),
+        0.2,
+      );
     });
   });
 
   group('PinnedSheet + SheetController', () {
-    Widget buildSheet(SheetController controller,
-        {List<SheetStage>? stages, SheetStage? initial}) {
+    Widget buildSheet(
+      SheetController controller, {
+      List<SheetStage>? stages,
+      SheetStage? initial,
+    }) {
       return SimpleApp(
         child: Center(
           child: SizedBox(
@@ -55,7 +59,8 @@ void main() {
             child: PinnedSheet(
               controller: controller,
               position: OverlayPosition.bottom,
-              stages: stages ??
+              stages:
+                  stages ??
                   const [
                     SheetStage.closed(),
                     SheetStage.fraction(0.5),
@@ -86,40 +91,44 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('animateTo a fractional stage settles at that fraction',
-        (tester) async {
+    testWidgets('animateTo a fractional stage settles at that fraction', (
+      tester,
+    ) async {
       final controller = SheetController();
       await tester.pumpWidget(buildSheet(controller));
       await tester.pumpAndSettle();
 
-      controller.animateTo(const SheetStage.fraction(0.5),
-          duration: const Duration(milliseconds: 200));
+      controller.animateTo(
+        const SheetStage.fraction(0.5),
+        duration: const Duration(milliseconds: 200),
+      );
       await tester.pumpAndSettle();
 
       expect(controller.fraction, closeTo(0.5, 0.02));
       controller.dispose();
     });
 
-    testWidgets('SizedBox.expand child fills the backdrop when expanded',
-        (tester) async {
+    testWidgets('SizedBox.expand child fills the backdrop when expanded', (
+      tester,
+    ) async {
       final controller = SheetController();
-      await tester.pumpWidget(SimpleApp(
-        child: Center(
-          child: SizedBox(
-            width: 300,
-            height: 400,
-            child: PinnedSheet(
-              controller: controller,
-              position: OverlayPosition.bottom,
-              stages: const [SheetStage.closed(), SheetStage.expanded()],
-              initialStage: const SheetStage.expanded(),
-              child: const DrawerContainer(
-                child: SizedBox.expand(),
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Center(
+            child: SizedBox(
+              width: 300,
+              height: 400,
+              child: PinnedSheet(
+                controller: controller,
+                position: OverlayPosition.bottom,
+                stages: const [SheetStage.closed(), SheetStage.expanded()],
+                initialStage: const SheetStage.expanded(),
+                child: const DrawerContainer(child: SizedBox.expand()),
               ),
             ),
           ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       // The content stretched to the full 400px region height, and the
@@ -129,43 +138,43 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('nested pinned sheet opens inner without layout assert',
-        (tester) async {
+    testWidgets('nested pinned sheet opens inner without layout assert', (
+      tester,
+    ) async {
       final outer = SheetController();
       final inner = SheetController();
       Widget content(String t) => DrawerContainer(
+        child: SizedBox(
+          height: 220,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [Text(t)]),
+          ),
+        ),
+      );
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Center(
             child: SizedBox(
-              height: 220,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [Text(t)],
-                ),
-              ),
-            ),
-          );
-      await tester.pumpWidget(SimpleApp(
-        child: Center(
-          child: SizedBox(
-            width: 400,
-            height: 460,
-            child: PinnedSheet(
-              controller: outer,
-              position: OverlayPosition.bottom,
-              backdropTransform: const ScaleBackdropTransform(),
-              backdrop: PinnedSheet(
-                controller: inner,
+              width: 400,
+              height: 460,
+              child: PinnedSheet(
+                controller: outer,
                 position: OverlayPosition.bottom,
                 backdropTransform: const ScaleBackdropTransform(),
-                backdrop: const ColoredBox(color: Color(0xFF888888)),
-                child: content('inner'),
+                backdrop: PinnedSheet(
+                  controller: inner,
+                  position: OverlayPosition.bottom,
+                  backdropTransform: const ScaleBackdropTransform(),
+                  backdrop: const ColoredBox(color: Color(0xFF888888)),
+                  child: content('inner'),
+                ),
+                child: content('outer'),
               ),
-              child: content('outer'),
             ),
           ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       inner.stage = const SheetStage.expanded();
@@ -185,43 +194,43 @@ void main() {
       inner.dispose();
     });
 
-    testWidgets('inner sheet hands off overscroll to the outer at its end',
-        (tester) async {
+    testWidgets('inner sheet hands off overscroll to the outer at its end', (
+      tester,
+    ) async {
       final outer = SheetController();
       final inner = SheetController();
       Widget content(String t) => DrawerContainer(
+        child: SizedBox(height: 200, child: Center(child: Text(t))),
+      );
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Center(
             child: SizedBox(
-              height: 200,
-              child: Center(child: Text(t)),
-            ),
-          );
-      await tester.pumpWidget(SimpleApp(
-        child: Center(
-          child: SizedBox(
-            width: 400,
-            height: 460,
-            child: PinnedSheet(
-              controller: outer,
-              position: OverlayPosition.bottom,
-              backdropTransform: const ScaleBackdropTransform(),
-              backdrop: PinnedSheet(
-                controller: inner,
+              width: 400,
+              height: 460,
+              child: PinnedSheet(
+                controller: outer,
                 position: OverlayPosition.bottom,
-                stages: const [
-                  SheetStage.closed(),
-                  SheetStage.fraction(0.5),
-                  SheetStage.expanded(),
-                ],
-                initialStage: const SheetStage.expanded(),
                 backdropTransform: const ScaleBackdropTransform(),
-                backdrop: const ColoredBox(color: Color(0xFF888888)),
-                child: content('inner'),
+                backdrop: PinnedSheet(
+                  controller: inner,
+                  position: OverlayPosition.bottom,
+                  stages: const [
+                    SheetStage.closed(),
+                    SheetStage.fraction(0.5),
+                    SheetStage.expanded(),
+                  ],
+                  initialStage: const SheetStage.expanded(),
+                  backdropTransform: const ScaleBackdropTransform(),
+                  backdrop: const ColoredBox(color: Color(0xFF888888)),
+                  child: content('inner'),
+                ),
+                child: content('outer'),
               ),
-              child: content('outer'),
             ),
           ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(inner.fraction, closeTo(1.0, 0.01));
@@ -229,8 +238,9 @@ void main() {
 
       // Single continuous gesture. Drag the (already expanded) inner up: the
       // inner has no room, so the leftover opens the outer.
-      final gesture =
-          await tester.startGesture(tester.getCenter(find.text('inner')));
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.text('inner')),
+      );
       await gesture.moveBy(const Offset(0, -140));
       await tester.pump();
       expect(inner.fraction, closeTo(1.0, 0.01));
@@ -251,93 +261,104 @@ void main() {
       inner.dispose();
     });
 
-    testWidgets('expands child: collapses to zero when closed, fills when open',
-        (tester) async {
-      final controller = SheetController();
-      var taps = 0;
-      await tester.pumpWidget(SimpleApp(
-        child: Center(
-          child: SizedBox(
-            width: 300,
-            height: 400,
-            child: PinnedSheet(
-              controller: controller,
-              position: OverlayPosition.bottom,
-              stages: const [SheetStage.closed(), SheetStage.expanded()],
-              initialStage: const SheetStage.closed(),
-              contentExpands: true,
-              backdrop: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: 60,
-                  child: PrimaryButton(
-                    onPressed: () => taps++,
-                    child: const Text('bg'),
+    testWidgets(
+      'expands child: collapses to zero when closed, fills when open',
+      (tester) async {
+        final controller = SheetController();
+        var taps = 0;
+        await tester.pumpWidget(
+          SimpleApp(
+            child: Center(
+              child: SizedBox(
+                width: 300,
+                height: 400,
+                child: PinnedSheet(
+                  controller: controller,
+                  position: OverlayPosition.bottom,
+                  stages: const [SheetStage.closed(), SheetStage.expanded()],
+                  initialStage: const SheetStage.closed(),
+                  contentExpands: true,
+                  backdrop: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: 60,
+                      child: PrimaryButton(
+                        onPressed: () => taps++,
+                        child: const Text('bg'),
+                      ),
+                    ),
+                  ),
+                  child: const DrawerContainer(
+                    child: SizedBox(
+                      height: 120,
+                      child: Center(child: Text('sheet')),
+                    ),
                   ),
                 ),
               ),
-              child: const DrawerContainer(
-                child:
-                    SizedBox(height: 120, child: Center(child: Text('sheet'))),
-              ),
             ),
           ),
-        ),
-      ));
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      // Closed: the sheet collapses to zero, so a tap at the bottom reaches the
-      // backdrop button behind it (no overflow either).
-      expect(tester.takeException(), isNull);
-      await tester.tap(find.text('bg'));
-      await tester.pump();
-      expect(taps, 1);
+        // Closed: the sheet collapses to zero, so a tap at the bottom reaches the
+        // backdrop button behind it (no overflow either).
+        expect(tester.takeException(), isNull);
+        await tester.tap(find.text('bg'));
+        await tester.pump();
+        expect(taps, 1);
 
-      // Fully open: the sheet fills the whole 400px region.
-      controller.stage = const SheetStage.expanded();
-      await tester.pumpAndSettle();
-      expect(controller.offset, closeTo(400, 1));
-      expect(tester.takeException(), isNull);
+        // Fully open: the sheet fills the whole 400px region.
+        controller.stage = const SheetStage.expanded();
+        await tester.pumpAndSettle();
+        expect(controller.offset, closeTo(400, 1));
+        expect(tester.takeException(), isNull);
 
-      controller.dispose();
-    });
+        controller.dispose();
+      },
+    );
 
-    testWidgets('expands: MainAxisSize.max keeps bottom content visible',
-        (tester) async {
+    testWidgets('expands: MainAxisSize.max keeps bottom content visible', (
+      tester,
+    ) async {
       final controller = SheetController();
       final regionKey = GlobalKey();
       final ninety = const SheetStage.expanded() * 0.9;
-      await tester.pumpWidget(SimpleApp(
-        child: Center(
-          child: SizedBox(
-            key: regionKey,
-            width: 300,
-            height: 400,
-            child: PinnedSheet(
-              controller: controller,
-              position: OverlayPosition.bottom,
-              stages: [
-                const SheetStage.closed(),
-                ninety,
-                const SheetStage.expanded()
-              ],
-              initialStage: ninety,
-              contentExpands: true,
-              child: DrawerContainer(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: const [
-                    Text('top'),
-                    Spacer(),
-                    Align(
-                        alignment: Alignment.bottomCenter, child: Text('btn')),
-                  ],
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Center(
+            child: SizedBox(
+              key: regionKey,
+              width: 300,
+              height: 400,
+              child: PinnedSheet(
+                controller: controller,
+                position: OverlayPosition.bottom,
+                stages: [
+                  const SheetStage.closed(),
+                  ninety,
+                  const SheetStage.expanded(),
+                ],
+                initialStage: ninety,
+                contentExpands: true,
+                child: DrawerContainer(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: const [
+                      Text('top'),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text('btn'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       final region = tester.getRect(find.byKey(regionKey));
@@ -349,8 +370,9 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('controller.stage compares against derived stages both ways',
-        (tester) async {
+    testWidgets('controller.stage compares against derived stages both ways', (
+      tester,
+    ) async {
       final controller = SheetController();
       await tester.pumpWidget(buildSheet(controller));
       await tester.pumpAndSettle();
@@ -360,7 +382,8 @@ void main() {
 
       // The content extent includes the drag handle chrome, so full != 200.
       final full = controller.offset;
-      final derived = const SheetStage.expanded() -
+      final derived =
+          const SheetStage.expanded() -
           SheetStage.fixed(full); // resolves to ~0 offset
 
       // At expanded, controller.stage matches expanded() (both directions).

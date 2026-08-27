@@ -94,7 +94,7 @@ class FilePicker extends StatelessWidget {
 ///   fileType: Text('PDF'),
 ///   uploadProgress: 0.75, // 75% uploaded
 ///   onRemove: () => removeFile(),
-///   thumbnail: Icon(Icons.picture_as_pdf),
+///   thumbnail: Icon(LucideIcons.fileText),
 /// )
 /// ```
 class FileItem extends StatelessWidget {

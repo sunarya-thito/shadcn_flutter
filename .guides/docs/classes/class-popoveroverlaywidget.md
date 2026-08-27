@@ -10,7 +10,7 @@ description: "Internal widget for rendering popover overlays.   Manages position
 /// relative to an anchor widget.
 class PopoverOverlayWidget extends StatefulWidget {
   /// Creates a [PopoverOverlayWidget].
-  const PopoverOverlayWidget({super.key, required this.anchorContext, this.position, required this.alignment, this.themes, required this.builder, required this.animation, required this.anchorAlignment, this.widthConstraint = PopoverConstraint.flexible, this.heightConstraint = PopoverConstraint.flexible, this.anchorSize, this.onTapOutside, this.regionGroupId, this.offset, this.transitionAlignment, this.margin, this.follow = true, this.consumeOutsideTaps = true, this.onTickFollow, this.allowInvertHorizontal = true, this.allowInvertVertical = true, this.data, this.onClose, this.onImmediateClose, this.onCloseWithResult, this.layerLink});
+  const PopoverOverlayWidget({super.key, required this.anchor, this.position, required this.alignment, this.themes, required this.builder, required this.animation, required this.anchorAlignment, this.widthConstraint = PopoverConstraint.flexible, this.heightConstraint = PopoverConstraint.flexible, this.anchorSize, this.onTapOutside, this.regionGroupId, this.offset, this.transitionAlignment, this.margin, this.follow = true, this.consumeOutsideTaps = true, this.onTickFollow, this.allowInvertHorizontal = true, this.allowInvertVertical = true, this.data, this.onClose, this.onImmediateClose, this.onCloseWithResult, this.completer});
   /// Explicit position for the popover.
   final Offset? position;
   /// Alignment of the popover relative to the anchor.
@@ -47,8 +47,8 @@ class PopoverOverlayWidget extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   /// Whether popover follows anchor movement.
   final bool follow;
-  /// Build context of the anchor widget.
-  final BuildContext anchorContext;
+  /// The anchor this popover is positioned/tracked against.
+  final Anchor anchor;
   /// Whether to consume taps outside the popover.
   final bool consumeOutsideTaps;
   /// Callback on each frame when following anchor.
@@ -59,8 +59,10 @@ class PopoverOverlayWidget extends StatefulWidget {
   final bool allowInvertVertical;
   /// Callback when closing with a result value.
   final PopoverFutureVoidCallback<Object?>? onCloseWithResult;
-  /// Layer link for positioning.
-  final LayerLink? layerLink;
+  /// The completer that manages this popover's lifecycle, if shown via
+  /// [PopoverConfiguration.show]. When non-null, it's inherited into the
+  /// content subtree so [closeOverlay] can find it from within.
+  final OverlayCompleter? completer;
   State<PopoverOverlayWidget> createState();
 }
 ```

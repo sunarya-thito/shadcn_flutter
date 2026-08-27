@@ -20,7 +20,7 @@ class AlertExample2 extends StatelessWidget {
     return const Alert.destructive(
       title: Text('Alert title'),
       content: Text('This is alert content.'),
-      trailing: Icon(Icons.dangerous_outlined),
+      trailing: Icon(LucideIcons.octagonAlert),
     );
   }
 }

@@ -40,7 +40,7 @@ class ButtonExample14 extends StatelessWidget {
         ),
         ButtonGroupItem(
           child: IconButton.primary(
-            icon: const Icon(Icons.add),
+            icon: const Icon(LucideIcons.plus),
             onPressed: () {},
           ),
         ),

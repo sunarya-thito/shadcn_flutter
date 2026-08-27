@@ -77,7 +77,7 @@ class _InnerWidgetState extends State<InnerWidget> {
                 onPressed: () {
                   Model.change(context, #firstCounter, firstCounter + 1);
                 },
-                child: const Icon(Icons.add),
+                child: const Icon(LucideIcons.plus),
               ),
             ],
           ),
@@ -118,7 +118,7 @@ class _LeafWidgetState extends State<LeafWidget> {
               secondCounter.value = secondCounter.value + 1;
               // or secondCounter.data++ works too
             },
-            child: const Icon(Icons.add),
+            child: const Icon(LucideIcons.plus),
           ),
         ],
       ),

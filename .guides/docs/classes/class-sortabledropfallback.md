@@ -59,7 +59,7 @@ class SortableDropFallback<T> extends StatefulWidget {
   /// SortableDropFallback<String>(
   ///   canAccept: (data) => data.data.contains('removable'),
   ///   onAccept: (data) => removeFromList(data.data),
-  ///   child: Icon(Icons.delete, size: 48),
+  ///   child: Icon(LucideIcons.trash, size: 48),
   /// )
   /// ```
   const SortableDropFallback({super.key, required this.child, this.onAccept, this.canAccept});

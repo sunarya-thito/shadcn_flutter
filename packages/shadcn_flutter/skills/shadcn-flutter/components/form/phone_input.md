@@ -53,14 +53,17 @@ class _PhoneInputExample1State extends State<PhoneInputExample1> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        PhoneInput(
-          // Preselect a country; phone parsing/formatting adapt accordingly.
-          initialCountry: Country.indonesia,
-          onChanged: (value) {
-            setState(() {
-              _phoneNumber = value;
-            });
-          },
+        SizedBox(
+          width: 300,
+          child: PhoneInput(
+            // Preselect a country; phone parsing/formatting adapt accordingly.
+            initialCountry: Country.indonesia,
+            onChanged: (value) {
+              setState(() {
+                _phoneNumber = value;
+              });
+            },
+          ),
         ),
         const Gap(24),
         Text(
@@ -90,11 +93,14 @@ class PhoneInputTile extends StatelessWidget implements IComponentPage {
       name: 'phone_input',
       title: 'Phone Input',
       scale: 1.5,
-      example: Card(
-        child: const PhoneInput(
-          initialValue: PhoneNumber(Country.indonesia, '81234567890'),
-        ).withAlign(Alignment.topLeft),
-      ).sized(height: 300),
+      example: SizedBox(
+        width: 280,
+        child: Card(
+          child: const PhoneInput(
+            initialValue: PhoneNumber(Country.indonesia, '81234567890'),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -114,7 +120,7 @@ class PhoneInputTile extends StatelessWidget implements IComponentPage {
 | :--- | :--- | :--- |
 | `initialCountry` | `Country?` | The default country to display when no initial value is provided.  If both [initialCountry] and [initialValue] are null, defaults to United States. When [initialValue] is provided, its country takes precedence over this setting. |
 | `initialValue` | `PhoneNumber?` | The initial phone number value including country and number.  When provided, both the country selector and number field are initialized with the values from this phone number. Takes precedence over [initialCountry] for country selection. |
-| `onChanged` | `ValueChanged<PhoneNumber>?` | Callback invoked when the phone number changes.  Called whenever the user changes either the country selection or the phone number text. The callback receives a [PhoneNumber] object containing both the selected country and entered number. |
+| `onChanged` | `ValueChanged<PhoneNumber?>?` | Callback invoked when the phone number changes.  Called whenever the user changes either the country selection or the phone number text. The callback receives a [PhoneNumber] object containing both the selected country and entered number. |
 | `controller` | `TextEditingController?` | Optional text editing controller for the number input field.  When provided, this controller manages the text content of the phone number input field. If null, an internal controller is created and managed. |
 | `filterPlusCode` | `bool` | Whether to filter out plus (+) symbols from input.  When true, plus symbols are automatically removed from user input since the country code already provides the international prefix. |
 | `filterZeroCode` | `bool` | Whether to filter out leading zeros from input.  When true, leading zeros are automatically removed from the phone number to normalize the input format according to international standards. |

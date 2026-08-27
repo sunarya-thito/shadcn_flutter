@@ -1,6 +1,6 @@
-# TreeTheme
+# Tree
 
-Theme configuration for [TreeView] appearance and behavior.
+A comprehensive tree widget with hierarchical data display and interaction.
 
 ## Usage
 
@@ -38,7 +38,7 @@ class TreeExample extends StatelessWidget {
 ```dart
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-// Demonstrates TreeView with expandable items, branch lines (path/line),
+// Demonstrates Tree with expandable items, branch lines (path/line),
 // and optional recursive selection behavior.
 
 class TreeExample1 extends StatefulWidget {
@@ -53,54 +53,54 @@ class _TreeExample1State extends State<TreeExample1> {
   bool usePath = true;
   bool recursiveSelection = false;
   List<TreeNode<String>> treeItems = [
-    TreeItem(
+    TreeItemNode(
       data: 'Apple',
       expanded: true,
       children: [
-        TreeItem(data: 'Red Apple', children: [
-          TreeItem(data: 'Red Apple 1'),
-          TreeItem(data: 'Red Apple 2'),
+        TreeItemNode(data: 'Red Apple', children: [
+          TreeItemNode(data: 'Red Apple 1'),
+          TreeItemNode(data: 'Red Apple 2'),
         ]),
-        TreeItem(data: 'Green Apple'),
+        TreeItemNode(data: 'Green Apple'),
       ],
     ),
-    TreeItem(
+    TreeItemNode(
       data: 'Banana',
       children: [
-        TreeItem(data: 'Yellow Banana'),
-        TreeItem(data: 'Green Banana', children: [
-          TreeItem(data: 'Green Banana 1'),
-          TreeItem(data: 'Green Banana 2'),
-          TreeItem(data: 'Green Banana 3'),
+        TreeItemNode(data: 'Yellow Banana'),
+        TreeItemNode(data: 'Green Banana', children: [
+          TreeItemNode(data: 'Green Banana 1'),
+          TreeItemNode(data: 'Green Banana 2'),
+          TreeItemNode(data: 'Green Banana 3'),
         ]),
       ],
     ),
-    TreeItem(
+    TreeItemNode(
       data: 'Cherry',
       children: [
-        TreeItem(data: 'Red Cherry'),
-        TreeItem(data: 'Green Cherry'),
+        TreeItemNode(data: 'Red Cherry'),
+        TreeItemNode(data: 'Green Cherry'),
       ],
     ),
-    TreeItem(
+    TreeItemNode(
       data: 'Date',
     ),
     // Tree Root acts as a parent node with no data,
     // it will flatten the children into the parent node
-    TreeRoot(
+    TreeRootNode(
       children: [
-        TreeItem(
+        TreeItemNode(
           data: 'Elderberry',
           children: [
-            TreeItem(data: 'Black Elderberry'),
-            TreeItem(data: 'Red Elderberry'),
+            TreeItemNode(data: 'Black Elderberry'),
+            TreeItemNode(data: 'Red Elderberry'),
           ],
         ),
-        TreeItem(
+        TreeItemNode(
           data: 'Fig',
           children: [
-            TreeItem(data: 'Green Fig'),
-            TreeItem(data: 'Purple Fig'),
+            TreeItemNode(data: 'Green Fig'),
+            TreeItemNode(data: 'Purple Fig'),
           ],
         ),
       ],
@@ -116,7 +116,7 @@ class _TreeExample1State extends State<TreeExample1> {
           child: SizedBox(
             height: 300,
             width: 250,
-            child: TreeView(
+            child: Tree(
               // Show a separate expand/collapse icon when true; otherwise use row affordance.
               expandIcon: expandIcon,
               shrinkWrap: true,
@@ -126,7 +126,7 @@ class _TreeExample1State extends State<TreeExample1> {
               // Draw connecting lines either as path curves or straight lines.
               branchLine: usePath ? BranchLine.path : BranchLine.line,
               // Use a built-in handler to update selection state across nodes.
-              onSelectionChanged: TreeView.defaultSelectionHandler(
+              onSelectionChanged: Tree.defaultSelectionHandler(
                 treeItems,
                 (value) {
                   setState(() {
@@ -135,7 +135,7 @@ class _TreeExample1State extends State<TreeExample1> {
                 },
               ),
               builder: (context, node) {
-                return TreeItemView(
+                return TreeItem(
                   onPressed: () {},
                   trailing: node.leaf
                       ? Container(
@@ -151,8 +151,8 @@ class _TreeExample1State extends State<TreeExample1> {
                           ? BootstrapIcons.folder2Open
                           : BootstrapIcons.folder2),
                   // Expand/collapse handling; updates treeItems with new expanded state.
-                  onExpand: TreeView.defaultItemExpandHandler(treeItems, node,
-                      (value) {
+                  onExpand:
+                      Tree.defaultItemExpandHandler(treeItems, node, (value) {
                     setState(() {
                       treeItems = value;
                     });
@@ -233,7 +233,6 @@ class _TreeExample1State extends State<TreeExample1> {
 ```dart
 import 'package:docs/pages/docs/components_page.dart';
 import 'package:docs/pages/docs/components/tree/tree_example_1.dart';
-import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class TreeTile extends StatelessWidget implements IComponentPage {
@@ -266,8 +265,14 @@ class TreeTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `branchLine` | `BranchLine?` | The branch line style for connecting tree nodes.  Type: `BranchLine?`. If null, uses BranchLine.path. Controls how visual connections are drawn between parent and child nodes in the tree hierarchy. |
-| `padding` | `EdgeInsetsGeometry?` | Padding around the entire tree view content.  Type: `EdgeInsetsGeometry?`. If null, uses 8 pixels on all sides. This padding is applied to the scroll view containing all tree items. |
-| `expandIcon` | `bool?` | Whether to show expand/collapse icons for nodes with children.  Type: `bool?`. If null, defaults to true. When false, nodes cannot be visually expanded or collapsed, though the data structure remains hierarchical. |
-| `allowMultiSelect` | `bool?` | Whether multiple nodes can be selected simultaneously.  Type: `bool?`. If null, defaults to true. When false, selecting a node automatically deselects all other nodes, enforcing single selection mode. |
-| `recursiveSelection` | `bool?` | Whether selecting a parent node also selects its children.  Type: `bool?`. If null, defaults to true. When true, selection operations recursively affect all descendant nodes. |
+| `nodes` | `List<TreeNode<T>>` | List of tree nodes to display in the tree view.  Type: `List<TreeNode<T>>`. The root-level nodes that will be rendered in the tree. Can contain TreeItemNode instances and TreeRootNode containers. |
+| `builder` | `Widget Function(BuildContext context, TreeItemNode<T> node)` | Builder function to create widgets for tree items.  Type: `Widget Function(BuildContext, TreeItemNode<T>)`. Called for each visible tree item to create its visual representation. Receives the build context and the tree item data. |
+| `shrinkWrap` | `bool` | Whether the tree view should size itself to its content.  Type: `bool`, default: `false`. When true, the tree takes only the space needed for its content instead of expanding to fill available space. |
+| `controller` | `ScrollController?` | Optional scroll controller for the tree's scroll view.  Type: `ScrollController?`. Allows external control of scrolling behavior and position within the tree view. |
+| `branchLine` | `BranchLine?` | The style of branch lines connecting tree nodes.  Type: `BranchLine?`. If null, uses the theme's branch line or BranchLine.path. Controls the visual connections drawn between parent and child nodes. |
+| `padding` | `EdgeInsetsGeometry?` | Padding around the tree view content.  Type: `EdgeInsetsGeometry?`. If null, uses 8 pixels on all sides. Applied to the entire tree view scroll area. |
+| `expandIcon` | `bool?` | Whether to show expand/collapse icons for nodes with children.  Type: `bool?`. If null, defaults to true from theme. When false, nodes cannot be visually expanded or collapsed. |
+| `allowMultiSelect` | `bool?` | Whether multiple tree nodes can be selected simultaneously.  Type: `bool?`. If null, defaults to true from theme. When false, selecting a node automatically deselects all others. |
+| `focusNode` | `FocusScopeNode?` | Optional focus scope node for keyboard navigation.  Type: `FocusScopeNode?`. Controls focus behavior within the tree view for keyboard navigation and accessibility. |
+| `onSelectionChanged` | `TreeNodeSelectionChanged<T>?` | Callback invoked when node selection changes.  Type: `TreeNodeSelectionChanged<T>?`. Called with the affected nodes, whether multi-select mode is active, and the new selection state. |
+| `recursiveSelection` | `bool?` | Whether selecting a parent node also selects its children.  Type: `bool?`. If null, defaults to true from theme. When true, selection operations recursively affect all descendant nodes. |

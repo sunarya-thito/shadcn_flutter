@@ -45,7 +45,7 @@ class PhoneInput extends StatefulWidget {
   /// Called whenever the user changes either the country selection or
   /// the phone number text. The callback receives a [PhoneNumber] object
   /// containing both the selected country and entered number.
-  final ValueChanged<PhoneNumber>? onChanged;
+  final ValueChanged<PhoneNumber?>? onChanged;
   /// Optional text editing controller for the number input field.
   ///
   /// When provided, this controller manages the text content of the phone
@@ -107,7 +107,7 @@ class PhoneInput extends StatefulWidget {
   ///   onChanged: (phone) => _validatePhoneNumber(phone),
   /// );
   /// ```
-  const PhoneInput({super.key, this.initialCountry, this.initialValue, this.onChanged, this.controller, this.filterPlusCode = true, this.filterZeroCode = true, this.filterCountryCode = true, this.onlyNumber = true, this.countries, this.searchPlaceholder});
+  const PhoneInput({super.key, this.initialCountry, this.initialValue, this.onChanged, this.controller, @Deprecated('Plus code is now mandatory') this.filterPlusCode = true, @Deprecated('Plus code is now mandatory, leading zero is not a valid format') this.filterZeroCode = true, @Deprecated('Country code is now determined from input') this.filterCountryCode = true, this.onlyNumber = true, this.countries, this.searchPlaceholder});
   State<PhoneInput> createState();
 }
 ```

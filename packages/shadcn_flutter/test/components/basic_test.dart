@@ -6,24 +6,14 @@ import '../test_helper.dart';
 void main() {
   group('Basic', () {
     testWidgets('renders with no content', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: Basic(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: Basic()));
 
       expect(find.byType(Basic), findsOneWidget);
       // Should render as empty padding
     });
 
     testWidgets('renders with title only', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: Basic(
-            title: Text('Title'),
-          ),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: Basic(title: Text('Title'))));
 
       expect(find.byType(Basic), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
@@ -32,25 +22,19 @@ void main() {
     testWidgets('renders with leading and title', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Basic(
-            leading: Icon(Icons.star),
-            title: Text('Title'),
-          ),
+          child: Basic(leading: Icon(LucideIcons.star), title: Text('Title')),
         ),
       );
 
       expect(find.byType(Basic), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
     });
 
     testWidgets('renders with title and subtitle', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Basic(
-            title: Text('Title'),
-            subtitle: Text('Subtitle'),
-          ),
+          child: Basic(title: Text('Title'), subtitle: Text('Subtitle')),
         ),
       );
 
@@ -81,42 +65,42 @@ void main() {
         SimpleApp(
           child: Basic(
             title: Text('Title'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
           ),
         ),
       );
 
       expect(find.byType(Basic), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('renders with all components', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
           child: Basic(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
             subtitle: Text('Subtitle'),
             content: Text('Content'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
           ),
         ),
       );
 
       expect(find.byType(Basic), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
       expect(find.text('Subtitle'), findsOneWidget);
       expect(find.text('Content'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('respects custom content spacing', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
           child: Basic(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
             contentSpacing: 24,
           ),
@@ -124,7 +108,7 @@ void main() {
       );
 
       expect(find.byType(Basic), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
     });
 
@@ -147,10 +131,7 @@ void main() {
     testWidgets('respects custom padding', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Basic(
-            title: Text('Title'),
-            padding: EdgeInsets.all(16),
-          ),
+          child: Basic(title: Text('Title'), padding: EdgeInsets.all(16)),
         ),
       );
 
@@ -162,25 +143,25 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Basic(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         ),
       );
 
       expect(find.byType(Basic), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('respects leading alignment', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
           child: Basic(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
             leadingAlignment: Alignment.center,
           ),
@@ -188,7 +169,7 @@ void main() {
       );
 
       expect(find.byType(Basic), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
     });
 
@@ -197,7 +178,7 @@ void main() {
         SimpleApp(
           child: Basic(
             title: Text('Title'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
             trailingAlignment: Alignment.center,
           ),
         ),
@@ -205,16 +186,13 @@ void main() {
 
       expect(find.byType(Basic), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('respects title alignment', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Basic(
-            title: Text('Title'),
-            titleAlignment: Alignment.center,
-          ),
+          child: Basic(title: Text('Title'), titleAlignment: Alignment.center),
         ),
       );
 
@@ -262,7 +240,8 @@ void main() {
             child: Basic(
               title: Text('Very Long Title That Should Wrap Appropriately'),
               content: Text(
-                  'Very long content that should also wrap properly and not cause layout issues'),
+                'Very long content that should also wrap properly and not cause layout issues',
+              ),
             ),
           ),
         ),
@@ -278,12 +257,7 @@ void main() {
         SimpleApp(
           child: Basic(
             title: Text('Title'),
-            content: Column(
-              children: [
-                Text('Line 1'),
-                Text('Line 2'),
-              ],
-            ),
+            content: Column(children: [Text('Line 1'), Text('Line 2')]),
           ),
         ),
       );

@@ -21,8 +21,12 @@ class FormattedInputData {
   final FocusNode? focusNode;
   /// All focus nodes in the formatted input.
   final List<FocusNode> focusNodes;
+  /// Coordinates selection across the separate editable parts (select-all,
+  /// combined copy, cross-part drag-selection). Null when the formatted
+  /// input is disabled.
+  final Object? selectionCoordinator;
   /// Creates a [FormattedInputData].
-  FormattedInputData({required this.partIndex, required this.initialValue, required this.enabled, required this.controller, required this.focusNode, required this.focusNodes});
+  FormattedInputData({required this.partIndex, required this.initialValue, required this.enabled, required this.controller, required this.focusNode, required this.focusNodes, this.selectionCoordinator});
   bool operator ==(Object other);
   int get hashCode;
 }

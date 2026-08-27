@@ -1,6 +1,6 @@
 ---
 title: "Class: Step"
-description: "Represents a single step in a stepper component.   Contains the step's title, optional content builder for step details,  and an optional custom icon. The content builder is called when  the step becomes active to show step-specific content.   Example:  ```dart  Step(    title: Text('Personal Info'),    icon: Icon(Icons.person),    contentBuilder: (context) => PersonalInfoForm(),  );  ```"
+description: "Represents a single step in a stepper component.   Contains the step's title, optional content builder for step details,  and an optional custom icon. The content builder is called when  the step becomes active to show step-specific content.   Example:  ```dart  Step(    title: Text('Personal Info'),    icon: Icon(LucideIcons.user),    contentBuilder: (context) => PersonalInfoForm(),  );  ```"
 ---
 
 ```dart
@@ -14,7 +14,7 @@ description: "Represents a single step in a stepper component.   Contains the st
 /// ```dart
 /// Step(
 ///   title: Text('Personal Info'),
-///   icon: Icon(Icons.person),
+///   icon: Icon(LucideIcons.user),
 ///   contentBuilder: (context) => PersonalInfoForm(),
 /// );
 /// ```
@@ -40,7 +40,7 @@ class Step {
   /// ```dart
   /// Step(
   ///   title: Text('Account Setup'),
-  ///   icon: Icon(Icons.account_circle),
+  ///   icon: Icon(LucideIcons.circleUser),
   ///   contentBuilder: (context) => AccountSetupForm(),
   /// );
   /// ```

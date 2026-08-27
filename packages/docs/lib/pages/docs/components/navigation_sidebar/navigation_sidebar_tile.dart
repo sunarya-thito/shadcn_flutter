@@ -29,7 +29,7 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    const Icon(Icons.menu),
+                    const Icon(LucideIcons.menu),
                     const Gap(12),
                     const Text('Navigation').bold(),
                   ],
@@ -49,7 +49,7 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                       child: Row(
                         children: [
                           Icon(
-                            Icons.home,
+                            LucideIcons.house,
                             color: theme.colorScheme.primaryForeground,
                           ),
                           const Gap(12),
@@ -67,7 +67,7 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                       padding: const EdgeInsets.all(12),
                       child: const Row(
                         children: [
-                          Icon(Icons.search),
+                          Icon(LucideIcons.search),
                           Gap(12),
                           Text('Search'),
                         ],
@@ -78,7 +78,7 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                       padding: const EdgeInsets.all(12),
                       child: const Row(
                         children: [
-                          Icon(Icons.favorite),
+                          Icon(LucideIcons.heart),
                           Gap(12),
                           Text('Favorites'),
                         ],
@@ -89,7 +89,7 @@ class NavigationSidebarTile extends StatelessWidget implements IComponentPage {
                       padding: const EdgeInsets.all(12),
                       child: const Row(
                         children: [
-                          Icon(Icons.settings),
+                          Icon(LucideIcons.settings),
                           Gap(12),
                           Text('Settings'),
                         ],

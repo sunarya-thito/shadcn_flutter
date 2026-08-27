@@ -1,6 +1,6 @@
 ---
 title: "Class: MenuLabel"
-description: "Non-interactive label menu item.   Displays text or content without click handlers. Useful for section  headers or informational text within menus.   Example:  ```dart  MenuLabel(    leading: Icon(Icons.settings),    child: Text('Settings').semiBold(),  )  ```"
+description: "Non-interactive label menu item.   Displays text or content without click handlers. Useful for section  headers or informational text within menus.   Example:  ```dart  MenuLabel(    leading: Icon(LucideIcons.settings),    child: Text('Settings').semiBold(),  )  ```"
 ---
 
 ```dart
@@ -12,7 +12,7 @@ description: "Non-interactive label menu item.   Displays text or content withou
 /// Example:
 /// ```dart
 /// MenuLabel(
-///   leading: Icon(Icons.settings),
+///   leading: Icon(LucideIcons.settings),
 ///   child: Text('Settings').semiBold(),
 /// )
 /// ```
@@ -31,7 +31,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   /// - [leading] (Widget?): Leading icon or widget
   const MenuLabel({super.key, required this.child, this.trailing, this.leading});
   bool get hasLeading;
-  PopoverController? get popoverController;
+  OverlayController? get overlayController;
   Widget build(BuildContext context);
 }
 ```

@@ -88,6 +88,10 @@ class ControlledSlider extends StatelessWidget with ControlledComponent<SliderVa
   /// When the user presses the decrease key, the slider value will decrease by
   /// this amount. If `null`, a default decrement is used.
   final double? decreaseStep;
+  /// Optional builder for a bubble shown above a thumb while it's being
+  /// dragged or is keyboard-focused, displaying the thumb's current value.
+  /// See [Slider.valueIndicatorBuilder].
+  final SliderValueIndicatorBuilder? valueIndicatorBuilder;
   /// Creates a [ControlledSlider].
   ///
   /// A controlled slider that manages its state either through an external
@@ -126,7 +130,7 @@ class ControlledSlider extends StatelessWidget with ControlledComponent<SliderVa
   ///   onChanged: (value) => print('Value: $value'),
   /// )
   /// ```
-  const ControlledSlider({super.key, this.controller, this.initialValue = const SliderValue.single(0), this.onChanged, this.onChangeStart, this.onChangeEnd, this.min = 0, this.max = 1, this.divisions, this.hintValue, this.increaseStep, this.decreaseStep, this.enabled = true});
+  const ControlledSlider({super.key, this.controller, this.initialValue = const SliderValue.single(0), this.onChanged, this.onChangeStart, this.onChangeEnd, this.min = 0, this.max = 1, this.divisions, this.hintValue, this.increaseStep, this.decreaseStep, this.enabled = true, this.valueIndicatorBuilder});
   Widget build(BuildContext context);
 }
 ```

@@ -31,7 +31,8 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
   /// - [verticalOffset] (`double?`, optional): Vertical scroll offset.
   /// - [horizontalOffset] (`double?`, optional): Horizontal scroll offset.
   /// - [viewportSize] (`Size?`, optional): Viewport size for scrolling.
-  const RawTableLayout({super.key, super.children, required this.width, required this.height, required this.clipBehavior, this.frozenColumn, this.frozenRow, this.verticalOffset, this.horizontalOffset, this.viewportSize});
+  /// - [textDirection] (`TextDirection`, required): Direction columns run in.
+  const RawTableLayout({super.key, super.children, required this.width, required this.height, required this.clipBehavior, this.frozenColumn, this.frozenRow, this.verticalOffset, this.horizontalOffset, this.viewportSize, this.textDirection = TextDirection.ltr});
   /// Supplier function for column widths.
   final TableSizeSupplier width;
   /// Supplier function for row heights.
@@ -48,6 +49,12 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
   final double? horizontalOffset;
   /// Size of the visible viewport.
   final Size? viewportSize;
+  /// The direction columns run in.
+  ///
+  /// Column indices stay logical whatever this is: column 0 is the first
+  /// column, and under [TextDirection.rtl] it is laid out at the right edge
+  /// with subsequent columns running leftwards.
+  final TextDirection textDirection;
   RenderTableLayout createRenderObject(BuildContext context);
   void updateRenderObject(BuildContext context, RenderTableLayout renderObject);
 }

@@ -29,7 +29,7 @@ class AppBarExample1 extends StatelessWidget {
           OutlineButton(
             density: ButtonDensity.icon,
             onPressed: () {},
-            child: const Icon(Icons.arrow_back),
+            child: const Icon(LucideIcons.arrowLeft),
           ),
         ],
         trailing: [
@@ -37,12 +37,12 @@ class AppBarExample1 extends StatelessWidget {
           OutlineButton(
             density: ButtonDensity.icon,
             onPressed: () {},
-            child: const Icon(Icons.search),
+            child: const Icon(LucideIcons.search),
           ),
           OutlineButton(
             density: ButtonDensity.icon,
             onPressed: () {},
-            child: const Icon(Icons.more_vert),
+            child: const Icon(LucideIcons.ellipsisVertical),
           ),
         ],
       ),

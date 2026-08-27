@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 import 'misc.dart';
 
 /// Selectable navigation item with selection state management.
@@ -11,7 +12,7 @@ import 'misc.dart';
 /// NavigationItem(
 ///   key: ValueKey('home'),
 ///   label: Text('Home'),
-///   child: Icon(Icons.home),
+///   child: Icon(LucideIcons.house),
 ///   selected: selectedKey == ValueKey('home'),
 ///   onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),
 /// )
@@ -63,10 +64,7 @@ class NavigationItem extends AbstractNavigationButton {
 class _NavigationItemState
     extends _AbstractNavigationButtonState<NavigationItem> {
   @override
-  Widget buildBox(
-    BuildContext context,
-    NavigationControlData? data,
-  ) {
+  Widget buildBox(BuildContext context, NavigationControlData? data) {
     var key = widget.key;
     var isSelected =
         widget.selected ?? (key != null && key == data?.selectedKey);
@@ -75,15 +73,18 @@ class _NavigationItemState
     final densityGap = theme.density.baseGap * scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     final direction = data?.direction ?? Axis.vertical;
-    bool showLabel = labelType == NavigationLabelType.all ||
+    bool showLabel =
+        labelType == NavigationLabelType.all ||
         (labelType == NavigationLabelType.selected && isSelected) ||
         (labelType == NavigationLabelType.expanded && data?.expanded == true);
 
-    AbstractButtonStyle style = widget.style ??
+    AbstractButtonStyle style =
+        widget.style ??
         (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.ghost(density: ButtonDensity.icon)
             : const ButtonStyle.ghost());
-    AbstractButtonStyle selectedStyle = widget.selectedStyle ??
+    AbstractButtonStyle selectedStyle =
+        widget.selectedStyle ??
         (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.secondary(density: ButtonDensity.icon)
             : const ButtonStyle.secondary());
@@ -99,7 +100,8 @@ class _NavigationItemState
                   : widget.label!,
             ),
           );
-    var canShowLabel = (labelType == NavigationLabelType.expanded ||
+    var canShowLabel =
+        (labelType == NavigationLabelType.expanded ||
         labelType == NavigationLabelType.all ||
         labelType == NavigationLabelType.selected);
 
@@ -115,12 +117,13 @@ class _NavigationItemState
       marginAlignment: widget.marginAlignment,
       style: style,
       selectedStyle: selectedStyle,
-      alignment: widget.alignment ??
+      alignment:
+          widget.alignment ??
           (data?.containerType == NavigationContainerType.sidebar &&
                   data?.labelDirection == Axis.horizontal
               ? (data?.parentLabelPosition == NavigationLabelPosition.start
-                  ? AlignmentDirectional.centerEnd
-                  : AlignmentDirectional.centerStart)
+                    ? AlignmentDirectional.centerEnd
+                    : AlignmentDirectional.centerStart)
               : null),
       child: NavigationLabeled(
         label: label,
@@ -147,7 +150,7 @@ class _NavigationItemState
 /// ```dart
 /// NavigationButton(
 ///   label: Text('Settings'),
-///   child: Icon(Icons.settings),
+///   child: Icon(LucideIcons.settings),
 ///   onPressed: () => _openSettings(),
 /// )
 /// ```
@@ -192,18 +195,17 @@ class NavigationButton extends AbstractNavigationButton {
 class _NavigationButtonState
     extends _AbstractNavigationButtonState<NavigationButton> {
   @override
-  Widget buildBox(
-    BuildContext context,
-    NavigationControlData? data,
-  ) {
+  Widget buildBox(BuildContext context, NavigationControlData? data) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     final densityGap = theme.density.baseGap * scaling;
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     final direction = data?.direction ?? Axis.vertical;
-    bool showLabel = labelType == NavigationLabelType.all ||
+    bool showLabel =
+        labelType == NavigationLabelType.all ||
         (labelType == NavigationLabelType.expanded && data?.expanded == true);
-    AbstractButtonStyle style = widget.style ??
+    AbstractButtonStyle style =
+        widget.style ??
         (data?.containerType != NavigationContainerType.sidebar
             ? const ButtonStyle.ghost(density: ButtonDensity.icon)
             : const ButtonStyle.ghost());
@@ -219,7 +221,8 @@ class _NavigationButtonState
                   : widget.label!,
             ),
           );
-    var canShowLabel = (labelType == NavigationLabelType.expanded ||
+    var canShowLabel =
+        (labelType == NavigationLabelType.expanded ||
         labelType == NavigationLabelType.all ||
         labelType == NavigationLabelType.selected);
     return Button(
@@ -228,12 +231,13 @@ class _NavigationButtonState
       marginAlignment: widget.marginAlignment,
       style: style,
       enableFeedback: widget.enableFeedback,
-      alignment: widget.alignment ??
+      alignment:
+          widget.alignment ??
           (data?.containerType == NavigationContainerType.sidebar &&
                   data?.labelDirection == Axis.horizontal
               ? (data?.parentLabelPosition == NavigationLabelPosition.start
-                  ? AlignmentDirectional.centerEnd
-                  : AlignmentDirectional.centerStart)
+                    ? AlignmentDirectional.centerEnd
+                    : AlignmentDirectional.centerStart)
               : null),
       child: NavigationLabeled(
         label: label,
@@ -309,7 +313,9 @@ abstract class AbstractNavigationButton extends StatefulWidget {
 }
 
 abstract class _AbstractNavigationButtonState<
-    T extends AbstractNavigationButton> extends State<T> {
+  T extends AbstractNavigationButton
+>
+    extends State<T> {
   @override
   Widget build(BuildContext context) {
     final data = Data.maybeOf<NavigationControlData>(context);
@@ -323,10 +329,7 @@ abstract class _AbstractNavigationButtonState<
     return _buildBox(context, data);
   }
 
-  Widget buildTooltip(
-    BuildContext context,
-    NavigationControlData? data,
-  ) {
+  Widget buildTooltip(BuildContext context, NavigationControlData? data) {
     if (widget.label == null) {
       return buildBox(context, data);
     }
@@ -347,10 +350,7 @@ abstract class _AbstractNavigationButtonState<
     );
   }
 
-  Widget buildSliver(
-    BuildContext context,
-    NavigationControlData? data,
-  ) {
+  Widget buildSliver(BuildContext context, NavigationControlData? data) {
     final labelType = data?.parentLabelType ?? NavigationLabelType.none;
     if (labelType == NavigationLabelType.tooltip) {
       return SliverToBoxAdapter(child: buildTooltip(context, data));
@@ -358,15 +358,9 @@ abstract class _AbstractNavigationButtonState<
     return SliverToBoxAdapter(child: _buildBox(context, data));
   }
 
-  Widget _buildBox(
-    BuildContext context,
-    NavigationControlData? data,
-  ) {
+  Widget _buildBox(BuildContext context, NavigationControlData? data) {
     return buildBox(context, data);
   }
 
-  Widget buildBox(
-    BuildContext context,
-    NavigationControlData? data,
-  );
+  Widget buildBox(BuildContext context, NavigationControlData? data);
 }

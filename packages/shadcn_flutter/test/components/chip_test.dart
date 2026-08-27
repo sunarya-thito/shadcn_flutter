@@ -7,11 +7,7 @@ void main() {
   group('Chip', () {
     testWidgets('renders with child', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Chip(
-            child: Text('Chip Label'),
-          ),
-        ),
+        SimpleApp(child: Chip(child: Text('Chip Label'))),
       );
 
       expect(find.byType(Chip), findsOneWidget);
@@ -22,16 +18,16 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Chip(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.close),
+            leading: Icon(LucideIcons.star),
+            trailing: Icon(LucideIcons.x),
             child: Text('Chip Label'),
           ),
         ),
       );
 
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Chip Label'), findsOneWidget);
-      expect(find.byIcon(Icons.close), findsOneWidget);
+      expect(find.byIcon(LucideIcons.x), findsOneWidget);
     });
 
     testWidgets('handles onPressed', (tester) async {
@@ -68,15 +64,11 @@ void main() {
   group('ChipButton', () {
     testWidgets('renders with child', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: ChipButton(
-            child: Icon(Icons.close),
-          ),
-        ),
+        SimpleApp(child: ChipButton(child: Icon(LucideIcons.x))),
       );
 
       expect(find.byType(ChipButton), findsOneWidget);
-      expect(find.byIcon(Icons.close), findsOneWidget);
+      expect(find.byIcon(LucideIcons.x), findsOneWidget);
     });
 
     testWidgets('handles onPressed', (tester) async {
@@ -85,7 +77,7 @@ void main() {
         SimpleApp(
           child: ChipButton(
             onPressed: () => pressed = true,
-            child: Icon(Icons.close),
+            child: Icon(LucideIcons.x),
           ),
         ),
       );

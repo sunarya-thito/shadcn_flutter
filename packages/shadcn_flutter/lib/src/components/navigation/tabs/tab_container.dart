@@ -11,10 +11,7 @@ class TabContainerTheme extends ComponentThemeData {
   final TabChildBuilder? childBuilder;
 
   /// {@macro tab_container_theme}
-  const TabContainerTheme({
-    this.builder,
-    this.childBuilder,
-  });
+  const TabContainerTheme({this.builder, this.childBuilder});
 
   /// Creates a copy of this theme with the given fields replaced.
   TabContainerTheme copyWith({
@@ -145,7 +142,6 @@ class TabChildWidget extends StatelessWidget with TabChild {
   final Widget child;
 
   @override
-
   /// Whether this tab uses indexed positioning.
   ///
   /// Defaults to `false` unless specified in the constructor.
@@ -156,11 +152,7 @@ class TabChildWidget extends StatelessWidget with TabChild {
   /// Parameters:
   /// - [child]: The widget to wrap (required)
   /// - [indexed]: Whether to use indexed positioning (defaults to `false`)
-  const TabChildWidget({
-    super.key,
-    required this.child,
-    this.indexed = false,
-  });
+  const TabChildWidget({super.key, required this.child, this.indexed = false});
 
   @override
   Widget build(BuildContext context) {
@@ -182,11 +174,8 @@ class KeyedTabChildWidget<T> extends TabChildWidget with KeyedTabChild<T> {
   /// - [key]: The unique key value for this tab (required)
   /// - [child]: The widget to wrap (required)
   /// - [indexed]: Whether to use indexed positioning (optional)
-  KeyedTabChildWidget({
-    required T key,
-    required super.child,
-    super.indexed,
-  }) : super(key: ValueKey(key));
+  KeyedTabChildWidget({required T key, required super.child, super.indexed})
+    : super(key: ValueKey(key));
 
   @override
   ValueKey<T> get key => super.key as ValueKey<T>;
@@ -207,10 +196,7 @@ class TabItem extends StatelessWidget with TabChild {
   ///
   /// Parameters:
   /// - [child] (`Widget`, required): content to display in this tab
-  const TabItem({
-    super.key,
-    required this.child,
-  });
+  const TabItem({super.key, required this.child});
 
   @override
   bool get indexed => true;
@@ -231,10 +217,8 @@ class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
   /// Parameters:
   /// - [key] (`T`, required): unique key for this tab
   /// - [child] (`Widget`, required): content to display in this tab
-  KeyedTabItem({
-    required T key,
-    required super.child,
-  }) : super(key: ValueKey(key));
+  KeyedTabItem({required T key, required super.child})
+    : super(key: ValueKey(key));
 
   @override
   ValueKey<T> get key => super.key as ValueKey<T>;
@@ -251,7 +235,9 @@ class KeyedTabItem<T> extends TabItem with KeyedTabChild<T> {
 ///
 /// Returns: `Widget` — the tab layout widget
 typedef TabBuilder = Widget Function(
-    BuildContext context, List<Widget> children);
+  BuildContext context,
+  List<Widget> children,
+);
 
 /// Builder function for creating individual tab child widgets.
 ///
@@ -262,7 +248,10 @@ typedef TabBuilder = Widget Function(
 ///
 /// Returns: `Widget` — the wrapped child widget
 typedef TabChildBuilder = Widget Function(
-    BuildContext context, TabContainerData data, Widget child);
+  BuildContext context,
+  TabContainerData data,
+  Widget child,
+);
 
 /// Container widget for managing multiple tabs.
 ///
@@ -303,11 +292,12 @@ class TabContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<TabContainerTheme>(context);
-    final tabBuilder = builder ??
+    final tabBuilder =
+        builder ??
         compTheme?.builder ??
         (context, children) => Column(children: children);
     final tabChildBuilder =
-        childBuilder ?? compTheme?.childBuilder ?? ((_, __, child) => child);
+        childBuilder ?? compTheme?.childBuilder ?? ((_, _, child) => child);
 
     List<Widget> wrappedChildren = [];
     int index = 0;
@@ -330,9 +320,6 @@ class TabContainer extends StatelessWidget {
         wrappedChildren.add(child);
       }
     }
-    return tabBuilder(
-      context,
-      wrappedChildren,
-    );
+    return tabBuilder(context, wrappedChildren);
   }
 }

@@ -25,6 +25,16 @@ system for Flutter applications across mobile, web, and desktop. Rather than a
 one‑to‑one design‑system port, this project focuses on delivering a consistent,
 production‑ready experience that feels at home on every platform.
 
+> [!IMPORTANT]
+> This package depends on `package:flutter/widgets.dart` alone. It
+> imports neither Material nor Cupertino, following Flutter's own move of those
+> libraries out of the framework and into the `material_ui` and `cupertino_ui`
+> packages. If your app uses Material or Cupertino widgets too, add
+> [`shadcn_flutter_material`](https://pub.dev/packages/shadcn_flutter_material)
+> or
+> [`shadcn_flutter_cupertino`](https://pub.dev/packages/shadcn_flutter_cupertino)
+> alongside this package — see [Interop](#interop) below.
+
 > [!NOTE]
 > Already using Material or Cupertino? You can adopt shadcn_flutter
 > incrementally: mix components inside your existing MaterialApp/CupertinoApp,
@@ -34,12 +44,59 @@ production‑ready experience that feels at home on every platform.
 ## Features
 
 - 84 components and growing!
-- Standalone ecosystem: no Material or Cupertino requirement; optional interop
-  when needed.
+- Standalone ecosystem: zero dependency on `material_ui` or `cupertino_ui`;
+  optional interop when needed.
 - shadcn/ui design tokens and ready-to-use New York theme.
 - Works inside MaterialApp and CupertinoApp; mix and match while you migrate.
 - First-class support across Android, iOS, Web, macOS, Windows, and Linux.
 - Various widget extensions for typography purposes.
+
+## Interop
+
+`shadcn_flutter` is Material- and Cupertino-free. Two companion packages add
+them back when you need them:
+
+| Package | Add it when |
+| --- | --- |
+| `shadcn_flutter` | Always. Built on `package:flutter/widgets.dart` alone. |
+| `shadcn_flutter_material` | You also use Material widgets — `Scaffold`, `AppBar`, `showDialog`, `ScaffoldMessenger`, `Icons`. |
+| `shadcn_flutter_cupertino` | You also use Cupertino widgets — `CupertinoPageScaffold`, `CupertinoNavigationBar`, `showCupertinoDialog`, `CupertinoIcons`. |
+
+```shell
+flutter pub add shadcn_flutter_material
+```
+
+`MaterialShadcnApp` is a drop-in replacement for `ShadcnApp`. It takes exactly
+the same parameters, registers the Material localizations, and installs the
+`Theme`, `Material` and `ScaffoldMessenger` ancestors that Material widgets need:
+
+```dart
+import 'package:material_ui/material_ui.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter_material/shadcn_flutter_material.dart';
+
+void main() {
+  runApp(
+    MaterialShadcnApp(
+      theme: ThemeData(colorScheme: ColorSchemes.lightZinc(), radius: 0.5),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Hybrid app')),
+        body: const Center(child: PrimaryButton(child: Text('shadcn'))),
+      ),
+    ),
+  );
+}
+```
+
+The Material theme is derived from the shadcn theme, so it follows it
+automatically — including `darkTheme` and `themeMode`. Pass `materialTheme` to
+override that. If Material widgets appear in only one subtree, keep plain
+`ShadcnApp` and wrap that subtree in a `MaterialLayer` instead.
+
+`shadcn_flutter_cupertino` mirrors all of this with `CupertinoShadcnApp` and
+`CupertinoLayer`. See the
+[Material/Cupertino guide](https://sunarya-thito.github.io/shadcn_flutter/#/external)
+for the full migration table.
 
 ## Components Library
 
@@ -148,8 +205,23 @@ npx skills add sunarya-thito/shadcn_flutter
 <summary><strong>Does this replace Material/Cupertino?</strong></summary>
 
 Yes. shadcn_flutter is a standalone ecosystem built on the shadcn/ui design
-system. Interop with Material/Cupertino is optional so you can adopt it
+system, and depends on neither. Interop is optional — add
+`shadcn_flutter_material` or `shadcn_flutter_cupertino` so you can adopt it
 incrementally or go all‑in.
+
+</details>
+
+<details>
+<summary><strong>Where did <code>Icons</code>, <code>MaterialPageRoute</code> and <code>SliverAppBar</code> go?</strong></summary>
+
+They used to be re-exported from Material by this package. Now:
+
+- `Icons.x` → `LucideIcons.*`, `RadixIcons.*` or `BootstrapIcons.*`, all bundled
+  here; or `Icons` from `shadcn_flutter_material` to keep the Material set.
+- `MaterialPageRoute` / `MaterialPage` → `ShadcnPageRoute` / `ShadcnPage`, both
+  in this package.
+- `SliverAppBar` → `SliverPersistentHeader`, or `SliverAppBar` from
+  `shadcn_flutter_material`.
 
 </details>
 

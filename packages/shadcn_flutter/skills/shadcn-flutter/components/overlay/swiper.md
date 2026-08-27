@@ -80,10 +80,16 @@ class _SwiperExample1State extends State<SwiperExample1> {
             children: [
               const Text('Hello!'),
               const Gap(24),
-              PrimaryButton(
-                onPressed: () {
-                  openDrawer(
-                      context: context,
+              OverlayAnchor(
+                anchor: #swiperCloseButton,
+                child: PrimaryButton(
+                  onPressed: () {
+                    showOverlay(
+                      context,
+                      DrawerConfiguration(
+                        anchor: LinkedAnchor(#swiperCloseButton),
+                        position: OverlayPosition.bottom,
+                      ),
                       builder: (context) {
                         return ListView.separated(
                           itemCount: 1000,
@@ -97,9 +103,10 @@ class _SwiperExample1State extends State<SwiperExample1> {
                           },
                         );
                       },
-                      position: OverlayPosition.bottom);
-                },
-                child: const Text('Close'),
+                    );
+                  },
+                  child: const Text('Close'),
+                ),
               ),
             ],
           ),
@@ -214,7 +221,7 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
                           theme.colorScheme.background.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.chevron_left, size: 20),
+                    child: const Icon(LucideIcons.chevronLeft, size: 20),
                   ),
                 ),
               ),
@@ -231,7 +238,7 @@ class SwiperTile extends StatelessWidget implements IComponentPage {
                           theme.colorScheme.background.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.chevron_right, size: 20),
+                    child: const Icon(LucideIcons.chevronRight, size: 20),
                   ),
                 ),
               ),

@@ -234,8 +234,11 @@ class NullableDate {
   /// - [defaultDay] (`int`, optional): Default day value (1-31).
   ///
   /// Returns: A [DateTime] instance with non-null parts.
-  DateTime? getDateTime(
-      {int? defaultYear = 0, int? defaultMonth = 1, int? defaultDay = 1}) {
+  DateTime? getDateTime({
+    int? defaultYear = 0,
+    int? defaultMonth = 1,
+    int? defaultDay = 1,
+  }) {
     int? year = this.year ?? defaultYear;
     int? month = this.month ?? defaultMonth;
     int? day = this.day ?? defaultDay;
@@ -266,11 +269,7 @@ class NullableDate {
   ///
   /// Returns: A `Map<DatePart, int>` with non-null parts.
   Map<DatePart, int> toMap() {
-    return {
-      if (year != null) DatePart.year: year!,
-      if (month != null) DatePart.month: month!,
-      if (day != null) DatePart.day: day!,
-    };
+    return {DatePart.year: ?year, DatePart.month: ?month, DatePart.day: ?day};
   }
 }
 
@@ -293,8 +292,9 @@ class _DateInputState extends State<DateInput> {
     int? month = monthString == null || monthString.isEmpty
         ? null
         : int.tryParse(monthString);
-    int? day =
-        dayString == null || dayString.isEmpty ? null : int.tryParse(dayString);
+    int? day = dayString == null || dayString.isEmpty
+        ? null
+        : int.tryParse(dayString);
     return NullableDate(year: year, month: month, day: day);
   }
 
@@ -367,11 +367,14 @@ class _DateInputState extends State<DateInput> {
     super.initState();
     _controller = widget.controller == null
         ? ComponentValueController<NullableDate>(
-            _convertToNullableDate(widget.initialValue))
+            _convertToNullableDate(widget.initialValue),
+          )
         : ConvertedController<DateTime?, NullableDate>(
             widget.controller!,
             BiDirectionalConvert(
-                _convertToNullableDate, _convertFromNullableDate),
+              _convertToNullableDate,
+              _convertFromNullableDate,
+            ),
           );
   }
 
@@ -414,22 +417,19 @@ class _DateInputState extends State<DateInput> {
       controller: _controller,
       initialValue: _convertToNullableDate(widget.initialValue),
       onChanged: (value) {
-        widget.onChanged
-            ?.call(value == null ? null : _convertFromNullableDate(value));
+        widget.onChanged?.call(
+          value == null ? null : _convertFromNullableDate(value),
+        );
       },
       parts: datePartsOrder
-          .map(
-            (part) {
-              return InputPart.editable(
-                  length: _getLength(part),
-                  width: _getWidth(part),
-                  placeholder:
-                      widget.placeholders?[part] ?? _getPlaceholder(part),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ]);
-            },
-          )
+          .map((part) {
+            return InputPart.editable(
+              length: _getLength(part),
+              width: _getWidth(part),
+              placeholder: widget.placeholders?[part] ?? _getPlaceholder(part),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            );
+          })
           .joinSeparator(const InputPart.static('/'))
           .toList(),
     );
@@ -520,8 +520,11 @@ class NullableTimeOfDay {
   /// - [defaultSecond] (`int`, optional): Default second value (0-59).
   ///
   /// Returns: A [TimeOfDay] instance with non-null parts.
-  TimeOfDay? getTimeOfDay(
-      {int? defaultHour = 0, int? defaultMinute = 0, int? defaultSecond = 0}) {
+  TimeOfDay? getTimeOfDay({
+    int? defaultHour = 0,
+    int? defaultMinute = 0,
+    int? defaultSecond = 0,
+  }) {
     int? hour = this.hour ?? defaultHour;
     int? minute = this.minute ?? defaultMinute;
     int? second = this.second ?? defaultSecond;
@@ -570,9 +573,9 @@ class NullableTimeOfDay {
   /// Returns: A `Map<TimePart, int>` with non-null parts.
   Map<TimePart, int> toMap() {
     return {
-      if (hour != null) TimePart.hour: hour!,
-      if (minute != null) TimePart.minute: minute!,
-      if (second != null) TimePart.second: second!,
+      TimePart.hour: ?hour,
+      TimePart.minute: ?minute,
+      TimePart.second: ?second,
     };
   }
 }
@@ -695,8 +698,8 @@ class _TimeInputState extends State<TimeInput> {
         : int.tryParse(values[1]!);
     int? second = widget.showSeconds && values.length > 2
         ? (values[2] == null || values[2]!.isEmpty
-            ? null
-            : int.tryParse(values[2]!))
+              ? null
+              : int.tryParse(values[2]!))
         : null;
     return NullableTimeOfDay(hour: hour, minute: minute, second: second);
   }
@@ -745,9 +748,7 @@ class _TimeInputState extends State<TimeInput> {
   }
 
   TimeOfDay? _convertFromNullableTimeOfDay(NullableTimeOfDay value) {
-    return value.getTimeOfDay(
-      defaultSecond: widget.showSeconds ? null : 0,
-    );
+    return value.getTimeOfDay(defaultSecond: widget.showSeconds ? null : 0);
   }
 
   @override
@@ -755,11 +756,14 @@ class _TimeInputState extends State<TimeInput> {
     super.initState();
     _controller = widget.controller == null
         ? ComponentValueController<NullableTimeOfDay>(
-            _convertToNullableTimeOfDay(widget.initialValue))
+            _convertToNullableTimeOfDay(widget.initialValue),
+          )
         : ConvertedController<TimeOfDay?, NullableTimeOfDay>(
             widget.controller!,
             BiDirectionalConvert(
-                _convertToNullableTimeOfDay, _convertFromNullableTimeOfDay),
+              _convertToNullableTimeOfDay,
+              _convertFromNullableTimeOfDay,
+            ),
           );
   }
 
@@ -774,26 +778,31 @@ class _TimeInputState extends State<TimeInput> {
   @override
   Widget build(BuildContext context) {
     return FormattedObjectInput<NullableTimeOfDay>(
-      converter:
-          BiDirectionalConvert(_convertFromTimeOfDay, _convertToTimeOfDay),
+      converter: BiDirectionalConvert(
+        _convertFromTimeOfDay,
+        _convertToTimeOfDay,
+      ),
       controller: _controller,
       initialValue: _convertToNullableTimeOfDay(widget.initialValue),
       onChanged: (value) {
-        widget.onChanged
-            ?.call(value == null ? null : _convertFromNullableTimeOfDay(value));
+        widget.onChanged?.call(
+          value == null ? null : _convertFromNullableTimeOfDay(value),
+        );
       },
       parts: [
         InputPart.editable(
           length: _getLength(TimePart.hour),
           width: _getWidth(TimePart.hour),
-          placeholder: widget.placeholders?[TimePart.hour] ??
+          placeholder:
+              widget.placeholders?[TimePart.hour] ??
               _getPlaceholder(TimePart.hour),
         ),
         widget.separator ?? const InputPart.static(':'),
         InputPart.editable(
           length: _getLength(TimePart.minute),
           width: _getWidth(TimePart.minute),
-          placeholder: widget.placeholders?[TimePart.minute] ??
+          placeholder:
+              widget.placeholders?[TimePart.minute] ??
               _getPlaceholder(TimePart.minute),
         ),
         if (widget.showSeconds) ...[
@@ -801,7 +810,8 @@ class _TimeInputState extends State<TimeInput> {
           InputPart.editable(
             length: _getLength(TimePart.second),
             width: _getWidth(TimePart.second),
-            placeholder: widget.placeholders?[TimePart.second] ??
+            placeholder:
+                widget.placeholders?[TimePart.second] ??
                 _getPlaceholder(TimePart.second),
           ),
         ],
@@ -929,8 +939,8 @@ class _DurationInputState extends State<DurationInput> {
         : int.tryParse(values[1]!);
     int? seconds = widget.showSeconds && values.length > 2
         ? (values[2] == null || values[2]!.isEmpty
-            ? null
-            : int.tryParse(values[2]!))
+              ? null
+              : int.tryParse(values[2]!))
         : null;
     return NullableTimeOfDay(hour: hours, minute: minutes, second: seconds);
   }
@@ -996,11 +1006,14 @@ class _DurationInputState extends State<DurationInput> {
     super.initState();
     _controller = widget.controller == null
         ? ComponentValueController<NullableTimeOfDay>(
-            _convertToNullableTimeOfDay(widget.initialValue))
+            _convertToNullableTimeOfDay(widget.initialValue),
+          )
         : ConvertedController<Duration?, NullableTimeOfDay>(
             widget.controller!,
             BiDirectionalConvert(
-                _convertToNullableTimeOfDay, _convertFromNullableTimeOfDay),
+              _convertToNullableTimeOfDay,
+              _convertFromNullableTimeOfDay,
+            ),
           );
   }
 
@@ -1019,21 +1032,24 @@ class _DurationInputState extends State<DurationInput> {
       controller: _controller,
       initialValue: _convertToNullableTimeOfDay(widget.initialValue),
       onChanged: (value) {
-        widget.onChanged
-            ?.call(value == null ? null : _convertFromNullableTimeOfDay(value));
+        widget.onChanged?.call(
+          value == null ? null : _convertFromNullableTimeOfDay(value),
+        );
       },
       parts: [
         InputPart.editable(
           length: _getLength(TimePart.hour),
           width: _getWidth(TimePart.hour),
-          placeholder: widget.placeholders?[TimePart.hour] ??
+          placeholder:
+              widget.placeholders?[TimePart.hour] ??
               _getPlaceholder(TimePart.hour),
         ),
         widget.separator ?? const InputPart.static(':'),
         InputPart.editable(
           length: _getLength(TimePart.minute),
           width: _getWidth(TimePart.minute),
-          placeholder: widget.placeholders?[TimePart.minute] ??
+          placeholder:
+              widget.placeholders?[TimePart.minute] ??
               _getPlaceholder(TimePart.minute),
         ),
         if (widget.showSeconds) ...[
@@ -1041,7 +1057,8 @@ class _DurationInputState extends State<DurationInput> {
           InputPart.editable(
             length: _getLength(TimePart.second),
             width: _getWidth(TimePart.second),
-            placeholder: widget.placeholders?[TimePart.second] ??
+            placeholder:
+                widget.placeholders?[TimePart.second] ??
                 _getPlaceholder(TimePart.second),
           ),
         ],

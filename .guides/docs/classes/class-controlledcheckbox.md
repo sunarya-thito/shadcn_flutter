@@ -125,7 +125,7 @@ class ControlledCheckbox extends StatelessWidget with ControlledComponent<Checkb
   /// ControlledCheckbox(
   ///   controller: controller,
   ///   tristate: true,
-  ///   leading: Icon(Icons.star),
+  ///   leading: Icon(LucideIcons.star),
   ///   trailing: Text('Favorite'),
   /// )
   /// ```

@@ -35,7 +35,7 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(Icons.keyboard_arrow_up), findsOneWidget);
+      expect(find.byIcon(LucideIcons.chevronUp), findsOneWidget);
     });
 
     testWidgets('toggles expansion on tap', (tester) async {
@@ -53,16 +53,18 @@ void main() {
       );
 
       // Initially collapsed
-      var transitionSize = tester
-          .getSize(find.byKey(const ValueKey('accordion_size_transition')));
+      var transitionSize = tester.getSize(
+        find.byKey(const ValueKey('accordion_size_transition')),
+      );
       expect(transitionSize.height, 0);
 
       // Tap to expand
       await tester.tap(find.text('Trigger'));
       await tester.pumpAndSettle();
 
-      transitionSize = tester
-          .getSize(find.byKey(const ValueKey('accordion_size_transition')));
+      transitionSize = tester.getSize(
+        find.byKey(const ValueKey('accordion_size_transition')),
+      );
       expect(transitionSize.height, greaterThan(0));
     });
 
@@ -85,16 +87,18 @@ void main() {
       await tester.pump();
 
       // Initially collapsed
-      var transitionSize = tester
-          .getSize(find.byKey(const ValueKey('accordion_size_transition')));
+      var transitionSize = tester.getSize(
+        find.byKey(const ValueKey('accordion_size_transition')),
+      );
       expect(transitionSize.height, 0);
 
       // Press Enter to expand
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       await tester.pumpAndSettle();
 
-      transitionSize = tester
-          .getSize(find.byKey(const ValueKey('accordion_size_transition')));
+      transitionSize = tester.getSize(
+        find.byKey(const ValueKey('accordion_size_transition')),
+      );
       expect(transitionSize.height, greaterThan(0));
     });
 
@@ -117,16 +121,18 @@ void main() {
       await tester.pump();
 
       // Initially collapsed
-      var transitionSize = tester
-          .getSize(find.byKey(const ValueKey('accordion_size_transition')));
+      var transitionSize = tester.getSize(
+        find.byKey(const ValueKey('accordion_size_transition')),
+      );
       expect(transitionSize.height, 0);
 
       // Press Space to expand
       await tester.sendKeyEvent(LogicalKeyboardKey.space);
       await tester.pumpAndSettle();
 
-      transitionSize = tester
-          .getSize(find.byKey(const ValueKey('accordion_size_transition')));
+      transitionSize = tester.getSize(
+        find.byKey(const ValueKey('accordion_size_transition')),
+      );
       expect(transitionSize.height, greaterThan(0));
     });
 
@@ -149,8 +155,9 @@ void main() {
       await tester.pump();
 
       // Check that focus indicator is present (border color changes)
-      final trigger =
-          tester.widget<AccordionTrigger>(find.byType(AccordionTrigger));
+      final trigger = tester.widget<AccordionTrigger>(
+        find.byType(AccordionTrigger),
+      );
       expect(trigger, isNotNull);
     });
 
@@ -175,19 +182,25 @@ void main() {
       // Check that FocusableActionDetector is present with hover callback
       final focusableDetectors = tester.widgetList<FocusableActionDetector>(
         find.descendant(
-            of: triggerFinder, matching: find.byType(FocusableActionDetector)),
+          of: triggerFinder,
+          matching: find.byType(FocusableActionDetector),
+        ),
       );
       expect(focusableDetectors.length, greaterThan(0));
       // At least one should have hover callback
       expect(
-          focusableDetectors
-              .any((detector) => detector.onShowHoverHighlight != null),
-          isTrue);
+        focusableDetectors.any(
+          (detector) => detector.onShowHoverHighlight != null,
+        ),
+        isTrue,
+      );
 
       // Check that DefaultTextStyle is present for text styling
       final textStyles = tester.widgetList<DefaultTextStyle>(
         find.descendant(
-            of: triggerFinder, matching: find.byType(DefaultTextStyle)),
+          of: triggerFinder,
+          matching: find.byType(DefaultTextStyle),
+        ),
       );
       expect(textStyles.length, greaterThan(0));
 
@@ -280,8 +293,9 @@ void main() {
         ),
       );
 
-      final gestureDetectors =
-          tester.widgetList<GestureDetector>(find.byType(GestureDetector));
+      final gestureDetectors = tester.widgetList<GestureDetector>(
+        find.byType(GestureDetector),
+      );
       expect(gestureDetectors.length, greaterThan(0));
     });
 

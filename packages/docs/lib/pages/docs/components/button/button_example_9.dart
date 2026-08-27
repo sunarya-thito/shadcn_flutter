@@ -11,32 +11,32 @@ class ButtonExample9 extends StatelessWidget {
       children: [
         PrimaryButton(
           onPressed: () {},
-          trailing: const Icon(Icons.add),
+          trailing: const Icon(LucideIcons.plus),
           child: const Text('Add'),
         ),
         SecondaryButton(
           onPressed: () {},
-          trailing: const Icon(Icons.add),
+          trailing: const Icon(LucideIcons.plus),
           child: const Text('Add'),
         ),
         OutlineButton(
           onPressed: () {},
-          trailing: const Icon(Icons.add),
+          trailing: const Icon(LucideIcons.plus),
           child: const Text('Add'),
         ),
         GhostButton(
           onPressed: () {},
-          trailing: const Icon(Icons.add),
+          trailing: const Icon(LucideIcons.plus),
           child: const Text('Add'),
         ),
         TextButton(
           onPressed: () {},
-          trailing: const Icon(Icons.add),
+          trailing: const Icon(LucideIcons.plus),
           child: const Text('Add'),
         ),
         DestructiveButton(
           onPressed: () {},
-          trailing: const Icon(Icons.add),
+          trailing: const Icon(LucideIcons.plus),
           child: const Text('Add'),
         ),
       ],

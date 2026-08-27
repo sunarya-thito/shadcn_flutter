@@ -22,9 +22,9 @@ class _InputExample2State extends State<InputExample2> {
             builder: (context, states) {
               // Use a muted icon normally, switch to the full icon on hover
               if (states.hovered) {
-                return const Icon(Icons.search);
+                return const Icon(LucideIcons.search);
               } else {
-                return const Icon(Icons.search).iconMutedForeground();
+                return const Icon(LucideIcons.search).iconMutedForeground();
               }
             },
           ), visibility: InputFeatureVisibility.textEmpty),

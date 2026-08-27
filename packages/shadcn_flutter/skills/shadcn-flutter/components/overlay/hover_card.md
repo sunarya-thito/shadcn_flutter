@@ -75,14 +75,13 @@ class HoverCardExample1 extends StatelessWidget {
 ### Hover Card Tile
 ```dart
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart' as material hide Card;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class CursorPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = material.Colors.black
+      ..color = Colors.black
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 
@@ -165,5 +164,5 @@ class HoverCardTile extends StatelessWidget implements IComponentPage {
 | `anchorAlignment` | `AlignmentGeometry?` | Alignment point on the anchor widget. |
 | `popoverOffset` | `Offset?` | Offset of the popover from its calculated position. |
 | `behavior` | `HitTestBehavior?` | Hit test behavior for mouse interactions. |
-| `controller` | `PopoverController?` | Controller to programmatically manage the popover. |
-| `handler` | `OverlayHandler?` | Custom overlay handler for popover display. |
+| `controller` | `OverlayController?` | Controller to programmatically manage the popover. |
+| `adaptiveOverlay` | `bool` | Whether this hover card may adapt to a different presentation on mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults to `false` — see [Tooltip.adaptiveOverlay]; a hover card is presented via [TooltipConfiguration] just like [Tooltip]. |

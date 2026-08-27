@@ -71,19 +71,19 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
             OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
-              child: const Icon(Icons.menu),
+              child: const Icon(LucideIcons.menu),
             ),
           ],
           trailing: [
             OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
-              child: const Icon(Icons.search),
+              child: const Icon(LucideIcons.search),
             ),
             OutlineButton(
               onPressed: () {},
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             ),
           ],
         ),
@@ -102,7 +102,7 @@ class _ScaffoldExample1State extends State<ScaffoldExample1> {
             PrimaryButton(
               onPressed: _incrementCounter,
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             ).p(),
           ],
         ),
@@ -154,7 +154,7 @@ class ScaffoldTile extends StatelessWidget implements IComponentPage {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.menu,
+                    Icon(LucideIcons.menu,
                         color: theme.colorScheme.primaryForeground),
                     const Gap(16),
                     Text(
@@ -189,9 +189,9 @@ class ScaffoldTile extends StatelessWidget implements IComponentPage {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.home),
-                    Icon(Icons.search),
-                    Icon(Icons.settings),
+                    Icon(LucideIcons.house),
+                    Icon(LucideIcons.search),
+                    Icon(LucideIcons.settings),
                   ],
                 ),
               ),

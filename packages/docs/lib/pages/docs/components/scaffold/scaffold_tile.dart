@@ -37,7 +37,7 @@ class ScaffoldTile extends StatelessWidget implements IComponentPage {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.menu,
+                    Icon(LucideIcons.menu,
                         color: theme.colorScheme.primaryForeground),
                     const Gap(16),
                     Text(
@@ -72,9 +72,9 @@ class ScaffoldTile extends StatelessWidget implements IComponentPage {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.home),
-                    Icon(Icons.search),
-                    Icon(Icons.settings),
+                    Icon(LucideIcons.house),
+                    Icon(LucideIcons.search),
+                    Icon(LucideIcons.settings),
                   ],
                 ),
               ),

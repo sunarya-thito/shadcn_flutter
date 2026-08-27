@@ -134,13 +134,13 @@ class TabPane<T> extends StatefulWidget {
   ///   focused: activeDocumentIndex,
   ///   onFocused: switchToDocument,
   ///   onSort: reorderDocuments,
-  ///   leading: [IconButton(icon: Icon(Icons.add), onPressed: newDocument)],
-  ///   trailing: [IconButton(icon: Icon(Icons.settings), onPressed: showSettings)],
+  ///   leading: [IconButton(icon: Icon(LucideIcons.plus), onPressed: newDocument)],
+  ///   trailing: [IconButton(icon: Icon(LucideIcons.settings), onPressed: showSettings)],
   ///   itemBuilder: (context, item, index) => TabChild(
   ///     child: Row(
   ///       children: [
   ///         Text(item.data.title),
-  ///         IconButton(icon: Icon(Icons.close), onPressed: () => closeTab(index)),
+  ///         IconButton(icon: Icon(LucideIcons.x), onPressed: () => closeTab(index)),
   ///       ],
   ///     ),
   ///   ),

@@ -269,8 +269,9 @@ void main() {
       expect(sizedBoxWidget.height, equals(50));
     });
 
-    testWidgets('uses default size when width/height not specified',
-        (tester) async {
+    testWidgets('uses default size when width/height not specified', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: CalendarItem(
@@ -307,8 +308,10 @@ void main() {
       );
 
       expect(find.byType(CalendarItem), findsOneWidget);
-      expect(find.byType(PrimaryButton),
-          findsOneWidget); // Should be selected, not stack
+      expect(
+        find.byType(PrimaryButton),
+        findsOneWidget,
+      ); // Should be selected, not stack
     });
 
     testWidgets('handles edge positions for endRangeSelected', (tester) async {
@@ -326,8 +329,10 @@ void main() {
       );
 
       expect(find.byType(CalendarItem), findsOneWidget);
-      expect(find.byType(PrimaryButton),
-          findsOneWidget); // Should be selected, not stack
+      expect(
+        find.byType(PrimaryButton),
+        findsOneWidget,
+      ); // Should be selected, not stack
     });
 
     testWidgets('handles edge positions for short range types', (tester) async {
@@ -356,13 +361,13 @@ void main() {
             indexAtRow: 1,
             rowCount: 7,
             state: DateState.enabled,
-            child: Icon(Icons.star),
+            child: Icon(LucideIcons.star),
           ),
         ),
       );
 
       expect(find.byType(CalendarItem), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
     });
 
     testWidgets('handles null onTap', (tester) async {

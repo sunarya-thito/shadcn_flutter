@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationItem"
-description: "Selectable navigation item with selection state management.   Represents a clickable navigation item that can be selected. Supports  custom styling for selected/unselected states, labels, and icons.   Example:  ```dart  NavigationItem(    key: ValueKey('home'),    label: Text('Home'),    child: Icon(Icons.home),    selected: selectedKey == ValueKey('home'),    onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),  )  )  ```"
+description: "Selectable navigation item with selection state management.   Represents a clickable navigation item that can be selected. Supports  custom styling for selected/unselected states, labels, and icons.   Example:  ```dart  NavigationItem(    key: ValueKey('home'),    label: Text('Home'),    child: Icon(LucideIcons.house),    selected: selectedKey == ValueKey('home'),    onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),  )  )  ```"
 ---
 
 ```dart
@@ -14,7 +14,7 @@ description: "Selectable navigation item with selection state management.   Repr
 /// NavigationItem(
 ///   key: ValueKey('home'),
 ///   label: Text('Home'),
-///   child: Icon(Icons.home),
+///   child: Icon(LucideIcons.house),
 ///   selected: selectedKey == ValueKey('home'),
 ///   onChanged: (selected) => setState(() => selectedKey = ValueKey('home')),
 /// )

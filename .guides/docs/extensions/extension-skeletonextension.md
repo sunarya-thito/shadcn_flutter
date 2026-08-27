@@ -107,7 +107,7 @@ extension SkeletonExtension on Widget {
   /// ```dart
   /// Row(children: [
   ///   Text('Data: $value'),
-  ///   Icon(Icons.star).excludeSkeleton(exclude: isImportant),
+  ///   Icon(LucideIcons.star).excludeSkeleton(exclude: isImportant),
   /// ]).asSkeleton();
   /// ```
   Widget excludeSkeleton({bool exclude = true});

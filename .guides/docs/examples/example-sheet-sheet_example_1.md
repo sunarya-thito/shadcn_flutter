@@ -19,8 +19,9 @@ class _SheetExample1State extends State<SheetExample1> {
   final FormController controller = FormController();
 
   void saveProfile() {
-    showDialog(
-      context: context,
+    showOverlay(
+      context,
+      DialogConfiguration(),
       builder: (context) {
         return AlertDialog(
           title: const Text('Profile updated'),
@@ -57,12 +58,11 @@ class _SheetExample1State extends State<SheetExample1> {
                 ),
                 TextButton(
                   density: ButtonDensity.icon,
-                  child: const Icon(Icons.close),
+                  child: const Icon(LucideIcons.x),
                   onPressed: () {
                     // Close the sheet without saving.
                     closeSheet(context);
                   },
                 ),
               ],
-            ),
 ```

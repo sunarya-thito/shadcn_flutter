@@ -7,11 +7,7 @@ void main() {
   group('AlertDialog', () {
     testWidgets('renders with title only', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: AlertDialog(
-            title: Text('Alert Title'),
-          ),
-        ),
+        SimpleApp(child: AlertDialog(title: Text('Alert Title'))),
       );
 
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -37,7 +33,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: AlertDialog(
-            leading: Icon(Icons.info),
+            leading: Icon(LucideIcons.info),
             title: Text('Info Alert'),
           ),
         ),
@@ -53,7 +49,7 @@ void main() {
         SimpleApp(
           child: AlertDialog(
             title: Text('Alert with action'),
-            trailing: Icon(Icons.close),
+            trailing: Icon(LucideIcons.x),
           ),
         ),
       );
@@ -83,11 +79,7 @@ void main() {
     });
 
     testWidgets('handles empty dialog', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AlertDialog(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AlertDialog()));
 
       expect(find.byType(AlertDialog), findsOneWidget);
       // Should render without crashing
@@ -122,7 +114,7 @@ void main() {
             ),
             title: Text('Warning'),
             content: Text('This is a warning message with more details.'),
-            trailing: Icon(Icons.warning),
+            trailing: Icon(LucideIcons.triangleAlert),
             actions: [
               Button.outline(child: Text('Ignore'), onPressed: () {}),
               Button.primary(child: Text('Acknowledge'), onPressed: () {}),
@@ -134,18 +126,16 @@ void main() {
       expect(find.byType(AlertDialog), findsOneWidget);
       expect(find.byType(Container), findsWidgets);
       expect(find.text('Warning'), findsOneWidget);
-      expect(find.text('This is a warning message with more details.'),
-          findsOneWidget);
+      expect(
+        find.text('This is a warning message with more details.'),
+        findsOneWidget,
+      );
       expect(find.byType(Button), findsNWidgets(2));
     });
 
     testWidgets('uses ModalBackdrop and ModalContainer', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: AlertDialog(
-            title: Text('Modal Test'),
-          ),
-        ),
+        SimpleApp(child: AlertDialog(title: Text('Modal Test'))),
       );
 
       expect(find.byType(ModalBackdrop), findsOneWidget);

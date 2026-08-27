@@ -53,14 +53,14 @@ class _CarouselExample3State extends State<CarouselExample3> {
                     controller
                         .animatePrevious(const Duration(milliseconds: 500));
                   },
-                  child: const Icon(Icons.arrow_back)),
+                  child: const Icon(LucideIcons.arrowLeft)),
               const Gap(8),
               OutlineButton(
                   shape: ButtonShape.circle,
                   onPressed: () {
                     controller.animateNext(const Duration(milliseconds: 500));
                   },
-                  child: const Icon(Icons.arrow_forward)),
+                  child: const Icon(LucideIcons.arrowRight)),
             ],
           ),
         ],

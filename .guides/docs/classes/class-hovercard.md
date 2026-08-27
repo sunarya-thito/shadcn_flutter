@@ -1,6 +1,6 @@
 ---
 title: "Class: HoverCard"
-description: "A widget that displays a popover when hovered or long-pressed.   Shows contextual information or actions when the user hovers over the  child widget or performs a long press. Includes intelligent timing  controls to prevent flickering and provides smooth user interactions.   Features:  - Hover-based popover display with timing controls  - Long-press support for touch devices  - Configurable positioning and alignment  - Debounce timing to prevent flicker  - Custom overlay handlers support  - Theme integration   The hover card automatically manages show/hide timing based on mouse  enter/exit events, with configurable delays to provide a smooth UX.   Example:  ```dart  HoverCard(    hoverBuilder: (context) => Card(      child: Padding(        padding: EdgeInsets.all(12),        child: Text('Additional info appears on hover'),      ),    ),    child: Icon(Icons.help_outline),  )  ```"
+description: "A widget that displays a popover when hovered or long-pressed.   Shows contextual information or actions when the user hovers over the  child widget or performs a long press. Includes intelligent timing  controls to prevent flickering and provides smooth user interactions.   Features:  - Hover-based popover display with timing controls  - Long-press support for touch devices  - Configurable positioning and alignment  - Debounce timing to prevent flicker  - Custom overlay handlers support  - Theme integration   The hover card automatically manages show/hide timing based on mouse  enter/exit events, with configurable delays to provide a smooth UX.   Example:  ```dart  HoverCard(    hoverBuilder: (context) => Card(      child: Padding(        padding: EdgeInsets.all(12),        child: Text('Additional info appears on hover'),      ),    ),    child: Icon(LucideIcons.circleHelp),  )  ```"
 ---
 
 ```dart
@@ -30,7 +30,7 @@ description: "A widget that displays a popover when hovered or long-pressed.   S
 ///       child: Text('Additional info appears on hover'),
 ///     ),
 ///   ),
-///   child: Icon(Icons.help_outline),
+///   child: Icon(LucideIcons.circleHelp),
 /// )
 /// ```
 class HoverCard extends StatefulWidget {
@@ -51,9 +51,12 @@ class HoverCard extends StatefulWidget {
   /// Hit test behavior for mouse interactions.
   final HitTestBehavior? behavior;
   /// Controller to programmatically manage the popover.
-  final PopoverController? controller;
-  /// Custom overlay handler for popover display.
-  final OverlayHandler? handler;
+  final OverlayController? controller;
+  /// Whether this hover card may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter). Defaults to
+  /// `false` — see [Tooltip.adaptiveOverlay]; a hover card is presented via
+  /// [TooltipConfiguration] just like [Tooltip].
+  final bool adaptiveOverlay;
   /// Creates a [HoverCard].
   ///
   /// The [child] and [hoverBuilder] parameters are required.
@@ -68,17 +71,17 @@ class HoverCard extends StatefulWidget {
   /// - [popoverOffset] (Offset?, optional): offset from position, defaults to (0, 8)
   /// - [behavior] (HitTestBehavior?, optional): hit test behavior, defaults to deferToChild
   /// - [controller] (PopoverController?, optional): controller for programmatic control
-  /// - [handler] (OverlayHandler?, optional): custom overlay handler
+  /// - [adaptiveOverlay] (bool, default: `false`): whether `adaptiveConversion` runs for this overlay.
   ///
   /// Example:
   /// ```dart
   /// HoverCard(
   ///   debounce: Duration(milliseconds: 300),
   ///   hoverBuilder: (context) => Tooltip(message: 'Help text'),
-  ///   child: Icon(Icons.info),
+  ///   child: Icon(LucideIcons.info),
   /// )
   /// ```
-  const HoverCard({super.key, required this.child, required this.hoverBuilder, this.debounce, this.wait, this.popoverAlignment, this.anchorAlignment, this.popoverOffset, this.behavior, this.controller, this.handler});
+  const HoverCard({super.key, required this.child, required this.hoverBuilder, this.debounce, this.wait, this.popoverAlignment, this.anchorAlignment, this.popoverOffset, this.behavior, this.controller, this.adaptiveOverlay = false});
   State<HoverCard> createState();
 }
 ```

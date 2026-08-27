@@ -59,20 +59,24 @@ class BasicTheme extends ComponentThemeData {
     ValueGetter<EdgeInsetsGeometry?>? padding,
   }) {
     return BasicTheme(
-      leadingAlignment:
-          leadingAlignment == null ? this.leadingAlignment : leadingAlignment(),
+      leadingAlignment: leadingAlignment == null
+          ? this.leadingAlignment
+          : leadingAlignment(),
       trailingAlignment: trailingAlignment == null
           ? this.trailingAlignment
           : trailingAlignment(),
-      titleAlignment:
-          titleAlignment == null ? this.titleAlignment : titleAlignment(),
+      titleAlignment: titleAlignment == null
+          ? this.titleAlignment
+          : titleAlignment(),
       subtitleAlignment: subtitleAlignment == null
           ? this.subtitleAlignment
           : subtitleAlignment(),
-      contentAlignment:
-          contentAlignment == null ? this.contentAlignment : contentAlignment(),
-      contentSpacing:
-          contentSpacing == null ? this.contentSpacing : contentSpacing(),
+      contentAlignment: contentAlignment == null
+          ? this.contentAlignment
+          : contentAlignment(),
+      contentSpacing: contentSpacing == null
+          ? this.contentSpacing
+          : contentSpacing(),
       titleSpacing: titleSpacing == null ? this.titleSpacing : titleSpacing(),
       mainAxisAlignment: mainAxisAlignment == null
           ? this.mainAxisAlignment
@@ -97,16 +101,16 @@ class BasicTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        leadingAlignment,
-        trailingAlignment,
-        titleAlignment,
-        subtitleAlignment,
-        contentAlignment,
-        contentSpacing,
-        titleSpacing,
-        mainAxisAlignment,
-        padding,
-      );
+    leadingAlignment,
+    trailingAlignment,
+    titleAlignment,
+    subtitleAlignment,
+    contentAlignment,
+    contentSpacing,
+    titleSpacing,
+    mainAxisAlignment,
+    padding,
+  );
 }
 
 /// A versatile layout widget for arranging leading, title, subtitle, content, and trailing elements.
@@ -118,10 +122,10 @@ class BasicTheme extends ComponentThemeData {
 /// Example:
 /// ```dart
 /// Basic(
-///   leading: Icon(Icons.person),
+///   leading: Icon(LucideIcons.user),
 ///   title: Text('John Doe'),
 ///   subtitle: Text('john@example.com'),
-///   trailing: Icon(Icons.chevron_right),
+///   trailing: Icon(LucideIcons.chevronRight),
 /// )
 /// ```
 class Basic extends StatelessWidget {
@@ -195,42 +199,51 @@ class Basic extends StatelessWidget {
         theme.density.baseContainerPadding * scaling;
     final compTheme = ComponentTheme.maybeOf<BasicTheme>(context);
     final padding = styleValue(
-        widgetValue: this.padding,
-        themeValue: compTheme?.padding,
-        defaultValue: EdgeInsets.zero);
+      widgetValue: this.padding,
+      themeValue: compTheme?.padding,
+      defaultValue: EdgeInsets.zero,
+    );
     final resolvedPadding = resolveEdgeInsets(padding, densityContainerPadding);
     final contentSpacing = styleValue(
-        widgetValue: this.contentSpacing,
-        themeValue: compTheme?.contentSpacing,
-        defaultValue: densityGap * 2);
+      widgetValue: this.contentSpacing,
+      themeValue: compTheme?.contentSpacing,
+      defaultValue: densityGap * 2,
+    );
     final titleSpacing = styleValue(
-        widgetValue: this.titleSpacing,
-        themeValue: compTheme?.titleSpacing,
-        defaultValue: densityGap * 0.5);
+      widgetValue: this.titleSpacing,
+      themeValue: compTheme?.titleSpacing,
+      defaultValue: densityGap * 0.5,
+    );
     final leadingAlignment = styleValue(
-        widgetValue: this.leadingAlignment,
-        themeValue: compTheme?.leadingAlignment,
-        defaultValue: Alignment.topCenter);
+      widgetValue: this.leadingAlignment,
+      themeValue: compTheme?.leadingAlignment,
+      defaultValue: Alignment.topCenter,
+    );
     final trailingAlignment = styleValue(
-        widgetValue: this.trailingAlignment,
-        themeValue: compTheme?.trailingAlignment,
-        defaultValue: Alignment.topCenter);
+      widgetValue: this.trailingAlignment,
+      themeValue: compTheme?.trailingAlignment,
+      defaultValue: Alignment.topCenter,
+    );
     final titleAlignment = styleValue(
-        widgetValue: this.titleAlignment,
-        themeValue: compTheme?.titleAlignment,
-        defaultValue: Alignment.topLeft);
+      widgetValue: this.titleAlignment,
+      themeValue: compTheme?.titleAlignment,
+      defaultValue: Alignment.topLeft,
+    );
     final subtitleAlignment = styleValue(
-        widgetValue: this.subtitleAlignment,
-        themeValue: compTheme?.subtitleAlignment,
-        defaultValue: Alignment.topLeft);
+      widgetValue: this.subtitleAlignment,
+      themeValue: compTheme?.subtitleAlignment,
+      defaultValue: Alignment.topLeft,
+    );
     final contentAlignment = styleValue(
-        widgetValue: this.contentAlignment,
-        themeValue: compTheme?.contentAlignment,
-        defaultValue: Alignment.topLeft);
+      widgetValue: this.contentAlignment,
+      themeValue: compTheme?.contentAlignment,
+      defaultValue: Alignment.topLeft,
+    );
     final mainAxisAlignment = styleValue(
-        widgetValue: this.mainAxisAlignment,
-        themeValue: compTheme?.mainAxisAlignment,
-        defaultValue: MainAxisAlignment.center);
+      widgetValue: this.mainAxisAlignment,
+      themeValue: compTheme?.mainAxisAlignment,
+      defaultValue: MainAxisAlignment.center,
+    );
     return Padding(
       padding: resolvedPadding,
       child: IntrinsicWidth(
@@ -240,10 +253,7 @@ class Basic extends StatelessWidget {
             mainAxisAlignment: mainAxisAlignment,
             children: [
               if (leading != null)
-                Align(
-                  alignment: leadingAlignment,
-                  child: leading!,
-                ),
+                Align(alignment: leadingAlignment, child: leading!),
               if (leading != null &&
                   (title != null || content != null || subtitle != null))
                 SizedBox(width: contentSpacing),
@@ -284,10 +294,7 @@ class Basic extends StatelessWidget {
                 SizedBox(width: contentSpacing),
               // if (trailing != null) trailing!,
               if (trailing != null)
-                Align(
-                  alignment: trailingAlignment,
-                  child: trailing!,
-                ),
+                Align(alignment: trailingAlignment, child: trailing!),
             ],
           ),
         ),
@@ -305,7 +312,7 @@ class Basic extends StatelessWidget {
 /// Example:
 /// ```dart
 /// BasicLayout(
-///   leading: Icon(Icons.star),
+///   leading: Icon(LucideIcons.star),
 ///   title: Text('Custom styled title', style: myStyle),
 ///   subtitle: Text('Custom styled subtitle', style: myStyle),
 /// )
@@ -374,41 +381,45 @@ class BasicLayout extends StatelessWidget {
     final scaling = theme.scaling;
     final compTheme = ComponentTheme.maybeOf<BasicTheme>(context);
     final contentSpacing = styleValue(
-        widgetValue: this.contentSpacing,
-        themeValue: compTheme?.contentSpacing,
-        defaultValue: 16 * scaling);
+      widgetValue: this.contentSpacing,
+      themeValue: compTheme?.contentSpacing,
+      defaultValue: 16 * scaling,
+    );
     final titleSpacing = styleValue(
-        widgetValue: this.titleSpacing,
-        themeValue: compTheme?.titleSpacing,
-        defaultValue: 4 * scaling);
+      widgetValue: this.titleSpacing,
+      themeValue: compTheme?.titleSpacing,
+      defaultValue: 4 * scaling,
+    );
     final leadingAlignment = styleValue(
-        widgetValue: this.leadingAlignment,
-        themeValue: compTheme?.leadingAlignment,
-        defaultValue: Alignment.topCenter);
+      widgetValue: this.leadingAlignment,
+      themeValue: compTheme?.leadingAlignment,
+      defaultValue: Alignment.topCenter,
+    );
     final trailingAlignment = styleValue(
-        widgetValue: this.trailingAlignment,
-        themeValue: compTheme?.trailingAlignment,
-        defaultValue: Alignment.topCenter);
+      widgetValue: this.trailingAlignment,
+      themeValue: compTheme?.trailingAlignment,
+      defaultValue: Alignment.topCenter,
+    );
     final titleAlignment = styleValue(
-        widgetValue: this.titleAlignment,
-        themeValue: compTheme?.titleAlignment,
-        defaultValue: Alignment.topLeft);
+      widgetValue: this.titleAlignment,
+      themeValue: compTheme?.titleAlignment,
+      defaultValue: Alignment.topLeft,
+    );
     final subtitleAlignment = styleValue(
-        widgetValue: this.subtitleAlignment,
-        themeValue: compTheme?.subtitleAlignment,
-        defaultValue: Alignment.topLeft);
+      widgetValue: this.subtitleAlignment,
+      themeValue: compTheme?.subtitleAlignment,
+      defaultValue: Alignment.topLeft,
+    );
     final contentAlignment = styleValue(
-        widgetValue: this.contentAlignment,
-        themeValue: compTheme?.contentAlignment,
-        defaultValue: Alignment.topLeft);
+      widgetValue: this.contentAlignment,
+      themeValue: compTheme?.contentAlignment,
+      defaultValue: Alignment.topLeft,
+    );
     Widget child = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (leading != null)
-          Align(
-            alignment: leadingAlignment,
-            child: leading!,
-          ),
+          Align(alignment: leadingAlignment, child: leading!),
         if (leading != null &&
             (title != null || content != null || subtitle != null))
           SizedBox(width: contentSpacing),
@@ -420,24 +431,15 @@ class BasicLayout extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (title != null)
-                  Align(
-                    alignment: titleAlignment,
-                    child: title!,
-                  ),
+                  Align(alignment: titleAlignment, child: title!),
                 if (title != null && subtitle != null)
                   SizedBox(height: 2 * scaling),
                 if (subtitle != null)
-                  Align(
-                    alignment: subtitleAlignment,
-                    child: subtitle!,
-                  ),
+                  Align(alignment: subtitleAlignment, child: subtitle!),
                 if ((title != null || subtitle != null) && content != null)
                   SizedBox(height: titleSpacing),
                 if (content != null)
-                  Align(
-                    alignment: contentAlignment,
-                    child: content!,
-                  ),
+                  Align(alignment: contentAlignment, child: content!),
               ],
             ),
           ),
@@ -448,18 +450,12 @@ class BasicLayout extends StatelessWidget {
                 subtitle != null))
           SizedBox(width: contentSpacing),
         if (trailing != null)
-          Align(
-            alignment: trailingAlignment,
-            child: trailing!,
-          ),
+          Align(alignment: trailingAlignment, child: trailing!),
       ],
     );
 
     if (constraints != null) {
-      child = ConstrainedBox(
-        constraints: constraints!,
-        child: child,
-      );
+      child = ConstrainedBox(constraints: constraints!, child: child);
     }
 
     return child;
@@ -474,9 +470,9 @@ class BasicLayout extends StatelessWidget {
 /// Example:
 /// ```dart
 /// Label(
-///   leading: Icon(Icons.person),
+///   leading: Icon(LucideIcons.user),
 ///   child: Text('Name'),
-///   trailing: Icon(Icons.edit),
+///   trailing: Icon(LucideIcons.pencil),
 /// )
 /// ```
 class Label extends StatelessWidget {
@@ -495,12 +491,7 @@ class Label extends StatelessWidget {
   /// - [child] (`Widget`, required): Main label content.
   /// - [leading] (`Widget?`, optional): Leading widget.
   /// - [trailing] (`Widget?`, optional): Trailing widget.
-  const Label({
-    super.key,
-    this.leading,
-    required this.child,
-    this.trailing,
-  });
+  const Label({super.key, this.leading, required this.child, this.trailing});
 
   @override
   Widget build(BuildContext context) {
@@ -512,11 +503,11 @@ class Label extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (leading != null) leading!,
+          ?leading,
           if (leading != null) SizedBox(width: 8 * scaling),
           Expanded(child: child),
           if (trailing != null) SizedBox(width: 8 * scaling),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );

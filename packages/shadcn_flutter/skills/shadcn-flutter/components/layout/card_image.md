@@ -69,8 +69,9 @@ class CardImageExample1 extends StatelessWidget {
                 CardImage(
                   // Simple interaction: open a dialog on tap.
                   onPressed: () {
-                    showDialog(
-                      context: context,
+                    showOverlay(
+                      context,
+                      DialogConfiguration(),
                       builder: (context) {
                         return AlertDialog(
                           title: const Text('Card Image'),
@@ -143,7 +144,7 @@ class CardImageTile extends StatelessWidget implements IComponentPage {
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.image,
+                    LucideIcons.image,
                     size: 48,
                     color: theme.colorScheme.mutedForeground,
                   ),

@@ -614,6 +614,29 @@ class DialogRoute<T> extends RawDialogRoute<T> {
         );
 }
 
+/// Builds the enter and exit transition for a shadcn dialog.
+///
+/// The dialog scales up from 70% while fading in, easing out on the way in and
+/// in on the way out. A [fullScreen] dialog fills the screen and advertises
+/// itself to descendants through [ModalContainer.kFullScreenMode]; otherwise it
+/// is positioned by [alignment].
+///
+/// This is the default used by [DialogRoute]; pass it to
+/// [RawDialogRoute.transitionBuilder] to match shadcn dialogs elsewhere.
+///
+/// Parameters:
+/// - [context] (`BuildContext`, required): Build context.
+/// - [borderRadius] (`BorderRadiusGeometry`, required): Corner radius of the
+///   dialog surface.
+/// - [alignment] (`AlignmentGeometry`, required): Where a non-fullscreen dialog
+///   sits on screen.
+/// - [animation] (`Animation<double>`, required): Drives this dialog.
+/// - [secondaryAnimation] (`Animation<double>`, required): Drives this dialog as
+///   another route covers it.
+/// - [fullScreen] (`bool`, required): Whether the dialog fills the screen.
+/// - [child] (`Widget`, required): The dialog content.
+///
+/// Returns: the transitioned dialog.
 Widget buildShadcnDialogTransitions(
     BuildContext context,
     BorderRadiusGeometry borderRadius,
@@ -651,10 +674,20 @@ Widget buildShadcnDialogTransitions(
   );
 }
 
+/// Bridges a [DialogRoute] to the overlay API used by the rest of the package.
+///
+/// Wrapping dialog content in this widget publishes an [OverlayCompleter] to
+/// descendants, so content shown through `showDialog` can call [closeOverlay]
+/// to dismiss itself and return a result, exactly as it would inside a
+/// [PopoverConfiguration] or [DrawerConfiguration] overlay.
 class DialogOverlayContent<T> extends StatefulWidget {
+  /// The route this dialog is running on, used to pop it and carry the result.
   final DialogRoute<T> route;
+
+  /// The dialog content.
   final Widget child;
 
+  /// Creates a [DialogOverlayContent].
   const DialogOverlayContent({
     super.key,
     required this.route,
@@ -666,6 +699,7 @@ class DialogOverlayContent<T> extends StatefulWidget {
       DialogOverlayContentState<T>();
 }
 
+/// State for [DialogOverlayContent], which owns the [OverlayCompleter] adapter.
 class DialogOverlayContentState<T> extends State<DialogOverlayContent<T>> {
   late final _DialogOverlayContentCompleter<T> _completerAdapter =
       _DialogOverlayContentCompleter<T>(widget.route);

@@ -116,7 +116,7 @@ class _FormExampleState extends State<FormExample> {
             'to silently fail or produce runtime errors.',
           ).p(),
           const Alert(
-            leading: Icon(Icons.warning_amber_rounded),
+            leading: Icon(LucideIcons.triangleAlert),
             title: Text('Use typed key aliases, not generic FormKey'),
             content: Text(
               'A TextField reports String values. If you use FormKey<int>(\'name\') '

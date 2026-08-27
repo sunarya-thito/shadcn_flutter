@@ -23,12 +23,12 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///   children: [
 ///     NavigationItem(
 ///       key: ValueKey('home'),
-///       icon: Icon(Icons.home),
+///       icon: Icon(LucideIcons.house),
 ///       label: Text('Home'),
 ///     ),
 ///     NavigationItem(
 ///       key: ValueKey('search'),
-///       icon: Icon(Icons.search),
+///       icon: Icon(LucideIcons.search),
 ///       label: Text('Search'),
 ///     ),
 ///   ],
@@ -158,10 +158,10 @@ class _NavigationRailState extends State<NavigationRail> {
 
     final sectionGap = densityGap * padSm;
 
-    var parentPadding = widget.padding ??
-        EdgeInsetsDensity.all(
-          widget.expanded ? padSm : padXs,
-        ).resolveDensity(theme.density.baseContainerPadding * scaling);
+    var parentPadding =
+        widget.padding ??
+        EdgeInsetsDensity.all(widget.expanded ? padSm : padXs)
+            .resolveDensity(theme.density.baseContainerPadding * scaling);
     var directionality = Directionality.of(context);
     var resolvedPadding = parentPadding.resolve(directionality);
 
@@ -224,7 +224,8 @@ class _NavigationRailState extends State<NavigationRail> {
           surfaceBlur: widget.surfaceBlur,
           child: AnimatedContainer(
             duration: kDefaultDuration,
-            color: widget.backgroundColor ??
+            color:
+                widget.backgroundColor ??
                 (theme.colorScheme.background.scaleAlpha(
                   widget.surfaceOpacity ?? 1,
                 )),
@@ -234,41 +235,37 @@ class _NavigationRailState extends State<NavigationRail> {
               children: [
                 if (headerItems.isNotEmpty)
                   buildSection(
-                      headerItems,
-                      resolvedPadding.copyWith(
-                        bottom: 0,
-                      )),
+                    headerItems,
+                    resolvedPadding.copyWith(bottom: 0),
+                  ),
                 Expanded(
                   child: AnimatedValueBuilder<EdgeInsets>(
-                      value: resolvedPadding,
-                      duration: kDefaultDuration,
-                      child: Flex(
-                        direction: widget.direction,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: baseData.spacing,
-                        children: widget.children,
-                      ),
-                      builder: (context, resolvedPadding, child) {
-                        return SingleChildScrollView(
-                          scrollDirection: widget.direction,
-                          padding: resolvedPadding.copyWith(
-                            top: headerItems.isNotEmpty
-                                ? sectionGap
-                                : resolvedPadding.top,
-                            bottom: footerItems.isNotEmpty
-                                ? sectionGap
-                                : resolvedPadding.bottom,
-                          ),
-                          child: child!,
-                        );
-                      }),
+                    value: resolvedPadding,
+                    duration: kDefaultDuration,
+                    child: Flex(
+                      direction: widget.direction,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: baseData.spacing,
+                      children: widget.children,
+                    ),
+                    builder: (context, resolvedPadding, child) {
+                      return SingleChildScrollView(
+                        scrollDirection: widget.direction,
+                        padding: resolvedPadding.copyWith(
+                          top: headerItems.isNotEmpty
+                              ? sectionGap
+                              : resolvedPadding.top,
+                          bottom: footerItems.isNotEmpty
+                              ? sectionGap
+                              : resolvedPadding.bottom,
+                        ),
+                        child: child!,
+                      );
+                    },
+                  ),
                 ),
                 if (footerItems.isNotEmpty)
-                  buildSection(
-                      footerItems,
-                      resolvedPadding.copyWith(
-                        top: 0,
-                      )),
+                  buildSection(footerItems, resolvedPadding.copyWith(top: 0)),
               ],
             ),
           ),
@@ -292,7 +289,9 @@ class _NavigationRailState extends State<NavigationRail> {
             constraints: widget.direction == Axis.vertical
                 ? BoxConstraints(minWidth: animatedMinSize, maxWidth: maxSize)
                 : BoxConstraints(
-                    minHeight: animatedMinSize, maxHeight: maxSize),
+                    minHeight: animatedMinSize,
+                    maxHeight: maxSize,
+                  ),
             child: child,
           );
         },

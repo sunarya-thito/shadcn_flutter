@@ -1,6 +1,6 @@
 ---
 title: "Class: AppBar"
-description: "A customizable application bar component for layout headers.   Provides a flexible top-level navigation and branding component that  typically appears at the top of screens or content areas. The app bar  supports leading and trailing widget areas, title content, optional  header/subtitle elements, and comprehensive styling customization.   The component automatically handles safe area considerations, background  effects, and responsive layout behaviors. Leading and trailing areas  support multiple widgets with configurable spacing, while the center  area can contain titles, custom content, or complex layouts.   Integrates with the theme system for consistent appearance and supports  surface blur effects, background customization, and flexible sizing  constraints to adapt to various layout requirements.   Example:  ```dart  AppBar(    leading: [      IconButton(icon: Icon(Icons.menu), onPressed: _openDrawer),    ],    title: Text('My Application'),    subtitle: Text('Dashboard'),    trailing: [      IconButton(icon: Icon(Icons.search), onPressed: _openSearch),      IconButton(icon: Icon(Icons.more_vert), onPressed: _showMenu),    ],    backgroundColor: Colors.blue.shade50,  )  ```"
+description: "A customizable application bar component for layout headers.   Provides a flexible top-level navigation and branding component that  typically appears at the top of screens or content areas. The app bar  supports leading and trailing widget areas, title content, optional  header/subtitle elements, and comprehensive styling customization.   The component automatically handles safe area considerations, background  effects, and responsive layout behaviors. Leading and trailing areas  support multiple widgets with configurable spacing, while the center  area can contain titles, custom content, or complex layouts.   Integrates with the theme system for consistent appearance and supports  surface blur effects, background customization, and flexible sizing  constraints to adapt to various layout requirements.   Example:  ```dart  AppBar(    leading: [      IconButton(icon: Icon(LucideIcons.menu), onPressed: _openDrawer),    ],    title: Text('My Application'),    subtitle: Text('Dashboard'),    trailing: [      IconButton(icon: Icon(LucideIcons.search), onPressed: _openSearch),      IconButton(icon: Icon(LucideIcons.ellipsisVertical), onPressed: _showMenu),    ],    backgroundColor: Colors.blue.shade50,  )  ```"
 ---
 
 ```dart
@@ -24,13 +24,13 @@ description: "A customizable application bar component for layout headers.   Pro
 /// ```dart
 /// AppBar(
 ///   leading: [
-///     IconButton(icon: Icon(Icons.menu), onPressed: _openDrawer),
+///     IconButton(icon: Icon(LucideIcons.menu), onPressed: _openDrawer),
 ///   ],
 ///   title: Text('My Application'),
 ///   subtitle: Text('Dashboard'),
 ///   trailing: [
-///     IconButton(icon: Icon(Icons.search), onPressed: _openSearch),
-///     IconButton(icon: Icon(Icons.more_vert), onPressed: _showMenu),
+///     IconButton(icon: Icon(LucideIcons.search), onPressed: _openSearch),
+///     IconButton(icon: Icon(LucideIcons.ellipsisVertical), onPressed: _showMenu),
 ///   ],
 ///   backgroundColor: Colors.blue.shade50,
 /// )
@@ -145,7 +145,7 @@ class AppBar extends StatefulWidget {
   ///   leading: [BackButton()],
   ///   title: Text('Settings'),
   ///   trailing: [
-  ///     IconButton(icon: Icon(Icons.help), onPressed: _showHelp),
+  ///     IconButton(icon: Icon(LucideIcons.circleHelp), onPressed: _showHelp),
   ///     PopupMenuButton(items: menuItems),
   ///   ],
   ///   backgroundColor: Theme.of(context).colorScheme.primaryContainer,

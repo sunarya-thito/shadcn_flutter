@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' as material;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -10,7 +9,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: ColorInput(
-            value: ColorDerivative.fromColor(material.Colors.red),
+            value: ColorDerivative.fromColor(Colors.red),
             onChanged: (value) {},
           ),
         ),
@@ -22,10 +21,12 @@ void main() {
     });
 
     testWidgets('shows label when showLabel is true', (tester) async {
+      // An explicit color, so the expected label does not depend on which
+      // palette Colors.red happens to come from.
       await tester.pumpWidget(
         SimpleApp(
           child: ColorInput(
-            value: ColorDerivative.fromColor(material.Colors.red),
+            value: ColorDerivative.fromColor(const Color(0xFFF44336)),
             onChanged: (value) {},
             showLabel: true,
           ),
@@ -39,17 +40,19 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: ColorInput(
-            value: ColorDerivative.fromColor(material.Colors.red),
+            value: ColorDerivative.fromColor(Colors.red),
             onChanged: (value) {},
             enabled: false,
           ),
         ),
       );
 
-      final button = tester.widget<OutlineButton>(find.descendant(
-        of: find.byType(ColorInput),
-        matching: find.byType(OutlineButton),
-      ));
+      final button = tester.widget<OutlineButton>(
+        find.descendant(
+          of: find.byType(ColorInput),
+          matching: find.byType(OutlineButton),
+        ),
+      );
       expect(button.enabled, isFalse);
     });
 
@@ -58,7 +61,7 @@ void main() {
         SimpleApp(
           child: Center(
             child: ColorInput(
-              value: ColorDerivative.fromColor(material.Colors.red),
+              value: ColorDerivative.fromColor(Colors.red),
               onChanged: (value) {},
               promptMode: PromptMode.popover,
               enabled: true,
@@ -77,12 +80,13 @@ void main() {
 
   group('ControlledColorInput', () {
     testWidgets('works with controller', (tester) async {
-      final controller =
-          ColorInputController(ColorDerivative.fromColor(material.Colors.red));
+      final controller = ColorInputController(
+        ColorDerivative.fromColor(Colors.red),
+      );
       await tester.pumpWidget(
         SimpleApp(
           child: ControlledColorInput(
-            initialValue: ColorDerivative.fromColor(material.Colors.blue),
+            initialValue: ColorDerivative.fromColor(Colors.blue),
             controller: controller,
           ),
         ),
@@ -94,26 +98,24 @@ void main() {
         find.byKey(const Key('color_input_preview')),
       );
       final decoration = container.decoration as BoxDecoration;
-      expect(
-          decoration.color?.toARGB32(), equals(material.Colors.red.toARGB32()));
+      expect(decoration.color?.toARGB32(), equals(Colors.red.toARGB32()));
 
       // Update controller
-      controller.setColor(material.Colors.green);
+      controller.setColor(Colors.green);
       await tester.pumpAndSettle();
 
       final container2 = tester.widget<Container>(
         find.byKey(const Key('color_input_preview')),
       );
       final decoration2 = container2.decoration as BoxDecoration;
-      expect(decoration2.color?.toARGB32(),
-          equals(material.Colors.green.toARGB32()));
+      expect(decoration2.color?.toARGB32(), equals(Colors.green.toARGB32()));
     });
 
     testWidgets('works with initialValue', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
           child: ControlledColorInput(
-            initialValue: ColorDerivative.fromColor(material.Colors.blue),
+            initialValue: ColorDerivative.fromColor(Colors.blue),
           ),
         ),
       );
@@ -124,8 +126,7 @@ void main() {
         find.byKey(const Key('color_input_preview')),
       );
       final decoration = container.decoration as BoxDecoration;
-      expect(decoration.color?.toARGB32(),
-          equals(material.Colors.blue.toARGB32()));
+      expect(decoration.color?.toARGB32(), equals(Colors.blue.toARGB32()));
     });
   });
 }

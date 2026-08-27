@@ -14,7 +14,7 @@ class AlertTile extends StatelessWidget implements IComponentPage {
       title: 'Alert',
       center: true,
       example: Alert(
-        leading: Icon(Icons.info_outline),
+        leading: Icon(LucideIcons.info),
         title: Text('Alert'),
         content: Text('This is an alert.'),
       ),

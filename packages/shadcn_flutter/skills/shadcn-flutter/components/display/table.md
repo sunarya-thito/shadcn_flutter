@@ -708,7 +708,7 @@ class TableTile extends StatelessWidget implements IComponentPage {
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `rows` | `List<TableRow>` | List of rows to display in the table.  Type: `List<TableRow>`. Contains the table data organized as rows. Can include [TableRow], [TableHeader], and [TableFooter] instances. Each row contains a list of [TableCell] widgets. |
+| `rows` | `List<TableRow>?` | List of rows to display in the table.  Type: `List<TableRow>?`. Contains the table data organized as rows. Can include [TableRow], [TableHeader], and [TableFooter] instances. Each row contains a list of [TableCell] widgets. |
 | `defaultColumnWidth` | `TableSize` | Default sizing strategy for all columns.  Type: `TableSize`. Used when no specific width is provided in [columnWidths]. Defaults to [FlexTableSize] for proportional sizing. |
 | `defaultRowHeight` | `TableSize` | Default sizing strategy for all rows.  Type: `TableSize`. Used when no specific height is provided in [rowHeights]. Defaults to [IntrinsicTableSize] for content-based sizing. |
 | `columnWidths` | `Map<int, TableSize>?` | Specific column width overrides.  Type: `Map<int, TableSize>?`. Maps column indices to specific sizing strategies. Overrides [defaultColumnWidth] for specified columns. |
@@ -719,3 +719,6 @@ class TableTile extends StatelessWidget implements IComponentPage {
 | `horizontalOffset` | `double?` | Horizontal scroll offset for the table viewport.  Type: `double?`. Controls horizontal scrolling position. If provided, the table displays within a scrollable viewport. |
 | `verticalOffset` | `double?` | Vertical scroll offset for the table viewport.  Type: `double?`. Controls vertical scrolling position. If provided, the table displays within a scrollable viewport. |
 | `viewportSize` | `Size?` | Size constraints for the table viewport.  Type: `Size?`. When provided with scroll offsets, constrains the visible area of the table. Essential for scrolling behavior. |
+| `verticalController` | `ScrollController?` | Optional controller for vertical scrolling owned by this [Table].  When provided, the table wraps itself in a [ScrollableClient] and drives [verticalOffset]/[viewportSize] internally from this controller instead of requiring the caller to wire up their own [ScrollableClient]/[Scrollable] and pass [verticalOffset] manually. If both this and [verticalOffset] are provided, [verticalOffset] is ignored for the vertical axis. |
+| `horizontalController` | `ScrollController?` | Optional controller for horizontal scrolling owned by this [Table].  Same semantics as [verticalController], for the horizontal axis. |
+| `textDirection` | `TextDirection?` | The direction columns run in.  Defaults to the ambient [Directionality]. Column indices are always logical — [columnWidths] key 0, [FrozenTableData.frozenColumns] index 0 and [TableRow.cells] position 0 all refer to the first column — so under [TextDirection.rtl] that column is laid out at the right edge, frozen columns pin to the right, and horizontal scrolling starts there and runs leftwards. |

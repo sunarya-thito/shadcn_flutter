@@ -338,7 +338,10 @@ class _SelectExample4State extends State<SelectExample4> {
       value: selectedValue,
       placeholder: const Text('Select a fruit'),
       // Constrain popup width to its intrinsic content size (no virtualization in this variant).
-      popupWidthConstraint: PopoverConstraint.intrinsic,
+      overlayConfiguration: const PopoverConfiguration(
+        widthConstraint: PopoverConstraint.intrinsic,
+        alignment: Alignment.topCenter,
+      ),
       // Use a simple non-virtualized popup; suitable for small lists.
       popup: const SelectPopup.noVirtualization(
         items: SelectItemList(
@@ -455,12 +458,12 @@ class SelectTile extends StatelessWidget implements IComponentPage {
 | `focusNode` | `FocusNode?` |  |
 | `constraints` | `BoxConstraints?` |  |
 | `popupConstraints` | `BoxConstraints?` |  |
-| `popupWidthConstraint` | `PopoverConstraint` |  |
+| `overlayConfiguration` | `OverlayConfiguration?` |  |
+| `adaptiveOverlay` | `bool?` |  |
 | `value` | `T?` | The currently selected value. |
 | `borderRadius` | `BorderRadiusGeometry?` |  |
 | `padding` | `EdgeInsetsGeometry?` |  |
-| `popoverAlignment` | `AlignmentGeometry` |  |
-| `popoverAnchorAlignment` | `AlignmentGeometry?` |  |
+| `decoration` | `WidgetStatePropertyDelegate<Decoration>?` |  |
 | `disableHoverEffect` | `bool` |  |
 | `canUnselect` | `bool` |  |
 | `autoClosePopover` | `bool?` |  |
@@ -470,3 +473,4 @@ class SelectTile extends StatelessWidget implements IComponentPage {
 | `valueSelectionHandler` | `SelectValueSelectionHandler<T>?` |  |
 | `valueSelectionPredicate` | `SelectValueSelectionPredicate<T>?` |  |
 | `showValuePredicate` | `Predicate<T>?` |  |
+| `expandIcon` | `Widget?` |  |

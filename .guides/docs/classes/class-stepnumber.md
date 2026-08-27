@@ -1,6 +1,6 @@
 ---
 title: "Class: StepNumber"
-description: "Step indicator widget displaying step number, checkmark, or custom icon.   Renders a circular (or rectangular based on theme) step indicator that  shows the step number by default, a checkmark for completed steps,  or an X for failed steps. Colors and states are automatically managed  based on the stepper's current state.   Must be used within a [Stepper] widget tree to access step context.  Optionally supports custom icons and click handling.   Example:  ```dart  StepNumber(    icon: Icon(Icons.star),    onPressed: () => print('Step tapped'),  );  ```"
+description: "Step indicator widget displaying step number, checkmark, or custom icon.   Renders a circular (or rectangular based on theme) step indicator that  shows the step number by default, a checkmark for completed steps,  or an X for failed steps. Colors and states are automatically managed  based on the stepper's current state.   Must be used within a [Stepper] widget tree to access step context.  Optionally supports custom icons and click handling.   Example:  ```dart  StepNumber(    icon: Icon(LucideIcons.star),    onPressed: () => print('Step tapped'),  );  ```"
 ---
 
 ```dart
@@ -17,7 +17,7 @@ description: "Step indicator widget displaying step number, checkmark, or custom
 /// Example:
 /// ```dart
 /// StepNumber(
-///   icon: Icon(Icons.star),
+///   icon: Icon(LucideIcons.star),
 ///   onPressed: () => print('Step tapped'),
 /// );
 /// ```
@@ -39,7 +39,7 @@ class StepNumber extends StatelessWidget {
   /// Example:
   /// ```dart
   /// StepNumber(
-  ///   icon: Icon(Icons.person),
+  ///   icon: Icon(LucideIcons.user),
   ///   onPressed: () => jumpToStep(stepIndex),
   /// );
   /// ```

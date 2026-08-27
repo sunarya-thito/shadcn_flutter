@@ -82,7 +82,7 @@ class ToggleController extends ValueNotifier<bool>
 ///   controller: controller,
 ///   child: Row(
 ///     children: [
-///       Icon(Icons.notifications),
+///       Icon(LucideIcons.bell),
 ///       Text('Enable notifications'),
 ///     ],
 ///   ),
@@ -250,7 +250,7 @@ class Toggle extends StatefulWidget {
   ///   onChanged: (value) => setState(() => isToggled = value),
   ///   child: Row(
   ///     children: [
-  ///       Icon(Icons.notifications),
+  ///       Icon(LucideIcons.bell),
   ///       Text('Notifications'),
   ///     ],
   ///   ),
@@ -306,35 +306,39 @@ class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
   @override
   Widget build(BuildContext context) {
     return Button(
-        statesController: statesController,
-        enabled: widget.enabled,
-        style: widget.value
-            ? ButtonStyle.secondary(
-                density: widget.style.density,
-                shape: widget.style.shape,
-                size: widget.style.size,
-              )
-            : widget.style.copyWith(textStyle: (context, states, value) {
+      statesController: statesController,
+      enabled: widget.enabled,
+      style: widget.value
+          ? ButtonStyle.secondary(
+              density: widget.style.density,
+              shape: widget.style.shape,
+              size: widget.style.size,
+            )
+          : widget.style.copyWith(
+              textStyle: (context, states, value) {
                 final theme = Theme.of(context);
                 return value.copyWith(
                   color: states.contains(WidgetState.hovered)
                       ? theme.colorScheme.mutedForeground
                       : null,
                 );
-              }, iconTheme: (context, states, value) {
+              },
+              iconTheme: (context, states, value) {
                 final theme = Theme.of(context);
                 return value.copyWith(
                   color: states.contains(WidgetState.hovered)
                       ? theme.colorScheme.mutedForeground
                       : null,
                 );
-              }),
-        onPressed: widget.onChanged != null
-            ? () {
-                widget.onChanged!(!widget.value);
-              }
-            : null,
-        child: widget.child);
+              },
+            ),
+      onPressed: widget.onChanged != null
+          ? () {
+              widget.onChanged!(!widget.value);
+            }
+          : null,
+      child: widget.child,
+    );
   }
 }
 
@@ -573,40 +577,41 @@ class SelectedButtonState extends State<SelectedButton> {
   @override
   Widget build(BuildContext context) {
     return Button(
-        statesController: statesController,
-        enabled: widget.enabled,
-        style: widget.value ? widget.selectedStyle : widget.style,
-        alignment: widget.alignment,
-        marginAlignment: widget.marginAlignment,
-        disableTransition: widget.disableTransition,
-        onHover: widget.onHover,
-        onFocus: widget.onFocus,
-        enableFeedback: widget.enableFeedback,
-        onTapDown: widget.onTapDown,
-        onTapUp: widget.onTapUp,
-        onTapCancel: widget.onTapCancel,
-        onSecondaryTapDown: widget.onSecondaryTapDown,
-        onSecondaryTapUp: widget.onSecondaryTapUp,
-        onSecondaryTapCancel: widget.onSecondaryTapCancel,
-        onTertiaryTapDown: widget.onTertiaryTapDown,
-        onTertiaryTapUp: widget.onTertiaryTapUp,
-        onTertiaryTapCancel: widget.onTertiaryTapCancel,
-        onLongPressStart: widget.onLongPressStart,
-        onLongPressUp: widget.onLongPressUp,
-        onLongPressMoveUpdate: widget.onLongPressMoveUpdate,
-        onLongPressEnd: widget.onLongPressEnd,
-        onSecondaryLongPress: widget.onSecondaryLongPress,
-        onTertiaryLongPress: widget.onTertiaryLongPress,
-        disableHoverEffect: widget.disableHoverEffect,
-        onPressed: () {
-          if (widget.onChanged != null) {
-            widget.onChanged!(!widget.value);
-          }
-          if (widget.onPressed != null) {
-            widget.onPressed!();
-          }
-        },
-        child: widget.child);
+      statesController: statesController,
+      enabled: widget.enabled,
+      style: widget.value ? widget.selectedStyle : widget.style,
+      alignment: widget.alignment,
+      marginAlignment: widget.marginAlignment,
+      disableTransition: widget.disableTransition,
+      onHover: widget.onHover,
+      onFocus: widget.onFocus,
+      enableFeedback: widget.enableFeedback,
+      onTapDown: widget.onTapDown,
+      onTapUp: widget.onTapUp,
+      onTapCancel: widget.onTapCancel,
+      onSecondaryTapDown: widget.onSecondaryTapDown,
+      onSecondaryTapUp: widget.onSecondaryTapUp,
+      onSecondaryTapCancel: widget.onSecondaryTapCancel,
+      onTertiaryTapDown: widget.onTertiaryTapDown,
+      onTertiaryTapUp: widget.onTertiaryTapUp,
+      onTertiaryTapCancel: widget.onTertiaryTapCancel,
+      onLongPressStart: widget.onLongPressStart,
+      onLongPressUp: widget.onLongPressUp,
+      onLongPressMoveUpdate: widget.onLongPressMoveUpdate,
+      onLongPressEnd: widget.onLongPressEnd,
+      onSecondaryLongPress: widget.onSecondaryLongPress,
+      onTertiaryLongPress: widget.onTertiaryLongPress,
+      disableHoverEffect: widget.disableHoverEffect,
+      onPressed: () {
+        if (widget.onChanged != null) {
+          widget.onChanged!(!widget.value);
+        }
+        if (widget.onPressed != null) {
+          widget.onPressed!();
+        }
+      },
+      child: widget.child,
+    );
   }
 }
 
@@ -651,8 +656,8 @@ class SelectedButtonState extends State<SelectedButton> {
 /// ```dart
 /// Button.primary(
 ///   onPressed: () => print('Primary action'),
-///   leading: Icon(Icons.add),
-///   trailing: Icon(Icons.arrow_forward),
+///   leading: Icon(LucideIcons.plus),
+///   trailing: Icon(LucideIcons.arrowRight),
 ///   child: Text('Create New'),
 /// );
 /// ```
@@ -861,7 +866,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button(
   ///   style: ButtonStyle.primary(),
-  ///   leading: Icon(Icons.save),
+  ///   leading: Icon(LucideIcons.save),
   ///   onPressed: () => saveDocument(),
   ///   child: Text('Save Document'),
   /// );
@@ -1069,7 +1074,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button.ghost(
   ///   onPressed: () => showHelp(),
-  ///   leading: Icon(Icons.help_outline),
+  ///   leading: Icon(LucideIcons.circleHelp),
   ///   child: Text('Help'),
   /// );
   /// ```
@@ -1220,7 +1225,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button.destructive(
   ///   onPressed: () => deleteItem(),
-  ///   leading: Icon(Icons.delete),
+  ///   leading: Icon(LucideIcons.trash),
   ///   child: Text('Delete'),
   /// );
   /// ```
@@ -1271,7 +1276,7 @@ class Button extends StatefulWidget {
   /// ```dart
   /// Button.fixed(
   ///   onPressed: () => performAction(),
-  ///   child: Icon(Icons.add),
+  ///   child: Icon(LucideIcons.plus),
   /// );
   /// ```
   const Button.fixed({
@@ -1323,7 +1328,7 @@ class Button extends StatefulWidget {
   ///   onPressed: () => selectOption(),
   ///   child: Column(
   ///     children: [
-  ///       Icon(Icons.star),
+  ///       Icon(LucideIcons.star),
   ///       Text('Premium'),
   ///     ],
   ///   ),
@@ -1529,9 +1534,7 @@ class ButtonState<T extends Button> extends State<T> {
                     if (widget.leading != null) widget.leading!,
                     if (widget.leading != null)
                       Gap(widget.leadingGap ?? densityGap),
-                    Expanded(
-                      child: _buildAligned(),
-                    ),
+                    Expanded(child: _buildAligned()),
                     if (widget.trailing != null)
                       Gap(widget.trailingGap ?? densityGap),
                     if (widget.trailing != null) widget.trailing!,
@@ -1632,8 +1635,9 @@ class ButtonDensity {
   static const ButtonDensity icon = ButtonDensity(_densityIcon);
 
   /// Comfortable square padding for icon-only buttons.
-  static const ButtonDensity iconComfortable =
-      ButtonDensity(_densityIconComfortable);
+  static const ButtonDensity iconComfortable = ButtonDensity(
+    _densityIconComfortable,
+  );
 
   /// Dense square padding for compact icon buttons.
   static const ButtonDensity iconDense = ButtonDensity(_densityIconDense);
@@ -1659,18 +1663,21 @@ EdgeInsets _densityCompact(EdgeInsets padding) {
 
 EdgeInsets _densityIcon(EdgeInsets padding) {
   return EdgeInsets.all(
-      min(padding.top, min(padding.bottom, min(padding.left, padding.right))));
+    min(padding.top, min(padding.bottom, min(padding.left, padding.right))),
+  );
 }
 
 EdgeInsets _densityIconComfortable(EdgeInsets padding) {
   return EdgeInsets.all(
-      max(padding.top, max(padding.bottom, max(padding.left, padding.right))));
+    max(padding.top, max(padding.bottom, max(padding.left, padding.right))),
+  );
 }
 
 EdgeInsets _densityIconDense(EdgeInsets padding) {
   return EdgeInsets.all(
-      min(padding.top, min(padding.bottom, min(padding.left, padding.right))) *
-          0.5);
+    min(padding.top, min(padding.bottom, min(padding.left, padding.right))) *
+        0.5,
+  );
 }
 
 EdgeInsets _densityComfortable(EdgeInsets padding) {
@@ -1711,8 +1718,11 @@ enum ButtonShape {
 ///   return Colors.blue;
 /// };
 /// ```
-typedef ButtonStateProperty<T> = T Function(
-    BuildContext context, Set<WidgetState> states);
+///
+/// This is an alias for [WidgetStatePropertyResolver]; the two are
+/// interchangeable, and components outside buttons should prefer the general
+/// name.
+typedef ButtonStateProperty<T> = WidgetStatePropertyResolver<T>;
 
 /// Abstract interface defining the style properties for button components.
 ///
@@ -1985,7 +1995,9 @@ class ButtonStyle implements AbstractButtonStyle {
   }
 
   Decoration _resolveCircleDecoration(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     var decoration = variance.decoration(context, states);
     if (decoration is BoxDecoration) {
       return BoxDecoration(
@@ -2021,10 +2033,12 @@ class ButtonStyle implements AbstractButtonStyle {
   }
 
   EdgeInsetsGeometry _resolvePadding(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     return density.modifier(
-        variance.padding(context, states).optionallyResolve(context) *
-            size.scale);
+      variance.padding(context, states).optionallyResolve(context) * size.scale,
+    );
   }
 
   @override
@@ -2041,9 +2055,9 @@ class ButtonStyle implements AbstractButtonStyle {
       final textStyle = DefaultTextStyle.of(context).style;
       fontSize = textStyle.fontSize ?? 14;
     }
-    return variance.textStyle(context, states).copyWith(
-          fontSize: fontSize * size.scale,
-        );
+    return variance
+        .textStyle(context, states)
+        .copyWith(fontSize: fontSize * size.scale);
   }
 
   @override
@@ -2055,12 +2069,14 @@ class ButtonStyle implements AbstractButtonStyle {
   }
 
   IconThemeData _resolveIconTheme(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     var iconSize = variance.iconTheme(context, states).size;
     iconSize ??= IconTheme.of(context).size ?? 24;
-    return variance.iconTheme(context, states).copyWith(
-          size: iconSize * size.scale,
-        );
+    return variance
+        .iconTheme(context, states)
+        .copyWith(size: iconSize * size.scale);
   }
 
   @override
@@ -2105,13 +2121,14 @@ abstract class ButtonTheme extends ComponentThemeData {
   ///
   /// All parameters are optional, allowing selective override of specific
   /// style properties while leaving others to use default values.
-  const ButtonTheme(
-      {this.decoration,
-      this.mouseCursor,
-      this.padding,
-      this.textStyle,
-      this.iconTheme,
-      this.margin});
+  const ButtonTheme({
+    this.decoration,
+    this.mouseCursor,
+    this.padding,
+    this.textStyle,
+    this.iconTheme,
+    this.margin,
+  });
 
   @override
   bool operator ==(Object other) {
@@ -2127,7 +2144,13 @@ abstract class ButtonTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      decoration, mouseCursor, padding, textStyle, iconTheme, margin);
+    decoration,
+    mouseCursor,
+    padding,
+    textStyle,
+    iconTheme,
+    margin,
+  );
 
   @override
   String toString() =>
@@ -2181,7 +2204,9 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
   ButtonStateProperty<IconThemeData> get iconTheme => _resolveIconTheme;
 
   IconThemeData _resolveIconTheme(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     var resolved = fallback.iconTheme(context, states);
     return find(context)?.iconTheme?.call(context, states, resolved) ??
         resolved;
@@ -2191,7 +2216,9 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
   ButtonStateProperty<EdgeInsetsGeometry> get margin => _resolveMargin;
 
   EdgeInsetsGeometry _resolveMargin(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     var resolved = fallback.margin(context, states);
     return find(context)?.margin?.call(context, states, resolved) ?? resolved;
   }
@@ -2200,7 +2227,9 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
   ButtonStateProperty<MouseCursor> get mouseCursor => _resolveMouseCursor;
 
   MouseCursor _resolveMouseCursor(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     var resolved = fallback.mouseCursor(context, states);
     return find(context)?.mouseCursor?.call(context, states, resolved) ??
         resolved;
@@ -2210,7 +2239,9 @@ class ComponentThemeButtonStyle<T extends ButtonTheme>
   ButtonStateProperty<EdgeInsetsGeometry> get padding => _resolvePadding;
 
   EdgeInsetsGeometry _resolvePadding(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     var resolved = fallback.padding(context, states);
     return find(context)?.padding?.call(context, states, resolved) ?? resolved;
   }
@@ -2375,13 +2406,14 @@ extension DecorationExtension on Decoration {
 /// ```
 class PrimaryButtonTheme extends ButtonTheme {
   /// Creates a [PrimaryButtonTheme] with optional style property delegates.
-  const PrimaryButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const PrimaryButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   PrimaryButtonTheme copyWith({
@@ -2409,13 +2441,14 @@ class PrimaryButtonTheme extends ButtonTheme {
 /// theme system. Secondary buttons have muted styling suitable for supporting actions.
 class SecondaryButtonTheme extends ButtonTheme {
   /// Creates a [SecondaryButtonTheme] with optional style property delegates.
-  const SecondaryButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const SecondaryButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   SecondaryButtonTheme copyWith({
@@ -2443,13 +2476,14 @@ class SecondaryButtonTheme extends ButtonTheme {
 /// theme system. Outline buttons feature borders with transparent backgrounds.
 class OutlineButtonTheme extends ButtonTheme {
   /// Creates an [OutlineButtonTheme] with optional style property delegates.
-  const OutlineButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const OutlineButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   OutlineButtonTheme copyWith({
@@ -2477,13 +2511,14 @@ class OutlineButtonTheme extends ButtonTheme {
 /// visual presence with no background or border by default.
 class GhostButtonTheme extends ButtonTheme {
   /// Creates a [GhostButtonTheme] with optional style property delegates.
-  const GhostButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const GhostButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   GhostButtonTheme copyWith({
@@ -2511,13 +2546,14 @@ class GhostButtonTheme extends ButtonTheme {
 /// inline hyperlinks with underline decoration.
 class LinkButtonTheme extends ButtonTheme {
   /// Creates a [LinkButtonTheme] with optional style property delegates.
-  const LinkButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const LinkButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   LinkButtonTheme copyWith({
@@ -2545,13 +2581,14 @@ class LinkButtonTheme extends ButtonTheme {
 /// their text content without background or border decoration.
 class TextButtonTheme extends ButtonTheme {
   /// Creates a [TextButtonTheme] with optional style property delegates.
-  const TextButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const TextButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   TextButtonTheme copyWith({
@@ -2579,13 +2616,14 @@ class TextButtonTheme extends ButtonTheme {
 /// use warning colors (typically red) for actions that delete or remove data.
 class DestructiveButtonTheme extends ButtonTheme {
   /// Creates a [DestructiveButtonTheme] with optional style property delegates.
-  const DestructiveButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const DestructiveButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   DestructiveButtonTheme copyWith({
@@ -2613,13 +2651,14 @@ class DestructiveButtonTheme extends ButtonTheme {
 /// consistent dimensions regardless of content.
 class FixedButtonTheme extends ButtonTheme {
   /// Creates a [FixedButtonTheme] with optional style property delegates.
-  const FixedButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const FixedButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   FixedButtonTheme copyWith({
@@ -2647,13 +2686,14 @@ class FixedButtonTheme extends ButtonTheme {
 /// for triggering dropdown menus with appropriate spacing and styling.
 class MenuButtonTheme extends ButtonTheme {
   /// Creates a [MenuButtonTheme] with optional style property delegates.
-  const MenuButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const MenuButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   MenuButtonTheme copyWith({
@@ -2681,13 +2721,14 @@ class MenuButtonTheme extends ButtonTheme {
 /// optimized for horizontal menu bars with appropriate padding and hover effects.
 class MenubarButtonTheme extends ButtonTheme {
   /// Creates a [MenubarButtonTheme] with optional style property delegates.
-  const MenubarButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const MenubarButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   MenubarButtonTheme copyWith({
@@ -2715,13 +2756,14 @@ class MenubarButtonTheme extends ButtonTheme {
 /// low-contrast colors for minimal visual impact while remaining functional.
 class MutedButtonTheme extends ButtonTheme {
   /// Creates a [MutedButtonTheme] with optional style property delegates.
-  const MutedButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const MutedButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   MutedButtonTheme copyWith({
@@ -2749,13 +2791,14 @@ class MutedButtonTheme extends ButtonTheme {
 /// subtle shadows and borders creating an elevated, card-like appearance.
 class CardButtonTheme extends ButtonTheme {
   /// Creates a [CardButtonTheme] with optional style property delegates.
-  const CardButtonTheme(
-      {super.decoration,
-      super.mouseCursor,
-      super.padding,
-      super.textStyle,
-      super.iconTheme,
-      super.margin});
+  const CardButtonTheme({
+    super.decoration,
+    super.mouseCursor,
+    super.padding,
+    super.textStyle,
+    super.iconTheme,
+    super.margin,
+  });
 
   /// Creates a copy of this theme with selectively replaced properties.
   CardButtonTheme copyWith({
@@ -2801,180 +2844,180 @@ class ButtonVariance implements AbstractButtonStyle {
   /// Features high-contrast styling suitable for the main action on a screen.
   static const AbstractButtonStyle primary =
       ComponentThemeButtonStyle<PrimaryButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonPrimaryDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonPrimaryTextStyle,
-      iconTheme: _buttonPrimaryIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonPrimaryDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonPrimaryTextStyle,
+          iconTheme: _buttonPrimaryIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Secondary button variant with muted appearance.
   ///
   /// Features subtle styling suitable for supporting or alternative actions.
   static const AbstractButtonStyle secondary =
       ComponentThemeButtonStyle<SecondaryButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonSecondaryDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonSecondaryTextStyle,
-      iconTheme: _buttonSecondaryIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonSecondaryDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonSecondaryTextStyle,
+          iconTheme: _buttonSecondaryIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Outline button variant with border and transparent background.
   ///
   /// Features a visible border without filled background, suitable for secondary actions.
   static const AbstractButtonStyle outline =
       ComponentThemeButtonStyle<OutlineButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonOutlineDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonOutlineTextStyle,
-      iconTheme: _buttonOutlineIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonOutlineDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonOutlineTextStyle,
+          iconTheme: _buttonOutlineIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Ghost button variant with minimal visual presence.
   ///
   /// Features no background or border by default, only showing on hover.
   static const AbstractButtonStyle ghost =
       ComponentThemeButtonStyle<GhostButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonGhostDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonGhostTextStyle,
-      iconTheme: _buttonGhostIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonGhostDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonGhostTextStyle,
+          iconTheme: _buttonGhostIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Link button variant resembling a text hyperlink.
   ///
   /// Features inline link styling with underline decoration.
   static const AbstractButtonStyle link =
       ComponentThemeButtonStyle<LinkButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonLinkDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonLinkTextStyle,
-      iconTheme: _buttonLinkIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonLinkDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonLinkTextStyle,
+          iconTheme: _buttonLinkIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Text button variant with only text content.
   ///
   /// Features minimal styling with no background or border decoration.
   static const AbstractButtonStyle text =
       ComponentThemeButtonStyle<TextButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonTextDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonTextTextStyle,
-      iconTheme: _buttonTextIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonTextDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonTextTextStyle,
+          iconTheme: _buttonTextIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Destructive button variant for delete/remove actions.
   ///
   /// Features warning colors (typically red) to indicate data-destructive actions.
   static const AbstractButtonStyle destructive =
       ComponentThemeButtonStyle<DestructiveButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonDestructiveDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonDestructiveTextStyle,
-      iconTheme: _buttonDestructiveIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonDestructiveDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonDestructiveTextStyle,
+          iconTheme: _buttonDestructiveIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Fixed button variant with consistent dimensions.
   ///
   /// Features fixed sizing regardless of content, suitable for icon buttons.
   static const AbstractButtonStyle fixed =
       ComponentThemeButtonStyle<FixedButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonTextDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonStaticTextStyle,
-      iconTheme: _buttonStaticIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonTextDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonStaticTextStyle,
+          iconTheme: _buttonStaticIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Menu button variant for dropdown menu triggers.
   ///
   /// Features appropriate spacing and styling for menu contexts.
   static const AbstractButtonStyle menu =
       ComponentThemeButtonStyle<MenuButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonMenuDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonMenuPadding,
-      textStyle: _buttonMenuTextStyle,
-      iconTheme: _buttonMenuIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonMenuDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonMenuPadding,
+          textStyle: _buttonMenuTextStyle,
+          iconTheme: _buttonMenuIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Menubar button variant for horizontal menu bars.
   ///
   /// Features optimized padding and styling for menubar contexts.
   static const AbstractButtonStyle menubar =
       ComponentThemeButtonStyle<MenubarButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonMenuDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonMenubarPadding,
-      textStyle: _buttonMenuTextStyle,
-      iconTheme: _buttonMenuIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonMenuDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonMenubarPadding,
+          textStyle: _buttonMenuTextStyle,
+          iconTheme: _buttonMenuIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Muted button variant with subdued appearance.
   ///
   /// Features low-contrast styling for minimal visual impact.
   static const AbstractButtonStyle muted =
       ComponentThemeButtonStyle<MutedButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonTextDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonPadding,
-      textStyle: _buttonMutedTextStyle,
-      iconTheme: _buttonMutedIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonTextDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonPadding,
+          textStyle: _buttonMutedTextStyle,
+          iconTheme: _buttonMutedIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   /// Card button variant with elevated appearance.
   ///
   /// Features subtle shadows and borders creating a card-like elevated look.
   static const AbstractButtonStyle card =
       ComponentThemeButtonStyle<CardButtonTheme>(
-    fallback: ButtonVariance(
-      decoration: _buttonCardDecoration,
-      mouseCursor: _buttonMouseCursor,
-      padding: _buttonCardPadding,
-      textStyle: _buttonCardTextStyle,
-      iconTheme: _buttonCardIconTheme,
-      margin: _buttonZeroMargin,
-    ),
-  );
+        fallback: ButtonVariance(
+          decoration: _buttonCardDecoration,
+          mouseCursor: _buttonMouseCursor,
+          padding: _buttonCardPadding,
+          textStyle: _buttonCardTextStyle,
+          iconTheme: _buttonCardIconTheme,
+          margin: _buttonZeroMargin,
+        ),
+      );
 
   @override
   final ButtonStateProperty<Decoration> decoration;
@@ -3018,7 +3061,13 @@ class ButtonVariance implements AbstractButtonStyle {
   @override
   int get hashCode {
     return Object.hash(
-        decoration, mouseCursor, padding, textStyle, iconTheme, margin);
+      decoration,
+      mouseCursor,
+      padding,
+      textStyle,
+      iconTheme,
+      margin,
+    );
   }
 
   @override
@@ -3137,11 +3186,12 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   ///   hoverColor: Colors.blue.shade700,
   /// );
   /// ```
-  AbstractButtonStyle withBackgroundColor(
-      {Color? color,
-      Color? hoverColor,
-      Color? focusColor,
-      Color? disabledColor}) {
+  AbstractButtonStyle withBackgroundColor({
+    Color? color,
+    Color? hoverColor,
+    Color? focusColor,
+    Color? disabledColor,
+  }) {
     return copyWith(
       decoration: (context, states, decoration) {
         if (decoration is BoxDecoration) {
@@ -3149,10 +3199,10 @@ extension ButtonStyleExtension on AbstractButtonStyle {
             color: states.disabled
                 ? disabledColor ?? decoration.color
                 : states.hovered
-                    ? hoverColor ?? decoration.color
-                    : states.focused
-                        ? focusColor ?? decoration.color
-                        : color,
+                ? hoverColor ?? decoration.color
+                : states.focused
+                ? focusColor ?? decoration.color
+                : color,
           );
         }
         return decoration;
@@ -3178,21 +3228,22 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   ///   disabledColor: Colors.grey,
   /// );
   /// ```
-  AbstractButtonStyle withForegroundColor(
-      {Color? color,
-      Color? hoverColor,
-      Color? focusColor,
-      Color? disabledColor}) {
+  AbstractButtonStyle withForegroundColor({
+    Color? color,
+    Color? hoverColor,
+    Color? focusColor,
+    Color? disabledColor,
+  }) {
     return copyWith(
       textStyle: (context, states, textStyle) {
         return textStyle.copyWith(
           color: states.disabled
               ? disabledColor ?? textStyle.color
               : states.hovered
-                  ? hoverColor ?? textStyle.color
-                  : states.focused
-                      ? focusColor ?? textStyle.color
-                      : color,
+              ? hoverColor ?? textStyle.color
+              : states.focused
+              ? focusColor ?? textStyle.color
+              : color,
         );
       },
       iconTheme: (context, states, iconTheme) {
@@ -3200,10 +3251,10 @@ extension ButtonStyleExtension on AbstractButtonStyle {
           color: states.disabled
               ? disabledColor ?? iconTheme.color
               : states.hovered
-                  ? hoverColor ?? iconTheme.color
-                  : states.focused
-                      ? focusColor ?? iconTheme.color
-                      : color,
+              ? hoverColor ?? iconTheme.color
+              : states.focused
+              ? focusColor ?? iconTheme.color
+              : color,
         );
       },
     );
@@ -3227,11 +3278,12 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   ///   hoverBorder: Border.all(color: Colors.blue.shade700, width: 2),
   /// );
   /// ```
-  AbstractButtonStyle withBorder(
-      {Border? border,
-      Border? hoverBorder,
-      Border? focusBorder,
-      Border? disabledBorder}) {
+  AbstractButtonStyle withBorder({
+    Border? border,
+    Border? hoverBorder,
+    Border? focusBorder,
+    Border? disabledBorder,
+  }) {
     return copyWith(
       decoration: (context, states, decoration) {
         if (decoration is BoxDecoration) {
@@ -3239,10 +3291,10 @@ extension ButtonStyleExtension on AbstractButtonStyle {
             border: states.disabled
                 ? disabledBorder ?? decoration.border
                 : states.hovered
-                    ? hoverBorder ?? decoration.border
-                    : states.focused
-                        ? focusBorder ?? decoration.border
-                        : border,
+                ? hoverBorder ?? decoration.border
+                : states.focused
+                ? focusBorder ?? decoration.border
+                : border,
           );
         }
         return decoration;
@@ -3268,11 +3320,12 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   ///   hoverBorderRadius: BorderRadius.circular(12),
   /// );
   /// ```
-  AbstractButtonStyle withBorderRadius(
-      {BorderRadiusGeometry? borderRadius,
-      BorderRadiusGeometry? hoverBorderRadius,
-      BorderRadiusGeometry? focusBorderRadius,
-      BorderRadiusGeometry? disabledBorderRadius}) {
+  AbstractButtonStyle withBorderRadius({
+    BorderRadiusGeometry? borderRadius,
+    BorderRadiusGeometry? hoverBorderRadius,
+    BorderRadiusGeometry? focusBorderRadius,
+    BorderRadiusGeometry? disabledBorderRadius,
+  }) {
     return copyWith(
       decoration: (context, states, decoration) {
         if (decoration is BoxDecoration) {
@@ -3280,10 +3333,10 @@ extension ButtonStyleExtension on AbstractButtonStyle {
             borderRadius: states.disabled
                 ? disabledBorderRadius ?? decoration.borderRadius
                 : states.hovered
-                    ? hoverBorderRadius ?? decoration.borderRadius
-                    : states.focused
-                        ? focusBorderRadius ?? decoration.borderRadius
-                        : borderRadius,
+                ? hoverBorderRadius ?? decoration.borderRadius
+                : states.focused
+                ? focusBorderRadius ?? decoration.borderRadius
+                : borderRadius,
           );
         }
         return decoration;
@@ -3300,21 +3353,22 @@ extension ButtonStyleExtension on AbstractButtonStyle {
   /// - [hoverPadding]: Padding when hovered
   /// - [focusPadding]: Padding when focused
   /// - [disabledPadding]: Padding when disabled
-  AbstractButtonStyle withPadding(
-      {EdgeInsetsGeometry? padding,
-      EdgeInsetsGeometry? hoverPadding,
-      EdgeInsetsGeometry? focusPadding,
-      EdgeInsetsGeometry? disabledPadding}) {
+  AbstractButtonStyle withPadding({
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? hoverPadding,
+    EdgeInsetsGeometry? focusPadding,
+    EdgeInsetsGeometry? disabledPadding,
+  }) {
     return copyWith(
       padding: (context, states, defaultPadding) {
         final fallbackPadding = padding ?? defaultPadding;
         return states.disabled
             ? disabledPadding ?? fallbackPadding
             : states.hovered
-                ? hoverPadding ?? fallbackPadding
-                : states.focused
-                    ? focusPadding ?? fallbackPadding
-                    : fallbackPadding;
+            ? hoverPadding ?? fallbackPadding
+            : states.focused
+            ? focusPadding ?? fallbackPadding
+            : fallbackPadding;
       },
     );
   }
@@ -3343,8 +3397,11 @@ extension ButtonStyleExtension on AbstractButtonStyle {
 ///   return defaultColor; // Use default
 /// };
 /// ```
-typedef ButtonStatePropertyDelegate<T> = T Function(
-    BuildContext context, Set<WidgetState> states, T value);
+///
+/// This is an alias for [WidgetStatePropertyDelegate]; the two are
+/// interchangeable, and components outside buttons should prefer the general
+/// name.
+typedef ButtonStatePropertyDelegate<T> = WidgetStatePropertyDelegate<T>;
 
 class _CopyWithButtonStyle implements AbstractButtonStyle {
   final ButtonStatePropertyDelegate<Decoration>? _decoration;
@@ -3398,7 +3455,9 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
   }
 
   EdgeInsetsGeometry _buildPadding(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     return _padding!(context, states, _delegate.padding(context, states));
   }
 
@@ -3412,7 +3471,10 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
 
   MouseCursor _buildMouseCursor(BuildContext context, Set<WidgetState> states) {
     return _mouseCursor!(
-        context, states, _delegate.mouseCursor(context, states));
+      context,
+      states,
+      _delegate.mouseCursor(context, states),
+    );
   }
 
   @override
@@ -3436,7 +3498,9 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
   }
 
   EdgeInsetsGeometry _buildMargin(
-      BuildContext context, Set<WidgetState> states) {
+    BuildContext context,
+    Set<WidgetState> states,
+  ) {
     return _margin!(context, states, _delegate.margin(context, states));
   }
 
@@ -3456,8 +3520,15 @@ class _CopyWithButtonStyle implements AbstractButtonStyle {
 
   @override
   int get hashCode {
-    return Object.hash(_delegate, _decoration, _mouseCursor, _padding,
-        _textStyle, _iconTheme, _margin);
+    return Object.hash(
+      _delegate,
+      _decoration,
+      _mouseCursor,
+      _padding,
+      _textStyle,
+      _iconTheme,
+      _margin,
+    );
   }
 
   @override
@@ -3495,24 +3566,23 @@ TextStyle _buttonCardTextStyle(BuildContext context, Set<WidgetState> states) {
 }
 
 IconThemeData _buttonCardIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return IconThemeData(
-    color: themeData.colorScheme.cardForeground,
-  );
+  return IconThemeData(color: themeData.colorScheme.cardForeground);
 }
 
 Decoration _buttonCardDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
       color: themeData.colorScheme.muted,
       borderRadius: BorderRadius.circular(themeData.radiusXl),
-      border: Border.all(
-        color: themeData.colorScheme.border,
-        width: 1,
-      ),
+      border: Border.all(color: themeData.colorScheme.border, width: 1),
     );
   }
   if (states.contains(WidgetState.hovered) ||
@@ -3520,19 +3590,13 @@ Decoration _buttonCardDecoration(
     return BoxDecoration(
       color: themeData.colorScheme.border,
       borderRadius: BorderRadius.circular(themeData.radiusXl),
-      border: Border.all(
-        color: themeData.colorScheme.border,
-        width: 1,
-      ),
+      border: Border.all(color: themeData.colorScheme.border, width: 1),
     );
   }
   return BoxDecoration(
     color: themeData.colorScheme.card,
     borderRadius: BorderRadius.circular(themeData.radiusXl),
-    border: Border.all(
-      color: themeData.colorScheme.border,
-      width: 1,
-    ),
+    border: Border.all(color: themeData.colorScheme.border, width: 1),
   );
 }
 
@@ -3543,7 +3607,9 @@ EdgeInsets _buttonCardPadding(BuildContext context, Set<WidgetState> states) {
 
 // MENUBUTTON
 Decoration _buttonMenuDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return const BoxDecoration();
@@ -3592,7 +3658,9 @@ EdgeInsets _buttonMenuPadding(BuildContext context, Set<WidgetState> states) {
 }
 
 EdgeInsets _buttonMenubarPadding(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   final theme = Theme.of(context);
   final scaling = theme.scaling;
   final baseContentPadding = theme.density.baseContentPadding * scaling;
@@ -3604,16 +3672,18 @@ EdgeInsets _buttonMenubarPadding(
 }
 
 IconThemeData _buttonMenuIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return IconThemeData(
-    color: themeData.colorScheme.accentForeground,
-  );
+  return IconThemeData(color: themeData.colorScheme.accentForeground);
 }
 
 // PRIMARY
 Decoration _buttonPrimaryDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
@@ -3634,24 +3704,28 @@ Decoration _buttonPrimaryDecoration(
 }
 
 TextStyle _buttonPrimaryTextStyle(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
-        color: themeData.colorScheme.primaryForeground,
-      );
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(color: themeData.colorScheme.primaryForeground);
 }
 
 IconThemeData _buttonPrimaryIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return IconThemeData(
-    color: themeData.colorScheme.primaryForeground,
-  );
+  return IconThemeData(color: themeData.colorScheme.primaryForeground);
 }
 
 // SECONDARY
 Decoration _buttonSecondaryDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
@@ -3672,9 +3746,13 @@ Decoration _buttonSecondaryDecoration(
 }
 
 TextStyle _buttonSecondaryTextStyle(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(
         color: states.contains(WidgetState.disabled)
             ? themeData.colorScheme.mutedForeground
             : themeData.colorScheme.secondaryForeground,
@@ -3682,7 +3760,9 @@ TextStyle _buttonSecondaryTextStyle(
 }
 
 IconThemeData _buttonSecondaryIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   return IconThemeData(
     color: states.contains(WidgetState.disabled)
@@ -3692,13 +3772,13 @@ IconThemeData _buttonSecondaryIconTheme(
 }
 
 Decoration _buttonOutlineDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
-      color: themeData.colorScheme.border.withValues(
-        alpha: 0,
-      ),
+      color: themeData.colorScheme.border.withValues(alpha: 0),
       border: Border.all(
         color: themeData.colorScheme.border,
         width: 1,
@@ -3730,9 +3810,13 @@ Decoration _buttonOutlineDecoration(
 }
 
 TextStyle _buttonOutlineTextStyle(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(
         color: states.contains(WidgetState.disabled)
             ? themeData.colorScheme.mutedForeground
             : themeData.colorScheme.foreground,
@@ -3740,7 +3824,9 @@ TextStyle _buttonOutlineTextStyle(
 }
 
 IconThemeData _buttonOutlineIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   return IconThemeData(
     color: states.contains(WidgetState.disabled)
@@ -3750,7 +3836,9 @@ IconThemeData _buttonOutlineIconTheme(
 }
 
 Decoration _buttonGhostDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
@@ -3772,7 +3860,9 @@ Decoration _buttonGhostDecoration(
 
 TextStyle _buttonGhostTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(
         color: states.contains(WidgetState.disabled)
             ? themeData.colorScheme.mutedForeground
             : themeData.colorScheme.foreground,
@@ -3780,7 +3870,9 @@ TextStyle _buttonGhostTextStyle(BuildContext context, Set<WidgetState> states) {
 }
 
 IconThemeData _buttonGhostIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   return IconThemeData(
     color: states.contains(WidgetState.disabled)
@@ -3791,30 +3883,32 @@ IconThemeData _buttonGhostIconTheme(
 
 TextStyle _buttonMutedTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
-        color: themeData.colorScheme.mutedForeground,
-      );
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(color: themeData.colorScheme.mutedForeground);
 }
 
 IconThemeData _buttonMutedIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return IconThemeData(
-    color: themeData.colorScheme.mutedForeground,
-  );
+  return IconThemeData(color: themeData.colorScheme.mutedForeground);
 }
 
 Decoration _buttonLinkDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return BoxDecoration(
-    borderRadius: BorderRadius.circular(themeData.radiusMd),
-  );
+  return BoxDecoration(borderRadius: BorderRadius.circular(themeData.radiusMd));
 }
 
 TextStyle _buttonLinkTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(
         color: states.contains(WidgetState.disabled)
             ? themeData.colorScheme.mutedForeground
             : themeData.colorScheme.foreground,
@@ -3825,7 +3919,9 @@ TextStyle _buttonLinkTextStyle(BuildContext context, Set<WidgetState> states) {
 }
 
 IconThemeData _buttonLinkIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   return IconThemeData(
     color: states.contains(WidgetState.disabled)
@@ -3835,16 +3931,18 @@ IconThemeData _buttonLinkIconTheme(
 }
 
 Decoration _buttonTextDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return BoxDecoration(
-    borderRadius: BorderRadius.circular(themeData.radiusMd),
-  );
+  return BoxDecoration(borderRadius: BorderRadius.circular(themeData.radiusMd));
 }
 
 TextStyle _buttonTextTextStyle(BuildContext context, Set<WidgetState> states) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(
         color: states.contains(WidgetState.hovered)
             ? themeData.colorScheme.primary
             : themeData.colorScheme.mutedForeground,
@@ -3852,7 +3950,9 @@ TextStyle _buttonTextTextStyle(BuildContext context, Set<WidgetState> states) {
 }
 
 IconThemeData _buttonTextIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   return IconThemeData(
     color: states.contains(WidgetState.hovered)
@@ -3862,7 +3962,9 @@ IconThemeData _buttonTextIconTheme(
 }
 
 Decoration _buttonDestructiveDecoration(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
@@ -3883,18 +3985,23 @@ Decoration _buttonDestructiveDecoration(
 }
 
 TextStyle _buttonDestructiveTextStyle(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
-  return themeData.typography.small.merge(themeData.typography.medium).copyWith(
+  return themeData.typography.small
+      .merge(themeData.typography.medium)
+      .copyWith(
         color: states.contains(WidgetState.disabled)
             ? themeData.colorScheme.mutedForeground
-            : Colors
-                .white, // yeah ik, its straight up white regardless light or dark mode
+            : Colors.white, // yeah ik, its straight up white regardless light or dark mode
       );
 }
 
 IconThemeData _buttonDestructiveIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   var themeData = Theme.of(context);
   return IconThemeData(
     color: states.contains(WidgetState.disabled)
@@ -3905,15 +4012,19 @@ IconThemeData _buttonDestructiveIconTheme(
 
 // STATIC BUTTON
 TextStyle _buttonStaticTextStyle(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   final theme = Theme.of(context);
-  return theme.typography.small.merge(theme.typography.medium).copyWith(
-        color: theme.colorScheme.foreground,
-      );
+  return theme.typography.small
+      .merge(theme.typography.medium)
+      .copyWith(color: theme.colorScheme.foreground);
 }
 
 IconThemeData _buttonStaticIconTheme(
-    BuildContext context, Set<WidgetState> states) {
+  BuildContext context,
+  Set<WidgetState> states,
+) {
   return const IconThemeData();
 }
 
@@ -3930,7 +4041,7 @@ IconThemeData _buttonStaticIconTheme(
 /// ```dart
 /// PrimaryButton(
 ///   onPressed: () => submitForm(),
-///   leading: Icon(Icons.check),
+///   leading: Icon(LucideIcons.check),
 ///   child: Text('Submit'),
 /// )
 /// ```
@@ -5007,8 +5118,11 @@ class DestructiveButton extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       alignment: alignment,
-      style:
-          ButtonStyle.destructive(size: size, density: density, shape: shape),
+      style: ButtonStyle.destructive(
+        size: size,
+        density: density,
+        shape: shape,
+      ),
       focusNode: focusNode,
       disableTransition: disableTransition,
       onHover: onHover,
@@ -5213,8 +5327,8 @@ class TabButton extends StatelessWidget {
 /// Example:
 /// ```dart
 /// CardButton(
-///   leading: Icon(Icons.dashboard),
-///   trailing: Icon(Icons.arrow_forward),
+///   leading: Icon(LucideIcons.layoutDashboard),
+///   trailing: Icon(LucideIcons.arrowRight),
 ///   size: ButtonSize.large,
 ///   onPressed: () => Navigator.pushNamed(context, '/dashboard'),
 ///   child: Column(
@@ -5376,7 +5490,7 @@ class CardButton extends StatelessWidget {
   /// ```dart
   /// CardButton(
   ///   size: ButtonSize.large,
-  ///   leading: Icon(Icons.star),
+  ///   leading: Icon(LucideIcons.star),
   ///   onPressed: () => _handleFavorite(),
   ///   child: Text('Add to Favorites'),
   /// )
@@ -5958,38 +6072,56 @@ class ButtonStyleOverride extends StatelessWidget {
       var data = Data.maybeOf<ButtonStyleOverrideData>(context);
       if (data != null) {
         decoration = (context, state, value) {
-          return data.decoration?.call(context, state,
-                  decoration?.call(context, state, value) ?? value) ??
+          return data.decoration?.call(
+                context,
+                state,
+                decoration?.call(context, state, value) ?? value,
+              ) ??
               decoration?.call(context, state, value) ??
               value;
         };
         mouseCursor = (context, state, value) {
-          return data.mouseCursor?.call(context, state,
-                  mouseCursor?.call(context, state, value) ?? value) ??
+          return data.mouseCursor?.call(
+                context,
+                state,
+                mouseCursor?.call(context, state, value) ?? value,
+              ) ??
               mouseCursor?.call(context, state, value) ??
               value;
         };
         padding = (context, state, value) {
-          return data.padding?.call(context, state,
-                  padding?.call(context, state, value) ?? value) ??
+          return data.padding?.call(
+                context,
+                state,
+                padding?.call(context, state, value) ?? value,
+              ) ??
               padding?.call(context, state, value) ??
               value;
         };
         textStyle = (context, state, value) {
-          return data.textStyle?.call(context, state,
-                  textStyle?.call(context, state, value) ?? value) ??
+          return data.textStyle?.call(
+                context,
+                state,
+                textStyle?.call(context, state, value) ?? value,
+              ) ??
               textStyle?.call(context, state, value) ??
               value;
         };
         iconTheme = (context, state, value) {
-          return data.iconTheme?.call(context, state,
-                  iconTheme?.call(context, state, value) ?? value) ??
+          return data.iconTheme?.call(
+                context,
+                state,
+                iconTheme?.call(context, state, value) ?? value,
+              ) ??
               iconTheme?.call(context, state, value) ??
               value;
         };
         margin = (context, state, value) {
-          return data.margin?.call(context, state,
-                  margin?.call(context, state, value) ?? value) ??
+          return data.margin?.call(
+                context,
+                state,
+                margin?.call(context, state, value) ?? value,
+              ) ??
               margin?.call(context, state, value) ??
               value;
         };
@@ -6101,15 +6233,15 @@ class ButtonStyleOverrideData {
 ///   children: [
 ///     Button.secondary(
 ///       onPressed: () => align('left'),
-///       child: Icon(Icons.format_align_left),
+///       child: Icon(LucideIcons.alignLeft),
 ///     ),
 ///     Button.secondary(
 ///       onPressed: () => align('center'),
-///       child: Icon(Icons.format_align_center),
+///       child: Icon(LucideIcons.alignCenter),
 ///     ),
 ///     Button.secondary(
 ///       onPressed: () => align('right'),
-///       child: Icon(Icons.format_align_right),
+///       child: Icon(LucideIcons.alignRight),
 ///     ),
 ///   ],
 /// );
@@ -6203,8 +6335,9 @@ class ButtonGroup extends StatelessWidget {
             decoration: (context, states, value) {
               if (value is BoxDecoration) {
                 final borderRadius = groupData.applyToBorderRadius(
-                    value.borderRadius ?? BorderRadius.zero,
-                    Directionality.of(context));
+                  value.borderRadius ?? BorderRadius.zero,
+                  Directionality.of(context),
+                );
                 return value.copyWith(borderRadius: borderRadius);
               }
               return value;
@@ -6341,20 +6474,24 @@ class ButtonGroupData {
   static const ButtonGroupData zero = ButtonGroupData.all(0.0);
 
   /// Horizontal start position - full start radius, no end radius.
-  static const ButtonGroupData horizontalStart =
-      ButtonGroupData.horizontal(end: 0.0);
+  static const ButtonGroupData horizontalStart = ButtonGroupData.horizontal(
+    end: 0.0,
+  );
 
   /// Horizontal end position - no start radius, full end radius.
-  static const ButtonGroupData horizontalEnd =
-      ButtonGroupData.horizontal(start: 0.0);
+  static const ButtonGroupData horizontalEnd = ButtonGroupData.horizontal(
+    start: 0.0,
+  );
 
   /// Vertical top position - full top radius, no bottom radius.
-  static const ButtonGroupData verticalTop =
-      ButtonGroupData.vertical(bottom: 0.0);
+  static const ButtonGroupData verticalTop = ButtonGroupData.vertical(
+    bottom: 0.0,
+  );
 
   /// Vertical bottom position - no top radius, full bottom radius.
-  static const ButtonGroupData verticalBottom =
-      ButtonGroupData.vertical(top: 0.0);
+  static const ButtonGroupData verticalBottom = ButtonGroupData.vertical(
+    top: 0.0,
+  );
 
   /// Border radius multiplier for top-start corner (0.0 to 1.0).
   final double topStartValue;
@@ -6379,31 +6516,27 @@ class ButtonGroupData {
   /// Creates horizontal group data with start and end multipliers.
   ///
   /// Both top and bottom on each side use the same value.
-  const ButtonGroupData.horizontal({
-    double start = 1.0,
-    double end = 1.0,
-  })  : topStartValue = start,
-        topEndValue = end,
-        bottomStartValue = start,
-        bottomEndValue = end;
+  const ButtonGroupData.horizontal({double start = 1.0, double end = 1.0})
+    : topStartValue = start,
+      topEndValue = end,
+      bottomStartValue = start,
+      bottomEndValue = end;
 
   /// Creates vertical group data with top and bottom multipliers.
   ///
   /// Both start and end on each side use the same value.
-  const ButtonGroupData.vertical({
-    double top = 1.0,
-    double bottom = 1.0,
-  })  : topStartValue = top,
-        topEndValue = top,
-        bottomStartValue = bottom,
-        bottomEndValue = bottom;
+  const ButtonGroupData.vertical({double top = 1.0, double bottom = 1.0})
+    : topStartValue = top,
+      topEndValue = top,
+      bottomStartValue = bottom,
+      bottomEndValue = bottom;
 
   /// Creates group data with the same multiplier for all corners.
   const ButtonGroupData.all(double value)
-      : topStartValue = value,
-        topEndValue = value,
-        bottomStartValue = value,
-        bottomEndValue = value;
+    : topStartValue = value,
+      topEndValue = value,
+      bottomStartValue = value,
+      bottomEndValue = value;
 
   /// Creates group data for a button at [index] in a horizontal group of [length] buttons.
   ///
@@ -6458,15 +6591,21 @@ class ButtonGroupData {
   ///
   /// Returns a new [BorderRadiusGeometry] with modified corner radii.
   BorderRadiusGeometry applyToBorderRadius(
-      BorderRadiusGeometry borderRadius, TextDirection textDirection) {
-    final topLeftValue =
-        textDirection == TextDirection.ltr ? topStartValue : topEndValue;
-    final topRightValue =
-        textDirection == TextDirection.ltr ? topEndValue : topStartValue;
-    final bottomLeftValue =
-        textDirection == TextDirection.ltr ? bottomStartValue : bottomEndValue;
-    final bottomRightValue =
-        textDirection == TextDirection.ltr ? bottomEndValue : bottomStartValue;
+    BorderRadiusGeometry borderRadius,
+    TextDirection textDirection,
+  ) {
+    final topLeftValue = textDirection == TextDirection.ltr
+        ? topStartValue
+        : topEndValue;
+    final topRightValue = textDirection == TextDirection.ltr
+        ? topEndValue
+        : topStartValue;
+    final bottomLeftValue = textDirection == TextDirection.ltr
+        ? bottomStartValue
+        : bottomEndValue;
+    final bottomRightValue = textDirection == TextDirection.ltr
+        ? bottomEndValue
+        : bottomStartValue;
     final resolvedBorderRadius = borderRadius.resolve(textDirection);
     return BorderRadius.only(
       topLeft: Radius.elliptical(
@@ -6536,8 +6675,32 @@ class ButtonGroupData {
   }
 }
 
+/// Raises its child above its siblings while the child holds focus.
+///
+/// Buttons packed edge to edge — a [ButtonGroup], a segmented control — draw
+/// their focus outline inside their own bounds, so the neighbour painted after
+/// them clips it. This widget bumps the child's [PaintOrder] while focused so
+/// the outline is drawn last and stays whole.
+///
+/// It only changes paint order, never layout.
+///
+/// ```dart
+/// Row(
+///   children: [
+///     FocusToFront(child: PrimaryButton(onPressed: save, child: Text('Save'))),
+///     FocusToFront(child: OutlineButton(onPressed: undo, child: Text('Undo'))),
+///   ],
+/// );
+/// ```
+///
+/// See also:
+///  * [ExpandedFocusToFront] and [FlexibleFocusToFront], which do the same for
+///    a child that also needs [Expanded] or [Flexible].
 class FocusToFront extends StatefulWidget {
+  /// The widget to raise while it holds focus.
   final Widget child;
+
+  /// Creates a [FocusToFront].
   const FocusToFront({super.key, required this.child});
 
   @override
@@ -6558,9 +6721,18 @@ class _FocusToFrontState extends State<FocusToFront> {
   }
 }
 
+/// An [Expanded] that raises its child above its siblings while focused.
+///
+/// Combines [Expanded] with the paint-order bump described on [FocusToFront],
+/// for buttons that share a [Row] or [Column] and need to fill it.
 class ExpandedFocusToFront extends StatefulWidget {
+  /// The widget to expand and raise while it holds focus.
   final Widget child;
+
+  /// The flex factor passed to [Expanded.flex].
   final int flex;
+
+  /// Creates an [ExpandedFocusToFront].
   const ExpandedFocusToFront({super.key, required this.child, this.flex = 1});
 
   @override
@@ -6572,24 +6744,38 @@ class _ExpandedFocusToFrontState extends State<ExpandedFocusToFront> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: widget.flex,
-        paintOrder: _focus ? 1 : null,
-        child: Focus(
-          onFocusChange: (focus) => setState(() => _focus = focus),
-          child: widget.child,
-        ));
+      flex: widget.flex,
+      paintOrder: _focus ? 1 : null,
+      child: Focus(
+        onFocusChange: (focus) => setState(() => _focus = focus),
+        child: widget.child,
+      ),
+    );
   }
 }
 
+/// A [Flexible] that raises its child above its siblings while focused.
+///
+/// Combines [Flexible] with the paint-order bump described on [FocusToFront],
+/// for buttons that share a [Row] or [Column] but should not be forced to fill
+/// it.
 class FlexibleFocusToFront extends StatefulWidget {
+  /// The widget to flex and raise while it holds focus.
   final Widget child;
+
+  /// The flex factor passed to [Flexible.flex].
   final int flex;
+
+  /// How the child is allowed to fill its share of the main axis.
   final FlexFit fit;
-  const FlexibleFocusToFront(
-      {super.key,
-      required this.child,
-      this.flex = 1,
-      this.fit = FlexFit.loose});
+
+  /// Creates a [FlexibleFocusToFront].
+  const FlexibleFocusToFront({
+    super.key,
+    required this.child,
+    this.flex = 1,
+    this.fit = FlexFit.loose,
+  });
 
   @override
   State<FlexibleFocusToFront> createState() => _FlexibleFocusToFrontState();
@@ -6600,12 +6786,13 @@ class _FlexibleFocusToFrontState extends State<FlexibleFocusToFront> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        flex: widget.flex,
-        fit: widget.fit,
-        paintOrder: _focus ? 1 : null,
-        child: Focus(
-          onFocusChange: (focus) => setState(() => _focus = focus),
-          child: widget.child,
-        ));
+      flex: widget.flex,
+      fit: widget.fit,
+      paintOrder: _focus ? 1 : null,
+      child: Focus(
+        onFocusChange: (focus) => setState(() => _focus = focus),
+        child: widget.child,
+      ),
+    );
   }
 }

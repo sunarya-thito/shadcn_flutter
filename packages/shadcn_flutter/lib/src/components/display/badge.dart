@@ -36,11 +36,13 @@ class BadgeTheme extends ComponentThemeData {
   }) {
     return BadgeTheme(
       primaryStyle: primaryStyle == null ? this.primaryStyle : primaryStyle(),
-      secondaryStyle:
-          secondaryStyle == null ? this.secondaryStyle : secondaryStyle(),
+      secondaryStyle: secondaryStyle == null
+          ? this.secondaryStyle
+          : secondaryStyle(),
       outlineStyle: outlineStyle == null ? this.outlineStyle : outlineStyle(),
-      destructiveStyle:
-          destructiveStyle == null ? this.destructiveStyle : destructiveStyle(),
+      destructiveStyle: destructiveStyle == null
+          ? this.destructiveStyle
+          : destructiveStyle(),
     );
   }
 
@@ -89,14 +91,14 @@ class BadgeTheme extends ComponentThemeData {
 /// ```dart
 /// PrimaryBadge(
 ///   child: Text('NEW'),
-///   leading: Icon(Icons.star, size: 16),
+///   leading: Icon(LucideIcons.star, size: 16),
 ///   onPressed: () => _showNewItems(),
 /// );
 ///
 /// // Non-interactive status badge
 /// PrimaryBadge(
 ///   child: Text('5'),
-///   trailing: Icon(Icons.notifications, size: 14),
+///   trailing: Icon(LucideIcons.bell, size: 14),
 /// );
 /// ```
 class PrimaryBadge extends StatelessWidget {
@@ -132,7 +134,8 @@ class PrimaryBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle = style ??
+    final baseStyle =
+        style ??
         compTheme?.primaryStyle ??
         const ButtonStyle.primary(
           size: ButtonSize.small,
@@ -189,7 +192,8 @@ class SecondaryBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle = style ??
+    final baseStyle =
+        style ??
         compTheme?.secondaryStyle ??
         const ButtonStyle.secondary(
           size: ButtonSize.small,
@@ -246,7 +250,8 @@ class OutlineBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle = style ??
+    final baseStyle =
+        style ??
         compTheme?.outlineStyle ??
         const ButtonStyle.outline(
           size: ButtonSize.small,
@@ -303,7 +308,8 @@ class DestructiveBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final compTheme = ComponentTheme.maybeOf<BadgeTheme>(context);
-    final baseStyle = style ??
+    final baseStyle =
+        style ??
         compTheme?.destructiveStyle ??
         const ButtonStyle.destructive(
           size: ButtonSize.small,

@@ -32,6 +32,12 @@ class Positioned extends widgets.ParentDataWidget<StackParentData> {
   const Positioned({super.key, this.left, this.top, this.right, this.bottom, this.width, this.height, this.paintOrder, required super.child});
   /// Creates a Positioned with all edges set to 0.0 unless specified.
   const Positioned.fill({super.key, this.left = 0.0, this.top = 0.0, this.right = 0.0, this.bottom = 0.0, this.paintOrder, required super.child});
+  /// Creates a positioned widget whose horizontal insets are given as [start]
+  /// and [end] rather than left and right, resolved against [textDirection].
+  ///
+  /// Under [widgets.TextDirection.ltr] [start] is the left inset; under
+  /// [widgets.TextDirection.rtl] it is the right one.
+  factory Positioned.directional({widgets.Key? key, required widgets.TextDirection textDirection, double? start, double? top, double? end, double? bottom, double? width, double? height, int? paintOrder, required widgets.Widget child});
   /// The distance that the child's left edge is inset from the left of the stack.
   final double? left;
   /// The distance that the child's top edge is inset from the top of the stack.

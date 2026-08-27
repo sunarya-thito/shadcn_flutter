@@ -258,7 +258,7 @@ class _ThemePageState extends State<ThemePage> {
                                 onPressed: () {
                                   _openDrawer(context);
                                 },
-                                child: const Icon(Icons.menu),
+                                child: const Icon(LucideIcons.menu),
                               ),
                             ),
                           ],
@@ -268,7 +268,7 @@ class _ThemePageState extends State<ThemePage> {
                               width: double.infinity,
                               child: OutlineButton(
                                 onPressed: _showSearchBar,
-                                trailing: const Icon(Icons.search)
+                                trailing: const Icon(LucideIcons.search)
                                     .iconSmall()
                                     .iconMutedForeground(),
                                 child: Row(
@@ -643,7 +643,7 @@ class _ThemePageState extends State<ThemePage> {
                 Expanded(
                   child: const Text('Your profile has been verified.').medium,
                 ),
-                const Icon(Icons.chevron_right).iconMutedForeground(),
+                const Icon(LucideIcons.chevronRight).iconMutedForeground(),
               ],
             ),
           ),
@@ -779,7 +779,7 @@ class _ThemePageState extends State<ThemePage> {
               .small,
           const DensityGap(gapMd),
           Button(
-            leading: const Icon(Icons.add),
+            leading: const Icon(LucideIcons.plus),
             style: const ButtonStyle.primary(
               density: ButtonDensity.dense,
             ),
@@ -830,7 +830,7 @@ class _ThemePageState extends State<ThemePage> {
   Widget _buildKitchenChatBox(BuildContext context) {
     return IntrinsicHeight(
       child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        IconButton.outline(icon: const Icon(Icons.add), onPressed: () {}),
+        IconButton.outline(icon: const Icon(LucideIcons.plus), onPressed: () {}),
         const DensityGap(gapSm),
         Expanded(
           child: TextField(
@@ -884,7 +884,7 @@ class _ThemePageState extends State<ThemePage> {
     return TextField(
       placeholder: const Text('Search...'),
       features: [
-        InputFeature.leading(const Icon(Icons.search).iconMutedForeground),
+        InputFeature.leading(const Icon(LucideIcons.search).iconMutedForeground),
         InputFeature.trailing(const Text('12 Results').muted.small.medium),
       ],
     );
@@ -917,7 +917,7 @@ class _ThemePageState extends State<ThemePage> {
                 children: [
                   IconButton.outline(
                       density: ButtonDensity.iconDense,
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(LucideIcons.plus),
                       onPressed: () {}),
                   const DensityGap(gapSm),
                   Builder(builder: (context) {
@@ -957,7 +957,7 @@ class _ThemePageState extends State<ThemePage> {
                   const DensityGap(gapSm),
                   IconButton.primary(
                     density: ButtonDensity.iconDense,
-                    icon: const Icon(Icons.arrow_upward),
+                    icon: const Icon(LucideIcons.arrowUp),
                     onPressed: () {},
                   )
                 ],
@@ -977,7 +977,7 @@ class _ThemePageState extends State<ThemePage> {
           density: ButtonDensity.iconDense,
           size: ButtonSize.small,
           shape: ButtonShape.circle,
-          icon: const Icon(Icons.check),
+          icon: const Icon(LucideIcons.check),
           onPressed: () {},
         )),
       ],
@@ -1047,7 +1047,7 @@ class _ThemePageState extends State<ThemePage> {
             child: OutlineButton(
               onPressed: _showSearchBar,
               trailing:
-                  const Icon(Icons.search).iconSmall().iconMutedForeground(),
+                  const Icon(LucideIcons.search).iconSmall().iconMutedForeground(),
               child: Row(
                 spacing: 16,
                 children: [
@@ -1191,7 +1191,7 @@ class _ThemePageState extends State<ThemePage> {
                     onPressed: () {
                       closeDrawer(context);
                     },
-                    child: const Icon(Icons.close),
+                    child: const Icon(LucideIcons.x),
                   ),
                 ],
               ).withPadding(left: 32 * scaling, right: 32 * scaling),
@@ -1315,7 +1315,7 @@ class _ThemePageState extends State<ThemePage> {
               _updateThemeMode(state, value == 'dark');
             },
             itemBuilder: (context, item) => _selectRow(
-              Icon(item == 'dark' ? Icons.dark_mode : Icons.light_mode,
+              Icon(item == 'dark' ? LucideIcons.moon : LucideIcons.sun,
                   size: 16),
               item == 'dark' ? 'Dark' : 'Light',
             ),
@@ -1327,7 +1327,7 @@ class _ThemePageState extends State<ThemePage> {
                     value: 'light',
                     child: Row(
                       children: [
-                        Icon(Icons.light_mode, size: 16),
+                        Icon(LucideIcons.sun, size: 16),
                         Gap(8),
                         Text('Light'),
                       ],
@@ -1337,7 +1337,7 @@ class _ThemePageState extends State<ThemePage> {
                     value: 'dark',
                     child: Row(
                       children: [
-                        Icon(Icons.dark_mode, size: 16),
+                        Icon(LucideIcons.moon, size: 16),
                         Gap(8),
                         Text('Dark'),
                       ],
@@ -1359,7 +1359,7 @@ class _ThemePageState extends State<ThemePage> {
             itemBuilder: (context, item) {
               final option = _baseSchemes.firstWhere((s) => s.id == item);
               return _selectRow(
-                Icon(Icons.circle,
+                Icon(LucideIcons.circle,
                     size: 12, color: _baseSwatchColor(option.id)),
                 option.label,
               );
@@ -1373,7 +1373,7 @@ class _ThemePageState extends State<ThemePage> {
                       value: option.id,
                       child: Row(
                         children: [
-                          Icon(Icons.circle,
+                          Icon(LucideIcons.circle,
                               size: 12, color: _baseSwatchColor(option.id)),
                           const Gap(8),
                           Text(option.label),
@@ -1397,7 +1397,7 @@ class _ThemePageState extends State<ThemePage> {
               final option = _accentOptions.firstWhere((o) => o.id == item);
               final color = option.color ?? baseScheme.primary;
               return _selectRow(
-                Icon(Icons.circle, size: 12, color: color),
+                Icon(LucideIcons.circle, size: 12, color: color),
                 option.label,
               );
             },
@@ -1411,7 +1411,7 @@ class _ThemePageState extends State<ThemePage> {
                       child: Row(
                         children: [
                           Icon(
-                            Icons.circle,
+                            LucideIcons.circle,
                             size: 12,
                             color: option.color ?? baseScheme.primary,
                           ),
@@ -1436,7 +1436,7 @@ class _ThemePageState extends State<ThemePage> {
               _updateRadius(state, nextRadius);
             },
             itemBuilder: (context, item) =>
-                _selectRow(const Icon(Icons.rounded_corner, size: 16), item),
+                _selectRow(const Icon(LucideIcons.squareRoundCorner, size: 16), item),
             placeholder: const Text('Radius'),
             popup: SelectPopup(
               items: SelectItemList(
@@ -1446,7 +1446,7 @@ class _ThemePageState extends State<ThemePage> {
                       value: entry.key,
                       child: Row(
                         children: [
-                          const Icon(Icons.rounded_corner, size: 16),
+                          const Icon(LucideIcons.squareRoundCorner, size: 16),
                           const Gap(8),
                           Text(entry.key),
                         ],
@@ -1468,7 +1468,7 @@ class _ThemePageState extends State<ThemePage> {
               _updateDensity(state, nextDensity);
             },
             itemBuilder: (context, item) =>
-                _selectRow(const Icon(Icons.line_weight, size: 16), item),
+                _selectRow(const Icon(LucideIcons.menu, size: 16), item),
             placeholder: const Text('Density'),
             popup: SelectPopup(
               items: SelectItemList(
@@ -1478,7 +1478,7 @@ class _ThemePageState extends State<ThemePage> {
                       value: entry.key,
                       child: Row(
                         children: [
-                          const Icon(Icons.line_weight, size: 16),
+                          const Icon(LucideIcons.menu, size: 16),
                           const Gap(8),
                           Text(entry.key),
                         ],
@@ -1500,7 +1500,7 @@ class _ThemePageState extends State<ThemePage> {
               _updateScaling(state, nextScaling);
             },
             itemBuilder: (context, item) =>
-                _selectRow(const Icon(Icons.zoom_in, size: 16), item),
+                _selectRow(const Icon(LucideIcons.zoomIn, size: 16), item),
             placeholder: const Text('Scaling'),
             popup: SelectPopup(
               items: SelectItemList(
@@ -1510,7 +1510,7 @@ class _ThemePageState extends State<ThemePage> {
                       value: entry.key,
                       child: Row(
                         children: [
-                          const Icon(Icons.zoom_in, size: 16),
+                          const Icon(LucideIcons.zoomIn, size: 16),
                           const Gap(8),
                           Text(entry.key),
                         ],
@@ -1532,7 +1532,7 @@ class _ThemePageState extends State<ThemePage> {
               _updateSurfaceOpacity(state, nextOpacity);
             },
             itemBuilder: (context, item) =>
-                _selectRow(const Icon(Icons.opacity, size: 16), item),
+                _selectRow(const Icon(LucideIcons.droplet, size: 16), item),
             placeholder: const Text('Surface opacity'),
             popup: SelectPopup(
               items: SelectItemList(
@@ -1542,7 +1542,7 @@ class _ThemePageState extends State<ThemePage> {
                       value: entry.key,
                       child: Row(
                         children: [
-                          const Icon(Icons.opacity, size: 16),
+                          const Icon(LucideIcons.droplet, size: 16),
                           const Gap(8),
                           Text(entry.key),
                         ],
@@ -1564,7 +1564,7 @@ class _ThemePageState extends State<ThemePage> {
               _updateSurfaceBlur(state, nextBlur);
             },
             itemBuilder: (context, item) =>
-                _selectRow(const Icon(Icons.blur_on, size: 16), item),
+                _selectRow(const Icon(LucideIcons.droplets, size: 16), item),
             placeholder: const Text('Surface blur'),
             popup: SelectPopup(
               items: SelectItemList(
@@ -1574,7 +1574,7 @@ class _ThemePageState extends State<ThemePage> {
                       value: entry.key,
                       child: Row(
                         children: [
-                          const Icon(Icons.blur_on, size: 16),
+                          const Icon(LucideIcons.droplets, size: 16),
                           const Gap(8),
                           Text(entry.key),
                         ],

@@ -7,11 +7,7 @@ void main() {
   group('Alert', () {
     testWidgets('renders with title only', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Alert(
-            title: Text('Alert Title'),
-          ),
-        ),
+        SimpleApp(child: Alert(title: Text('Alert Title'))),
       );
 
       expect(find.byType(Alert), findsOneWidget);
@@ -37,7 +33,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Alert(
-            leading: Icon(Icons.info),
+            leading: Icon(LucideIcons.info),
             title: Text('Info Alert'),
           ),
         ),
@@ -54,7 +50,7 @@ void main() {
           child: Alert(
             title: Text('Alert with action'),
             trailing: Button.primary(
-              child: Icon(Icons.close),
+              child: Icon(LucideIcons.x),
               onPressed: () {},
             ),
           ),
@@ -70,7 +66,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: Alert.destructive(
-            leading: Icon(Icons.error),
+            leading: Icon(LucideIcons.circleAlert),
             title: Text('Error Alert'),
             content: Text('Something went wrong'),
           ),
@@ -87,12 +83,8 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: ComponentTheme<AlertTheme>(
-            data: AlertTheme(
-              padding: EdgeInsets.all(20),
-            ),
-            child: Alert(
-              title: Text('Themed Alert'),
-            ),
+            data: AlertTheme(padding: EdgeInsets.all(20)),
+            child: Alert(title: Text('Themed Alert')),
           ),
         ),
       );
@@ -103,11 +95,7 @@ void main() {
     });
 
     testWidgets('handles empty alert', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: Alert(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: Alert()));
 
       expect(find.byType(Alert), findsOneWidget);
       // Should render without crashing
@@ -129,10 +117,7 @@ void main() {
             title: Text('Complex Alert'),
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Line 1'),
-                Text('Line 2'),
-              ],
+              children: [Text('Line 1'), Text('Line 2')],
             ),
             trailing: Row(
               children: [

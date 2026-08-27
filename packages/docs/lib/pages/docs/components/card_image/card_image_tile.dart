@@ -34,7 +34,7 @@ class CardImageTile extends StatelessWidget implements IComponentPage {
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.image,
+                    LucideIcons.image,
                     size: 48,
                     color: theme.colorScheme.mutedForeground,
                   ),

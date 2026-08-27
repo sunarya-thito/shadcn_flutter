@@ -41,6 +41,63 @@ extension WidgetStateExtension on Set<WidgetState> {
   bool get focused => contains(WidgetState.focused);
 }
 
+/// Resolves a value from the widget's current states and its build context.
+///
+/// Flutter's own [WidgetPropertyResolver] only receives the states; this adds
+/// the [BuildContext] so a resolver can read the ambient [Theme] instead of
+/// having the colors baked in at construction time.
+///
+/// Parameters:
+/// - [context]: The build context, for reading theme data.
+/// - [states]: The states currently active on the widget.
+///
+/// Returns the value of type [T] appropriate for those states.
+///
+/// Example:
+/// ```dart
+/// WidgetStatePropertyResolver<Color> background = (context, states) {
+///   if (states.disabled) return Theme.of(context).colorScheme.muted;
+///   if (states.hovered) return Theme.of(context).colorScheme.accent;
+///   return Theme.of(context).colorScheme.background;
+/// };
+/// ```
+///
+/// See also:
+/// - [WidgetStatePropertyDelegate], for overriding an already-resolved value.
+typedef WidgetStatePropertyResolver<T> = T Function(
+  BuildContext context,
+  Set<WidgetState> states,
+);
+
+/// Overrides a value that has already been resolved for the current states.
+///
+/// Unlike [WidgetStatePropertyResolver], a delegate also receives the [value]
+/// the widget would otherwise have used, so it can adjust one facet and leave
+/// the rest of the resolved value alone rather than rebuilding it from nothing.
+///
+/// Parameters:
+/// - [context]: The build context, for reading theme data.
+/// - [states]: The states currently active on the widget.
+/// - [value]: The value the widget resolved on its own.
+///
+/// Returns the final value of type [T].
+///
+/// Example:
+/// ```dart
+/// WidgetStatePropertyDelegate<Decoration> outline = (context, states, value) {
+///   return (value as BoxDecoration).copyWith(
+///     border: Border.all(
+///       color: states.focused ? Colors.blue : Colors.gray,
+///     ),
+///   );
+/// };
+/// ```
+typedef WidgetStatePropertyDelegate<T> = T Function(
+  BuildContext context,
+  Set<WidgetState> states,
+  T value,
+);
+
 /// An abstract widget that provides state-aware visual variations.
 ///
 /// Enables widgets to display different appearances based on their current
@@ -107,10 +164,10 @@ abstract class StatedWidget extends StatelessWidget {
   /// Example:
   /// ```dart
   /// StatedWidget(
-  ///   child: Icon(Icons.star_border),
-  ///   selected: Icon(Icons.star, color: Colors.yellow),
-  ///   hovered: Icon(Icons.star_border, color: Colors.grey),
-  ///   disabled: Icon(Icons.star_border, color: Colors.grey.shade300),
+  ///   child: Icon(LucideIcons.star),
+  ///   selected: Icon(LucideIcons.star, color: Colors.yellow),
+  ///   hovered: Icon(LucideIcons.star, color: Colors.grey),
+  ///   disabled: Icon(LucideIcons.star, color: Colors.grey.shade300),
   /// )
   /// ```
   const factory StatedWidget({
@@ -144,11 +201,11 @@ abstract class StatedWidget extends StatelessWidget {
   /// ```dart
   /// StatedWidget.map(
   ///   states: {
-  ///     WidgetState.selected: Icon(Icons.check_circle, color: Colors.green),
-  ///     WidgetState.error: Icon(Icons.error, color: Colors.red),
-  ///     'custom': Icon(Icons.star, color: Colors.blue),
+  ///     WidgetState.selected: Icon(LucideIcons.circleCheck, color: Colors.green),
+  ///     WidgetState.error: Icon(LucideIcons.circleAlert, color: Colors.red),
+  ///     'custom': Icon(LucideIcons.star, color: Colors.blue),
   ///   },
-  ///   child: Icon(Icons.circle_outlined),
+  ///   child: Icon(LucideIcons.circle),
   /// )
   /// ```
   const factory StatedWidget.map({
@@ -176,22 +233,22 @@ abstract class StatedWidget extends StatelessWidget {
   /// StatedWidget.builder(
   ///   builder: (context, states) {
   ///     if (states.contains(WidgetState.disabled)) {
-  ///       return Opacity(opacity: 0.5, child: Icon(Icons.block));
+  ///       return Opacity(opacity: 0.5, child: Icon(LucideIcons.ban));
   ///     }
   ///     if (states.contains(WidgetState.selected)) {
-  ///       return Icon(Icons.check_circle, color: Colors.green);
+  ///       return Icon(LucideIcons.circleCheck, color: Colors.green);
   ///     }
   ///     if (states.contains(WidgetState.hovered)) {
-  ///       return AnimatedScale(scale: 1.1, child: Icon(Icons.star));
+  ///       return AnimatedScale(scale: 1.1, child: Icon(LucideIcons.star));
   ///     }
-  ///     return Icon(Icons.star_border);
+  ///     return Icon(LucideIcons.star);
   ///   },
   /// )
   /// ```
   const factory StatedWidget.builder({
     Key? key,
     required Widget Function(BuildContext context, Set<WidgetState> states)
-        builder,
+    builder,
   }) = _BuilderStatedWidget;
 }
 
@@ -319,20 +376,16 @@ class WidgetStatesProvider extends StatelessWidget {
   /// ## Parameters
   ///
   /// * [child] - The descendant widget.
-  const WidgetStatesProvider.boundary({
-    super.key,
-    required this.child,
-  })  : boundary = true,
-        controller = null,
-        states = null,
-        inherit = false;
+  const WidgetStatesProvider.boundary({super.key, required this.child})
+    : boundary = true,
+      controller = null,
+      states = null,
+      inherit = false;
 
   @override
   Widget build(BuildContext context) {
     if (boundary) {
-      return Data<WidgetStatesData>.boundary(
-        child: child,
-      );
+      return Data<WidgetStatesData>.boundary(child: child);
     }
     Set<WidgetState>? parentStates;
     if (inherit) {
@@ -340,9 +393,7 @@ class WidgetStatesProvider extends StatelessWidget {
       parentStates = parentData?.states;
     }
     return ListenableBuilder(
-      listenable: Listenable.merge([
-        if (controller != null) controller!,
-      ]),
+      listenable: Listenable.merge([?controller]),
       builder: (context, child) {
         Set<WidgetState> currentStates = states ?? {};
         if (controller != null) {
@@ -396,16 +447,13 @@ class WidgetStatesData {
 }
 
 class _MapStatedWidget extends StatedWidget {
-  static final Map<String, WidgetState> _mappedNames =
-      WidgetState.values.asNameMap();
+  static final Map<String, WidgetState> _mappedNames = WidgetState.values
+      .asNameMap();
   final Map<Object, Widget> states;
   final Widget? child;
 
-  const _MapStatedWidget({
-    super.key,
-    required this.states,
-    this.child,
-  }) : super._();
+  const _MapStatedWidget({super.key, required this.states, this.child})
+    : super._();
 
   @override
   Widget build(BuildContext context) {
@@ -427,8 +475,10 @@ class _MapStatedWidget extends StatedWidget {
           return entry.value;
         }
       } else {
-        assert(false,
-            'Invalid key type in states map (${keys.runtimeType}) expected WidgetState, Iterable<WidgetState>, or String');
+        assert(
+          false,
+          'Invalid key type in states map (${keys.runtimeType}) expected WidgetState, Iterable<WidgetState>, or String',
+        );
       }
     }
     return child ?? const SizedBox();
@@ -438,10 +488,7 @@ class _MapStatedWidget extends StatedWidget {
 class _BuilderStatedWidget extends StatedWidget {
   final Widget Function(BuildContext context, Set<WidgetState> states) builder;
 
-  const _BuilderStatedWidget({
-    super.key,
-    required this.builder,
-  }) : super._();
+  const _BuilderStatedWidget({super.key, required this.builder}) : super._();
 
   @override
   Widget build(BuildContext context) {
@@ -728,8 +775,9 @@ class _ClickableState extends State<Clickable> {
 
   void _onPressed() {
     if (!widget.enabled) return;
-    Duration? deltaTap =
-        _lastTap == null ? null : DateTime.now().difference(_lastTap!);
+    Duration? deltaTap = _lastTap == null
+        ? null
+        : DateTime.now().difference(_lastTap!);
     _lastTap = DateTime.now();
     if (deltaTap != null && deltaTap < kDoubleTapMinTime) {
       _tapCount++;
@@ -769,13 +817,8 @@ class _ClickableState extends State<Clickable> {
     var enabled = widget.enabled;
     return WidgetStatesProvider(
       controller: _controller,
-      states: {
-        if (!enabled) WidgetState.disabled,
-      },
-      child: ListenableBuilder(
-        listenable: _controller,
-        builder: _builder,
-      ),
+      states: {if (!enabled) WidgetState.disabled},
+      child: ListenableBuilder(listenable: _controller, builder: _builder),
     );
   }
 
@@ -795,7 +838,8 @@ class _ClickableState extends State<Clickable> {
     }
     var buttonContainer = _buildContainer(context, decoration, widgetStates);
     return FocusOutline(
-      focused: widget.focusOutline &&
+      focused:
+          widget.focusOutline &&
           widgetStates.contains(WidgetState.focused) &&
           !widget.disableFocusOutline,
       borderRadius: borderRadius,
@@ -895,7 +939,9 @@ class _ClickableState extends State<Clickable> {
           },
           onShowHoverHighlight: (value) {
             _updateState(
-                WidgetState.hovered, value && !widget.disableHoverEffect);
+              WidgetState.hovered,
+              value && !widget.disableHoverEffect,
+            );
             widget.onHover?.call(value);
           },
           onShowFocusHighlight: (value) {
@@ -907,7 +953,8 @@ class _ClickableState extends State<Clickable> {
           child: DefaultTextStyle.merge(
             style: widget.textStyle?.resolve(widgetStates),
             child: IconTheme.merge(
-              data: widget.iconTheme?.resolve(widgetStates) ??
+              data:
+                  widget.iconTheme?.resolve(widgetStates) ??
                   const IconThemeData(),
               child: AnimatedBuilder(
                 animation: _controller,
@@ -946,8 +993,11 @@ class _ClickableState extends State<Clickable> {
     return tween.transform(t);
   }
 
-  Widget _buildContainer(BuildContext context, Decoration? decoration,
-      Set<WidgetState> widgetStates) {
+  Widget _buildContainer(
+    BuildContext context,
+    Decoration? decoration,
+    Set<WidgetState> widgetStates,
+  ) {
     var resolvedMargin = widget.margin?.resolve(widgetStates);
     var resolvedPadding = widget.padding?.resolve(widgetStates);
     var textDirection = Directionality.of(context);
@@ -978,22 +1028,18 @@ class _ClickableState extends State<Clickable> {
                 decoration: decoration,
                 expands: expands,
                 child: Padding(
-                    padding: resolvedPadding ?? EdgeInsets.zero,
-                    child: widget.child),
+                  padding: resolvedPadding ?? EdgeInsets.zero,
+                  child: widget.child,
+                ),
               ),
       );
       if (widget.marginAlignment != null) {
-        container = Align(
-          alignment: widget.marginAlignment!,
-          child: container,
-        );
+        container = Align(alignment: widget.marginAlignment!, child: container);
       }
       return container;
     }
     if (decoration is BoxDecoration && decoration.shape == BoxShape.circle) {
-      decoration = decoration.copyWith(
-        borderRadius: null,
-      );
+      decoration = decoration.copyWith(borderRadius: null);
     }
     Widget animatedContainer = AnimatedContainer(
       margin: resolvedMargin,
@@ -1059,12 +1105,14 @@ class _ClickableState extends State<Clickable> {
           );
         }
         if (a.border is Border) {
-          shapeA = (shapeA as OutlinedBorder)
-              .copyWith(side: (a.border as Border).top);
+          shapeA = (shapeA as OutlinedBorder).copyWith(
+            side: (a.border as Border).top,
+          );
         }
         if (b.border is Border) {
-          shapeB = (shapeB as OutlinedBorder)
-              .copyWith(side: (b.border as Border).top);
+          shapeB = (shapeB as OutlinedBorder).copyWith(
+            side: (b.border as Border).top,
+          );
         }
         return ShapeDecoration.lerp(
           ShapeDecoration(
@@ -1085,7 +1133,26 @@ class _ClickableState extends State<Clickable> {
         );
       }
     }
-    final lerped = Decoration.lerp(a, b, t);
+    var lerped = Decoration.lerp(a, b, t);
+    // Decoration.lerp blends fills with Color.lerp, which is wrong whenever
+    // the two states differ in alpha — a hover tint fading in over an opaque
+    // surface visibly darkens on the way through. Redo the fill in
+    // premultiplied space.
+    if (lerped is BoxDecoration && a is BoxDecoration && b is BoxDecoration) {
+      lerped = lerped.copyWith(
+        color: lerpColorPremultiplied(a.color, b.color, t),
+      );
+    } else if (lerped is ShapeDecoration &&
+        a is ShapeDecoration &&
+        b is ShapeDecoration) {
+      lerped = ShapeDecoration(
+        color: lerpColorPremultiplied(a.color, b.color, t),
+        image: lerped.image,
+        gradient: lerped.gradient,
+        shadows: lerped.shadows,
+        shape: lerped.shape,
+      );
+    }
     if (lerped is BoxDecoration &&
         lerped.shape == BoxShape.circle &&
         lerped.borderRadius != null) {
@@ -1128,7 +1195,9 @@ class OverflowDecoratedBox extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderOverflowDecoratedBox renderObject) {
+    BuildContext context,
+    RenderOverflowDecoratedBox renderObject,
+  ) {
     renderObject
       ..decoration = decoration
       ..configuration = createLocalImageConfiguration(context)
@@ -1140,16 +1209,12 @@ class OverflowDecoratedBox extends SingleChildRenderObjectWidget {
 class RenderOverflowDecoratedBox extends RenderProxyBox {
   /// Creates a [RenderOverflowDecoratedBox].
   RenderOverflowDecoratedBox({
-    required Decoration decoration,
-    DecorationPosition position = DecorationPosition.background,
-    ImageConfiguration configuration = ImageConfiguration.empty,
+    required this._decoration,
+    this._position = DecorationPosition.background,
+    this._configuration = ImageConfiguration.empty,
     RenderBox? child,
-    EdgeInsets expands = EdgeInsets.zero,
-  })  : _decoration = decoration,
-        _position = position,
-        _configuration = configuration,
-        _expands = expands,
-        super(child);
+    this._expands = EdgeInsets.zero,
+  }) : super(child);
 
   BoxPainter? _painter;
 
@@ -1215,8 +1280,11 @@ class RenderOverflowDecoratedBox extends RenderProxyBox {
 
   @override
   bool hitTestSelf(Offset position) {
-    return _decoration.hitTest(size, position,
-        textDirection: configuration.textDirection);
+    return _decoration.hitTest(
+      size,
+      position,
+      textDirection: configuration.textDirection,
+    );
   }
 
   @override
@@ -1229,8 +1297,9 @@ class RenderOverflowDecoratedBox extends RenderProxyBox {
       size.height + expands.top + expands.bottom,
     );
     Offset adjustedOffset = offset.translate(-expands.left, -expands.top);
-    final ImageConfiguration filledConfiguration =
-        configuration.copyWith(size: size);
+    final ImageConfiguration filledConfiguration = configuration.copyWith(
+      size: size,
+    );
     if (position == DecorationPosition.background) {
       int? debugSaveCount;
       assert(() {
@@ -1280,7 +1349,8 @@ class RenderOverflowDecoratedBox extends RenderProxyBox {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(_decoration.toDiagnosticsNode(name: 'decoration'));
-    properties.add(DiagnosticsProperty<ImageConfiguration>(
-        'configuration', configuration));
+    properties.add(
+      DiagnosticsProperty<ImageConfiguration>('configuration', configuration),
+    );
   }
 }

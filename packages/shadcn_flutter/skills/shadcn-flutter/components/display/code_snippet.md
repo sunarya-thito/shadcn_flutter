@@ -59,7 +59,6 @@ class CodeSnippetExample1 extends StatelessWidget {
 ```dart
 import 'package:docs/pages/docs/components_page.dart';
 import 'package:docs/pages/docs/components/code_snippet/code_snippet_example_1.dart';
-import 'package:flutter/material.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class CodeSnippetTile extends StatelessWidget implements IComponentPage {

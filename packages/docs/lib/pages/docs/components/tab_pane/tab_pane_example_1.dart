@@ -59,7 +59,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
           trailing: IconButton.ghost(
             shape: ButtonShape.circle,
             size: ButtonSize.xSmall,
-            icon: const Icon(Icons.close),
+            icon: const Icon(LucideIcons.x),
             onPressed: () {
               setState(() {
                 tabs.removeAt(index);
@@ -97,7 +97,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
       // Optional leading/trailing actions for the tab strip.
       leading: [
         IconButton.secondary(
-          icon: const Icon(Icons.arrow_drop_down),
+          icon: const Icon(LucideIcons.chevronDown),
           size: ButtonSize.small,
           density: ButtonDensity.iconDense,
           onPressed: () {},
@@ -105,7 +105,7 @@ class _TabPaneExample1State extends State<TabPaneExample1> {
       ],
       trailing: [
         IconButton.ghost(
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
           size: ButtonSize.small,
           density: ButtonDensity.iconDense,
           onPressed: () {

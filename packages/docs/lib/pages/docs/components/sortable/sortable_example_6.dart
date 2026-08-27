@@ -82,7 +82,7 @@ class _SortableExample6State extends State<SortableExample6> {
                     child: Row(
                       children: [
                         const SortableDragHandle(
-                            child: Icon(Icons.drag_handle)),
+                            child: Icon(LucideIcons.gripHorizontal)),
                         const SizedBox(width: 8),
                         Expanded(child: Text(names[i].data)),
                       ],

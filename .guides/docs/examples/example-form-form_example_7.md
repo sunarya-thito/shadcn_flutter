@@ -32,8 +32,9 @@ class FormExample7 extends StatelessWidget {
           String json = jsonEncode(values.map((key, value) {
             return MapEntry(key.key, value);
           }));
-          showDialog(
-            context: context,
+          showOverlay(
+            context,
+            DialogConfiguration(),
             builder: (context) {
               return AlertDialog(
                 title: const Text('Submitted Values'),
@@ -64,5 +65,4 @@ class FormExample7 extends StatelessWidget {
                     child: TextField(
                       placeholder: Text('Type to search...'),
                     ),
-                  ),
 ```

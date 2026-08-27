@@ -42,7 +42,7 @@ class _GenUIPageState extends State<GenUIPage> {
                   'Render AI-generated interfaces with shadcn_flutter widgets.')
               .lead(),
           Alert.destructive(
-            leading: const Icon(Icons.new_releases_outlined),
+            leading: const Icon(LucideIcons.badgeCheck),
             title: const SelectableText('Experimental'),
             content: const SelectableText(
                 'This package is in early development. The API may change, and some widgets may be missing or incomplete.'),
@@ -64,7 +64,7 @@ class _GenUIPageState extends State<GenUIPage> {
                   'supplies the catalog of widgets the AI is allowed to build with.')
               .p(),
           const Alert(
-            leading: Icon(Icons.info_outline),
+            leading: Icon(LucideIcons.info),
             title: SelectableText('New to genui?'),
             content: SelectableText(
                 'Read the genui package README first. The concepts below (Conversation, '

@@ -112,10 +112,7 @@ OverlayCompleter<T?> showDropdown<T>({
       ),
     ),
     builder: (context) {
-      return Data.inherit(
-        data: DropdownMenuData(key),
-        child: builder(context),
-      );
+      return Data.inherit(data: DropdownMenuData(key), child: builder(context));
     },
   );
 }
@@ -154,8 +151,9 @@ class DropdownMenuTheme extends ComponentThemeData {
     ValueGetter<double?>? surfaceBlur,
   }) {
     return DropdownMenuTheme(
-      surfaceOpacity:
-          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceOpacity: surfaceOpacity == null
+          ? this.surfaceOpacity
+          : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
     );
   }
@@ -195,7 +193,7 @@ class DropdownMenuTheme extends ComponentThemeData {
 ///   children: [
 ///     MenuItem(
 ///       title: Text('New File'),
-///       leading: Icon(Icons.add),
+///       leading: Icon(LucideIcons.plus),
 ///       onTap: () => createFile(),
 ///     ),
 ///     MenuItem(
@@ -260,9 +258,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
         OverlayConfiguration.maybeOf(context) is SheetConfiguration;
     final compTheme = ComponentTheme.maybeOf<DropdownMenuTheme>(context);
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minWidth: 192,
-      ),
+      constraints: const BoxConstraints(minWidth: 192),
       child: MenuGroup(
         regionGroupId: Data.maybeOf<DropdownMenuData>(context)?.key,
         subMenuOffset: Offset(densityGap, -densityGap * 0.5),

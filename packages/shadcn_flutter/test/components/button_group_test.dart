@@ -83,9 +83,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: ButtonGroup(
-            children: [
-              Button.outline(child: Text('Single Button')),
-            ],
+            children: [Button.outline(child: Text('Single Button'))],
           ),
         ),
       );
@@ -96,13 +94,7 @@ void main() {
     });
 
     testWidgets('renders with empty children list', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: ButtonGroup(
-            children: [],
-          ),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: ButtonGroup(children: [])));
 
       expect(find.byType(ButtonGroup), findsOneWidget);
       expect(find.byType(Button), findsNothing);
@@ -155,11 +147,11 @@ void main() {
           child: ButtonGroup(
             children: [
               Button.outline(
-                leading: Icon(Icons.add),
+                leading: Icon(LucideIcons.plus),
                 child: Text('Add'),
               ),
               Button.outline(
-                leading: Icon(Icons.edit),
+                leading: Icon(LucideIcons.pencil),
                 child: Text('Edit'),
               ),
             ],
@@ -169,8 +161,8 @@ void main() {
 
       expect(find.byType(ButtonGroup), findsOneWidget);
       expect(find.byType(Button), findsNWidgets(2));
-      expect(find.byIcon(Icons.add), findsOneWidget);
-      expect(find.byIcon(Icons.edit), findsOneWidget);
+      expect(find.byIcon(LucideIcons.plus), findsOneWidget);
+      expect(find.byIcon(LucideIcons.pencil), findsOneWidget);
       expect(find.text('Add'), findsOneWidget);
       expect(find.text('Edit'), findsOneWidget);
     });
@@ -248,7 +240,7 @@ void main() {
               Button.outline(
                 child: Row(
                   children: [
-                    Icon(Icons.star),
+                    Icon(LucideIcons.star),
                     SizedBox(width: 4),
                     Text('Icon Button'),
                   ],
@@ -262,7 +254,7 @@ void main() {
       expect(find.byType(ButtonGroup), findsOneWidget);
       expect(find.byType(Button), findsNWidgets(2));
       expect(find.text('Text Button'), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Icon Button'), findsOneWidget);
     });
 
@@ -285,8 +277,9 @@ void main() {
       expect(find.byType(Button), findsNWidgets(2));
     });
 
-    testWidgets('positions buttons correctly in horizontal layout',
-        (tester) async {
+    testWidgets('positions buttons correctly in horizontal layout', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: ButtonGroup(
@@ -309,8 +302,9 @@ void main() {
       expect(leftRect.left, lessThan(rightRect.left));
     });
 
-    testWidgets('positions buttons correctly in vertical layout',
-        (tester) async {
+    testWidgets('positions buttons correctly in vertical layout', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: ButtonGroup(

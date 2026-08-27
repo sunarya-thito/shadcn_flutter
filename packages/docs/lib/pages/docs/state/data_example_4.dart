@@ -28,7 +28,7 @@ class DataExample4State extends State<DataExample4> {
                 });
               },
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             )
           ],
         ),

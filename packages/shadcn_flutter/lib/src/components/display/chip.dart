@@ -44,7 +44,7 @@ class ChipTheme extends ComponentThemeData {
 /// ```dart
 /// ChipButton(
 ///   onPressed: () => removeItem(item),
-///   child: Icon(Icons.close, size: 14),
+///   child: Icon(LucideIcons.x, size: 14),
 /// );
 /// ```
 class ChipButton extends StatelessWidget {
@@ -55,11 +55,7 @@ class ChipButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   /// Creates a chip button with the specified child and callback.
-  const ChipButton({
-    super.key,
-    required this.child,
-    this.onPressed,
-  });
+  const ChipButton({super.key, required this.child, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +65,8 @@ class ChipButton extends StatelessWidget {
       themeValue: compTheme?.padding,
       defaultValue: EdgeInsets.zero,
     );
-    final style = compTheme?.style ??
+    final style =
+        compTheme?.style ??
         ButtonVariance(
           decoration: (context, states) {
             return const BoxDecoration();
@@ -93,11 +90,7 @@ class ChipButton extends StatelessWidget {
             return EdgeInsets.zero;
           },
         );
-    return Button(
-      style: style,
-      onPressed: onPressed,
-      child: child,
-    );
+    return Button(style: style, onPressed: onPressed, child: child);
   }
 }
 
@@ -123,11 +116,11 @@ class ChipButton extends StatelessWidget {
 /// Example:
 /// ```dart
 /// Chip(
-///   leading: Icon(Icons.star),
+///   leading: Icon(LucideIcons.star),
 ///   child: Text('Favorites'),
 ///   trailing: ChipButton(
 ///     onPressed: () => removeFilter('favorites'),
-///     child: Icon(Icons.close),
+///     child: Icon(LucideIcons.x),
 ///   ),
 ///   onPressed: () => toggleFilter('favorites'),
 ///   style: ButtonStyle.secondary(),
@@ -168,7 +161,7 @@ class Chip extends StatelessWidget {
   ///   child: Text(currentUser.name),
   ///   trailing: ChipButton(
   ///     onPressed: () => removeUser(currentUser),
-  ///     child: Icon(Icons.close, size: 16),
+  ///     child: Icon(LucideIcons.x, size: 16),
   ///   ),
   ///   style: ButtonStyle.primary(),
   /// )

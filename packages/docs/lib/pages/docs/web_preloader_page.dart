@@ -103,7 +103,7 @@ class WebPreloaderPage extends StatelessWidget {
             const Gap(32),
             Alert(
               title: const Text('Contributing'),
-              leading: const Icon(Icons.info_outlined),
+              leading: const Icon(LucideIcons.info),
               content: const Text(
                       'If you have a preloader that you want to share, please create a pull request under the ')
                   .thenButton(

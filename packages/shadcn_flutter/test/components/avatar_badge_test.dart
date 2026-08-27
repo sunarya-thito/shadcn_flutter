@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' as material;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -7,11 +6,7 @@ import '../test_helper.dart';
 void main() {
   group('AvatarBadge', () {
     testWidgets('renders with default properties', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge()));
 
       expect(find.byType(AvatarBadge), findsOneWidget);
       // Check that it renders without error - the Container is created internally
@@ -20,11 +15,7 @@ void main() {
 
     testWidgets('renders with custom size', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Center(
-            child: AvatarBadge(size: 20),
-          ),
-        ),
+        SimpleApp(child: Center(child: AvatarBadge(size: 20))),
       );
 
       final avatarBadgeFinder = find.byType(AvatarBadge);
@@ -35,11 +26,7 @@ void main() {
     });
 
     testWidgets('renders with custom color', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(color: material.Colors.red),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge(color: Colors.red)));
 
       expect(find.byType(AvatarBadge), findsOneWidget);
       // The color is applied to the decoration, but we can't easily test the visual color
@@ -47,11 +34,7 @@ void main() {
     });
 
     testWidgets('renders with custom border radius', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(borderRadius: 8),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge(borderRadius: 8)));
 
       expect(find.byType(AvatarBadge), findsOneWidget);
       // The border radius is applied to the decoration, but we can't easily test the visual radius
@@ -60,24 +43,17 @@ void main() {
 
     testWidgets('renders with child widget', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(
-            child: Icon(Icons.star),
-          ),
-        ),
+        SimpleApp(child: AvatarBadge(child: Icon(LucideIcons.star))),
       );
 
       expect(find.byType(AvatarBadge), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
     });
 
     testWidgets('renders child with custom color', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: AvatarBadge(
-            color: material.Colors.blue,
-            child: Text('5'),
-          ),
+          child: AvatarBadge(color: Colors.blue, child: Text('5')),
         ),
       );
 
@@ -86,15 +62,12 @@ void main() {
       // Color is applied internally, just verify it renders with child
     });
 
-    testWidgets('uses theme values when widget values not provided',
-        (tester) async {
+    testWidgets('uses theme values when widget values not provided', (
+      tester,
+    ) async {
       // AvatarBadge doesn't use AvatarTheme for its properties
       // It uses theme scaling and radius directly
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge()));
 
       expect(find.byType(AvatarBadge), findsOneWidget);
       // Theme values are used internally, just verify it renders
@@ -104,12 +77,7 @@ void main() {
       // AvatarBadge properties are not affected by AvatarTheme
       await tester.pumpWidget(
         SimpleApp(
-          child: Center(
-            child: AvatarBadge(
-              size: 24,
-              borderRadius: 12,
-            ),
-          ),
+          child: Center(child: AvatarBadge(size: 24, borderRadius: 12)),
         ),
       );
 
@@ -121,11 +89,7 @@ void main() {
     });
 
     testWidgets('handles null optional parameters', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge()));
 
       final badge = tester.widget<AvatarBadge>(find.byType(AvatarBadge));
       expect(badge.child, null);
@@ -136,11 +100,7 @@ void main() {
 
     testWidgets('preserves key', (tester) async {
       const testKey = Key('test-badge');
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(key: testKey),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge(key: testKey)));
 
       expect(find.byKey(testKey), findsOneWidget);
     });
@@ -170,11 +130,7 @@ void main() {
     });
 
     testWidgets('circular badge with default border radius', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: AvatarBadge(size: 20),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: AvatarBadge(size: 20)));
 
       expect(find.byType(AvatarBadge), findsOneWidget);
       // Border radius is applied internally for circular appearance, just verify it renders

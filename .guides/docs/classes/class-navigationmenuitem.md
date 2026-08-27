@@ -63,7 +63,7 @@ class NavigationMenuItem extends StatefulWidget {
   /// NavigationMenuItem(
   ///   onPressed: _handleNavigation,
   ///   child: Row(
-  ///     children: [Icon(Icons.home), Text('Home')],
+  ///     children: [Icon(LucideIcons.house), Text('Home')],
   ///   ),
   /// )
   /// ```

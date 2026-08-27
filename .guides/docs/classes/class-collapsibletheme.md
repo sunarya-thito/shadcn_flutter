@@ -1,6 +1,6 @@
 ---
 title: "Class: CollapsibleTheme"
-description: "Theme configuration for [Collapsible], [CollapsibleTrigger], and [CollapsibleContent] widgets.   [CollapsibleTheme] provides styling options for collapsible components including  padding, iconography, and layout alignment. It enables consistent collapsible  styling across an application while allowing per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<CollapsibleTheme>(    data: CollapsibleTheme(      padding: 12.0,      iconExpanded: Icons.keyboard_arrow_up,      iconCollapsed: Icons.keyboard_arrow_down,      iconGap: 8.0,      crossAxisAlignment: CrossAxisAlignment.start,    ),    child: MyCollapsibleWidget(),  );  ```"
+description: "Theme configuration for [Collapsible], [CollapsibleTrigger], and [CollapsibleContent] widgets.   [CollapsibleTheme] provides styling options for collapsible components including  padding, iconography, and layout alignment. It enables consistent collapsible  styling across an application while allowing per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<CollapsibleTheme>(    data: CollapsibleTheme(      padding: 12.0,      iconExpanded: LucideIcons.chevronUp,      iconCollapsed: LucideIcons.chevronDown,      iconGap: 8.0,      crossAxisAlignment: CrossAxisAlignment.start,    ),    child: MyCollapsibleWidget(),  );  ```"
 ---
 
 ```dart
@@ -17,8 +17,8 @@ description: "Theme configuration for [Collapsible], [CollapsibleTrigger], and [
 /// ComponentTheme<CollapsibleTheme>(
 ///   data: CollapsibleTheme(
 ///     padding: 12.0,
-///     iconExpanded: Icons.keyboard_arrow_up,
-///     iconCollapsed: Icons.keyboard_arrow_down,
+///     iconExpanded: LucideIcons.chevronUp,
+///     iconCollapsed: LucideIcons.chevronDown,
 ///     iconGap: 8.0,
 ///     crossAxisAlignment: CrossAxisAlignment.start,
 ///   ),
@@ -33,11 +33,11 @@ class CollapsibleTheme extends ComponentThemeData {
   final double? padding;
   /// Icon displayed in the trigger when the collapsible is expanded.
   ///
-  /// If null, defaults to [Icons.unfold_less].
+  /// If null, defaults to [LucideIcons.chevronsDownUp].
   final IconData? iconExpanded;
   /// Icon displayed in the trigger when the collapsible is collapsed.
   ///
-  /// If null, defaults to [Icons.unfold_more].
+  /// If null, defaults to [LucideIcons.chevronsUpDown].
   final IconData? iconCollapsed;
   /// Cross-axis alignment for children in the [Collapsible] column.
   ///

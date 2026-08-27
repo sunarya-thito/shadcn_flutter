@@ -70,12 +70,11 @@ abstract class InputFeature {
   /// - [querySuggestions] (`SuggestionBuilder`, required): Builds suggestion list.
   /// - [child] (`Widget`, required): Child widget in the autocomplete popup.
   /// - [popoverConstraints] (`BoxConstraints?`, optional): Size constraints for popup.
-  /// - [popoverWidthConstraint] (`PopoverConstraint?`, optional): Width constraint mode.
-  /// - [popoverAnchorAlignment] (`AlignmentDirectional?`, optional): Anchor alignment.
-  /// - [popoverAlignment] (`AlignmentDirectional?`, optional): Popup alignment.
+  /// - [overlayConfiguration] (`OverlayConfiguration?`, optional): overrides the popover presentation.
+  /// - [adaptiveOverlay] (`bool?`, optional): whether `adaptiveConversion` runs for this overlay.
   /// - [mode] (`AutoCompleteMode`, default: popup): Display mode.
   /// - [skipFocusTraversal] (`bool`, default: false): Skip in focus order.
-  factory InputFeature.autoComplete({InputFeatureVisibility visibility, required SuggestionBuilder querySuggestions, required Widget child, BoxConstraints? popoverConstraints, PopoverConstraint? popoverWidthConstraint, AlignmentDirectional? popoverAnchorAlignment, AlignmentDirectional? popoverAlignment, AutoCompleteMode mode, bool skipFocusTraversal});
+  factory InputFeature.autoComplete({InputFeatureVisibility visibility, required SuggestionBuilder querySuggestions, required Widget child, BoxConstraints? popoverConstraints, OverlayConfiguration? overlayConfiguration, bool? adaptiveOverlay, AutoCompleteMode mode, bool skipFocusTraversal});
   /// Creates a numeric spinner feature for incrementing/decrementing values.
   ///
   /// Parameters:

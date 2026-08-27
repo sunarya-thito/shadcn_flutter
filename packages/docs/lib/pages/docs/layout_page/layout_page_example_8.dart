@@ -7,8 +7,8 @@ class LayoutPageExample9 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Basic(
       title: Text('Title'),
-      leading: Icon(Icons.star),
-      trailing: Icon(Icons.arrow_forward),
+      leading: Icon(LucideIcons.star),
+      trailing: Icon(LucideIcons.arrowRight),
       subtitle: Text('Subtitle'),
       content: Text('Lorem ipsum dolor sit amet'),
     );

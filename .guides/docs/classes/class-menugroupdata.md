@@ -44,7 +44,7 @@ class MenuGroupData {
   /// Checks if any child menu items have open popovers.
   ///
   /// Returns true if at least one child has an open submenu popover.
-  bool get hasOpenPopovers;
+  bool get hasOpenOverlays;
   /// Closes all open popovers in child menu items.
   ///
   /// Iterates through children and closes any open submenu popovers.

@@ -1,17 +1,12 @@
-# WrappedIcon
+# IconContainerTheme
 
-A widget that wraps an icon with custom theme data.
+Provides themed icon container widgets for shadcn_flutter components.
 
 ## Usage
 
 ### Basic Example
 ```dart
-WrappedIcon(
-  data: (context, theme) => IconThemeData(
-    size: 24,
-    color: theme.colorScheme.primary,
-  ),
-  child: Icon(Icons.star),
+IconContainerTheme(
 )
 ```
 
@@ -26,5 +21,7 @@ WrappedIcon(
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `data` | `WrappedIconDataBuilder<IconThemeData>` | Builder function that creates the icon theme data. |
-| `child` | `Widget` | The child icon widget to apply the theme to. |
+| `backgroundColor` | `Color?` | Background color for the icon container. |
+| `iconColor` | `Color?` | Color for the icon inside the container. |
+| `padding` | `EdgeInsetsGeometry?` | Padding inside the icon container. |
+| `borderRadius` | `BorderRadius?` | Border radius for the icon container. |

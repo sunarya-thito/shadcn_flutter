@@ -35,8 +35,16 @@ class PopoverLayout extends SingleChildRenderObjectWidget {
   final bool allowInvertHorizontal;
   /// Whether to allow vertical position inversion.
   final bool allowInvertVertical;
+  /// Resolver for the anchor's live [RenderBox], enabling composite-time
+  /// tracking. When non-null, the popover re-measures the anchor's position on
+  /// every scene build and re-applies margin/invert live (see
+  /// [PopoverLayoutRender]); when null it uses the static [position].
+  final RenderBox? Function()? liveAnchor;
+  /// Called (post-frame) when [liveAnchor] can no longer be resolved — i.e. the
+  /// anchor was removed — so the popover can close.
+  final VoidCallback? onAnchorLost;
   /// Creates a popover layout widget.
-  const PopoverLayout({super.key, required this.alignment, required this.position, required this.anchorAlignment, required this.widthConstraint, required this.heightConstraint, this.anchorSize, this.offset, required this.margin, required Widget super.child, required this.scale, required this.scaleAlignment, this.filterQuality, this.allowInvertHorizontal = true, this.allowInvertVertical = true});
+  const PopoverLayout({super.key, required this.alignment, required this.position, required this.anchorAlignment, required this.widthConstraint, required this.heightConstraint, this.anchorSize, this.offset, required this.margin, required Widget super.child, required this.scale, required this.scaleAlignment, this.filterQuality, this.allowInvertHorizontal = true, this.allowInvertVertical = true, this.liveAnchor, this.onAnchorLost});
   RenderObject createRenderObject(BuildContext context);
   void updateRenderObject(BuildContext context, covariant PopoverLayoutRender renderObject);
 }

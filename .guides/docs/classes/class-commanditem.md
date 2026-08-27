@@ -1,6 +1,6 @@
 ---
 title: "Class: CommandItem"
-description: "An individual selectable item in a command palette.   Represents a single command or option that can be selected via click or  keyboard navigation. Supports optional leading and trailing widgets for  icons, shortcuts, or other decorations.   ## Example   ```dart  CommandItem(    leading: Icon(Icons.save),    title: Text('Save File'),    trailing: Text('Ctrl+S'),    onTap: () => saveFile(),  )  ```"
+description: "An individual selectable item in a command palette.   Represents a single command or option that can be selected via click or  keyboard navigation. Supports optional leading and trailing widgets for  icons, shortcuts, or other decorations.   ## Example   ```dart  CommandItem(    leading: Icon(LucideIcons.save),    title: Text('Save File'),    trailing: Text('Ctrl+S'),    onTap: () => saveFile(),  )  ```"
 ---
 
 ```dart
@@ -14,7 +14,7 @@ description: "An individual selectable item in a command palette.   Represents a
 ///
 /// ```dart
 /// CommandItem(
-///   leading: Icon(Icons.save),
+///   leading: Icon(LucideIcons.save),
 ///   title: Text('Save File'),
 ///   trailing: Text('Ctrl+S'),
 ///   onTap: () => saveFile(),
@@ -40,7 +40,7 @@ class CommandItem extends StatefulWidget {
   /// Example:
   /// ```dart
   /// CommandItem(
-  ///   leading: Icon(Icons.file_copy),
+  ///   leading: Icon(LucideIcons.copy),
   ///   title: Text('Duplicate'),
   ///   trailing: Text('Ctrl+D'),
   ///   onTap: () => duplicate(),

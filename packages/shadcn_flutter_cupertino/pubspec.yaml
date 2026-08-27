@@ -1,0 +1,31 @@
+name: shadcn_flutter_cupertino
+description: "Cupertino integration for shadcn_flutter: use cupertino_ui widgets alongside shadcn_flutter components with a shared theme."
+version: 0.0.54
+homepage: "https://github.com/sunarya-thito/shadcn_flutter"
+documentation: "https://sunarya-thito.github.io/shadcn_flutter/"
+repository: "https://github.com/sunarya-thito/shadcn_flutter"
+issue_tracker: "https://github.com/sunarya-thito/shadcn_flutter/issues"
+
+environment:
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_ui: ^1.0.0
+  shadcn_flutter: '>=0.0.54 <0.1.0'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+topics:
+- widgets
+- user-interface
+- cupertino
+- shadcn-ui
+- interop

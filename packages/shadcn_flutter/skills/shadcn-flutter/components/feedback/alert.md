@@ -35,7 +35,7 @@ class AlertExample extends StatelessWidget {
           child: Alert(
             title: Text('Alert title'),
             content: Text('This is alert content.'),
-            trailing: Icon(Icons.dangerous_outlined),
+            trailing: Icon(LucideIcons.octagonAlert),
             destructive: true,
           ),
         ),
@@ -64,7 +64,7 @@ class AlertExample1 extends StatelessWidget {
     return const Alert(
       title: Text('Alert title'),
       content: Text('This is alert content.'),
-      leading: Icon(Icons.info_outline),
+      leading: Icon(LucideIcons.info),
     );
   }
 }
@@ -88,7 +88,7 @@ class AlertExample2 extends StatelessWidget {
     return const Alert.destructive(
       title: Text('Alert title'),
       content: Text('This is alert content.'),
-      trailing: Icon(Icons.dangerous_outlined),
+      trailing: Icon(LucideIcons.octagonAlert),
     );
   }
 }
@@ -113,7 +113,7 @@ class AlertTile extends StatelessWidget implements IComponentPage {
       title: 'Alert',
       center: true,
       example: Alert(
-        leading: Icon(Icons.info_outline),
+        leading: Icon(LucideIcons.info),
         title: Text('Alert'),
         content: Text('This is an alert.'),
       ),

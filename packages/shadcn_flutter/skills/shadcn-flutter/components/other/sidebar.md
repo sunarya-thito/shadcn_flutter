@@ -14,18 +14,18 @@ NavigationSidebar(
   children: [
     NavigationItem(
       key: ValueKey('dashboard'),
-      icon: Icon(Icons.dashboard),
+      icon: Icon(LucideIcons.layoutDashboard),
       label: Text('Dashboard'),
       badge: Badge(child: Text('New')),
     ),
     NavigationItem(
       key: ValueKey('analytics'),
-      icon: Icon(Icons.analytics),
+      icon: Icon(LucideIcons.chartLine),
       label: Text('Analytics'),
     ),
     NavigationItem(
       key: ValueKey('settings'),
-      icon: Icon(Icons.settings),
+      icon: Icon(LucideIcons.settings),
       label: Text('Settings'),
     ),
   ],

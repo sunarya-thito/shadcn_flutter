@@ -65,13 +65,15 @@ class NavigationMenuTheme extends ComponentThemeData {
     ValueGetter<bool?>? adaptiveOverlay,
   }) {
     return NavigationMenuTheme(
-      surfaceOpacity:
-          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceOpacity: surfaceOpacity == null
+          ? this.surfaceOpacity
+          : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
       margin: margin == null ? this.margin : margin(),
       offset: offset == null ? this.offset : offset(),
-      adaptiveOverlay:
-          adaptiveOverlay == null ? this.adaptiveOverlay : adaptiveOverlay(),
+      adaptiveOverlay: adaptiveOverlay == null
+          ? this.adaptiveOverlay
+          : adaptiveOverlay(),
     );
   }
 
@@ -87,8 +89,8 @@ class NavigationMenuTheme extends ComponentThemeData {
   }
 
   @override
-  int get hashCode => Object.hash(
-      surfaceOpacity, surfaceBlur, margin, offset, adaptiveOverlay);
+  int get hashCode =>
+      Object.hash(surfaceOpacity, surfaceBlur, margin, offset, adaptiveOverlay);
 }
 
 /// An individual menu item within a [NavigationMenu].
@@ -153,12 +155,16 @@ class NavigationMenuItem extends StatefulWidget {
   /// NavigationMenuItem(
   ///   onPressed: _handleNavigation,
   ///   child: Row(
-  ///     children: [Icon(Icons.home), Text('Home')],
+  ///     children: [Icon(LucideIcons.house), Text('Home')],
   ///   ),
   /// )
   /// ```
-  const NavigationMenuItem(
-      {super.key, this.onPressed, this.content, required this.child});
+  const NavigationMenuItem({
+    super.key,
+    this.onPressed,
+    this.content,
+    required this.child,
+  });
 
   @override
   State<NavigationMenuItem> createState() => NavigationMenuItemState();
@@ -174,17 +180,16 @@ class NavigationMenuItemState extends State<NavigationMenuItem> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     var newMenuState = Data.maybeOf<NavigationMenuState>(context);
-    assert(newMenuState != null,
-        'NavigationItem must be a descendant of NavigationMenu');
+    assert(
+      newMenuState != null,
+      'NavigationItem must be a descendant of NavigationMenu',
+    );
     if (_menuState != newMenuState) {
       _menuState = newMenuState;
       if (widget.content != null) {
-        _menuState!._attachContentBuilder(
-          this,
-          (context) {
-            return widget.content!;
-          },
-        );
+        _menuState!._attachContentBuilder(this, (context) {
+          return widget.content!;
+        });
       }
     }
   }
@@ -194,12 +199,9 @@ class NavigationMenuItemState extends State<NavigationMenuItem> {
     super.didUpdateWidget(oldWidget);
     if (widget.content != oldWidget.content) {
       if (widget.content != null) {
-        _menuState!._attachContentBuilder(
-          this,
-          (context) {
-            return widget.content!;
-          },
-        );
+        _menuState!._attachContentBuilder(this, (context) {
+          return widget.content!;
+        });
       } else {
         _menuState!._contentBuilders.remove(this);
       }
@@ -218,48 +220,49 @@ class NavigationMenuItemState extends State<NavigationMenuItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AnimatedBuilder(
-        animation: Listenable.merge(
-            [_menuState!._activeIndex, _menuState!._overlayController]),
-        builder: (context, child) {
-          return Button(
-            style: const ButtonStyle.ghost().copyWith(
-              decoration: (context, states, value) {
-                if (_menuState!.isActive(this)) {
-                  return (value as BoxDecoration).copyWith(
-                    borderRadius: BorderRadius.circular(theme.radiusMd),
-                    color: theme.colorScheme.muted.scaleAlpha(0.8),
-                  );
-                }
-                return value;
-              },
-            ),
-            trailing: widget.content != null
-                ? AnimatedRotation(
-                    duration: kDefaultDuration,
-                    turns: _menuState!.isActive(this) ? 0.5 : 0,
-                    child: const Icon(
-                      RadixIcons.chevronDown,
-                    ).iconXSmall(),
-                  )
-                : null,
-            onHover: (hovered) {
-              if (hovered) {
-                _menuState!._activate(this);
+      animation: Listenable.merge([
+        _menuState!._activeIndex,
+        _menuState!._overlayController,
+      ]),
+      builder: (context, child) {
+        return Button(
+          style: const ButtonStyle.ghost().copyWith(
+            decoration: (context, states, value) {
+              if (_menuState!.isActive(this)) {
+                return (value as BoxDecoration).copyWith(
+                  borderRadius: BorderRadius.circular(theme.radiusMd),
+                  color: theme.colorScheme.muted.scaleAlpha(0.8),
+                );
               }
+              return value;
             },
-            onPressed: widget.onPressed != null || widget.content != null
-                ? () {
-                    if (widget.onPressed != null) {
-                      widget.onPressed!();
-                    }
-                    if (widget.content != null) {
-                      _menuState!._activate(this);
-                    }
+          ),
+          trailing: widget.content != null
+              ? AnimatedRotation(
+                  duration: kDefaultDuration,
+                  turns: _menuState!.isActive(this) ? 0.5 : 0,
+                  child: const Icon(RadixIcons.chevronDown).iconXSmall(),
+                )
+              : null,
+          onHover: (hovered) {
+            if (hovered) {
+              _menuState!._activate(this);
+            }
+          },
+          onPressed: widget.onPressed != null || widget.content != null
+              ? () {
+                  if (widget.onPressed != null) {
+                    widget.onPressed!();
                   }
-                : null,
-            child: widget.child,
-          );
-        });
+                  if (widget.content != null) {
+                    _menuState!._activate(this);
+                  }
+                }
+              : null,
+          child: widget.child,
+        );
+      },
+    );
   }
 }
 
@@ -277,7 +280,7 @@ class NavigationMenuItemState extends State<NavigationMenuItem> {
 /// Example:
 /// ```dart
 /// NavigationMenuContent(
-///   leading: Icon(Icons.dashboard),
+///   leading: Icon(LucideIcons.layoutDashboard),
 ///   title: Text('Dashboard'),
 ///   content: Text('View project analytics and metrics'),
 ///   onPressed: () => Navigator.pushNamed(context, '/dashboard'),
@@ -330,10 +333,10 @@ class NavigationMenuContent extends StatelessWidget {
   /// Example:
   /// ```dart
   /// NavigationMenuContent(
-  ///   leading: Icon(Icons.settings),
+  ///   leading: Icon(LucideIcons.settings),
   ///   title: Text('Settings'),
   ///   content: Text('Manage application preferences'),
-  ///   trailing: Icon(Icons.arrow_forward_ios, size: 16),
+  ///   trailing: Icon(LucideIcons.chevronRight, size: 16),
   ///   onPressed: _openSettings,
   /// )
   /// ```
@@ -466,32 +469,37 @@ class NavigationMenuContentList extends StatelessWidget {
     for (final child in children) {
       columns.add(Expanded(child: child));
       if (columns.length == crossAxisCount) {
-        rows.add(IntrinsicWidth(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: columns.joinSeparator(SizedBox(height: spacing)),
+        rows.add(
+          IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: columns.joinSeparator(SizedBox(height: spacing)),
+            ),
           ),
-        ));
+        );
         columns = [];
       }
     }
     if (columns.isNotEmpty) {
-      rows.add(IntrinsicWidth(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: columns.joinSeparator(SizedBox(height: runSpacing)),
+      rows.add(
+        IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: columns.joinSeparator(SizedBox(height: runSpacing)),
+          ),
         ),
-      ));
+      );
     }
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: (reverse ? rows.reversed.toList() : rows)
-              .joinSeparator(SizedBox(width: spacing)),
+          children: (reverse ? rows.reversed.toList() : rows).joinSeparator(
+            SizedBox(width: spacing),
+          ),
         ),
       ),
     );
@@ -612,7 +620,9 @@ class NavigationMenuState extends State<NavigationMenu> {
   int _hoverCount = 0;
 
   void _attachContentBuilder(
-      NavigationMenuItemState key, WidgetBuilder builder) {
+    NavigationMenuItemState key,
+    WidgetBuilder builder,
+  ) {
     _contentBuilders[key] = builder;
   }
 
@@ -646,9 +656,10 @@ class NavigationMenuState extends State<NavigationMenu> {
     final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
     final adaptiveOverlay = styleValue(
-        widgetValue: widget.adaptiveOverlay,
-        themeValue: compTheme?.adaptiveOverlay,
-        defaultValue: true);
+      widgetValue: widget.adaptiveOverlay,
+      themeValue: compTheme?.adaptiveOverlay,
+      defaultValue: true,
+    );
     _overlayController.show(
       context,
       PopoverConfiguration(
@@ -661,9 +672,9 @@ class NavigationMenuState extends State<NavigationMenu> {
         allowInvertHorizontal: false,
         allowInvertVertical: false,
         onTickFollow: (value) {
-          value.updateMargin(requestMargin() ??
-              compTheme?.margin ??
-              EdgeInsets.all(densityGap));
+          value.updateMargin(
+            requestMargin() ?? compTheme?.margin ?? EdgeInsets.all(densityGap),
+          );
         },
       ),
       builder: buildPopover,
@@ -729,7 +740,8 @@ class NavigationMenuState extends State<NavigationMenu> {
   Widget buildPopover(BuildContext context) {
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<NavigationMenuTheme>(context);
-    final surfaceOpacity = widget.surfaceOpacity ??
+    final surfaceOpacity =
+        widget.surfaceOpacity ??
         compTheme?.surfaceOpacity ??
         theme.surfaceOpacity;
     final surfaceBlur =
@@ -748,63 +760,64 @@ class NavigationMenuState extends State<NavigationMenu> {
         });
       },
       child: AnimatedBuilder(
-          animation: _activeIndex,
-          builder: (context, child) {
-            return AnimatedValueBuilder<double>(
-              value: _activeIndex.value.toDouble(),
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, child) {
-                int currentIndex = _activeIndex.value;
-                List<Widget> children = [];
-                if (currentIndex - 1 >= 0) {
-                  children.add(
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Opacity(
-                        opacity: (1 + value - currentIndex).clamp(0.0, 1.0),
-                        child: FractionalTranslation(
-                          translation: Offset(-value + currentIndex - 1, 0),
-                          child: buildContent(currentIndex - 1),
-                        ),
+        animation: _activeIndex,
+        builder: (context, child) {
+          return AnimatedValueBuilder<double>(
+            value: _activeIndex.value.toDouble(),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) {
+              int currentIndex = _activeIndex.value;
+              List<Widget> children = [];
+              if (currentIndex - 1 >= 0) {
+                children.add(
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Opacity(
+                      opacity: (1 + value - currentIndex).clamp(0.0, 1.0),
+                      child: FractionalTranslation(
+                        translation: Offset(-value + currentIndex - 1, 0),
+                        child: buildContent(currentIndex - 1),
                       ),
                     ),
-                  );
-                }
-                if (currentIndex + 1 < widget.children.length) {
-                  children.add(
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Opacity(
-                        opacity: (1 - value + currentIndex).clamp(0.0, 1.0),
-                        child: FractionalTranslation(
-                          translation: Offset(-value + currentIndex + 1, 0),
-                          child: buildContent(currentIndex + 1),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                return OutlinedContainer(
-                  clipBehavior: Clip.antiAlias,
-                  borderRadius: theme.borderRadiusMd,
-                  surfaceOpacity: surfaceOpacity,
-                  surfaceBlur: surfaceBlur,
-                  child: Stack(
-                    children: [
-                      ...children,
-                      FractionalTranslation(
-                        translation: Offset(-value + currentIndex, 0),
-                        child: buildContent(currentIndex),
-                      ),
-                    ],
                   ),
                 );
-              },
-            );
-          }),
+              }
+              if (currentIndex + 1 < widget.children.length) {
+                children.add(
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Opacity(
+                      opacity: (1 - value + currentIndex).clamp(0.0, 1.0),
+                      child: FractionalTranslation(
+                        translation: Offset(-value + currentIndex + 1, 0),
+                        child: buildContent(currentIndex + 1),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return OutlinedContainer(
+                clipBehavior: Clip.antiAlias,
+                borderRadius: theme.borderRadiusMd,
+                surfaceOpacity: surfaceOpacity,
+                surfaceBlur: surfaceBlur,
+                child: Stack(
+                  children: [
+                    ...children,
+                    FractionalTranslation(
+                      translation: Offset(-value + currentIndex, 0),
+                      child: buildContent(currentIndex),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -817,10 +830,11 @@ class NavigationMenuState extends State<NavigationMenu> {
       Offset globalPosition = box.localToGlobal(Offset.zero);
       Size size = box.size;
       return EdgeInsets.only(
-          left: globalPosition.dx,
-          top: globalPosition.dy + size.height,
-          right: 8,
-          bottom: 8);
+        left: globalPosition.dx,
+        top: globalPosition.dy + size.height,
+        right: 8,
+        bottom: 8,
+      );
     }
     return null;
   }

@@ -75,10 +75,12 @@ class SwitchTheme extends ComponentThemeData {
   }) {
     return SwitchTheme(
       activeColor: activeColor == null ? this.activeColor : activeColor(),
-      inactiveColor:
-          inactiveColor == null ? this.inactiveColor : inactiveColor(),
-      activeThumbColor:
-          activeThumbColor == null ? this.activeThumbColor : activeThumbColor(),
+      inactiveColor: inactiveColor == null
+          ? this.inactiveColor
+          : inactiveColor(),
+      activeThumbColor: activeThumbColor == null
+          ? this.activeThumbColor
+          : activeThumbColor(),
       inactiveThumbColor: inactiveThumbColor == null
           ? this.inactiveThumbColor
           : inactiveThumbColor(),
@@ -101,13 +103,13 @@ class SwitchTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        activeColor,
-        inactiveColor,
-        activeThumbColor,
-        inactiveThumbColor,
-        gap,
-        borderRadius,
-      );
+    activeColor,
+    inactiveColor,
+    activeThumbColor,
+    inactiveThumbColor,
+    gap,
+    borderRadius,
+  );
 }
 
 /// Controller for managing switch state.
@@ -146,7 +148,7 @@ class SwitchController extends ValueNotifier<bool>
 /// ControlledSwitch(
 ///   initialValue: true,
 ///   onChanged: (value) => print('Switched to: $value'),
-///   leading: Icon(Icons.wifi),
+///   leading: Icon(LucideIcons.wifi),
 ///   activeColor: Colors.green,
 /// )
 /// ```
@@ -364,32 +366,39 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
     final densityGap = theme.density.baseGap * scaling;
     final compTheme = ComponentTheme.maybeOf<SwitchTheme>(context);
     final gap = styleValue(
-        widgetValue: widget.gap,
-        themeValue: compTheme?.gap,
-        defaultValue: 8 * scaling);
+      widgetValue: widget.gap,
+      themeValue: compTheme?.gap,
+      defaultValue: 8 * scaling,
+    );
     final activeColor = styleValue(
-        widgetValue: widget.activeColor,
-        themeValue: compTheme?.activeColor,
-        defaultValue: theme.colorScheme.primary);
+      widgetValue: widget.activeColor,
+      themeValue: compTheme?.activeColor,
+      defaultValue: theme.colorScheme.primary,
+    );
     final inactiveColor = styleValue(
-        widgetValue: widget.inactiveColor,
-        themeValue: compTheme?.inactiveColor,
-        defaultValue: theme.colorScheme.input);
+      widgetValue: widget.inactiveColor,
+      themeValue: compTheme?.inactiveColor,
+      defaultValue: theme.colorScheme.input,
+    );
     final activeThumbColor = styleValue(
-        widgetValue: widget.activeThumbColor,
-        themeValue: compTheme?.activeThumbColor,
-        defaultValue: theme.colorScheme.background);
+      widgetValue: widget.activeThumbColor,
+      themeValue: compTheme?.activeThumbColor,
+      defaultValue: theme.colorScheme.background,
+    );
     final inactiveThumbColor = styleValue(
-        widgetValue: widget.inactiveThumbColor,
-        themeValue: compTheme?.inactiveThumbColor,
-        defaultValue: theme.colorScheme.foreground);
+      widgetValue: widget.inactiveThumbColor,
+      themeValue: compTheme?.inactiveThumbColor,
+      defaultValue: theme.colorScheme.foreground,
+    );
     final borderRadius = styleValue<BorderRadiusGeometry>(
-        widgetValue: widget.borderRadius,
-        themeValue: compTheme?.borderRadius,
-        defaultValue: BorderRadius.circular(theme.radiusXl));
+      widgetValue: widget.borderRadius,
+      themeValue: compTheme?.borderRadius,
+      defaultValue: BorderRadius.circular(theme.radiusXl),
+    );
     return FocusOutline(
       focused: _focusing && _enabled,
-      borderRadius: optionallyResolveBorderRadius(context, borderRadius) ??
+      borderRadius:
+          optionallyResolveBorderRadius(context, borderRadius) ??
           BorderRadius.circular(theme.radiusXl),
       child: GestureDetector(
         onTap: _enabled
@@ -433,12 +442,12 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                 decoration: BoxDecoration(
                   borderRadius:
                       optionallyResolveBorderRadius(context, borderRadius) ??
-                          BorderRadius.circular(theme.radiusXl),
+                      BorderRadius.circular(theme.radiusXl),
                   color: !_enabled
                       ? theme.colorScheme.muted
                       : widget.value
-                          ? activeColor
-                          : inactiveColor,
+                      ? activeColor
+                      : inactiveColor,
                 ),
                 child: Stack(
                   children: [
@@ -456,8 +465,8 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                             color: !_enabled
                                 ? theme.colorScheme.mutedForeground
                                 : widget.value
-                                    ? activeThumbColor
-                                    : inactiveThumbColor,
+                                ? activeThumbColor
+                                : inactiveThumbColor,
                           ),
                         ),
                       ),

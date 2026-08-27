@@ -61,7 +61,7 @@ class ObjectFormField<T> extends StatefulWidget {
 
   /// Builds the editor widget.
   final Widget Function(BuildContext context, ObjectFormHandler<T> handler)
-      editorBuilder;
+  editorBuilder;
 
   /// Overrides the [OverlayConfiguration] used to present the popover editor
   /// (only relevant when [mode] is [PromptMode.popover]). When null, a
@@ -99,7 +99,10 @@ class ObjectFormField<T> extends StatefulWidget {
 
   /// Custom dialog action buttons.
   final List<Widget> Function(
-      BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
+    BuildContext context,
+    ObjectFormHandler<T> handler,
+  )?
+  dialogActions;
 
   /// Whether the field is enabled.
   final bool? enabled;
@@ -263,45 +266,43 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
     T? delayedResult = value;
     _popoverController
         .show(
-      context,
-      widget.overlayConfiguration ??
-          PopoverConfiguration(
-            alignment: widget.popoverAlignment ?? Alignment.topLeft,
-            anchorAlignment:
-                widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
-            overlayBarrier: OverlayBarrier(
-              borderRadius: BorderRadius.circular(theme.radiusLg),
-            ),
-            modal: true,
-            offset: Offset(0, 8 * scaling),
-          ),
-      builder: (context) {
-        return _ObjectFormFieldPopup<T>(
-          value: value,
-          editorBuilder: widget.editorBuilder,
-          popoverPadding: widget.popoverPadding,
-          prompt: prompt,
-          decorate: widget.decorate,
-          onChanged: (value) {
-            // by default, popover will immediately inform any changes
-            // but if its explicitly set to false, then we should not inform
-            if (mounted && widget.immediateValueChange != false) {
-              this.value = value;
-            } else {
-              delayedResult = value;
-            }
+          context,
+          widget.overlayConfiguration ??
+              PopoverConfiguration(
+                alignment: widget.popoverAlignment ?? Alignment.topLeft,
+                anchorAlignment:
+                    widget.popoverAnchorAlignment ?? Alignment.bottomLeft,
+                overlayBarrier: OverlayBarrier(
+                  borderRadius: BorderRadius.circular(theme.radiusLg),
+                ),
+                modal: true,
+                offset: Offset(0, 8 * scaling),
+              ),
+          builder: (context) {
+            return _ObjectFormFieldPopup<T>(
+              value: value,
+              editorBuilder: widget.editorBuilder,
+              popoverPadding: widget.popoverPadding,
+              prompt: prompt,
+              decorate: widget.decorate,
+              onChanged: (value) {
+                // by default, popover will immediately inform any changes
+                // but if its explicitly set to false, then we should not inform
+                if (mounted && widget.immediateValueChange != false) {
+                  this.value = value;
+                } else {
+                  delayedResult = value;
+                }
+              },
+            );
           },
-        );
-      },
-      adaptive: widget.adaptiveOverlay ?? true,
-    )
-        .then(
-      (_) {
-        if (mounted && widget.immediateValueChange == false) {
-          this.value = delayedResult;
-        }
-      },
-    );
+          adaptive: widget.adaptiveOverlay ?? true,
+        )
+        .then((_) {
+          if (mounted && widget.immediateValueChange == false) {
+            this.value = delayedResult;
+          }
+        });
   }
 
   /// Prompts the user to select or edit a value via dialog or popover.
@@ -346,10 +347,13 @@ class ObjectFormFieldState<T> extends State<ObjectFormField<T>>
 class _ObjectFormFieldDialog<T> extends StatefulWidget {
   final T? value;
   final Widget Function(BuildContext context, ObjectFormHandler<T> handler)
-      editorBuilder;
+  editorBuilder;
   final Widget? dialogTitle;
   final List<Widget> Function(
-      BuildContext context, ObjectFormHandler<T> handler)? dialogActions;
+    BuildContext context,
+    ObjectFormHandler<T> handler,
+  )?
+  dialogActions;
   final ValueChanged<T?> prompt;
   final bool decorate;
   final ValueChanged<T?> onChanged;
@@ -441,24 +445,23 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
         title: widget.dialogTitle,
         content: Padding(
           padding: EdgeInsets.only(top: densityGap),
-          child: widget.editorBuilder(
-            context,
-            this,
-          ),
+          child: widget.editorBuilder(context, this),
         ),
         actions: [
           if (widget.dialogActions != null)
             ...widget.dialogActions!(context, this),
           ObjectInputCancelButton(
-              child: Text(localizations.buttonCancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
+            child: Text(localizations.buttonCancel),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
           ObjectInputSaveButton(
-              child: Text(localizations.buttonSave),
-              onPressed: () {
-                Navigator.of(context).pop(ObjectFormFieldDialogResult(_value));
-              }),
+            child: Text(localizations.buttonSave),
+            onPressed: () {
+              Navigator.of(context).pop(ObjectFormFieldDialogResult(_value));
+            },
+          ),
         ],
       ),
     );
@@ -468,7 +471,7 @@ class _ObjectFormFieldDialogState<T> extends State<_ObjectFormFieldDialog<T>>
 class _ObjectFormFieldPopup<T> extends StatefulWidget {
   final T? value;
   final Widget Function(BuildContext context, ObjectFormHandler<T> handler)
-      editorBuilder;
+  editorBuilder;
   final EdgeInsetsGeometry? popoverPadding;
   final ValueChanged<T?>? onChanged;
   final ValueChanged<T?> prompt;
@@ -533,13 +536,11 @@ class _ObjectFormFieldPopupState<T> extends State<_ObjectFormFieldPopup<T>>
     return Data<ObjectFormHandler<T>>.inherit(
       data: this,
       child: SurfaceCard(
-        padding: widget.popoverPadding ??
+        padding:
+            widget.popoverPadding ??
             (const EdgeInsets.symmetric(vertical: 16, horizontal: 16) *
                 theme.scaling),
-        child: widget.editorBuilder(
-          context,
-          this,
-        ),
+        child: widget.editorBuilder(context, this),
       ),
     );
   }

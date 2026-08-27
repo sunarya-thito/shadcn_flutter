@@ -28,7 +28,7 @@ class NavigationBarTile extends StatelessWidget implements IComponentPage {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.home, color: theme.colorScheme.primary),
+                  Icon(LucideIcons.house, color: theme.colorScheme.primary),
                   const Gap(4),
                   Text(
                     'Home',
@@ -42,7 +42,7 @@ class NavigationBarTile extends StatelessWidget implements IComponentPage {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.search),
+                  Icon(LucideIcons.search),
                   Gap(4),
                   Text(
                     'Search',
@@ -53,7 +53,7 @@ class NavigationBarTile extends StatelessWidget implements IComponentPage {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.favorite),
+                  Icon(LucideIcons.heart),
                   Gap(4),
                   Text(
                     'Favorites',
@@ -64,7 +64,7 @@ class NavigationBarTile extends StatelessWidget implements IComponentPage {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.person),
+                  Icon(LucideIcons.user),
                   Gap(4),
                   Text(
                     'Profile',

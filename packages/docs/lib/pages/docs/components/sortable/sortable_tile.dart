@@ -25,7 +25,7 @@ class SortableTile extends StatelessWidget implements IComponentPage {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Icon(Icons.drag_handle),
+                        Icon(LucideIcons.gripHorizontal),
                         Gap(8),
                         Text('Item 1'),
                       ],
@@ -38,7 +38,7 @@ class SortableTile extends StatelessWidget implements IComponentPage {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Icon(Icons.drag_handle),
+                        Icon(LucideIcons.gripHorizontal),
                         Gap(8),
                         Text('Item 2'),
                       ],
@@ -51,7 +51,7 @@ class SortableTile extends StatelessWidget implements IComponentPage {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Icon(Icons.drag_handle),
+                        Icon(LucideIcons.gripHorizontal),
                         Gap(8),
                         Text('Item 3'),
                       ],

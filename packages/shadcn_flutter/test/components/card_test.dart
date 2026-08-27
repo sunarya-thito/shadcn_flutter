@@ -1,17 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 import '../test_helper.dart';
 
 void main() {
   group('Card', () {
     testWidgets('renders child widget', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Card(
-            child: Text('Card Content'),
-          ),
-        ),
+        SimpleApp(child: Card(child: Text('Card Content'))),
       );
 
       expect(find.byType(Card), findsOneWidget);
@@ -35,12 +31,7 @@ void main() {
 
     testWidgets('renders filled card', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Card(
-            filled: true,
-            child: Text('Filled Card'),
-          ),
-        ),
+        SimpleApp(child: Card(filled: true, child: Text('Filled Card'))),
       );
 
       expect(find.byType(Card), findsOneWidget);
@@ -52,7 +43,7 @@ void main() {
         SimpleApp(
           child: Card(
             filled: true,
-            fillColor: material.Colors.blue,
+            fillColor: Colors.blue,
             child: Text('Colored Card'),
           ),
         ),
@@ -100,7 +91,7 @@ void main() {
                 color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 8.0,
                 offset: Offset(0, 4),
-              )
+              ),
             ],
             child: Text('Shadowed Card'),
           ),
@@ -163,7 +154,7 @@ void main() {
                 Text('Title'),
                 SizedBox(height: 8),
                 Text('Description'),
-                Icon(Icons.star),
+                Icon(LucideIcons.star),
               ],
             ),
           ),
@@ -173,34 +164,28 @@ void main() {
       expect(find.byType(Card), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
       expect(find.text('Description'), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
-      expect(find.byType(Column),
-          findsWidgets); // May find multiple due to SimpleApp
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
+      expect(
+        find.byType(Column),
+        findsWidgets,
+      ); // May find multiple due to SimpleApp
     });
 
     testWidgets('applies default text style', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: Card(
-            child: Text('Styled Text'),
-          ),
-        ),
+        SimpleApp(child: Card(child: Text('Styled Text'))),
       );
 
       expect(find.byType(Card), findsOneWidget);
-      expect(find.byType(DefaultTextStyle),
-          findsWidgets); // May find multiple due to SimpleApp
+      expect(
+        find.byType(DefaultTextStyle),
+        findsWidgets,
+      ); // May find multiple due to SimpleApp
       expect(find.text('Styled Text'), findsOneWidget);
     });
 
     testWidgets('handles empty child', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: Card(
-            child: SizedBox.shrink(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: Card(child: SizedBox.shrink())));
 
       expect(find.byType(Card), findsOneWidget);
       expect(find.byType(SizedBox), findsOneWidget);
@@ -221,7 +206,7 @@ void main() {
                 color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 12.0,
                 offset: Offset(0, 6),
-              )
+              ),
             ],
             surfaceOpacity: 0.9,
             surfaceBlur: 8.0,
@@ -250,29 +235,20 @@ void main() {
       );
 
       expect(find.byType(Card), findsOneWidget);
-      expect(find.byType(Padding),
-          findsWidgets); // May find multiple due to SimpleApp
+      expect(
+        find.byType(Padding),
+        findsWidgets,
+      ); // May find multiple due to SimpleApp
       expect(find.text('Nested Content'), findsOneWidget);
     });
 
     testWidgets('handles state changes', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: Card(
-            child: Text('Initial'),
-          ),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: Card(child: Text('Initial'))));
 
       expect(find.text('Initial'), findsOneWidget);
 
       await tester.pumpWidget(
-        SimpleApp(
-          child: Card(
-            filled: true,
-            child: Text('Updated'),
-          ),
-        ),
+        SimpleApp(child: Card(filled: true, child: Text('Updated'))),
       );
 
       expect(find.text('Updated'), findsOneWidget);

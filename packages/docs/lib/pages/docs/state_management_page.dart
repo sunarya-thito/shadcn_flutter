@@ -105,7 +105,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
             child: DataExample1(),
           ).p(),
           const Alert(
-            leading: Icon(Icons.info_outline),
+            leading: Icon(LucideIcons.info),
             title: SelectableText(
                 'Did you notice the difference in the rebuild count?'),
             content: SelectableText(
@@ -176,7 +176,7 @@ class _StateManagementPageState extends State<StateManagementPage> {
             child: DataExample2(),
           ).p(),
           const Alert(
-            leading: Icon(Icons.info_outline),
+            leading: Icon(LucideIcons.info),
             title: SelectableText('Did you notice the root data?'),
             content: SelectableText(
                 'It uses the data from the leftmost inner data, because the parent can only take data from the first attached child.'),

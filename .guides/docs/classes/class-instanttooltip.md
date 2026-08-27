@@ -23,6 +23,10 @@ class InstantTooltip extends StatefulWidget {
   final AlignmentGeometry tooltipAlignment;
   /// Alignment point on the child widget where tooltip anchors.
   final AlignmentGeometry? tooltipAnchorAlignment;
+  /// Whether this tooltip may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter). Defaults to
+  /// `false` — see [Tooltip.adaptiveOverlay].
+  final bool adaptiveOverlay;
   /// Creates an [InstantTooltip].
   ///
   /// Parameters:
@@ -31,15 +35,16 @@ class InstantTooltip extends StatefulWidget {
   /// - [behavior] (`HitTestBehavior`, default: `HitTestBehavior.translucent`): Hit test behavior.
   /// - [tooltipAlignment] (`AlignmentGeometry`, default: `Alignment.bottomCenter`): Tooltip position.
   /// - [tooltipAnchorAlignment] (`AlignmentGeometry?`, optional): Anchor point on child.
+  /// - [adaptiveOverlay] (`bool`, default: `false`): whether `adaptiveConversion` runs for this overlay.
   ///
   /// Example:
   /// ```dart
   /// InstantTooltip(
   ///   tooltipBuilder: (context) => Text('Help text'),
-  ///   child: Icon(Icons.help),
+  ///   child: Icon(LucideIcons.circleHelp),
   /// )
   /// ```
-  const InstantTooltip({super.key, required this.child, required this.tooltipBuilder, this.behavior = HitTestBehavior.translucent, this.tooltipAlignment = Alignment.bottomCenter, this.tooltipAnchorAlignment});
+  const InstantTooltip({super.key, required this.child, required this.tooltipBuilder, this.behavior = HitTestBehavior.translucent, this.tooltipAlignment = Alignment.bottomCenter, this.tooltipAnchorAlignment, this.adaptiveOverlay = false});
   State<InstantTooltip> createState();
 }
 ```

@@ -8,8 +8,8 @@ Provides customizable file icons in the widget tree.
 ```dart
 FileIconProvider.builder(
   builder: (extension) {
-    if (extension == 'txt') return Icon(Icons.text_snippet);
-    return Icon(Icons.insert_drive_file);
+    if (extension == 'txt') return Icon(LucideIcons.fileText);
+    return Icon(LucideIcons.file);
   },
   child: MyFileList(),
 )

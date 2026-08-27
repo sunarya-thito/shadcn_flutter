@@ -34,7 +34,10 @@ class _SelectExample4State extends State<SelectExample4> {
       value: selectedValue,
       placeholder: const Text('Select a fruit'),
       // Constrain popup width to its intrinsic content size (no virtualization in this variant).
-      popupWidthConstraint: PopoverConstraint.intrinsic,
+      overlayConfiguration: const PopoverConfiguration(
+        widthConstraint: PopoverConstraint.intrinsic,
+        alignment: Alignment.topCenter,
+      ),
       // Use a simple non-virtualized popup; suitable for small lists.
       popup: const SelectPopup.noVirtualization(
         items: SelectItemList(

@@ -24,7 +24,7 @@ class ChipExample1 extends StatelessWidget {
           // Trailing action; in real apps you might remove the chip.
           trailing: ChipButton(
             onPressed: () {},
-            child: const Icon(Icons.close),
+            child: const Icon(LucideIcons.x),
           ),
           child: const Text('Apple'),
         ),
@@ -33,7 +33,7 @@ class ChipExample1 extends StatelessWidget {
           style: const ButtonStyle.primary(),
           trailing: ChipButton(
             onPressed: () {},
-            child: const Icon(Icons.close),
+            child: const Icon(LucideIcons.x),
           ),
           child: const Text('Banana'),
         ),
@@ -42,7 +42,7 @@ class ChipExample1 extends StatelessWidget {
           style: const ButtonStyle.outline(),
           trailing: ChipButton(
             onPressed: () {},
-            child: const Icon(Icons.close),
+            child: const Icon(LucideIcons.x),
           ),
           child: const Text('Cherry'),
         ),
@@ -51,7 +51,7 @@ class ChipExample1 extends StatelessWidget {
           style: const ButtonStyle.ghost(),
           trailing: ChipButton(
             onPressed: () {},
-            child: const Icon(Icons.close),
+            child: const Icon(LucideIcons.x),
           ),
           child: const Text('Durian'),
         ),
@@ -60,7 +60,7 @@ class ChipExample1 extends StatelessWidget {
           style: const ButtonStyle.destructive(),
           trailing: ChipButton(
             onPressed: () {},
-            child: const Icon(Icons.close),
+            child: const Icon(LucideIcons.x),
           ),
           child: const Text('Elderberry'),
         ),

@@ -1,6 +1,6 @@
 ---
 title: "Class: TreeNode"
-description: "Abstract base class representing a node in a tree structure.   TreeNode defines the interface for all nodes in the tree hierarchy, providing  access to children, expansion state, and selection state. It supports immutable  updates through copy methods that return new instances with modified state.   The generic type parameter [T] represents the data type stored in tree items.  TreeNode is implemented by [TreeItem] for data-bearing nodes and [TreeRoot]  for the invisible root container.   Key operations include state updates for expansion and selection, child  manipulation, and leaf node detection. All state changes return new instances  to maintain immutability.   Example:  ```dart  TreeNode<String> node = TreeItem(    data: 'parent',    children: [TreeItem(data: 'child1'), TreeItem(data: 'child2')],  );   // Expand the node  TreeNode<String> expanded = node.updateState(expanded: true);   // Check if it's a leaf  bool isLeaf = node.leaf; // false, has children  ```"
+description: "Abstract base class representing a node in a tree structure.   TreeNode defines the interface for all nodes in the tree hierarchy, providing  access to children, expansion state, and selection state. It supports immutable  updates through copy methods that return new instances with modified state.   The generic type parameter [T] represents the data type stored in tree items.  TreeNode is implemented by [TreeItemNode] for data-bearing nodes and [TreeRootNode]  for the invisible root container.   Key operations include state updates for expansion and selection, child  manipulation, and leaf node detection. All state changes return new instances  to maintain immutability.   Example:  ```dart  TreeNode<String> node = TreeItemNode(    data: 'parent',    children: [TreeItemNode(data: 'child1'), TreeItemNode(data: 'child2')],  );   // Expand the node  TreeNode<String> expanded = node.updateState(expanded: true);   // Check if it's a leaf  bool isLeaf = node.leaf; // false, has children  ```"
 ---
 
 ```dart
@@ -11,7 +11,7 @@ description: "Abstract base class representing a node in a tree structure.   Tre
 /// updates through copy methods that return new instances with modified state.
 ///
 /// The generic type parameter [T] represents the data type stored in tree items.
-/// TreeNode is implemented by [TreeItem] for data-bearing nodes and [TreeRoot]
+/// TreeNode is implemented by [TreeItemNode] for data-bearing nodes and [TreeRootNode]
 /// for the invisible root container.
 ///
 /// Key operations include state updates for expansion and selection, child
@@ -20,9 +20,9 @@ description: "Abstract base class representing a node in a tree structure.   Tre
 ///
 /// Example:
 /// ```dart
-/// TreeNode<String> node = TreeItem(
+/// TreeNode<String> node = TreeItemNode(
 ///   data: 'parent',
-///   children: [TreeItem(data: 'child1'), TreeItem(data: 'child2')],
+///   children: [TreeItemNode(data: 'child1'), TreeItemNode(data: 'child2')],
 /// );
 ///
 /// // Expand the node
@@ -82,7 +82,7 @@ abstract class TreeNode<T> {
   ///
   /// Example:
   /// ```dart
-  /// List<TreeNode<String>> newChildren = [TreeItem(data: 'new_child')];
+  /// List<TreeNode<String>> newChildren = [TreeItemNode(data: 'new_child')];
   /// TreeNode<String> updated = node.updateChildren(newChildren);
   /// ```
   TreeNode<T> updateChildren(List<TreeNode<T>> children);

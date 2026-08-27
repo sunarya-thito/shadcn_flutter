@@ -1,6 +1,6 @@
 ---
 title: "Class: IconContainer"
-description: "A container widget for displaying an icon with customizable padding, background, and border radius.   Use [IconContainer] to wrap an icon and apply theme or custom styling.   Example:  ```dart  IconContainer(    icon: Icon(Icons.star),    backgroundColor: Colors.yellow,    borderRadius: BorderRadius.circular(8),  )  ```"
+description: "A container widget for displaying an icon with customizable padding, background, and border radius.   Use [IconContainer] to wrap an icon and apply theme or custom styling.   Example:  ```dart  IconContainer(    icon: Icon(LucideIcons.star),    backgroundColor: Colors.yellow,    borderRadius: BorderRadius.circular(8),  )  ```"
 ---
 
 ```dart
@@ -11,7 +11,7 @@ description: "A container widget for displaying an icon with customizable paddin
 /// Example:
 /// ```dart
 /// IconContainer(
-///   icon: Icon(Icons.star),
+///   icon: Icon(LucideIcons.star),
 ///   backgroundColor: Colors.yellow,
 ///   borderRadius: BorderRadius.circular(8),
 /// )

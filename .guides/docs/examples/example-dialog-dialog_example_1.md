@@ -20,8 +20,9 @@ class DialogExample1 extends StatelessWidget {
     return PrimaryButton(
       onPressed: () {
         // Present a Material dialog on top of the current route.
-        showDialog(
-          context: context,
+        showOverlay(
+          context,
+          DialogConfiguration(),
           builder: (context) {
             final FormController controller = FormController();
             return AlertDialog(
@@ -64,5 +65,4 @@ class DialogExample1 extends StatelessWidget {
                   onPressed: () {
                     // Return the form values and close the dialog.
                     Navigator.of(context).pop(controller.values);
-                  },
 ```

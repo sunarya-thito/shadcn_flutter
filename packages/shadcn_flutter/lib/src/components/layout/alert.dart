@@ -62,8 +62,9 @@ class AlertTheme extends ComponentThemeData {
   }) {
     return AlertTheme(
       padding: padding == null ? this.padding : padding(),
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      backgroundColor: backgroundColor == null
+          ? this.backgroundColor
+          : backgroundColor(),
       borderColor: borderColor == null ? this.borderColor : borderColor(),
     );
   }
@@ -101,11 +102,11 @@ class AlertTheme extends ComponentThemeData {
 /// Example:
 /// ```dart
 /// Alert(
-///   leading: Icon(Icons.info),
+///   leading: Icon(LucideIcons.info),
 ///   title: Text('Information'),
 ///   content: Text('This is an informational alert message.'),
 ///   trailing: IconButton(
-///     icon: Icon(Icons.close),
+///     icon: Icon(LucideIcons.x),
 ///     onPressed: () {},
 ///   ),
 /// );
@@ -160,13 +161,14 @@ class Alert extends StatelessWidget {
   ///   content: Text('Operation completed successfully.'),
   /// );
   /// ```
-  const Alert(
-      {super.key,
-      this.leading,
-      this.title,
-      this.content,
-      this.trailing,
-      this.destructive = false});
+  const Alert({
+    super.key,
+    this.leading,
+    this.title,
+    this.content,
+    this.trailing,
+    this.destructive = false,
+  });
 
   /// Creates an [Alert] with destructive styling pre-configured.
   ///
@@ -182,7 +184,7 @@ class Alert extends StatelessWidget {
   /// Example:
   /// ```dart
   /// Alert.destructive(
-  ///   leading: Icon(Icons.error),
+  ///   leading: Icon(LucideIcons.circleAlert),
   ///   title: Text('Error'),
   ///   content: Text('Something went wrong. Please try again.'),
   /// );
@@ -200,13 +202,9 @@ class Alert extends StatelessWidget {
     if (destructive) {
       var destructive2 = Theme.of(context).colorScheme.destructive;
       return DefaultTextStyle.merge(
-        style: TextStyle(
-          color: destructive2,
-        ),
+        style: TextStyle(color: destructive2),
         child: IconTheme.merge(
-          data: IconThemeData(
-            color: destructive2,
-          ),
+          data: IconThemeData(color: destructive2),
           child: _build(context),
         ),
       );

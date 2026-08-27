@@ -18,7 +18,7 @@ class ButtonExample17 extends StatelessWidget {
           .withForegroundColor(color: Colors.white)
           .withBorderRadius(hoverBorderRadius: BorderRadius.circular(16)),
       onPressed: () {},
-      leading: const Icon(Icons.sunny),
+      leading: const Icon(LucideIcons.sun),
       child: const Text('Custom Button'),
     );
   }

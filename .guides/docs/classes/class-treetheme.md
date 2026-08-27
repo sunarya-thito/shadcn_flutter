@@ -1,10 +1,10 @@
 ---
 title: "Class: TreeTheme"
-description: "Theme configuration for [TreeView] appearance and behavior.   TreeTheme defines the visual styling and behavioral options for tree view  components including branch lines, padding, expand icons, and selection modes.  All properties are optional and fall back to theme defaults when not specified.   Example:  ```dart  ComponentTheme<TreeTheme>(    data: TreeTheme(      branchLine: BranchLine.path,      padding: EdgeInsets.all(12),      expandIcon: true,      allowMultiSelect: true,      recursiveSelection: true,    ),    child: TreeView(...),  )  ```"
+description: "Theme configuration for [Tree] appearance and behavior.   TreeTheme defines the visual styling and behavioral options for tree view  components including branch lines, padding, expand icons, and selection modes.  All properties are optional and fall back to theme defaults when not specified.   Example:  ```dart  ComponentTheme<TreeTheme>(    data: TreeTheme(      branchLine: BranchLine.path,      padding: EdgeInsets.all(12),      expandIcon: true,      allowMultiSelect: true,      recursiveSelection: true,    ),    child: Tree(...),  )  ```"
 ---
 
 ```dart
-/// Theme configuration for [TreeView] appearance and behavior.
+/// Theme configuration for [Tree] appearance and behavior.
 ///
 /// TreeTheme defines the visual styling and behavioral options for tree view
 /// components including branch lines, padding, expand icons, and selection modes.
@@ -20,7 +20,7 @@ description: "Theme configuration for [TreeView] appearance and behavior.   Tree
 ///     allowMultiSelect: true,
 ///     recursiveSelection: true,
 ///   ),
-///   child: TreeView(...),
+///   child: Tree(...),
 /// )
 /// ```
 class TreeTheme extends ComponentThemeData {

@@ -50,15 +50,18 @@ class TimePickerTheme extends ComponentThemeData {
   }) {
     return TimePickerTheme(
       mode: mode == null ? this.mode : mode(),
-      popoverAlignment:
-          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
+      popoverAlignment: popoverAlignment == null
+          ? this.popoverAlignment
+          : popoverAlignment(),
       popoverAnchorAlignment: popoverAnchorAlignment == null
           ? this.popoverAnchorAlignment
           : popoverAnchorAlignment(),
-      popoverPadding:
-          popoverPadding == null ? this.popoverPadding : popoverPadding(),
-      use24HourFormat:
-          use24HourFormat == null ? this.use24HourFormat : use24HourFormat(),
+      popoverPadding: popoverPadding == null
+          ? this.popoverPadding
+          : popoverPadding(),
+      use24HourFormat: use24HourFormat == null
+          ? this.use24HourFormat
+          : use24HourFormat(),
       showSeconds: showSeconds == null ? this.showSeconds : showSeconds(),
       dialogTitle: dialogTitle == null ? this.dialogTitle : dialogTitle(),
     );
@@ -79,14 +82,14 @@ class TimePickerTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-        mode,
-        popoverAlignment,
-        popoverAnchorAlignment,
-        popoverPadding,
-        use24HourFormat,
-        showSeconds,
-        dialogTitle,
-      );
+    mode,
+    popoverAlignment,
+    popoverAnchorAlignment,
+    popoverPadding,
+    use24HourFormat,
+    showSeconds,
+    dialogTitle,
+  );
 }
 
 /// A controller for managing [ControlledTimePicker] values programmatically.
@@ -323,7 +326,8 @@ class TimePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     final compTheme = ComponentTheme.maybeOf<TimePickerTheme>(context);
-    bool use24HourFormat = this.use24HourFormat ??
+    bool use24HourFormat =
+        this.use24HourFormat ??
         compTheme?.use24HourFormat ??
         MediaQuery.of(context).alwaysUse24HourFormat;
     final bool showSeconds = compTheme?.showSeconds ?? this.showSeconds;
@@ -332,8 +336,13 @@ class TimePicker extends StatelessWidget {
       placeholder: placeholder ?? Text(localizations.placeholderTimePicker),
       onChanged: onChanged,
       builder: (context, value) {
-        return Text(localizations.formatTimeOfDay(value,
-            use24HourFormat: use24HourFormat, showSeconds: showSeconds));
+        return Text(
+          localizations.formatTimeOfDay(
+            value,
+            use24HourFormat: use24HourFormat,
+            showSeconds: showSeconds,
+          ),
+        );
       },
       enabled: enabled,
       mode: compTheme?.mode ?? mode,
@@ -342,7 +351,7 @@ class TimePicker extends StatelessWidget {
       popoverAnchorAlignment:
           popoverAnchorAlignment ?? compTheme?.popoverAnchorAlignment,
       popoverPadding: popoverPadding ?? compTheme?.popoverPadding,
-      trailing: const Icon(Icons.access_time),
+      trailing: const Icon(LucideIcons.clock),
       editorBuilder: (context, handler) {
         return TimePickerDialog(
           initialValue: handler.value,
@@ -397,11 +406,16 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
   }
 
   Widget _buildInput(
-      BuildContext context, TextEditingController controller, String label) {
+    BuildContext context,
+    TextEditingController controller,
+    String label,
+  ) {
     final theme = Theme.of(context);
     return ConstrainedBox(
       constraints: BoxConstraints(
-          minWidth: 72 * theme.scaling, minHeight: 72 * theme.scaling),
+        minWidth: 72 * theme.scaling,
+        minHeight: 72 * theme.scaling,
+      ),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -417,10 +431,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
               ],
             ),
           ),
-          Positioned(
-            bottom: (-24) * theme.scaling,
-            child: Text(label).muted(),
-          ),
+          Positioned(bottom: (-24) * theme.scaling, child: Text(label).muted()),
         ],
       ),
     );
@@ -441,8 +452,9 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
       minute = minute.clamp(0, 59);
       second = second.clamp(0, 59);
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        widget.onChanged
-            ?.call(TimeOfDay(hour: hour, minute: minute, second: second));
+        widget.onChanged?.call(
+          TimeOfDay(hour: hour, minute: minute, second: second),
+        );
       });
     } else {
       if (_pm && hour < 12) {
@@ -455,8 +467,9 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
       second = second.clamp(0, 59);
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (!mounted) return;
-        widget.onChanged
-            ?.call(TimeOfDay(hour: hour, minute: minute, second: second));
+        widget.onChanged?.call(
+          TimeOfDay(hour: hour, minute: minute, second: second),
+        );
       });
     }
   }
@@ -480,9 +493,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
       initialHour -= 12;
       _pm = true;
     }
-    _hourController = TextEditingController(
-      text: _formatDigits(initialHour),
-    );
+    _hourController = TextEditingController(text: _formatDigits(initialHour));
     _minuteController = TextEditingController(
       text: _formatDigits(initialMinute),
     );
@@ -568,8 +579,8 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
                       ),
                     ],
                   ),
-                )
-              ]
+                ),
+              ],
             ],
           ),
         ),
@@ -582,7 +593,9 @@ class _TimeFormatter extends TextInputFormatter {
   const _TimeFormatter();
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     // make sure new value has leading zero
     var newText = newValue.text;
     int substringCount = 0;
@@ -702,7 +715,7 @@ class DurationPicker extends StatelessWidget {
       enabled: enabled,
       mode: mode,
       dialogTitle: dialogTitle,
-      trailing: const Icon(Icons.access_time),
+      trailing: const Icon(LucideIcons.clock),
       editorBuilder: (context, handler) {
         return DurationPickerDialog(
           initialValue: handler.value,
@@ -727,11 +740,7 @@ class DurationPickerDialog extends StatefulWidget {
   final ValueChanged<Duration?>? onChanged;
 
   /// Creates a duration picker dialog.
-  const DurationPickerDialog({
-    super.key,
-    this.initialValue,
-    this.onChanged,
-  });
+  const DurationPickerDialog({super.key, this.initialValue, this.onChanged});
 
   @override
   State<DurationPickerDialog> createState() => _DurationPickerDialogState();
@@ -748,11 +757,16 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
   }
 
   Widget _buildInput(
-      BuildContext context, TextEditingController controller, String label) {
+    BuildContext context,
+    TextEditingController controller,
+    String label,
+  ) {
     final theme = Theme.of(context);
     return ConstrainedBox(
       constraints: BoxConstraints(
-          minWidth: 72 * theme.scaling, minHeight: 72 * theme.scaling),
+        minWidth: 72 * theme.scaling,
+        minHeight: 72 * theme.scaling,
+      ),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -767,10 +781,7 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
               ],
             ),
           ),
-          Positioned(
-            bottom: (-24) * theme.scaling,
-            child: Text(label).muted(),
-          ),
+          Positioned(bottom: (-24) * theme.scaling, child: Text(label).muted()),
         ],
       ),
     );
@@ -792,12 +803,9 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
     minute = minute.clamp(0, 59);
     second = second.clamp(0, 59);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget.onChanged?.call(Duration(
-        days: day,
-        hours: hour,
-        minutes: minute,
-        seconds: second,
-      ));
+      widget.onChanged?.call(
+        Duration(days: day, hours: hour, minutes: minute, seconds: second),
+      );
     });
   }
 
@@ -817,9 +825,7 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
     int initialHour = widget.initialValue?.inHours ?? 0;
     int initialMinute = widget.initialValue?.inMinutes ?? 0;
     int initialSecond = widget.initialValue?.inSeconds ?? 0;
-    _dayController = TextEditingController(
-      text: _formatDigits(initialDay),
-    );
+    _dayController = TextEditingController(text: _formatDigits(initialDay));
     _hourController = TextEditingController(
       text: _formatDigits(initialHour % Duration.hoursPerDay),
     );
@@ -909,10 +915,7 @@ class TimeRange {
   final TimeOfDay end;
 
   /// Creates a [TimeRange] with the specified start and end times.
-  const TimeRange({
-    required this.start,
-    required this.end,
-  });
+  const TimeRange({required this.start, required this.end});
 
   /// Creates a copy of this range with the given fields replaced.
   TimeRange copyWith({

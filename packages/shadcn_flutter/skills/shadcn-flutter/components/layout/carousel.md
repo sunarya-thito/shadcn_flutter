@@ -123,7 +123,7 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 // Animate to previous slide.
                 controller.animatePrevious(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_back)),
+              child: const Icon(LucideIcons.arrowLeft)),
           const Gap(24),
           Expanded(
             child: SizedBox(
@@ -153,7 +153,7 @@ class _CarouselExample1State extends State<CarouselExample1> {
                 // Animate to next slide.
                 controller.animateNext(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_forward)),
+              child: const Icon(LucideIcons.arrowRight)),
         ],
       ),
     );
@@ -194,7 +194,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 // Move to previous item (upwards).
                 controller.animatePrevious(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_upward)),
+              child: const Icon(LucideIcons.arrowUp)),
           const Gap(24),
           Expanded(
             child: SizedBox(
@@ -221,7 +221,7 @@ class _CarouselExample2State extends State<CarouselExample2> {
                 // Move to next item (downwards).
                 controller.animateNext(const Duration(milliseconds: 500));
               },
-              child: const Icon(Icons.arrow_downward)),
+              child: const Icon(LucideIcons.arrowDown)),
         ],
       ),
     );
@@ -287,14 +287,14 @@ class _CarouselExample3State extends State<CarouselExample3> {
                     controller
                         .animatePrevious(const Duration(milliseconds: 500));
                   },
-                  child: const Icon(Icons.arrow_back)),
+                  child: const Icon(LucideIcons.arrowLeft)),
               const Gap(8),
               OutlineButton(
                   shape: ButtonShape.circle,
                   onPressed: () {
                     controller.animateNext(const Duration(milliseconds: 500));
                   },
-                  child: const Icon(Icons.arrow_forward)),
+                  child: const Icon(LucideIcons.arrowRight)),
             ],
           ),
         ],

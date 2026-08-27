@@ -99,10 +99,7 @@ class StepperValue {
   /// Parameters:
   /// - [stepStates] (`Map<int, StepState>`, required): step states by index
   /// - [currentStep] (int, required): currently active step index
-  StepperValue({
-    required this.stepStates,
-    required this.currentStep,
-  });
+  StepperValue({required this.stepStates, required this.currentStep});
 
   @override
   bool operator ==(Object other) {
@@ -131,7 +128,7 @@ class StepperValue {
 /// ```dart
 /// Step(
 ///   title: Text('Personal Info'),
-///   icon: Icon(Icons.person),
+///   icon: Icon(LucideIcons.user),
 ///   contentBuilder: (context) => PersonalInfoForm(),
 /// );
 /// ```
@@ -160,15 +157,11 @@ class Step {
   /// ```dart
   /// Step(
   ///   title: Text('Account Setup'),
-  ///   icon: Icon(Icons.account_circle),
+  ///   icon: Icon(LucideIcons.circleUser),
   ///   contentBuilder: (context) => AccountSetupForm(),
   /// );
   /// ```
-  const Step({
-    required this.title,
-    this.contentBuilder,
-    this.icon,
-  });
+  const Step({required this.title, this.contentBuilder, this.icon});
 }
 
 /// Function type for building size-appropriate step content.
@@ -278,24 +271,28 @@ class _StepVariantCircle extends StepVariant {
             children: [
               properties[i]?.icon ?? const StepNumber(),
               Gap(densityGap),
-              properties.size
-                  .wrapper(context, properties[i]?.title ?? const SizedBox()),
+              properties.size.wrapper(
+                context,
+                properties[i]?.title ?? const SizedBox(),
+              ),
               if (i != properties.steps.length - 1) ...[
                 Gap(densityGap),
                 Expanded(
                   child: AnimatedBuilder(
-                      animation: properties.state,
-                      builder: (context, child) {
-                        return Divider(
-                          thickness: 2 * scaling,
-                          color: properties.hasFailure &&
-                                  properties.state.value.currentStep <= i
-                              ? theme.colorScheme.destructive
-                              : properties.state.value.currentStep >= i
-                                  ? theme.colorScheme.primary
-                                  : theme.colorScheme.border,
-                        );
-                      }),
+                    animation: properties.state,
+                    builder: (context, child) {
+                      return Divider(
+                        thickness: 2 * scaling,
+                        color:
+                            properties.hasFailure &&
+                                properties.state.value.currentStep <= i
+                            ? theme.colorScheme.destructive
+                            : properties.state.value.currentStep >= i
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.border,
+                      );
+                    },
+                  ),
                 ),
                 Gap(densityGap),
               ],
@@ -305,9 +302,7 @@ class _StepVariantCircle extends StepVariant {
         children.add(
           i == properties.steps.length - 1
               ? childWidget
-              : Expanded(
-                  child: childWidget,
-                ),
+              : Expanded(child: childWidget),
         );
       }
       return Column(
@@ -321,13 +316,15 @@ class _StepVariantCircle extends StepVariant {
             ),
           ),
           AnimatedBuilder(
-              animation: properties.state,
-              builder: (context, child) {
-                var current = properties.state.value.currentStep;
-                return Flexible(
-                    child: IndexedStack(
+            animation: properties.state,
+            builder: (context, child) {
+              var current = properties.state.value.currentStep;
+              return Flexible(
+                child: IndexedStack(
                   index: current < 0 || current >= properties.steps.length
-                      ? properties.steps.length // will show the placeholder
+                      ? properties
+                            .steps
+                            .length // will show the placeholder
                       : current,
                   children: [
                     for (int i = 0; i < properties.steps.length; i++)
@@ -335,8 +332,10 @@ class _StepVariantCircle extends StepVariant {
                           const SizedBox(),
                     const SizedBox(), // for placeholder
                   ],
-                ));
-              }),
+                ),
+              );
+            },
+          ),
         ],
       );
     } else {
@@ -359,9 +358,7 @@ class _StepVariantCircle extends StepVariant {
                 ),
                 Gap(densityGap),
                 ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: densityGap * 2,
-                  ),
+                  constraints: BoxConstraints(minHeight: densityGap * 2),
                   child: Stack(
                     children: [
                       PositionedDirectional(
@@ -378,60 +375,71 @@ class _StepVariantCircle extends StepVariant {
                                     return VerticalDivider(
                                       width: properties.size.size * scaling,
                                       thickness: 2 * scaling,
-                                      color: properties.hasFailure &&
-                                              properties.state.value
+                                      color:
+                                          properties.hasFailure &&
+                                              properties
+                                                      .state
+                                                      .value
                                                       .currentStep <=
                                                   i
                                           ? theme.colorScheme.destructive
-                                          : properties.state.value
-                                                      .currentStep >=
-                                                  i
-                                              ? theme.colorScheme.primary
-                                              : theme.colorScheme.border,
+                                          : properties
+                                                    .state
+                                                    .value
+                                                    .currentStep >=
+                                                i
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.border,
                                     );
-                                  }),
+                                  },
+                                ),
                         ),
                       ),
                       AnimatedBuilder(
-                          animation: properties.state,
-                          child:
-                              properties.steps[i].contentBuilder?.call(context),
-                          builder: (context, child) {
-                            return AnimatedCrossFade(
-                              firstChild: Container(
-                                height: 0,
+                        animation: properties.state,
+                        child: properties.steps[i].contentBuilder?.call(
+                          context,
+                        ),
+                        builder: (context, child) {
+                          return AnimatedCrossFade(
+                            firstChild: Container(height: 0),
+                            secondChild: Container(
+                              margin: EdgeInsets.only(
+                                left: properties.size.size * scaling,
                               ),
-                              secondChild: Container(
-                                margin: EdgeInsets.only(
-                                  left: properties.size.size * scaling,
-                                ),
-                                child: child!,
-                              ),
-                              firstCurve: const Interval(0.0, 0.6,
-                                  curve: Curves.fastOutSlowIn),
-                              secondCurve: const Interval(0.4, 1.0,
-                                  curve: Curves.fastOutSlowIn),
-                              sizeCurve: Curves.fastOutSlowIn,
-                              crossFadeState:
-                                  properties.state.value.currentStep == i
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                              duration: kDefaultDuration,
-                            );
-                          }),
+                              child: child!,
+                            ),
+                            firstCurve: const Interval(
+                              0.0,
+                              0.6,
+                              curve: Curves.fastOutSlowIn,
+                            ),
+                            secondCurve: const Interval(
+                              0.4,
+                              1.0,
+                              curve: Curves.fastOutSlowIn,
+                            ),
+                            sizeCurve: Curves.fastOutSlowIn,
+                            crossFadeState:
+                                properties.state.value.currentStep == i
+                                ? CrossFadeState.showSecond
+                                : CrossFadeState.showFirst,
+                            duration: kDefaultDuration,
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
                 AnimatedBuilder(
-                    animation: properties.state,
-                    builder: (context, child) {
-                      if (i == properties.steps.length - 1) {
-                        return const SizedBox();
-                      }
-                      return SizedBox(
-                        height: densityGap,
-                      );
-                    }),
+                  animation: properties.state,
+                  builder: (context, child) {
+                    if (i == properties.steps.length - 1) {
+                      return const SizedBox();
+                    }
+                    return SizedBox(height: densityGap);
+                  },
+                ),
               ],
             ),
           ),
@@ -459,74 +467,78 @@ class _StepVariantCircleAlternative extends StepVariant {
       for (int i = 0; i < steps.length; i++) {
         children.add(
           Data.inherit(
-              data: StepNumberData(stepIndex: i),
-              child: Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        i == 0
-                            ? const Spacer()
-                            : Expanded(
-                                child: AnimatedBuilder(
-                                    animation: properties.state,
-                                    builder: (context, child) {
-                                      return Divider(
-                                        thickness: 2 * scaling,
-                                        color: properties.hasFailure &&
-                                                properties.state.value
-                                                        .currentStep <=
-                                                    i - 1
-                                            ? theme.colorScheme.destructive
-                                            : properties.state.value
-                                                        .currentStep >=
-                                                    i - 1
-                                                ? theme.colorScheme.primary
-                                                : theme.colorScheme.border,
-                                      );
-                                    }),
+            data: StepNumberData(stepIndex: i),
+            child: Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      i == 0
+                          ? const Spacer()
+                          : Expanded(
+                              child: AnimatedBuilder(
+                                animation: properties.state,
+                                builder: (context, child) {
+                                  return Divider(
+                                    thickness: 2 * scaling,
+                                    color:
+                                        properties.hasFailure &&
+                                            properties
+                                                    .state
+                                                    .value
+                                                    .currentStep <=
+                                                i - 1
+                                        ? theme.colorScheme.destructive
+                                        : properties.state.value.currentStep >=
+                                              i - 1
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.border,
+                                  );
+                                },
                               ),
-                        Gap(densityGap * 0.5),
-                        steps[i].icon ?? const StepNumber(),
-                        Gap(densityGap * 0.5),
-                        i == steps.length - 1
-                            ? const Spacer()
-                            : Expanded(
-                                child: AnimatedBuilder(
-                                    animation: properties.state,
-                                    builder: (context, child) {
-                                      return Divider(
-                                        thickness: 2 * scaling,
-                                        color: properties.hasFailure &&
-                                                properties.state.value
-                                                        .currentStep <=
-                                                    i
-                                            ? theme.colorScheme.destructive
-                                            : properties.state.value
-                                                        .currentStep >=
-                                                    i
-                                                ? theme.colorScheme.primary
-                                                : theme.colorScheme.border,
-                                      );
-                                    }),
+                            ),
+                      Gap(densityGap * 0.5),
+                      steps[i].icon ?? const StepNumber(),
+                      Gap(densityGap * 0.5),
+                      i == steps.length - 1
+                          ? const Spacer()
+                          : Expanded(
+                              child: AnimatedBuilder(
+                                animation: properties.state,
+                                builder: (context, child) {
+                                  return Divider(
+                                    thickness: 2 * scaling,
+                                    color:
+                                        properties.hasFailure &&
+                                            properties
+                                                    .state
+                                                    .value
+                                                    .currentStep <=
+                                                i
+                                        ? theme.colorScheme.destructive
+                                        : properties.state.value.currentStep >=
+                                              i
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.border,
+                                  );
+                                },
                               ),
-                      ],
+                            ),
+                    ],
+                  ),
+                  Gap(densityGap * 0.5),
+                  Center(
+                    child: DefaultTextStyle.merge(
+                      textAlign: TextAlign.center,
+                      child: properties.size.wrapper(context, steps[i].title),
                     ),
-                    Gap(densityGap * 0.5),
-                    Center(
-                      child: DefaultTextStyle.merge(
-                        textAlign: TextAlign.center,
-                        child: properties.size.wrapper(
-                          context,
-                          steps[i].title,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
       }
       return Column(
@@ -540,13 +552,15 @@ class _StepVariantCircleAlternative extends StepVariant {
             ),
           ),
           AnimatedBuilder(
-              animation: properties.state,
-              builder: (context, child) {
-                var current = properties.state.value.currentStep;
-                return Flexible(
-                    child: IndexedStack(
+            animation: properties.state,
+            builder: (context, child) {
+              var current = properties.state.value.currentStep;
+              return Flexible(
+                child: IndexedStack(
                   index: current < 0 || current >= properties.steps.length
-                      ? properties.steps.length // will show the placeholder
+                      ? properties
+                            .steps
+                            .length // will show the placeholder
                       : current,
                   children: [
                     for (int i = 0; i < properties.steps.length; i++)
@@ -554,8 +568,10 @@ class _StepVariantCircleAlternative extends StepVariant {
                           const SizedBox(),
                     const SizedBox(), // for placeholder
                   ],
-                ));
-              }),
+                ),
+              );
+            },
+          ),
         ],
       );
     } else {
@@ -579,9 +595,7 @@ class _StepVariantCircleAlternative extends StepVariant {
                 ),
                 Gap(densityGap),
                 ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: densityGap * 2,
-                  ),
+                  constraints: BoxConstraints(minHeight: densityGap * 2),
                   child: Stack(
                     children: [
                       PositionedDirectional(
@@ -598,60 +612,71 @@ class _StepVariantCircleAlternative extends StepVariant {
                                     return VerticalDivider(
                                       width: properties.size.size * scaling,
                                       thickness: 2 * scaling,
-                                      color: properties.hasFailure &&
-                                              properties.state.value
+                                      color:
+                                          properties.hasFailure &&
+                                              properties
+                                                      .state
+                                                      .value
                                                       .currentStep <=
                                                   i
                                           ? theme.colorScheme.destructive
-                                          : properties.state.value
-                                                      .currentStep >=
-                                                  i
-                                              ? theme.colorScheme.primary
-                                              : theme.colorScheme.border,
+                                          : properties
+                                                    .state
+                                                    .value
+                                                    .currentStep >=
+                                                i
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.border,
                                     );
-                                  }),
+                                  },
+                                ),
                         ),
                       ),
                       AnimatedBuilder(
-                          animation: properties.state,
-                          child:
-                              properties.steps[i].contentBuilder?.call(context),
-                          builder: (context, child) {
-                            return AnimatedCrossFade(
-                              firstChild: Container(
-                                height: 0,
+                        animation: properties.state,
+                        child: properties.steps[i].contentBuilder?.call(
+                          context,
+                        ),
+                        builder: (context, child) {
+                          return AnimatedCrossFade(
+                            firstChild: Container(height: 0),
+                            secondChild: Container(
+                              margin: EdgeInsets.only(
+                                left: properties.size.size * scaling,
                               ),
-                              secondChild: Container(
-                                margin: EdgeInsets.only(
-                                  left: properties.size.size * scaling,
-                                ),
-                                child: child!,
-                              ),
-                              firstCurve: const Interval(0.0, 0.6,
-                                  curve: Curves.fastOutSlowIn),
-                              secondCurve: const Interval(0.4, 1.0,
-                                  curve: Curves.fastOutSlowIn),
-                              sizeCurve: Curves.fastOutSlowIn,
-                              crossFadeState:
-                                  properties.state.value.currentStep == i
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                              duration: kDefaultDuration,
-                            );
-                          }),
+                              child: child!,
+                            ),
+                            firstCurve: const Interval(
+                              0.0,
+                              0.6,
+                              curve: Curves.fastOutSlowIn,
+                            ),
+                            secondCurve: const Interval(
+                              0.4,
+                              1.0,
+                              curve: Curves.fastOutSlowIn,
+                            ),
+                            sizeCurve: Curves.fastOutSlowIn,
+                            crossFadeState:
+                                properties.state.value.currentStep == i
+                                ? CrossFadeState.showSecond
+                                : CrossFadeState.showFirst,
+                            duration: kDefaultDuration,
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
                 AnimatedBuilder(
-                    animation: properties.state,
-                    builder: (context, child) {
-                      if (i == properties.steps.length - 1) {
-                        return const SizedBox();
-                      }
-                      return SizedBox(
-                        height: 8 * scaling,
-                      );
-                    }),
+                  animation: properties.state,
+                  builder: (context, child) {
+                    if (i == properties.steps.length - 1) {
+                      return const SizedBox();
+                    }
+                    return SizedBox(height: 8 * scaling);
+                  },
+                ),
               ],
             ),
           ),
@@ -687,23 +712,22 @@ class _StepVariantLine extends StepVariant {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   AnimatedBuilder(
-                      animation: properties.state,
-                      builder: (context, child) {
-                        return Divider(
-                          thickness: 3 * scaling,
-                          color: properties.hasFailure &&
-                                  properties.state.value.currentStep <= i
-                              ? theme.colorScheme.destructive
-                              : properties.state.value.currentStep >= i
-                                  ? theme.colorScheme.primary
-                                  : theme.colorScheme.border,
-                        );
-                      }),
-                  Gap(densityGap),
-                  properties.size.wrapper(
-                    context,
-                    steps[i].title,
+                    animation: properties.state,
+                    builder: (context, child) {
+                      return Divider(
+                        thickness: 3 * scaling,
+                        color:
+                            properties.hasFailure &&
+                                properties.state.value.currentStep <= i
+                            ? theme.colorScheme.destructive
+                            : properties.state.value.currentStep >= i
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.border,
+                      );
+                    },
                   ),
+                  Gap(densityGap),
+                  properties.size.wrapper(context, steps[i].title),
                 ],
               ),
             ),
@@ -721,13 +745,15 @@ class _StepVariantLine extends StepVariant {
             ).gap(densityGap * 2),
           ),
           AnimatedBuilder(
-              animation: properties.state,
-              builder: (context, child) {
-                var current = properties.state.value.currentStep;
-                return Flexible(
-                    child: IndexedStack(
+            animation: properties.state,
+            builder: (context, child) {
+              var current = properties.state.value.currentStep;
+              return Flexible(
+                child: IndexedStack(
                   index: current < 0 || current >= properties.steps.length
-                      ? properties.steps.length // will show the placeholder
+                      ? properties
+                            .steps
+                            .length // will show the placeholder
                       : current,
                   children: [
                     for (int i = 0; i < properties.steps.length; i++)
@@ -735,8 +761,10 @@ class _StepVariantLine extends StepVariant {
                           const SizedBox(),
                     const SizedBox(), // for placeholder
                   ],
-                ));
-              }),
+                ),
+              );
+            },
+          ),
         ],
       );
     } else {
@@ -754,18 +782,20 @@ class _StepVariantLine extends StepVariant {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       AnimatedBuilder(
-                          animation: properties.state,
-                          builder: (context, child) {
-                            return VerticalDivider(
-                              thickness: 3 * scaling,
-                              color: properties.hasFailure &&
-                                      properties.state.value.currentStep <= i
-                                  ? theme.colorScheme.destructive
-                                  : properties.state.value.currentStep >= i
-                                      ? theme.colorScheme.primary
-                                      : theme.colorScheme.border,
-                            );
-                          }),
+                        animation: properties.state,
+                        builder: (context, child) {
+                          return VerticalDivider(
+                            thickness: 3 * scaling,
+                            color:
+                                properties.hasFailure &&
+                                    properties.state.value.currentStep <= i
+                                ? theme.colorScheme.destructive
+                                : properties.state.value.currentStep >= i
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.border,
+                          );
+                        },
+                      ),
                       Gap(densityGap * 2),
                       properties.size
                           .wrapper(context, properties.steps[i].title)
@@ -774,43 +804,42 @@ class _StepVariantLine extends StepVariant {
                   ),
                 ),
                 ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: densityGap * 2,
-                  ),
+                  constraints: BoxConstraints(minHeight: densityGap * 2),
                   child: AnimatedBuilder(
-                      animation: properties.state,
-                      child: properties.steps[i].contentBuilder?.call(context),
-                      builder: (context, child) {
-                        return AnimatedCrossFade(
-                          firstChild: Container(
-                            height: 0,
-                          ),
-                          secondChild: Container(
-                            child: child!,
-                          ),
-                          firstCurve: const Interval(0.0, 0.6,
-                              curve: Curves.fastOutSlowIn),
-                          secondCurve: const Interval(0.4, 1.0,
-                              curve: Curves.fastOutSlowIn),
-                          sizeCurve: Curves.fastOutSlowIn,
-                          crossFadeState:
-                              properties.state.value.currentStep == i
-                                  ? CrossFadeState.showSecond
-                                  : CrossFadeState.showFirst,
-                          duration: kDefaultDuration,
-                        );
-                      }),
+                    animation: properties.state,
+                    child: properties.steps[i].contentBuilder?.call(context),
+                    builder: (context, child) {
+                      return AnimatedCrossFade(
+                        firstChild: Container(height: 0),
+                        secondChild: Container(child: child!),
+                        firstCurve: const Interval(
+                          0.0,
+                          0.6,
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                        secondCurve: const Interval(
+                          0.4,
+                          1.0,
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                        sizeCurve: Curves.fastOutSlowIn,
+                        crossFadeState: properties.state.value.currentStep == i
+                            ? CrossFadeState.showSecond
+                            : CrossFadeState.showFirst,
+                        duration: kDefaultDuration,
+                      );
+                    },
+                  ),
                 ),
                 AnimatedBuilder(
-                    animation: properties.state,
-                    builder: (context, child) {
-                      if (i == properties.steps.length - 1) {
-                        return const SizedBox();
-                      }
-                      return SizedBox(
-                        height: 8 * scaling,
-                      );
-                    }),
+                  animation: properties.state,
+                  builder: (context, child) {
+                    if (i == properties.steps.length - 1) {
+                      return const SizedBox();
+                    }
+                    return SizedBox(height: 8 * scaling);
+                  },
+                ),
               ],
             ),
           ),
@@ -928,13 +957,13 @@ class StepperController extends ValueNotifier<StepperValue> {
   ///   stepStates: {0: StepState.failed},
   /// );
   /// ```
-  StepperController({
-    Map<int, StepState>? stepStates,
-    int? currentStep,
-  }) : super(StepperValue(
+  StepperController({Map<int, StepState>? stepStates, int? currentStep})
+    : super(
+        StepperValue(
           stepStates: stepStates ?? {},
           currentStep: currentStep ?? 0,
-        ));
+        ),
+      );
 
   /// Advances to the next step.
   ///
@@ -993,10 +1022,7 @@ class StepperController extends ValueNotifier<StepperValue> {
     } else {
       newStates[step] = state;
     }
-    value = StepperValue(
-      stepStates: newStates,
-      currentStep: value.currentStep,
-    );
+    value = StepperValue(stepStates: newStates, currentStep: value.currentStep);
   }
 
   /// Jumps directly to the specified step.
@@ -1010,10 +1036,7 @@ class StepperController extends ValueNotifier<StepperValue> {
   /// controller.jumpToStep(steps.length - 1);
   /// ```
   void jumpToStep(int step) {
-    value = StepperValue(
-      stepStates: value.stepStates,
-      currentStep: step,
-    );
+    value = StepperValue(stepStates: value.stepStates, currentStep: step);
   }
 }
 
@@ -1116,7 +1139,11 @@ class Stepper extends StatelessWidget {
     final sz = size ?? compTheme?.size ?? StepSize.medium;
     final varnt = variant ?? compTheme?.variant ?? StepVariant.circle;
     var stepProperties = StepProperties(
-        size: sz, steps: steps, state: controller, direction: dir);
+      size: sz,
+      steps: steps,
+      state: controller,
+      direction: dir,
+    );
     return Data.inherit(
       data: stepProperties,
       child: varnt.build(context, stepProperties),
@@ -1139,9 +1166,7 @@ class StepNumberData {
   final int stepIndex;
 
   /// Creates [StepNumberData].
-  const StepNumberData({
-    required this.stepIndex,
-  });
+  const StepNumberData({required this.stepIndex});
 
   @override
   bool operator ==(Object other) {
@@ -1171,7 +1196,7 @@ class StepNumberData {
 /// Example:
 /// ```dart
 /// StepNumber(
-///   icon: Icon(Icons.star),
+///   icon: Icon(LucideIcons.star),
 ///   onPressed: () => print('Step tapped'),
 /// );
 /// ```
@@ -1195,110 +1220,105 @@ class StepNumber extends StatelessWidget {
   /// Example:
   /// ```dart
   /// StepNumber(
-  ///   icon: Icon(Icons.person),
+  ///   icon: Icon(LucideIcons.user),
   ///   onPressed: () => jumpToStep(stepIndex),
   /// );
   /// ```
-  const StepNumber({
-    super.key,
-    this.icon,
-    this.onPressed,
-  });
+  const StepNumber({super.key, this.icon, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     final properties = Data.maybeOf<StepProperties>(context);
     final stepNumberData = Data.maybeOf<StepNumberData>(context);
     assert(properties != null, 'StepNumber must be a descendant of Stepper');
-    assert(stepNumberData != null,
-        'StepNumber must be a descendant of StepNumberData');
+    assert(
+      stepNumberData != null,
+      'StepNumber must be a descendant of StepNumberData',
+    );
     final int stepIndex = stepNumberData!.stepIndex;
     final theme = Theme.of(context);
     return AnimatedBuilder(
-        animation: properties!.state,
-        builder: (context, child) {
-          return properties.size.wrapper(
-            context,
-            DefaultTextStyle.merge(
-              style: TextStyle(
-                color: properties.state.value.stepStates[stepIndex] ==
+      animation: properties!.state,
+      builder: (context, child) {
+        return properties.size.wrapper(
+          context,
+          DefaultTextStyle.merge(
+            style: TextStyle(
+              color:
+                  properties.state.value.stepStates[stepIndex] ==
+                      StepState.failed
+                  ? theme.colorScheme.destructive
+                  : theme.colorScheme.primary,
+            ).merge(theme.typography.medium),
+            child: IconTheme.merge(
+              data: IconThemeData(
+                color:
+                    properties.state.value.stepStates[stepIndex] ==
                         StepState.failed
                     ? theme.colorScheme.destructive
+                    : properties.state.value.currentStep > stepIndex
+                    ? theme.colorScheme.background
                     : theme.colorScheme.primary,
-              ).merge(theme.typography.medium),
-              child: IconTheme.merge(
-                data: IconThemeData(
-                  color: properties.state.value.stepStates[stepIndex] ==
-                          StepState.failed
-                      ? theme.colorScheme.destructive
-                      : properties.state.value.currentStep > stepIndex
-                          ? theme.colorScheme.background
-                          : theme.colorScheme.primary,
-                ),
-                child: SizedBox(
-                  // these sizes are not constant, but the source value is from constant enum value
-                  width: properties.size.size * theme.scaling,
-                  height: properties.size.size * theme.scaling,
-                  child: Clickable(
-                    enabled: onPressed != null,
-                    onPressed: onPressed,
-                    mouseCursor: WidgetStatePropertyAll(
-                      onPressed != null
-                          ? SystemMouseCursors.click
-                          : SystemMouseCursors.basic,
-                    ),
-                    decoration: WidgetStateProperty.resolveWith(
-                      (states) {
-                        return BoxDecoration(
-                          shape: theme.radius == 0
-                              ? BoxShape.rectangle
-                              : BoxShape.circle,
-                          color: properties.state.value.stepStates[stepIndex] ==
-                                  StepState.failed
-                              ? theme.colorScheme.destructive
-                              : properties.state.value.currentStep > stepIndex
-                                  ? theme.colorScheme.primary
-                                  : properties.state.value.currentStep ==
-                                              stepIndex ||
-                                          states
-                                              .contains(WidgetState.hovered) ||
-                                          states.contains(WidgetState.focused)
-                                      ? theme.colorScheme.secondary
-                                      : theme.colorScheme.background,
-                          border: Border.all(
-                            color:
-                                properties.state.value.stepStates[stepIndex] ==
-                                        StepState.failed
-                                    ? theme.colorScheme.destructive
-                                    : properties.state.value.currentStep >=
-                                            stepIndex
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.border,
-                            width: 2 * theme.scaling,
-                          ),
-                        );
-                      },
-                    ),
-                    child: Center(
-                      child: properties.state.value.stepStates[stepIndex] ==
+              ),
+              child: SizedBox(
+                // these sizes are not constant, but the source value is from constant enum value
+                width: properties.size.size * theme.scaling,
+                height: properties.size.size * theme.scaling,
+                child: Clickable(
+                  enabled: onPressed != null,
+                  onPressed: onPressed,
+                  mouseCursor: WidgetStatePropertyAll(
+                    onPressed != null
+                        ? SystemMouseCursors.click
+                        : SystemMouseCursors.basic,
+                  ),
+                  decoration: WidgetStateProperty.resolveWith((states) {
+                    return BoxDecoration(
+                      shape: theme.radius == 0
+                          ? BoxShape.rectangle
+                          : BoxShape.circle,
+                      color:
+                          properties.state.value.stepStates[stepIndex] ==
                               StepState.failed
-                          ? const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            )
+                          ? theme.colorScheme.destructive
                           : properties.state.value.currentStep > stepIndex
-                              ? Icon(
-                                  Icons.check,
-                                  color: theme.colorScheme.background,
-                                )
-                              : icon ?? Text((stepIndex + 1).toString()),
-                    ),
+                          ? theme.colorScheme.primary
+                          : properties.state.value.currentStep == stepIndex ||
+                                states.contains(WidgetState.hovered) ||
+                                states.contains(WidgetState.focused)
+                          ? theme.colorScheme.secondary
+                          : theme.colorScheme.background,
+                      border: Border.all(
+                        color:
+                            properties.state.value.stepStates[stepIndex] ==
+                                StepState.failed
+                            ? theme.colorScheme.destructive
+                            : properties.state.value.currentStep >= stepIndex
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.border,
+                        width: 2 * theme.scaling,
+                      ),
+                    );
+                  }),
+                  child: Center(
+                    child:
+                        properties.state.value.stepStates[stepIndex] ==
+                            StepState.failed
+                        ? const Icon(LucideIcons.x, color: Colors.white)
+                        : properties.state.value.currentStep > stepIndex
+                        ? Icon(
+                            LucideIcons.check,
+                            color: theme.colorScheme.background,
+                          )
+                        : icon ?? Text((stepIndex + 1).toString()),
                   ),
                 ),
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -1364,7 +1384,8 @@ class StepTitle extends StatelessWidget {
     final densityGap = theme.density.baseGap * scaling;
     return Clickable(
       mouseCursor: WidgetStatePropertyAll(
-          onPressed == null ? MouseCursor.defer : SystemMouseCursors.click),
+        onPressed == null ? MouseCursor.defer : SystemMouseCursors.click,
+      ),
       onPressed: onPressed,
       child: IntrinsicWidth(
         child: Column(
@@ -1438,11 +1459,7 @@ class StepContainer extends StatefulWidget {
   ///   ],
   /// );
   /// ```
-  const StepContainer({
-    super.key,
-    required this.child,
-    required this.actions,
-  });
+  const StepContainer({super.key, required this.child, required this.actions});
 
   @override
   State<StepContainer> createState() => _StepContainerState();
@@ -1457,21 +1474,15 @@ class _StepContainerState extends State<StepContainer> {
     final densityContainerPadding =
         theme.density.baseContainerPadding * scaling;
     if (widget.actions.isEmpty) {
-      return widget.child.withPadding(
-        vertical: densityContainerPadding,
-      );
+      return widget.child.withPadding(vertical: densityContainerPadding);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         widget.child,
         Gap(densityGap * 2),
-        Row(
-          children: widget.actions,
-        ).gap(densityGap),
+        Row(children: widget.actions).gap(densityGap),
       ],
-    ).withPadding(
-      vertical: densityContainerPadding,
-    );
+    ).withPadding(vertical: densityContainerPadding);
   }
 }

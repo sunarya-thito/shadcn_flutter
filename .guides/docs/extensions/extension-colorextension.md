@@ -30,6 +30,8 @@ extension ColorExtension on Color {
   ///
   /// Returns: `Color` — color with specified luminance.
   Color withLuminance(double luminance);
+  Color darken([double amount = .1]);
+  Color lighten([double amount = .1]);
   /// Converts this color to hexadecimal string.
   ///
   /// Parameters:

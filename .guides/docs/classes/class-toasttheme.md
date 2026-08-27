@@ -96,7 +96,7 @@ class ToastTheme extends ComponentThemeData {
   ///   child: ListTile(
   ///     title: Text('Notification'),
   ///     trailing: IconButton(
-  ///       icon: Icon(Icons.close),
+  ///       icon: Icon(LucideIcons.x),
   ///       onPressed: overlay.close,
   ///     ),
   ///   ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:docs/pages/docs/components_page.dart';
 
@@ -23,9 +22,9 @@ class AnimatedValueBuilderTile extends StatelessWidget
           children: [
             Positioned.fill(
               child: RepeatedAnimationBuilder(
-                start: material.Colors.red,
-                end: material.Colors.blue,
-                lerp: material.Color.lerp,
+                start: Colors.red,
+                end: Colors.blue,
+                lerp: Color.lerp,
                 duration: const Duration(seconds: 1),
                 mode: LoopingMode.pingPong,
                 builder: (context, value, child) {

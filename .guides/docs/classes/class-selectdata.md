@@ -18,8 +18,10 @@ class SelectData {
   final bool hasSelection;
   /// Whether the select is enabled for interaction.
   final bool enabled;
+  /// The expand icon for the select
+  final Widget? expandIcon;
   /// Creates select data.
-  const SelectData({required this.autoClose, required this.isSelected, required this.onChanged, required this.hasSelection, required this.enabled});
+  const SelectData({required this.autoClose, required this.isSelected, required this.onChanged, required this.hasSelection, required this.enabled, required this.expandIcon});
   bool operator ==(Object other);
   int get hashCode;
 }

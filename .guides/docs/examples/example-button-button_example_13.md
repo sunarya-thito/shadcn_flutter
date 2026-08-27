@@ -21,7 +21,7 @@ class ButtonExample13 extends StatelessWidget {
         PrimaryButton(
           onPressed: () {},
           shape: ButtonShape.circle,
-          child: const Icon(Icons.add),
+          child: const Icon(LucideIcons.plus),
         ),
         PrimaryButton(
           onPressed: () {},

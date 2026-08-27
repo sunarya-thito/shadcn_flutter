@@ -61,7 +61,7 @@ class SkeletonExample1 extends StatelessWidget {
           leading: Avatar(
             initials: '',
           ),
-          trailing: Icon(Icons.arrow_forward),
+          trailing: Icon(LucideIcons.arrowRight),
         ),
         const Gap(24),
         Basic(
@@ -72,7 +72,7 @@ class SkeletonExample1 extends StatelessWidget {
             initials: '',
           ).asSkeleton(),
           // Note: Avatar and other Image related widget needs its own skeleton
-          trailing: const Icon(Icons.arrow_forward),
+          trailing: const Icon(LucideIcons.arrowRight),
         )
             // Wrap the whole row in a skeleton to show a loading placeholder for text and icons.
             .asSkeleton(),
@@ -111,7 +111,7 @@ class SkeletonTile extends StatelessWidget implements IComponentPage {
                 initials: '',
               ).asSkeleton(),
               // Note: Avatar and other Image related widget needs its own skeleton
-              trailing: const Icon(Icons.arrow_forward),
+              trailing: const Icon(LucideIcons.arrowRight),
             ).asSkeleton(),
             const Gap(16),
             Basic(
@@ -122,7 +122,7 @@ class SkeletonTile extends StatelessWidget implements IComponentPage {
                 initials: '',
               ).asSkeleton(),
               // Note: Avatar and other Image related widget needs its own skeleton
-              trailing: const Icon(Icons.arrow_forward),
+              trailing: const Icon(LucideIcons.arrowRight),
             ).asSkeleton(),
             const Gap(16),
             Basic(
@@ -133,7 +133,7 @@ class SkeletonTile extends StatelessWidget implements IComponentPage {
                 initials: '',
               ).asSkeleton(),
               // Note: Avatar and other Image related widget needs its own skeleton
-              trailing: const Icon(Icons.arrow_forward),
+              trailing: const Icon(LucideIcons.arrowRight),
             ).asSkeleton(),
           ],
         ),

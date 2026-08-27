@@ -82,6 +82,7 @@ import 'package:docs/pages/docs/components_page.dart';
 import 'package:docs/pages/docs/genui_page.dart';
 import 'package:docs/pages/docs/icons_page.dart';
 import 'package:docs/pages/docs/installation_page.dart';
+import 'package:docs/pages/docs/localizations_page.dart';
 import 'package:docs/pages/docs/introduction_page.dart';
 import 'package:docs/pages/docs/layout_page.dart';
 import 'package:docs/pages/docs/state_management_page.dart';
@@ -274,6 +275,11 @@ class MyAppState extends State<MyApp> {
       path: '/state',
       name: 'state',
       builder: (context, state) => const StateManagementPage(),
+    ),
+    GoRoute(
+      path: '/localizations',
+      name: 'localizations',
+      builder: (context, state) => const LocalizationsPage(),
     ),
     GoRoute(
       path: '/genui',

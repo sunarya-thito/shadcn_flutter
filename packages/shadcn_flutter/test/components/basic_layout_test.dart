@@ -6,11 +6,7 @@ import '../test_helper.dart';
 void main() {
   group('BasicLayout', () {
     testWidgets('renders with no content', (tester) async {
-      await tester.pumpWidget(
-        SimpleApp(
-          child: BasicLayout(),
-        ),
-      );
+      await tester.pumpWidget(SimpleApp(child: BasicLayout()));
 
       expect(find.byType(BasicLayout), findsOneWidget);
       // Should render as empty Row
@@ -18,11 +14,7 @@ void main() {
 
     testWidgets('renders with title only', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: BasicLayout(
-            title: Text('Title'),
-          ),
-        ),
+        SimpleApp(child: BasicLayout(title: Text('Title'))),
       );
 
       expect(find.byType(BasicLayout), findsOneWidget);
@@ -33,24 +25,21 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
           ),
         ),
       );
 
       expect(find.byType(BasicLayout), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
     });
 
     testWidgets('renders with title and subtitle', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: BasicLayout(
-            title: Text('Title'),
-            subtitle: Text('Subtitle'),
-          ),
+          child: BasicLayout(title: Text('Title'), subtitle: Text('Subtitle')),
         ),
       );
 
@@ -81,42 +70,42 @@ void main() {
         SimpleApp(
           child: BasicLayout(
             title: Text('Title'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
           ),
         ),
       );
 
       expect(find.byType(BasicLayout), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('renders with all components', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
             subtitle: Text('Subtitle'),
             content: Text('Content'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
           ),
         ),
       );
 
       expect(find.byType(BasicLayout), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
       expect(find.text('Subtitle'), findsOneWidget);
       expect(find.text('Content'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('respects custom content spacing', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
             contentSpacing: 24,
           ),
@@ -124,7 +113,7 @@ void main() {
       );
 
       expect(find.byType(BasicLayout), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
     });
 
@@ -162,7 +151,7 @@ void main() {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
-            leading: Icon(Icons.star),
+            leading: Icon(LucideIcons.star),
             title: Text('Title'),
             leadingAlignment: Alignment.center,
           ),
@@ -170,7 +159,7 @@ void main() {
       );
 
       expect(find.byType(BasicLayout), findsOneWidget);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(LucideIcons.star), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
     });
 
@@ -179,7 +168,7 @@ void main() {
         SimpleApp(
           child: BasicLayout(
             title: Text('Title'),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(LucideIcons.arrowRight),
             trailingAlignment: Alignment.center,
           ),
         ),
@@ -187,7 +176,7 @@ void main() {
 
       expect(find.byType(BasicLayout), findsOneWidget);
       expect(find.text('Title'), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+      expect(find.byIcon(LucideIcons.arrowRight), findsOneWidget);
     });
 
     testWidgets('respects title alignment', (tester) async {
@@ -244,7 +233,8 @@ void main() {
             child: BasicLayout(
               title: Text('Very Long Title That Should Wrap Appropriately'),
               content: Text(
-                  'Very long content that should also wrap properly and not cause layout issues'),
+                'Very long content that should also wrap properly and not cause layout issues',
+              ),
             ),
           ),
         ),
@@ -260,12 +250,7 @@ void main() {
         SimpleApp(
           child: BasicLayout(
             title: Text('Title'),
-            content: Column(
-              children: [
-                Text('Line 1'),
-                Text('Line 2'),
-              ],
-            ),
+            content: Column(children: [Text('Line 1'), Text('Line 2')]),
           ),
         ),
       );
@@ -276,13 +261,17 @@ void main() {
       expect(find.text('Line 2'), findsOneWidget);
     });
 
-    testWidgets('positions leading widget correctly relative to title',
-        (tester) async {
+    testWidgets('positions leading widget correctly relative to title', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
             leading: SizedBox(
-                width: 20, height: 20, child: ColoredBox(color: Colors.red)),
+              width: 20,
+              height: 20,
+              child: ColoredBox(color: Colors.red),
+            ),
             title: Text('Title'),
           ),
         ),
@@ -301,14 +290,18 @@ void main() {
       expect(leadingRect.right, lessThan(titleRect.left));
     });
 
-    testWidgets('positions trailing widget correctly relative to title',
-        (tester) async {
+    testWidgets('positions trailing widget correctly relative to title', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
             title: Text('Title'),
             trailing: SizedBox(
-                width: 20, height: 20, child: ColoredBox(color: Colors.blue)),
+              width: 20,
+              height: 20,
+              child: ColoredBox(color: Colors.blue),
+            ),
           ),
         ),
       );
@@ -331,7 +324,10 @@ void main() {
         SimpleApp(
           child: BasicLayout(
             leading: SizedBox(
-                width: 20, height: 20, child: ColoredBox(color: Colors.red)),
+              width: 20,
+              height: 20,
+              child: ColoredBox(color: Colors.red),
+            ),
             title: Text('Title'),
             contentSpacing: 16,
           ),
@@ -368,11 +364,7 @@ void main() {
     testWidgets('renders with reasonable size', (tester) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: Center(
-            child: BasicLayout(
-              title: Text('Title'),
-            ),
-          ),
+          child: Center(child: BasicLayout(title: Text('Title'))),
         ),
       );
 
@@ -385,14 +377,12 @@ void main() {
       expect(layoutSize.height, greaterThan(0));
     });
 
-    testWidgets('positions title above subtitle with correct spacing',
-        (tester) async {
+    testWidgets('positions title above subtitle with correct spacing', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
-          child: BasicLayout(
-            title: Text('Title'),
-            subtitle: Text('Subtitle'),
-          ),
+          child: BasicLayout(title: Text('Title'), subtitle: Text('Subtitle')),
         ),
       );
 
@@ -408,8 +398,9 @@ void main() {
       expect(subtitleRect.top - titleRect.bottom, greaterThan(0));
     });
 
-    testWidgets('positions content below title/subtitle with correct spacing',
-        (tester) async {
+    testWidgets('positions content below title/subtitle with correct spacing', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         SimpleApp(
           child: BasicLayout(
@@ -434,8 +425,9 @@ void main() {
       expect(gap, closeTo(12, 1)); // Allow small tolerance
     });
 
-    testWidgets('does not apply text styling like Basic widget',
-        (tester) async {
+    testWidgets('does not apply text styling like Basic widget', (
+      tester,
+    ) async {
       // BasicLayout should not apply text styling, unlike Basic
       await tester.pumpWidget(
         SimpleApp(

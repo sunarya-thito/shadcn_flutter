@@ -24,7 +24,7 @@ class SkeletonTile extends StatelessWidget implements IComponentPage {
                 initials: '',
               ).asSkeleton(),
               // Note: Avatar and other Image related widget needs its own skeleton
-              trailing: const Icon(Icons.arrow_forward),
+              trailing: const Icon(LucideIcons.arrowRight),
             ).asSkeleton(),
             const Gap(16),
             Basic(
@@ -35,7 +35,7 @@ class SkeletonTile extends StatelessWidget implements IComponentPage {
                 initials: '',
               ).asSkeleton(),
               // Note: Avatar and other Image related widget needs its own skeleton
-              trailing: const Icon(Icons.arrow_forward),
+              trailing: const Icon(LucideIcons.arrowRight),
             ).asSkeleton(),
             const Gap(16),
             Basic(
@@ -46,7 +46,7 @@ class SkeletonTile extends StatelessWidget implements IComponentPage {
                 initials: '',
               ).asSkeleton(),
               // Note: Avatar and other Image related widget needs its own skeleton
-              trailing: const Icon(Icons.arrow_forward),
+              trailing: const Icon(LucideIcons.arrowRight),
             ).asSkeleton(),
           ],
         ),

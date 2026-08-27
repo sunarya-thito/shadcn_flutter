@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'shadcn_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -64,11 +65,13 @@ class ShadcnLocalizationsEn extends ShadcnLocalizations {
 
   @override
   String formBetweenInclusively(double min, double max) {
-    final intl.NumberFormat minNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat minNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String minString = minNumberFormat.format(min);
-    final intl.NumberFormat maxNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat maxNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String maxString = maxNumberFormat.format(max);
 
     return 'Must be between $minString and $maxString (inclusive)';
@@ -76,11 +79,13 @@ class ShadcnLocalizationsEn extends ShadcnLocalizations {
 
   @override
   String formBetweenExclusively(double min, double max) {
-    final intl.NumberFormat minNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat minNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String minString = minNumberFormat.format(min);
-    final intl.NumberFormat maxNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat maxNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
     final String maxString = maxNumberFormat.format(max);
 
     return 'Must be between $minString and $maxString (exclusive)';
@@ -269,6 +274,9 @@ class ShadcnLocalizationsEn extends ShadcnLocalizations {
 
   @override
   String get menuSelectAll => 'Select All';
+
+  @override
+  String get noSpellCheckReplacements => 'No Replacements Found';
 
   @override
   String get menuUndo => 'Undo';

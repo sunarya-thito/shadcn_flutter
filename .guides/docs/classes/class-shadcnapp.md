@@ -1,25 +1,30 @@
 ---
 title: "Class: ShadcnApp"
-description: "The main application widget for shadcn_flutter.   ShadcnApp provides a Material-style app structure with shadcn theming.  It wraps the Flutter [WidgetsApp] and provides theme management,  navigation, and other app-level configurations."
+description: "The main application widget for shadcn_flutter.   ShadcnApp wraps the Flutter [WidgetsApp] and provides theme management,  navigation, localization and the other app-level configuration this package  needs. It depends only on `package:flutter/widgets.dart`.   To also use Material or Cupertino widgets inside the app, use  `MaterialShadcnApp` from `package:shadcn_flutter_material` or  `CupertinoShadcnApp` from `package:shadcn_flutter_cupertino`, which layer  the corresponding theme, localizations and ancestors on top of this widget."
 ---
 
 ```dart
 /// The main application widget for shadcn_flutter.
 ///
-/// ShadcnApp provides a Material-style app structure with shadcn theming.
-/// It wraps the Flutter [WidgetsApp] and provides theme management,
-/// navigation, and other app-level configurations.
+/// ShadcnApp wraps the Flutter [WidgetsApp] and provides theme management,
+/// navigation, localization and the other app-level configuration this package
+/// needs. It depends only on `package:flutter/widgets.dart`.
+///
+/// To also use Material or Cupertino widgets inside the app, use
+/// `MaterialShadcnApp` from `package:shadcn_flutter_material` or
+/// `CupertinoShadcnApp` from `package:shadcn_flutter_cupertino`, which layer
+/// the corresponding theme, localizations and ancestors on top of this widget.
 class ShadcnApp extends StatefulWidget {
   /// Creates a ShadcnApp with navigator-based routing.
   ///
   /// This constructor is used for apps that use named routes and
   /// a Navigator for navigation.
-  const ShadcnApp({super.key, this.navigatorKey, this.home, this.routes = const {}, this.initialRoute, this.onGenerateRoute, this.onGenerateInitialRoutes, this.onUnknownRoute, this.onNavigationNotification, this.navigatorObservers = const [], this.builder, this.title = '', this.onGenerateTitle, this.color, this.background, this.theme = const ThemeData(), this.locale, this.localizationsDelegates, this.localeListResolutionCallback, this.localeResolutionCallback, this.supportedLocales = const [Locale('en', 'US')], this.debugShowMaterialGrid = false, this.showPerformanceOverlay = false, this.showSemanticsDebugger = false, this.debugShowCheckedModeBanner = true, this.shortcuts, this.actions, this.restorationScopeId, this.scrollBehavior, this.materialTheme, this.cupertinoTheme, this.scaling, this.disableBrowserContextMenu = true, this.initialRecentColors = const [], this.maxRecentColors = 10, this.onRecentColorsChanged, this.pixelSnap = true, this.enableScrollInterception = true, this.darkTheme, this.themeMode = ThemeMode.system, this.popoverHandler, this.tooltipHandler, this.menuHandler, this.enableThemeAnimation = true});
+  const ShadcnApp({super.key, this.navigatorKey, this.home, this.routes = const {}, this.initialRoute, this.onGenerateRoute, this.onGenerateInitialRoutes, this.onUnknownRoute, this.onNavigationNotification, this.navigatorObservers = const [], this.builder, this.title = '', this.onGenerateTitle, this.color, this.background, this.theme = const ThemeData(), this.locale, this.localizationsDelegates, this.localeListResolutionCallback, this.localeResolutionCallback, this.supportedLocales = const [Locale('en', 'US')], this.debugShowGrid = false, this.showPerformanceOverlay = false, this.showSemanticsDebugger = false, this.debugShowCheckedModeBanner = true, this.shortcuts, this.actions, this.restorationScopeId, this.scrollBehavior, this.scaling, this.disableBrowserContextMenu = true, this.initialRecentColors = const [], this.maxRecentColors = 10, this.onRecentColorsChanged, this.pixelSnap = true, this.enableScrollInterception = true, this.darkTheme, this.themeMode = ThemeMode.system, this.enableThemeAnimation = true});
   /// Creates a ShadcnApp with router-based routing.
   ///
   /// This constructor is used for apps that use the Router API
   /// for declarative navigation.
-  const ShadcnApp.router({super.key, this.routeInformationProvider, this.routeInformationParser, this.routerDelegate, this.routerConfig, this.backButtonDispatcher, this.builder, this.title = '', this.onGenerateTitle, this.onNavigationNotification, this.color, this.background, this.theme = const ThemeData(), this.locale, this.localizationsDelegates, this.localeListResolutionCallback, this.localeResolutionCallback, this.supportedLocales = const [Locale('en', 'US')], this.debugShowMaterialGrid = false, this.showPerformanceOverlay = false, this.showSemanticsDebugger = false, this.debugShowCheckedModeBanner = true, this.shortcuts, this.actions, this.restorationScopeId, this.scrollBehavior, this.materialTheme, this.cupertinoTheme, this.scaling, this.disableBrowserContextMenu = true, this.initialRecentColors = const [], this.maxRecentColors = 50, this.onRecentColorsChanged, this.pixelSnap = true, this.enableScrollInterception = false, this.darkTheme, this.themeMode = ThemeMode.system, this.popoverHandler, this.tooltipHandler, this.menuHandler, this.enableThemeAnimation = true});
+  const ShadcnApp.router({super.key, this.routeInformationProvider, this.routeInformationParser, this.routerDelegate, this.routerConfig, this.backButtonDispatcher, this.builder, this.title = '', this.onGenerateTitle, this.onNavigationNotification, this.color, this.background, this.theme = const ThemeData(), this.locale, this.localizationsDelegates, this.localeListResolutionCallback, this.localeResolutionCallback, this.supportedLocales = const [Locale('en', 'US')], this.debugShowGrid = false, this.showPerformanceOverlay = false, this.showSemanticsDebugger = false, this.debugShowCheckedModeBanner = true, this.shortcuts, this.actions, this.restorationScopeId, this.scrollBehavior, this.scaling, this.disableBrowserContextMenu = true, this.initialRecentColors = const [], this.maxRecentColors = 50, this.onRecentColorsChanged, this.pixelSnap = true, this.enableScrollInterception = false, this.darkTheme, this.themeMode = ThemeMode.system, this.enableThemeAnimation = true});
   /// A key to use when building the [Navigator].
   final GlobalKey<NavigatorState>? navigatorKey;
   /// The scaling strategy for the app.
@@ -90,12 +95,11 @@ class ShadcnApp extends StatefulWidget {
   final String? restorationScopeId;
   /// The scroll behavior for the app.
   final ScrollBehavior? scrollBehavior;
-  /// Whether to show the Material grid in debug mode.
-  final bool debugShowMaterialGrid;
-  /// The Material theme to use for Material widgets.
-  final m.ThemeData? materialTheme;
-  /// The Cupertino theme to use for Cupertino widgets.
-  final c.CupertinoThemeData? cupertinoTheme;
+  /// Whether to overlay an 8px debug grid on the app in debug mode.
+  ///
+  /// Has no effect in release builds. Useful for checking that content lines up
+  /// with the spacing scale.
+  final bool debugShowGrid;
   /// Whether to disable the browser context menu.
   final bool disableBrowserContextMenu;
   /// The initial list of recent colors.
@@ -108,12 +112,6 @@ class ShadcnApp extends StatefulWidget {
   final bool pixelSnap;
   /// Whether to enable scroll interception.
   final bool enableScrollInterception;
-  /// The overlay handler for popovers.
-  final OverlayHandler? popoverHandler;
-  /// The overlay handler for tooltips.
-  final OverlayHandler? tooltipHandler;
-  /// The overlay handler for menus.
-  final OverlayHandler? menuHandler;
   /// Whether to animate theme changes.
   final bool enableThemeAnimation;
   State<ShadcnApp> createState();

@@ -106,7 +106,7 @@ class ItemPicker<T> extends StatelessWidget {
   /// Example:
   /// ```dart
   /// ItemPicker<IconData>(
-  ///   items: ItemList([Icons.home, Icons.star, Icons.favorite]),
+  ///   items: ItemList([LucideIcons.house, LucideIcons.star, LucideIcons.heart]),
   ///   layout: ItemPickerLayout.grid,
   ///   mode: PromptMode.dialog,
   ///   builder: (context, icon, selected) => Icon(icon),
@@ -132,37 +132,20 @@ class ItemPicker<T> extends StatelessWidget {
     final mode = this.mode ?? PromptMode.dialog;
     final constraints = this.constraints;
     return ObjectFormField(
-        value: value,
-        placeholder: placeholder ?? const SizedBox.shrink(),
-        builder: builder,
-        dialogTitle: title,
-        onChanged: onChanged,
-        mode: mode,
-        decorate: false,
-        editorBuilder: (context, handler) {
-          if (mode == PromptMode.dialog) {
-            final theme = Theme.of(context);
-            return ModalBackdrop(
+      value: value,
+      placeholder: placeholder ?? const SizedBox.shrink(),
+      builder: builder,
+      dialogTitle: title,
+      onChanged: onChanged,
+      mode: mode,
+      decorate: false,
+      editorBuilder: (context, handler) {
+        if (mode == PromptMode.dialog) {
+          final theme = Theme.of(context);
+          return ModalBackdrop(
+            borderRadius: theme.borderRadiusXl,
+            child: ModalContainer(
               borderRadius: theme.borderRadiusXl,
-              child: ModalContainer(
-                borderRadius: theme.borderRadiusXl,
-                padding: EdgeInsets.zero,
-                child: _InternalItemPicker<T>(
-                  items: items,
-                  builder: builder,
-                  initialValue: handler.value,
-                  layout: layout,
-                  title: title,
-                  constraints: constraints,
-                  onChanged: (value) {
-                    handler.value = value;
-                    closeOverlay(context);
-                  },
-                ),
-              ),
-            );
-          } else {
-            return SurfaceCard(
               padding: EdgeInsets.zero,
               child: _InternalItemPicker<T>(
                 items: items,
@@ -173,11 +156,29 @@ class ItemPicker<T> extends StatelessWidget {
                 constraints: constraints,
                 onChanged: (value) {
                   handler.value = value;
+                  closeOverlay(context);
                 },
               ),
-            );
-          }
-        });
+            ),
+          );
+        } else {
+          return SurfaceCard(
+            padding: EdgeInsets.zero,
+            child: _InternalItemPicker<T>(
+              items: items,
+              builder: builder,
+              initialValue: handler.value,
+              layout: layout,
+              title: title,
+              constraints: constraints,
+              onChanged: (value) {
+                handler.value = value;
+              },
+            ),
+          );
+        }
+      },
+    );
   }
 }
 
@@ -244,7 +245,6 @@ class ItemList<T> extends ItemChildDelegate<T> {
 /// ```
 class ItemBuilder<T> extends ItemChildDelegate<T> {
   @override
-
   /// The total number of items, or null if infinite.
   final int? itemCount;
 
@@ -298,7 +298,10 @@ abstract class ItemPickerLayout {
   ///
   /// Returns: A widget displaying the items in this layout.
   Widget build(
-      BuildContext context, ItemChildDelegate items, ItemPickerBuilder builder);
+    BuildContext context,
+    ItemChildDelegate items,
+    ItemPickerBuilder builder,
+  );
 }
 
 /// A list-based layout for item pickers.
@@ -313,8 +316,11 @@ class ListItemPickerLayout extends ItemPickerLayout {
   /// Creates a [ListItemPickerLayout].
   const ListItemPickerLayout();
   @override
-  Widget build(BuildContext context, ItemChildDelegate items,
-      ItemPickerBuilder builder) {
+  Widget build(
+    BuildContext context,
+    ItemChildDelegate items,
+    ItemPickerBuilder builder,
+  ) {
     final padding = MediaQuery.paddingOf(context);
     return MediaQuery.removePadding(
       context: context,
@@ -367,8 +373,11 @@ class GridItemPickerLayout extends ItemPickerLayout {
   }
 
   @override
-  Widget build(BuildContext context, ItemChildDelegate items,
-      ItemPickerBuilder builder) {
+  Widget build(
+    BuildContext context,
+    ItemChildDelegate items,
+    ItemPickerBuilder builder,
+  ) {
     final theme = Theme.of(context);
     final densityGap = theme.density.baseGap * theme.scaling;
     final padding = MediaQuery.paddingOf(context);
@@ -496,12 +505,14 @@ class _InternalItemPicker<T> extends StatelessWidget {
       children: [
         if (title != null)
           Padding(
-            padding: EdgeInsets.all(densityContainerPadding) +
+            padding:
+                EdgeInsets.all(densityContainerPadding) +
                 EdgeInsets.only(top: padding.top),
             child: title?.large.semiBold,
           ),
         ConstrainedBox(
-          constraints: constraints ??
+          constraints:
+              constraints ??
               BoxConstraints(
                 maxWidth: 320 * theme.scaling,
                 maxHeight: 320 * theme.scaling,
@@ -510,11 +521,11 @@ class _InternalItemPicker<T> extends StatelessWidget {
             data: MediaQuery.of(context).copyWith(
               padding: title != null
                   ? padding.copyWith(top: 0) +
-                      EdgeInsets.only(
-                        bottom: densityGap,
-                        left: densityGap,
-                        right: densityGap,
-                      )
+                        EdgeInsets.only(
+                          bottom: densityGap,
+                          left: densityGap,
+                          right: densityGap,
+                        )
                   : padding + EdgeInsets.all(densityGap),
             ),
             child: ItemPickerDialog<T>(
@@ -552,7 +563,7 @@ class _InternalItemPicker<T> extends StatelessWidget {
 /// final icon = await showItemPickerDialog<IconData>(
 ///   context,
 ///   title: Text('Choose Icon'),
-///   items: ItemList([Icons.home, Icons.star, Icons.settings]),
+///   items: ItemList([LucideIcons.house, LucideIcons.star, LucideIcons.settings]),
 ///   builder: (context, icon) => Icon(icon),
 /// );
 /// ```
@@ -776,18 +787,16 @@ class ItemPickerOption<T> extends StatelessWidget {
           if (label == null) {
             return child;
           }
-          return BasicLayout(
-            leading: child,
-            content: label,
-          );
+          return BasicLayout(leading: child, content: label);
         },
       );
     }
     if (data.layout is ListItemPickerLayout) {
       if (label == null) {
         return Button(
-          onPressed:
-              data.onChanged == null ? null : () => data.onChanged!(value),
+          onPressed: data.onChanged == null
+              ? null
+              : () => data.onChanged!(value),
           style: data.value == value
               ? (selectedStyle ?? ButtonVariance.primary)
               : (style ?? ButtonVariance.ghost),

@@ -19,13 +19,17 @@ description: "Represents a phone number with country code information.   [PhoneN
 /// ```
 class PhoneNumber {
   /// The country associated with this phone number.
-  final Country country;
+  final Country? country;
   /// The phone number without the country code.
   final String number;
   /// Creates a [PhoneNumber] with the specified country and number.
   const PhoneNumber(this.country, this.number);
+  /// Creates a copy with a new country
+  PhoneNumber withCountry(Country? country);
   /// Gets the complete phone number including country code.
   String get fullNumber;
+  /// Gets the complete phone number with a plus sign prefix.
+  String get fullCodeNumber;
   /// Gets the full number or null if the number is empty.
   String? get value;
   String toString();

@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -117,8 +118,9 @@ class TableTheme extends ComponentThemeData {
   }) {
     return TableTheme(
       border: border == null ? this.border : border(),
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      backgroundColor: backgroundColor == null
+          ? this.backgroundColor
+          : backgroundColor(),
       cellTheme: cellTheme == null ? this.cellTheme : cellTheme(),
     );
   }
@@ -221,11 +223,7 @@ class TableCellTheme {
   ///   }),
   /// );
   /// ```
-  const TableCellTheme({
-    this.border,
-    this.backgroundColor,
-    this.textStyle,
-  });
+  const TableCellTheme({this.border, this.backgroundColor, this.textStyle});
 
   @override
   bool operator ==(Object other) {
@@ -262,8 +260,9 @@ class TableCellTheme {
   }) {
     return TableCellTheme(
       border: border == null ? this.border : border(),
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
+      backgroundColor: backgroundColor == null
+          ? this.backgroundColor
+          : backgroundColor(),
       textStyle: textStyle == null ? this.textStyle : textStyle(),
     );
   }
@@ -329,8 +328,9 @@ class ResizableTableTheme extends ComponentThemeData {
   }) {
     return ResizableTableTheme(
       tableTheme: tableTheme == null ? this.tableTheme : tableTheme(),
-      resizerThickness:
-          resizerThickness == null ? this.resizerThickness : resizerThickness(),
+      resizerThickness: resizerThickness == null
+          ? this.resizerThickness
+          : resizerThickness(),
       resizerColor: resizerColor == null ? this.resizerColor : resizerColor(),
     );
   }
@@ -389,14 +389,14 @@ class ResizableTableController extends ChangeNotifier {
   /// columns/rows or adjust shared borders between adjacent columns/rows.
   ///
   /// Parameters:
-  /// - [columnWidths] (`Map<int, double>?`): Initial column widths by index
-  /// - [defaultColumnWidth] (double, required): Default width for columns without explicit width
-  /// - [rowHeights] (`Map<int, double>?`): Initial row heights by index
-  /// - [defaultRowHeight] (double, required): Default height for rows without explicit height
-  /// - [defaultWidthConstraint] (ConstrainedTableSize?): Default width constraints applied to all columns
-  /// - [defaultHeightConstraint] (ConstrainedTableSize?): Default height constraints applied to all rows
-  /// - [widthConstraints] (`Map<int, ConstrainedTableSize>?`): Per-column width constraints
-  /// - [heightConstraints] (`Map<int, ConstrainedTableSize>?`): Per-row height constraints
+  /// - [_columnWidths] (`Map<int, double>?`): Initial column widths by index
+  /// - [_defaultColumnWidth] (double, required): Default width for columns without explicit width
+  /// - [_rowHeights] (`Map<int, double>?`): Initial row heights by index
+  /// - [_defaultRowHeight] (double, required): Default height for rows without explicit height
+  /// - [_defaultWidthConstraint] (ConstrainedTableSize?): Default width constraints applied to all columns
+  /// - [_defaultHeightConstraint] (ConstrainedTableSize?): Default height constraints applied to all rows
+  /// - [_widthConstraints] (`Map<int, ConstrainedTableSize>?`): Per-column width constraints
+  /// - [_heightConstraints] (`Map<int, ConstrainedTableSize>?`): Per-row height constraints
   ///
   /// Example:
   /// ```dart
@@ -409,22 +409,15 @@ class ResizableTableController extends ChangeNotifier {
   /// )
   /// ```
   ResizableTableController({
-    Map<int, double>? columnWidths,
-    required double defaultColumnWidth,
-    Map<int, double>? rowHeights,
-    required double defaultRowHeight,
-    ConstrainedTableSize? defaultWidthConstraint,
-    ConstrainedTableSize? defaultHeightConstraint,
-    Map<int, ConstrainedTableSize>? widthConstraints,
-    Map<int, ConstrainedTableSize>? heightConstraints,
-  })  : _columnWidths = columnWidths,
-        _rowHeights = rowHeights,
-        _defaultColumnWidth = defaultColumnWidth,
-        _defaultRowHeight = defaultRowHeight,
-        _widthConstraints = widthConstraints,
-        _heightConstraints = heightConstraints,
-        _defaultWidthConstraint = defaultWidthConstraint,
-        _defaultHeightConstraint = defaultHeightConstraint;
+    this._columnWidths,
+    required this._defaultColumnWidth,
+    this._rowHeights,
+    required this._defaultRowHeight,
+    this._defaultWidthConstraint,
+    this._defaultHeightConstraint,
+    this._widthConstraints,
+    this._heightConstraints,
+  });
 
   /// Resizes a specific column to a new width.
   ///
@@ -438,10 +431,11 @@ class ResizableTableController extends ChangeNotifier {
       return false;
     }
     width = width.clamp(
-        _widthConstraints?[column]?.min ?? _defaultWidthConstraint?.min ?? 0,
-        _widthConstraints?[column]?.max ??
-            _defaultWidthConstraint?.max ??
-            double.infinity);
+      _widthConstraints?[column]?.min ?? _defaultWidthConstraint?.min ?? 0,
+      _widthConstraints?[column]?.max ??
+          _defaultWidthConstraint?.max ??
+          double.infinity,
+    );
     if (_columnWidths != null && _columnWidths![column] == width) {
       return false;
     }
@@ -460,7 +454,10 @@ class ResizableTableController extends ChangeNotifier {
   ///
   /// Returns: `double` — actual width change applied.
   double resizeColumnBorder(
-      int previousColumn, int nextColumn, double deltaWidth) {
+    int previousColumn,
+    int nextColumn,
+    double deltaWidth,
+  ) {
     if (previousColumn < 0 || nextColumn < 0 || deltaWidth == 0) {
       return 0;
     }
@@ -470,19 +467,19 @@ class ResizableTableController extends ChangeNotifier {
     var nextWidth = _columnWidths?[nextColumn] ?? _defaultColumnWidth;
     double newNextWidth = nextWidth - deltaWidth;
     double clampedPreviousWidth = newPreviousWidth.clamp(
-        _widthConstraints?[previousColumn]?.min ??
-            _defaultWidthConstraint?.min ??
-            0,
-        _widthConstraints?[previousColumn]?.max ??
-            _defaultWidthConstraint?.max ??
-            double.infinity);
+      _widthConstraints?[previousColumn]?.min ??
+          _defaultWidthConstraint?.min ??
+          0,
+      _widthConstraints?[previousColumn]?.max ??
+          _defaultWidthConstraint?.max ??
+          double.infinity,
+    );
     double clampedNextWidth = newNextWidth.clamp(
-        _widthConstraints?[nextColumn]?.min ??
-            _defaultWidthConstraint?.min ??
-            0,
-        _widthConstraints?[nextColumn]?.max ??
-            _defaultWidthConstraint?.max ??
-            double.infinity);
+      _widthConstraints?[nextColumn]?.min ?? _defaultWidthConstraint?.min ?? 0,
+      _widthConstraints?[nextColumn]?.max ??
+          _defaultWidthConstraint?.max ??
+          double.infinity,
+    );
     double previousDelta = clampedPreviousWidth - previousWidth;
     double nextDelta = clampedNextWidth - nextWidth;
     // find the delta that can be applied to both columns
@@ -521,17 +518,19 @@ class ResizableTableController extends ChangeNotifier {
     var nextHeight = _rowHeights?[nextRow] ?? _defaultRowHeight;
     double newNextHeight = nextHeight - deltaHeight;
     double clampedPreviousHeight = newPreviousHeight.clamp(
-        _heightConstraints?[previousRow]?.min ??
-            _defaultHeightConstraint?.min ??
-            0,
-        _heightConstraints?[previousRow]?.max ??
-            _defaultHeightConstraint?.max ??
-            double.infinity);
+      _heightConstraints?[previousRow]?.min ??
+          _defaultHeightConstraint?.min ??
+          0,
+      _heightConstraints?[previousRow]?.max ??
+          _defaultHeightConstraint?.max ??
+          double.infinity,
+    );
     double clampedNextHeight = newNextHeight.clamp(
-        _heightConstraints?[nextRow]?.min ?? _defaultHeightConstraint?.min ?? 0,
-        _heightConstraints?[nextRow]?.max ??
-            _defaultHeightConstraint?.max ??
-            double.infinity);
+      _heightConstraints?[nextRow]?.min ?? _defaultHeightConstraint?.min ?? 0,
+      _heightConstraints?[nextRow]?.max ??
+          _defaultHeightConstraint?.max ??
+          double.infinity,
+    );
     double previousDelta = clampedPreviousHeight - previousHeight;
     double nextDelta = clampedNextHeight - nextHeight;
     // find the delta that can be applied to both rows
@@ -558,10 +557,11 @@ class ResizableTableController extends ChangeNotifier {
       return false;
     }
     height = height.clamp(
-        _heightConstraints?[row]?.min ?? _defaultHeightConstraint?.min ?? 0,
-        _heightConstraints?[row]?.max ??
-            _defaultHeightConstraint?.max ??
-            double.infinity);
+      _heightConstraints?[row]?.min ?? _defaultHeightConstraint?.min ?? 0,
+      _heightConstraints?[row]?.max ??
+          _defaultHeightConstraint?.max ??
+          double.infinity,
+    );
     if (_rowHeights != null && _rowHeights![row] == height) {
       return false;
     }
@@ -713,6 +713,13 @@ class ResizableTable extends StatefulWidget {
   /// [ResizableTable]. See [Table.horizontalController].
   final ScrollController? horizontalController;
 
+  /// The direction columns run in. See [Table.textDirection].
+  ///
+  /// The resize handles follow it too: under [TextDirection.rtl] the handle on
+  /// a cell's right edge resizes the column before it, and dragging left
+  /// widens rather than narrows.
+  final TextDirection? textDirection;
+
   /// Creates a [ResizableTable].
   ///
   /// Parameters:
@@ -726,6 +733,8 @@ class ResizableTable extends StatefulWidget {
   /// - [horizontalOffset] (`double?`, optional): Horizontal scroll offset.
   /// - [verticalOffset] (`double?`, optional): Vertical scroll offset.
   /// - [viewportSize] (`Size?`, optional): Viewport size.
+  /// - [textDirection] (`TextDirection?`, optional): Direction columns run in;
+  ///   defaults to the ambient [Directionality].
   const ResizableTable({
     super.key,
     required this.rows,
@@ -740,6 +749,7 @@ class ResizableTable extends StatefulWidget {
     this.viewportSize,
     this.verticalController,
     this.horizontalController,
+    this.textDirection,
   });
 
   @override
@@ -775,18 +785,20 @@ class _ResizableTableState extends State<ResizableTable> {
       final row = rows[r];
       for (int c = 0; c < row.cells.length; c++) {
         final cell = row.cells[c];
-        _cells.add(_FlattenedTableCell(
-          column: c,
-          row: r,
-          columnSpan: cell.columnSpan,
-          rowSpan: cell.rowSpan,
-          builder: cell.build,
-          enabled: cell.enabled,
-          hoveredCellNotifier: _hoveredCellNotifier,
-          dragNotifier: _dragNotifier,
-          tableCellThemeBuilder: row.buildDefaultTheme,
-          selected: row.selected,
-        ));
+        _cells.add(
+          _FlattenedTableCell(
+            column: c,
+            row: r,
+            columnSpan: cell.columnSpan,
+            rowSpan: cell.rowSpan,
+            builder: cell.build,
+            enabled: cell.enabled,
+            hoveredCellNotifier: _hoveredCellNotifier,
+            dragNotifier: _dragNotifier,
+            tableCellThemeBuilder: row.buildDefaultTheme,
+            selected: row.selected,
+          ),
+        );
       }
     }
     _cells = _reorganizeCells(_cells);
@@ -827,8 +839,13 @@ class _ResizableTableState extends State<ResizableTable> {
   Widget build(BuildContext context) {
     ResizableTableTheme? resizableTableTheme =
         widget.theme ?? ComponentTheme.maybeOf<ResizableTableTheme>(context);
-    TableTheme? tableTheme = resizableTableTheme?.tableTheme ??
+    TableTheme? tableTheme =
+        resizableTableTheme?.tableTheme ??
         ComponentTheme.maybeOf<TableTheme>(context);
+    final textDirection =
+        widget.textDirection ??
+        Directionality.maybeOf(context) ??
+        TextDirection.ltr;
     var children = _cells.map((cell) {
       return Data.inherit(
         data: cell,
@@ -837,14 +854,19 @@ class _ResizableTableState extends State<ResizableTable> {
           row: cell.row,
           columnSpan: cell.columnSpan,
           rowSpan: cell.rowSpan,
-          child: Builder(builder: (context) {
-            return cell.builder(context);
-          }),
+          child: Builder(
+            builder: (context) {
+              return cell.builder(context);
+            },
+          ),
         ),
       );
     }).toList();
     Widget buildTable(
-        double? horizontalOffset, double? verticalOffset, Size? viewportSize) {
+      double? horizontalOffset,
+      double? verticalOffset,
+      Size? viewportSize,
+    ) {
       return Container(
         clipBehavior: widget.clipBehavior,
         decoration: BoxDecoration(
@@ -853,24 +875,26 @@ class _ResizableTableState extends State<ResizableTable> {
           borderRadius: tableTheme?.borderRadius,
         ),
         child: ListenableBuilder(
-            listenable: widget.controller,
-            builder: (context, child) {
-              return RawTableLayout(
-                clipBehavior: widget.clipBehavior,
-                horizontalOffset: horizontalOffset ?? widget.horizontalOffset,
-                verticalOffset: verticalOffset ?? widget.verticalOffset,
-                frozenColumn: widget.frozenCells?.testColumn,
-                frozenRow: widget.frozenCells?.testRow,
-                viewportSize: viewportSize ?? widget.viewportSize,
-                width: (index) {
-                  return _width(index);
-                },
-                height: (index) {
-                  return _height(index);
-                },
-                children: children,
-              );
-            }),
+          listenable: widget.controller,
+          builder: (context, child) {
+            return RawTableLayout(
+              clipBehavior: widget.clipBehavior,
+              horizontalOffset: horizontalOffset ?? widget.horizontalOffset,
+              verticalOffset: verticalOffset ?? widget.verticalOffset,
+              frozenColumn: widget.frozenCells?.testColumn,
+              frozenRow: widget.frozenCells?.testRow,
+              viewportSize: viewportSize ?? widget.viewportSize,
+              textDirection: textDirection,
+              width: (index) {
+                return _width(index);
+              },
+              height: (index) {
+                return _height(index);
+              },
+              children: children,
+            );
+          },
+        ),
       );
     }
 
@@ -878,10 +902,15 @@ class _ResizableTableState extends State<ResizableTable> {
     if (widget.verticalController != null ||
         widget.horizontalController != null) {
       table = ScrollableClient(
-        verticalDetails:
-            ScrollableDetails.vertical(controller: widget.verticalController),
+        verticalDetails: ScrollableDetails.vertical(
+          controller: widget.verticalController,
+        ),
+        // Reversed under RTL so that offset zero is the first column, which
+        // sits at the right edge, and scrolling proceeds towards the last.
         horizontalDetails: ScrollableDetails.horizontal(
-            controller: widget.horizontalController),
+          controller: widget.horizontalController,
+          reverse: textDirection == TextDirection.rtl,
+        ),
         builder: (context, offset, viewportSize, child) {
           return buildTable(offset.dx, offset.dy, viewportSize);
         },
@@ -894,11 +923,13 @@ class _ResizableTableState extends State<ResizableTable> {
       data: this,
       child: Data.inherit(
         data: _ResizableTableData(
-            controller: widget.controller,
-            cellWidthResizeMode: widget.cellWidthResizeMode,
-            cellHeightResizeMode: widget.cellHeightResizeMode,
-            maxColumn: _maxColumn,
-            maxRow: _maxRow),
+          controller: widget.controller,
+          cellWidthResizeMode: widget.cellWidthResizeMode,
+          cellHeightResizeMode: widget.cellHeightResizeMode,
+          maxColumn: _maxColumn,
+          maxRow: _maxRow,
+          textDirection: textDirection,
+        ),
         child: table,
       ),
     );
@@ -913,6 +944,7 @@ class _ResizableTableData {
   final TableCellResizeMode cellHeightResizeMode;
   final int maxColumn;
   final int maxRow;
+  final TextDirection textDirection;
 
   const _ResizableTableData({
     required this.controller,
@@ -920,6 +952,7 @@ class _ResizableTableData {
     required this.cellHeightResizeMode,
     required this.maxColumn,
     required this.maxRow,
+    required this.textDirection,
   });
 
   @override
@@ -930,13 +963,19 @@ class _ResizableTableData {
         other.cellWidthResizeMode == cellWidthResizeMode &&
         other.cellHeightResizeMode == cellHeightResizeMode &&
         other.maxColumn == maxColumn &&
-        other.maxRow == maxRow;
+        other.maxRow == maxRow &&
+        other.textDirection == textDirection;
   }
 
   @override
   int get hashCode {
     return Object.hash(
-        cellWidthResizeMode, maxColumn, maxRow, cellHeightResizeMode);
+      cellWidthResizeMode,
+      maxColumn,
+      maxRow,
+      cellHeightResizeMode,
+      textDirection,
+    );
   }
 }
 
@@ -972,11 +1011,13 @@ class _CellResizerState extends State<_CellResizer> {
   void _onDragStartRow(DragStartDetails details) {
     List<ResizableItem> items = [];
     for (int i = 0; i <= widget.maxRow; i++) {
-      items.add(ResizableItem(
-        value: widget.controller.getRowHeight(i),
-        min: widget.controller.getRowMinHeight(i) ?? 0,
-        max: widget.controller.getRowMaxHeight(i) ?? double.infinity,
-      ));
+      items.add(
+        ResizableItem(
+          value: widget.controller.getRowHeight(i),
+          min: widget.controller.getRowMinHeight(i) ?? 0,
+          max: widget.controller.getRowMaxHeight(i) ?? double.infinity,
+        ),
+      );
     }
     _resizer = Resizer(items);
     _resizeRow = true;
@@ -986,20 +1027,29 @@ class _CellResizerState extends State<_CellResizer> {
   void _onDragStartColumn(DragStartDetails details) {
     List<ResizableItem> items = [];
     for (int i = 0; i <= widget.maxColumn; i++) {
-      items.add(ResizableItem(
-        value: widget.controller.getColumnWidth(i),
-        min: widget.controller.getColumnMinWidth(i) ?? 0,
-        max: widget.controller.getColumnMaxWidth(i) ?? double.infinity,
-      ));
+      items.add(
+        ResizableItem(
+          value: widget.controller.getColumnWidth(i),
+          min: widget.controller.getColumnMinWidth(i) ?? 0,
+          max: widget.controller.getColumnMaxWidth(i) ?? double.infinity,
+        ),
+      );
     }
     _resizer = Resizer(items);
     _resizeRow = false;
     widget.onDrag(true, -1, Axis.vertical);
   }
 
-  void _onDragUpdate(int start, int end, DragUpdateDetails details) {
+  /// Column widths grow away from the first column, so a rightward drag widens
+  /// under LTR and narrows under RTL.
+  double _columnDelta(DragUpdateDetails details, TextDirection textDirection) {
+    final delta = details.primaryDelta!;
+    return textDirection == TextDirection.rtl ? -delta : delta;
+  }
+
+  void _onDragUpdate(int start, int end, double delta) {
     // _resizer!.resize(start, end, _delta!);
-    _resizer!.dragDivider(end, details.primaryDelta!);
+    _resizer!.dragDivider(end, delta);
     for (int i = 0; i < _resizer!.items.length; i++) {
       // widget.controller.resizeRow(i, _resizer!.items[i].newValue);
       if (_resizeRow!) {
@@ -1045,6 +1095,7 @@ class _CellResizerState extends State<_CellResizer> {
     final tableData = Data.of<_ResizableTableData>(context);
     final widthMode = tableData.cellWidthResizeMode;
     final heightMode = tableData.cellHeightResizeMode;
+    final textDirection = tableData.textDirection;
     final theme = Theme.of(context);
     return Stack(
       children: [
@@ -1069,12 +1120,13 @@ class _CellResizerState extends State<_CellResizer> {
                 onVerticalDragStart: _onDragStartRow,
                 onVerticalDragUpdate: (details) {
                   if (heightMode == TableCellResizeMode.reallocate) {
-                    _onDragUpdate(row - 1, row, details);
+                    _onDragUpdate(row - 1, row, details.primaryDelta!);
                   } else {
                     widget.controller.resizeRow(
-                        row - 1,
-                        widget.controller.getRowHeight(row - 1) +
-                            details.primaryDelta!);
+                      row - 1,
+                      widget.controller.getRowHeight(row - 1) +
+                          details.primaryDelta!,
+                    );
                   }
                 },
                 onVerticalDragEnd: _onDragEnd,
@@ -1092,12 +1144,13 @@ class _CellResizerState extends State<_CellResizer> {
                       hover = null;
                     }
                     return Container(
-                      color: (hover?.index == row - 1 &&
+                      color:
+                          (hover?.index == row - 1 &&
                                   hover?.direction == Axis.horizontal) ||
                               (drag?.index == row - 1 &&
                                   drag?.direction == Axis.horizontal)
                           ? widget.theme?.resizerColor ??
-                              theme.colorScheme.primary
+                                theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -1128,12 +1181,17 @@ class _CellResizerState extends State<_CellResizer> {
                 onVerticalDragStart: _onDragStartRow,
                 onVerticalDragUpdate: (details) {
                   if (heightMode == TableCellResizeMode.reallocate) {
-                    _onDragUpdate(row + rowSpan - 1, row + rowSpan, details);
+                    _onDragUpdate(
+                      row + rowSpan - 1,
+                      row + rowSpan,
+                      details.primaryDelta!,
+                    );
                   } else {
                     widget.controller.resizeRow(
-                        row + rowSpan - 1,
-                        widget.controller.getRowHeight(row + rowSpan - 1) +
-                            details.primaryDelta!);
+                      row + rowSpan - 1,
+                      widget.controller.getRowHeight(row + rowSpan - 1) +
+                          details.primaryDelta!,
+                    );
                   }
                 },
                 onVerticalDragEnd: _onDragEnd,
@@ -1150,12 +1208,13 @@ class _CellResizerState extends State<_CellResizer> {
                       hover = null;
                     }
                     return Container(
-                      color: (hover?.index == row + rowSpan - 1 &&
+                      color:
+                          (hover?.index == row + rowSpan - 1 &&
                                   hover?.direction == Axis.horizontal) ||
                               (drag?.index == row + rowSpan - 1 &&
                                   drag?.direction == Axis.horizontal)
                           ? widget.theme?.resizerColor ??
-                              theme.colorScheme.primary
+                                theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -1163,10 +1222,11 @@ class _CellResizerState extends State<_CellResizer> {
               ),
             ),
           ),
-        // left
+        // start of the row: resizes the boundary with the previous column
         if (column > 0 && widthMode != TableCellResizeMode.none)
-          Positioned(
-            left: -thickness / 2,
+          Positioned.directional(
+            textDirection: textDirection,
+            start: -thickness / 2,
             top: 0,
             bottom: 0,
             width: thickness,
@@ -1183,13 +1243,14 @@ class _CellResizerState extends State<_CellResizer> {
                 behavior: HitTestBehavior.translucent,
                 onHorizontalDragStart: _onDragStartColumn,
                 onHorizontalDragUpdate: (details) {
+                  final delta = _columnDelta(details, textDirection);
                   if (widthMode == TableCellResizeMode.reallocate) {
-                    _onDragUpdate(column - 1, column, details);
+                    _onDragUpdate(column - 1, column, delta);
                   } else {
                     widget.controller.resizeColumn(
-                        column - 1,
-                        widget.controller.getColumnWidth(column - 1) +
-                            details.primaryDelta!);
+                      column - 1,
+                      widget.controller.getColumnWidth(column - 1) + delta,
+                    );
                   }
                 },
                 onHorizontalDragEnd: _onDragEnd,
@@ -1206,12 +1267,13 @@ class _CellResizerState extends State<_CellResizer> {
                       hover = null;
                     }
                     return Container(
-                      color: (hover?.index == column - 1 &&
+                      color:
+                          (hover?.index == column - 1 &&
                                   hover?.direction == Axis.vertical) ||
                               (drag?.index == column - 1 &&
                                   drag?.direction == Axis.vertical)
                           ? widget.theme?.resizerColor ??
-                              theme.colorScheme.primary
+                                theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -1219,12 +1281,13 @@ class _CellResizerState extends State<_CellResizer> {
               ),
             ),
           ),
-        // right
+        // end of the row: resizes the boundary with the next column
         if ((column + columnSpan <= tableData.maxColumn ||
                 widthMode == TableCellResizeMode.expand) &&
             widthMode != TableCellResizeMode.none)
-          Positioned(
-            right: -thickness / 2,
+          Positioned.directional(
+            textDirection: textDirection,
+            end: -thickness / 2,
             top: 0,
             bottom: 0,
             width: thickness,
@@ -1241,15 +1304,21 @@ class _CellResizerState extends State<_CellResizer> {
                 behavior: HitTestBehavior.translucent,
                 onHorizontalDragStart: _onDragStartColumn,
                 onHorizontalDragUpdate: (details) {
+                  final delta = _columnDelta(details, textDirection);
                   if (widthMode == TableCellResizeMode.reallocate) {
                     _onDragUpdate(
-                        column + columnSpan - 1, column + columnSpan, details);
+                      column + columnSpan - 1,
+                      column + columnSpan,
+                      delta,
+                    );
                   } else {
                     widget.controller.resizeColumn(
-                        column + columnSpan - 1,
-                        widget.controller
-                                .getColumnWidth(column + columnSpan - 1) +
-                            details.primaryDelta!);
+                      column + columnSpan - 1,
+                      widget.controller.getColumnWidth(
+                            column + columnSpan - 1,
+                          ) +
+                          delta,
+                    );
                   }
                 },
                 onHorizontalDragEnd: _onDragEnd,
@@ -1266,12 +1335,13 @@ class _CellResizerState extends State<_CellResizer> {
                       hover = null;
                     }
                     return Container(
-                      color: (hover?.index == column + columnSpan - 1 &&
+                      color:
+                          (hover?.index == column + columnSpan - 1 &&
                                   hover?.direction == Axis.vertical) ||
                               (drag?.index == column + columnSpan - 1 &&
                                   drag?.direction == Axis.vertical)
                           ? widget.theme?.resizerColor ??
-                              theme.colorScheme.primary
+                                theme.colorScheme.primary
                           : null,
                     );
                   },
@@ -1330,12 +1400,16 @@ List<T> _reorganizeCells<T extends _TableCellData>(List<T> cells) {
                 // shift the cell to the right (+ columnSpan)
                 if (row != r) {
                   cellMap.putIfAbsent(i + cell.columnSpan, () => {});
-                  cellMap[i + cell.columnSpan]![row] =
-                      rightCell.shift(cell.columnSpan, 0);
+                  cellMap[i + cell.columnSpan]![row] = rightCell.shift(
+                    cell.columnSpan,
+                    0,
+                  );
                 } else {
                   cellMap.putIfAbsent(i + cell.columnSpan - 1, () => {});
-                  cellMap[i + cell.columnSpan - 1]![row] =
-                      rightCell.shift(cell.columnSpan - 1, 0);
+                  cellMap[i + cell.columnSpan - 1]![row] = rightCell.shift(
+                    cell.columnSpan - 1,
+                    0,
+                  );
                 }
               }
             }
@@ -1502,23 +1576,30 @@ class TableCell {
                   if (hoveredCell != null &&
                       ((columnHover &&
                               hoveredCell.intersects(
-                                  currentCell, Axis.vertical)) ||
+                                currentCell,
+                                Axis.vertical,
+                              )) ||
                           (rowHover &&
                               hoveredCell.intersects(
-                                  currentCell, Axis.horizontal))))
+                                currentCell,
+                                Axis.horizontal,
+                              ))))
                     WidgetState.hovered,
                   if (flattenedData.selected) WidgetState.selected,
                   if (!flattenedData.enabled) WidgetState.disabled,
                 };
                 return Container(
                   decoration: BoxDecoration(
-                    border: theme?.border?.resolve(resolvedStates) ??
+                    border:
+                        theme?.border?.resolve(resolvedStates) ??
                         defaultTheme.border?.resolve(resolvedStates),
-                    color: theme?.backgroundColor?.resolve(resolvedStates) ??
+                    color:
+                        theme?.backgroundColor?.resolve(resolvedStates) ??
                         defaultTheme.backgroundColor?.resolve(resolvedStates),
                   ),
                   child: DefaultTextStyle.merge(
-                    style: theme?.textStyle?.resolve(resolvedStates) ??
+                    style:
+                        theme?.textStyle?.resolve(resolvedStates) ??
                         defaultTheme.textStyle?.resolve(resolvedStates),
                     child: child!,
                   ),
@@ -1531,15 +1612,16 @@ class TableCell {
         if (resizedData != null && resizedState != null)
           Positioned.fill(
             child: _CellResizer(
-                controller: resizedData.controller,
-                onHover: resizedState._onHover,
-                onDrag: resizedState._onDrag,
-                hoverNotifier: resizedState._hoverNotifier,
-                dragNotifier: resizedState._dragNotifier,
-                maxRow: resizedState._maxRow,
-                theme: resizedState.widget.theme,
-                maxColumn: resizedState._maxColumn),
-          )
+              controller: resizedData.controller,
+              onHover: resizedState._onHover,
+              onDrag: resizedState._onDrag,
+              hoverNotifier: resizedState._hoverNotifier,
+              dragNotifier: resizedState._dragNotifier,
+              maxRow: resizedState._maxRow,
+              theme: resizedState.widget.theme,
+              maxColumn: resizedState._maxColumn,
+            ),
+          ),
       ],
     );
   }
@@ -1561,8 +1643,16 @@ class TableCell {
 
   @override
   int get hashCode {
-    return Object.hash(columnSpan, rowSpan, child, theme, enabled, columnHover,
-        rowHover, backgroundColor);
+    return Object.hash(
+      columnSpan,
+      rowSpan,
+      child,
+      theme,
+      enabled,
+      columnHover,
+      rowHover,
+      backgroundColor,
+    );
   }
 }
 
@@ -1622,32 +1712,23 @@ class TableRow {
     }
     final theme = Theme.of(context);
     return TableCellTheme(
-      border: WidgetStateProperty.resolveWith(
-        (states) {
-          return Border(
-            bottom: BorderSide(
-              color: theme.colorScheme.border,
-              width: 1,
-            ),
-          );
-        },
-      ),
-      backgroundColor: WidgetStateProperty.resolveWith(
-        (states) {
-          return states.contains(WidgetState.hovered)
-              ? theme.colorScheme.muted.withValues(alpha: 0.5)
-              : null;
-        },
-      ),
-      textStyle: WidgetStateProperty.resolveWith(
-        (states) {
-          return TextStyle(
-            color: states.contains(WidgetState.disabled)
-                ? theme.colorScheme.muted
-                : null,
-          );
-        },
-      ),
+      border: WidgetStateProperty.resolveWith((states) {
+        return Border(
+          bottom: BorderSide(color: theme.colorScheme.border, width: 1),
+        );
+      }),
+      backgroundColor: WidgetStateProperty.resolveWith((states) {
+        return states.contains(WidgetState.hovered)
+            ? theme.colorScheme.muted.withValues(alpha: 0.5)
+            : null;
+      }),
+      textStyle: WidgetStateProperty.resolveWith((states) {
+        return TextStyle(
+          color: states.contains(WidgetState.disabled)
+              ? theme.colorScheme.muted
+              : null,
+        );
+      }),
     );
   }
 
@@ -1693,22 +1774,18 @@ class TableFooter extends TableRow {
     final theme = Theme.of(context);
     return TableCellTheme(
       border: const WidgetStatePropertyAll(null),
-      backgroundColor: WidgetStateProperty.resolveWith(
-        (states) {
-          return states.contains(WidgetState.hovered)
+      backgroundColor: WidgetStateProperty.resolveWith((states) {
+        return states.contains(WidgetState.hovered)
+            ? theme.colorScheme.muted
+            : theme.colorScheme.muted.withValues(alpha: 0.5);
+      }),
+      textStyle: WidgetStateProperty.resolveWith((states) {
+        return TextStyle(
+          color: states.contains(WidgetState.disabled)
               ? theme.colorScheme.muted
-              : theme.colorScheme.muted.withValues(alpha: 0.5);
-        },
-      ),
-      textStyle: WidgetStateProperty.resolveWith(
-        (states) {
-          return TextStyle(
-            color: states.contains(WidgetState.disabled)
-                ? theme.colorScheme.muted
-                : null,
-          );
-        },
-      ),
+              : null,
+        );
+      }),
     );
   }
 }
@@ -1739,32 +1816,25 @@ class TableHeader extends TableRow {
     }
     final theme = Theme.of(context);
     return TableCellTheme(
-      border: WidgetStateProperty.resolveWith(
-        (states) {
-          return Border(
-            bottom: BorderSide(
-              color: theme.colorScheme.border,
-              width: 1,
-            ),
-          );
-        },
-      ),
-      backgroundColor: WidgetStateProperty.resolveWith(
-        (states) {
-          return states.contains(WidgetState.hovered)
-              ? theme.colorScheme.muted
-              : theme.colorScheme.muted.withValues(alpha: 0.5);
-        },
-      ),
-      textStyle: WidgetStateProperty.resolveWith(
-        (states) {
-          return theme.typography.semiBold.merge(TextStyle(
+      border: WidgetStateProperty.resolveWith((states) {
+        return Border(
+          bottom: BorderSide(color: theme.colorScheme.border, width: 1),
+        );
+      }),
+      backgroundColor: WidgetStateProperty.resolveWith((states) {
+        return states.contains(WidgetState.hovered)
+            ? theme.colorScheme.muted
+            : theme.colorScheme.muted.withValues(alpha: 0.5);
+      }),
+      textStyle: WidgetStateProperty.resolveWith((states) {
+        return theme.typography.semiBold.merge(
+          TextStyle(
             color: states.contains(WidgetState.disabled)
                 ? theme.colorScheme.muted
                 : null,
-          ));
-        },
-      ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -1979,6 +2049,16 @@ class Table extends StatefulWidget {
   /// Same semantics as [verticalController], for the horizontal axis.
   final ScrollController? horizontalController;
 
+  /// The direction columns run in.
+  ///
+  /// Defaults to the ambient [Directionality]. Column indices are always
+  /// logical — [columnWidths] key 0, [FrozenTableData.frozenColumns] index 0
+  /// and [TableRow.cells] position 0 all refer to the first column — so under
+  /// [TextDirection.rtl] that column is laid out at the right edge, frozen
+  /// columns pin to the right, and horizontal scrolling starts there and runs
+  /// leftwards.
+  final TextDirection? textDirection;
+
   /// Creates a [Table] widget.
   ///
   /// The table displays data organized in rows and cells with flexible
@@ -1996,6 +2076,8 @@ class Table extends StatefulWidget {
   /// - [horizontalOffset] (double?, optional): Horizontal scroll position
   /// - [verticalOffset] (double?, optional): Vertical scroll position
   /// - [viewportSize] (Size?, optional): Viewport size constraints
+  /// - [textDirection] (TextDirection?, optional): Direction columns run in;
+  ///   defaults to the ambient [Directionality]
   ///
   /// Example:
   /// ```dart
@@ -2022,6 +2104,7 @@ class Table extends StatefulWidget {
     this.viewportSize,
     this.verticalController,
     this.horizontalController,
+    this.textDirection,
   });
 
   @override
@@ -2053,18 +2136,20 @@ class _TableState extends State<Table> {
       final row = rows[r];
       for (int c = 0; c < row.cells.length; c++) {
         final cell = row.cells[c];
-        _cells.add(_FlattenedTableCell(
-          column: c,
-          row: r,
-          columnSpan: cell.columnSpan,
-          rowSpan: cell.rowSpan,
-          builder: cell.build,
-          enabled: cell.enabled,
-          hoveredCellNotifier: _hoveredCellNotifier,
-          dragNotifier: null,
-          tableCellThemeBuilder: row.buildDefaultTheme,
-          selected: row.selected,
-        ));
+        _cells.add(
+          _FlattenedTableCell(
+            column: c,
+            row: r,
+            columnSpan: cell.columnSpan,
+            rowSpan: cell.rowSpan,
+            builder: cell.build,
+            enabled: cell.enabled,
+            hoveredCellNotifier: _hoveredCellNotifier,
+            dragNotifier: null,
+            tableCellThemeBuilder: row.buildDefaultTheme,
+            selected: row.selected,
+          ),
+        );
       }
     }
     _cells = _reorganizeCells(_cells);
@@ -2074,8 +2159,15 @@ class _TableState extends State<Table> {
   Widget build(BuildContext context) {
     TableTheme? tableTheme =
         widget.theme ?? ComponentTheme.maybeOf<TableTheme>(context);
+    final textDirection =
+        widget.textDirection ??
+        Directionality.maybeOf(context) ??
+        TextDirection.ltr;
     Widget buildTable(
-        double? horizontalOffset, double? verticalOffset, Size? viewportSize) {
+      double? horizontalOffset,
+      double? verticalOffset,
+      Size? viewportSize,
+    ) {
       return Container(
         clipBehavior: widget.clipBehavior,
         decoration: BoxDecoration(
@@ -2090,6 +2182,7 @@ class _TableState extends State<Table> {
           horizontalOffset: horizontalOffset,
           verticalOffset: verticalOffset,
           viewportSize: viewportSize,
+          textDirection: textDirection,
           width: (index) {
             if (widget.columnWidths != null) {
               return widget.columnWidths![index] ?? widget.defaultColumnWidth;
@@ -2110,9 +2203,11 @@ class _TableState extends State<Table> {
                 row: cell.row,
                 columnSpan: cell.columnSpan,
                 rowSpan: cell.rowSpan,
-                child: Builder(builder: (context) {
-                  return cell.builder(context);
-                }),
+                child: Builder(
+                  builder: (context) {
+                    return cell.builder(context);
+                  },
+                ),
               ),
             );
           }).toList(),
@@ -2123,10 +2218,15 @@ class _TableState extends State<Table> {
     if (widget.verticalController != null ||
         widget.horizontalController != null) {
       return ScrollableClient(
-        verticalDetails:
-            ScrollableDetails.vertical(controller: widget.verticalController),
+        verticalDetails: ScrollableDetails.vertical(
+          controller: widget.verticalController,
+        ),
+        // Reversed under RTL so that offset zero is the first column, which
+        // sits at the right edge, and scrolling proceeds towards the last.
         horizontalDetails: ScrollableDetails.horizontal(
-            controller: widget.horizontalController),
+          controller: widget.horizontalController,
+          reverse: textDirection == TextDirection.rtl,
+        ),
         builder: (context, offset, viewportSize, child) {
           return buildTable(offset.dx, offset.dy, viewportSize);
         },
@@ -2134,7 +2234,10 @@ class _TableState extends State<Table> {
     }
 
     return buildTable(
-        widget.horizontalOffset, widget.verticalOffset, widget.viewportSize);
+      widget.horizontalOffset,
+      widget.verticalOffset,
+      widget.viewportSize,
+    );
   }
 }
 
@@ -2184,8 +2287,10 @@ class FrozenTableData {
   final Iterable<TableRef> frozenColumns;
 
   /// Creates a [FrozenTableData].
-  const FrozenTableData(
-      {this.frozenRows = const [], this.frozenColumns = const []});
+  const FrozenTableData({
+    this.frozenRows = const [],
+    this.frozenColumns = const [],
+  });
 
   /// Tests if a row at the given index and span is frozen.
   bool testRow(int index, int span) {
@@ -2419,6 +2524,7 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
   /// - [verticalOffset] (`double?`, optional): Vertical scroll offset.
   /// - [horizontalOffset] (`double?`, optional): Horizontal scroll offset.
   /// - [viewportSize] (`Size?`, optional): Viewport size for scrolling.
+  /// - [textDirection] (`TextDirection`, required): Direction columns run in.
   const RawTableLayout({
     super.key,
     super.children,
@@ -2430,6 +2536,7 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
     this.verticalOffset,
     this.horizontalOffset,
     this.viewportSize,
+    this.textDirection = TextDirection.ltr,
   });
 
   /// Supplier function for column widths.
@@ -2456,22 +2563,33 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
   /// Size of the visible viewport.
   final Size? viewportSize;
 
+  /// The direction columns run in.
+  ///
+  /// Column indices stay logical whatever this is: column 0 is the first
+  /// column, and under [TextDirection.rtl] it is laid out at the right edge
+  /// with subsequent columns running leftwards.
+  final TextDirection textDirection;
+
   @override
   RenderTableLayout createRenderObject(BuildContext context) {
     return RenderTableLayout(
-        width: width,
-        height: height,
-        clipBehavior: clipBehavior,
-        frozenCell: frozenColumn,
-        frozenRow: frozenRow,
-        verticalOffset: verticalOffset,
-        horizontalOffset: horizontalOffset,
-        viewportSize: viewportSize);
+      width: width,
+      height: height,
+      clipBehavior: clipBehavior,
+      frozenCell: frozenColumn,
+      frozenRow: frozenRow,
+      verticalOffset: verticalOffset,
+      horizontalOffset: horizontalOffset,
+      viewportSize: viewportSize,
+      textDirection: textDirection,
+    );
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderTableLayout renderObject) {
+    BuildContext context,
+    RenderTableLayout renderObject,
+  ) {
     bool needsRelayout = false;
     if (renderObject._width != width) {
       renderObject._width = width;
@@ -2503,6 +2621,10 @@ class RawTableLayout extends MultiChildRenderObjectWidget {
     }
     if (renderObject._viewportSize != viewportSize) {
       renderObject._viewportSize = viewportSize;
+      needsRelayout = true;
+    }
+    if (renderObject._textDirection != textDirection) {
+      renderObject._textDirection = textDirection;
       needsRelayout = true;
     }
     if (needsRelayout) {
@@ -2553,6 +2675,7 @@ class RenderTableLayout extends RenderBox
   double? _verticalOffset;
   double? _horizontalOffset;
   Size? _viewportSize;
+  TextDirection _textDirection;
 
   TableLayoutResult? _layoutResult;
 
@@ -2564,34 +2687,28 @@ class RenderTableLayout extends RenderBox
   ///
   /// Parameters:
   /// - [children] (`List<RenderBox>?`): Optional initial child render boxes
-  /// - [width] (TableSizeSupplier, required): Function providing width for each column
-  /// - [height] (TableSizeSupplier, required): Function providing height for each row
-  /// - [clipBehavior] (Clip, required): How to clip children outside table bounds
+  /// - [_width] (TableSizeSupplier, required): Function providing width for each column
+  /// - [_height] (TableSizeSupplier, required): Function providing height for each row
+  /// - [_clipBehavior] (Clip, required): How to clip children outside table bounds
   /// - [frozenCell] (CellPredicate?): Predicate identifying frozen columns
-  /// - [frozenRow] (CellPredicate?): Predicate identifying frozen rows
-  /// - [verticalOffset] (double?): Vertical scroll offset for viewport
-  /// - [horizontalOffset] (double?): Horizontal scroll offset for viewport
-  /// - [viewportSize] (Size?): Size of the visible viewport area
+  /// - [_frozenRow] (CellPredicate?): Predicate identifying frozen rows
+  /// - [_verticalOffset] (double?): Vertical scroll offset for viewport
+  /// - [_horizontalOffset] (double?): Horizontal scroll offset for viewport
+  /// - [_viewportSize] (Size?): Size of the visible viewport area
   ///
   /// Frozen cells remain visible during scrolling, useful for sticky headers.
-  RenderTableLayout(
-      {List<RenderBox>? children,
-      required TableSizeSupplier width,
-      required TableSizeSupplier height,
-      required Clip clipBehavior,
-      CellPredicate? frozenCell,
-      CellPredicate? frozenRow,
-      double? verticalOffset,
-      double? horizontalOffset,
-      Size? viewportSize})
-      : _clipBehavior = clipBehavior,
-        _width = width,
-        _height = height,
-        _frozenColumn = frozenCell,
-        _frozenRow = frozenRow,
-        _verticalOffset = verticalOffset,
-        _horizontalOffset = horizontalOffset,
-        _viewportSize = viewportSize {
+  RenderTableLayout({
+    List<RenderBox>? children,
+    required this._width,
+    required this._height,
+    required this._clipBehavior,
+    CellPredicate? frozenCell,
+    this._frozenRow,
+    this._verticalOffset,
+    this._horizontalOffset,
+    this._viewportSize,
+    this._textDirection = TextDirection.ltr,
+  }) : _frozenColumn = frozenCell {
     addAll(children);
   }
 
@@ -2626,10 +2743,12 @@ class RenderTableLayout extends RenderBox
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    return computeTableSize(BoxConstraints.loose(Size(double.infinity, height)),
-        (child, extent) {
-      return child.getMinIntrinsicWidth(extent);
-    }).width;
+    return computeTableSize(
+      BoxConstraints.loose(Size(double.infinity, height)),
+      (child, extent) {
+        return child.getMinIntrinsicWidth(extent);
+      },
+    ).width;
   }
 
   @override
@@ -2643,24 +2762,21 @@ class RenderTableLayout extends RenderBox
     // important for column and row spans
     // (ASSUMPTION: children are already sorted in the correct order)
     if (_clipBehavior != Clip.none) {
-      context.pushClipRect(
-        needsCompositing,
+      context.pushClipRect(needsCompositing, offset, Offset.zero & size, (
+        context,
         offset,
-        Offset.zero & size,
-        (context, offset) {
-          RenderBox? child = lastChild;
-          while (child != null) {
-            final parentData = child.parentData as TableParentData;
-            if (parentData.computeSize &&
-                !parentData.frozenRow &&
-                !parentData.frozenColumn) {
-              context.paintChild(child, offset + parentData.offset);
-            }
-            child = childBefore(child);
+      ) {
+        RenderBox? child = lastChild;
+        while (child != null) {
+          final parentData = child.parentData as TableParentData;
+          if (parentData.computeSize &&
+              !parentData.frozenRow &&
+              !parentData.frozenColumn) {
+            context.paintChild(child, offset + parentData.offset);
           }
-        },
-        clipBehavior: _clipBehavior,
-      );
+          child = childBefore(child);
+        }
+      }, clipBehavior: _clipBehavior);
       RenderBox? child = lastChild;
       while (child != null) {
         final parentData = child.parentData as TableParentData;
@@ -2671,38 +2787,32 @@ class RenderTableLayout extends RenderBox
         }
         child = childBefore(child);
       }
-      context.pushClipRect(
-        needsCompositing,
+      context.pushClipRect(needsCompositing, offset, Offset.zero & size, (
+        context,
         offset,
-        Offset.zero & size,
-        (context, offset) {
-          RenderBox? child = lastChild;
-          while (child != null) {
-            final parentData = child.parentData as TableParentData;
-            if (parentData.frozenColumn) {
-              context.paintChild(child, offset + parentData.offset);
-            }
-            child = childBefore(child);
+      ) {
+        RenderBox? child = lastChild;
+        while (child != null) {
+          final parentData = child.parentData as TableParentData;
+          if (parentData.frozenColumn) {
+            context.paintChild(child, offset + parentData.offset);
           }
-        },
-        clipBehavior: _clipBehavior,
-      );
-      context.pushClipRect(
-        needsCompositing,
+          child = childBefore(child);
+        }
+      }, clipBehavior: _clipBehavior);
+      context.pushClipRect(needsCompositing, offset, Offset.zero & size, (
+        context,
         offset,
-        Offset.zero & size,
-        (context, offset) {
-          RenderBox? child = lastChild;
-          while (child != null) {
-            final parentData = child.parentData as TableParentData;
-            if (parentData.frozenRow) {
-              context.paintChild(child, offset + parentData.offset);
-            }
-            child = childBefore(child);
+      ) {
+        RenderBox? child = lastChild;
+        while (child != null) {
+          final parentData = child.parentData as TableParentData;
+          if (parentData.frozenRow) {
+            context.paintChild(child, offset + parentData.offset);
           }
-        },
-        clipBehavior: _clipBehavior,
-      );
+          child = childBefore(child);
+        }
+      }, clipBehavior: _clipBehavior);
       child = lastChild;
       while (child != null) {
         final parentData = child.parentData as TableParentData;
@@ -2761,10 +2871,14 @@ class RenderTableLayout extends RenderBox
     if (_viewportSize != null) {
       double maxHorizontalScroll = max(0, size.width - _viewportSize!.width);
       double maxVerticalScroll = max(0, size.height - _viewportSize!.height);
-      effectiveHorizontalOffset =
-          effectiveHorizontalOffset.clamp(0, maxHorizontalScroll);
-      effectiveVerticalOffset =
-          effectiveVerticalOffset.clamp(0, maxVerticalScroll);
+      effectiveHorizontalOffset = effectiveHorizontalOffset.clamp(
+        0,
+        maxHorizontalScroll,
+      );
+      effectiveVerticalOffset = effectiveVerticalOffset.clamp(
+        0,
+        maxVerticalScroll,
+      );
     } else {
       effectiveHorizontalOffset = max(0, effectiveHorizontalOffset);
       effectiveVerticalOffset = max(0, effectiveVerticalOffset);
@@ -2782,14 +2896,18 @@ class RenderTableLayout extends RenderBox
         int rowSpan = parentData.rowSpan ?? 1;
         bool frozenRow = _frozenRow?.call(row, rowSpan) ?? false;
         bool frozenColumn = _frozenColumn?.call(column, columnSpan) ?? false;
-        for (int i = 0;
-            i < columnSpan && column + i < result.columnWidths.length;
-            i++) {
+        for (
+          int i = 0;
+          i < columnSpan && column + i < result.columnWidths.length;
+          i++
+        ) {
           width += result.columnWidths[column + i];
         }
-        for (int i = 0;
-            i < rowSpan && row + i < result.rowHeights.length;
-            i++) {
+        for (
+          int i = 0;
+          i < rowSpan && row + i < result.rowHeights.length;
+          i++
+        ) {
           height += result.rowHeights[row + i];
         }
         child.layout(BoxConstraints.tightFor(width: width, height: height));
@@ -2853,6 +2971,13 @@ class RenderTableLayout extends RenderBox
         }
         parentData.frozenRow = frozenRow;
         parentData.frozenColumn = frozenColumn;
+        // Everything above is computed in logical space, where x grows away
+        // from the first column. Mirroring only here means column indices,
+        // spans, frozen columns and the scroll offset all keep their logical
+        // meaning under RTL, and the first column simply lands on the right.
+        if (_textDirection == TextDirection.rtl) {
+          offsetX = size.width - offsetX - width;
+        }
         parentData.offset = Offset(offsetX, offsetY);
       }
       child = childAfter(child);
@@ -2878,8 +3003,10 @@ class RenderTableLayout extends RenderBox
   /// - [intrinsicComputer] (IntrinsicComputer?): Optional function to compute intrinsic sizes
   ///
   /// Returns [TableLayoutResult] containing computed dimensions and layout metadata.
-  TableLayoutResult computeTableSize(BoxConstraints constraints,
-      [IntrinsicComputer? intrinsicComputer]) {
+  TableLayoutResult computeTableSize(
+    BoxConstraints constraints, [
+    IntrinsicComputer? intrinsicComputer,
+  ]) {
     double flexWidth = 0;
     double flexHeight = 0;
     double fixedWidth = 0;
@@ -2987,8 +3114,10 @@ class RenderTableLayout extends RenderBox
             // distribute the intrinsic width to all columns
             maxIntrinsicWidth = maxIntrinsicWidth / columnSpan;
             for (int i = 0; i < columnSpan; i++) {
-              columnWidths[column + i] =
-                  max(columnWidths[column + i] ?? 0, maxIntrinsicWidth);
+              columnWidths[column + i] = max(
+                columnWidths[column + i] ?? 0,
+                maxIntrinsicWidth,
+              );
             }
           }
           if (heightConstraint is IntrinsicTableSize ||
@@ -3004,8 +3133,10 @@ class RenderTableLayout extends RenderBox
 
             maxIntrinsicHeight = maxIntrinsicHeight / rowSpan;
             for (int i = 0; i < rowSpan; i++) {
-              rowHeights[row + i] =
-                  max(rowHeights[row + i] ?? 0, maxIntrinsicHeight);
+              rowHeights[row + i] = max(
+                rowHeights[row + i] ?? 0,
+                maxIntrinsicHeight,
+              );
             }
           }
         }
@@ -3110,16 +3241,19 @@ class RenderTableLayout extends RenderBox
               }
 
               if (availableWidth > 0) {
-                double maxIntrinsicHeight =
-                    child.getMaxIntrinsicHeight(availableWidth);
+                double maxIntrinsicHeight = child.getMaxIntrinsicHeight(
+                  availableWidth,
+                );
                 maxIntrinsicHeight = min(maxIntrinsicHeight, remainingHeight);
 
                 int rowSpan = parentData.rowSpan ?? 1;
 
                 maxIntrinsicHeight = maxIntrinsicHeight / rowSpan;
                 for (int i = 0; i < rowSpan; i++) {
-                  rowHeights[row + i] =
-                      max(rowHeights[row + i] ?? 0, maxIntrinsicHeight);
+                  rowHeights[row + i] = max(
+                    rowHeights[row + i] ?? 0,
+                    maxIntrinsicHeight,
+                  );
                 }
               }
             }
@@ -3139,8 +3273,8 @@ class RenderTableLayout extends RenderBox
     List<double> rowHeightsList =
         // List.filled(rowHeights.keys.reduce(max) + 1, 0);
         List.generate(maxRow + 1, (index) {
-      return rowHeights[index] ?? 0;
-    });
+          return rowHeights[index] ?? 0;
+        });
     rowHeights.forEach((key, value) {
       rowHeightsList[key] = value;
     });
@@ -3158,26 +3292,32 @@ class RenderTableLayout extends RenderBox
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return computeTableSize(BoxConstraints.loose(Size(double.infinity, height)),
-        (child, extent) {
-      return child.getMaxIntrinsicWidth(extent);
-    }).width;
+    return computeTableSize(
+      BoxConstraints.loose(Size(double.infinity, height)),
+      (child, extent) {
+        return child.getMaxIntrinsicWidth(extent);
+      },
+    ).width;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    return computeTableSize(BoxConstraints.loose(Size(width, double.infinity)),
-        (child, extent) {
-      return child.getMinIntrinsicHeight(extent);
-    }).height;
+    return computeTableSize(
+      BoxConstraints.loose(Size(width, double.infinity)),
+      (child, extent) {
+        return child.getMinIntrinsicHeight(extent);
+      },
+    ).height;
   }
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    return computeTableSize(BoxConstraints.loose(Size(width, double.infinity)),
-        (child, extent) {
-      return child.getMaxIntrinsicHeight(extent);
-    }).height;
+    return computeTableSize(
+      BoxConstraints.loose(Size(width, double.infinity)),
+      (child, extent) {
+        return child.getMaxIntrinsicHeight(extent);
+      },
+    ).height;
   }
 
   // delegate from TableLayoutResult, with read-only view

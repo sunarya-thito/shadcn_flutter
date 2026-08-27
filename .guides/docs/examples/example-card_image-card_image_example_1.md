@@ -37,8 +37,9 @@ class CardImageExample1 extends StatelessWidget {
                 CardImage(
                   // Simple interaction: open a dialog on tap.
                   onPressed: () {
-                    showDialog(
-                      context: context,
+                    showOverlay(
+                      context,
+                      DialogConfiguration(),
                       builder: (context) {
                         return AlertDialog(
                           title: const Text('Card Image'),
@@ -64,5 +65,4 @@ class CardImageExample1 extends StatelessWidget {
                   subtitle: const Text('Lorem ipsum dolor sit amet'),
                 ),
             ],
-          ).gap(8),
 ```

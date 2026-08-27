@@ -104,9 +104,9 @@ class _InputExample2State extends State<InputExample2> {
             builder: (context, states) {
               // Use a muted icon normally, switch to the full icon on hover
               if (states.hovered) {
-                return const Icon(Icons.search);
+                return const Icon(LucideIcons.search);
               } else {
-                return const Icon(Icons.search).iconMutedForeground();
+                return const Icon(LucideIcons.search).iconMutedForeground();
               }
             },
           ), visibility: InputFeatureVisibility.textEmpty),
@@ -223,39 +223,53 @@ class InputExample5 extends StatelessWidget {
       children: [
         ButtonGroup(children: [
           // Its important to set width constraints on the TextFields
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Red')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Red')),
+            ),
           ),
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Green')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Green')),
+            ),
           ),
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Blue')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Blue')),
+            ),
           ),
-          SizedBox(
-            width: 75,
-            child: TextField(placeholder: Text('Alpha')),
+          ButtonGroupItem(
+            child: SizedBox(
+              width: 75,
+              child: TextField(placeholder: Text('Alpha')),
+            ),
           ),
         ]),
         ButtonGroup.vertical(
           children: [
             // Its important to set width constraints on the TextFields
-            SizedBox(
-              width: 200,
-              child: TextField(placeholder: Text('First Name')),
+            ButtonGroupItem(
+              child: SizedBox(
+                width: 200,
+                child: TextField(placeholder: Text('First Name')),
+              ),
             ),
             ButtonGroup.horizontal(
               children: [
-                SizedBox(
-                  width: 100,
-                  child: TextField(placeholder: Text('Middle Name')),
+                ButtonGroupItem(
+                  child: SizedBox(
+                    width: 100,
+                    child: TextField(placeholder: Text('Middle Name')),
+                  ),
                 ),
-                SizedBox(
-                  width: 100,
-                  child: TextField(placeholder: Text('Last Name')),
+                ButtonGroupItem(
+                  child: SizedBox(
+                    width: 100,
+                    child: TextField(placeholder: Text('Last Name')),
+                  ),
                 ),
               ],
             )
@@ -270,7 +284,6 @@ class InputExample5 extends StatelessWidget {
 
 ### Input Tile
 ```dart
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:docs/pages/docs/components_page.dart';
 
@@ -290,7 +303,7 @@ class InputTile extends StatelessWidget implements IComponentPage {
         child: const TextField(
           initialValue: 'Hello World',
           features: [
-            InputFeature.leading(Icon(material.Icons.edit)),
+            InputFeature.leading(Icon(LucideIcons.pencil)),
           ],
         ).sized(width: 250, height: 32),
       ).sized(height: 400),
@@ -315,3 +328,4 @@ class InputTile extends StatelessWidget implements IComponentPage {
 | `icon` | `Widget?` | Custom icon to display (defaults to info icon). |
 | `position` | `InputFeaturePosition` | Position of the hint button. |
 | `enableShortcuts` | `bool` | Whether to enable keyboard shortcut (F1) to show the hint. |
+| `adaptiveOverlay` | `bool?` | Whether the hint popover may adapt to a different presentation on mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults to `true` when null. |

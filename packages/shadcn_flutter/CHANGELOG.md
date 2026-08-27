@@ -1,5 +1,104 @@
 ## [0.0.54]
+### Breaking
+- Minimum Flutter is now 3.47.0 (Dart 3.13.0), up from 3.32.3 (Dart 3.6.0).
+  `ShadcnPreview` builds on `package:flutter/widget_previews.dart`, whose
+  `Preview` API only settled in 3.47.0, and this is the version the package is
+  built and tested against.
+- **shadcn_flutter no longer depends on Material or Cupertino.** The package now
+  imports `package:flutter/widgets.dart` only, following Flutter's move of those
+  libraries into the `material_ui` and `cupertino_ui` packages. Two companion
+  packages provide interop: `shadcn_flutter_material` and
+  `shadcn_flutter_cupertino`.
+- Removed the Material and Cupertino re-exports: `Icons`, `MaterialPageRoute`,
+  `MaterialPage`, `SliverAppBar`, `FlutterLogo` (still available from
+  `package:flutter/widgets.dart`), `cupertinoDesktopTextSelectionControls` and
+  `cupertinoDesktopTextSelectionHandleControls`.
+- `ShadcnApp.materialTheme` and `ShadcnApp.cupertinoTheme` removed. Use
+  `MaterialShadcnApp.materialTheme` / `CupertinoShadcnApp.cupertinoTheme`, or
+  pass a theme to `MaterialLayer` / `CupertinoLayer` directly.
+- `ShadcnApp.debugShowMaterialGrid` renamed to `ShadcnApp.debugShowGrid`; it
+  draws the same `GridPaper`, which was never Material-specific.
+- `ShadcnApp` no longer installs `Material`, `ScaffoldMessenger`, `Theme`
+  (Material) or `CupertinoTheme` ancestors, nor the `DefaultMaterialLocalizations`
+  and `DefaultCupertinoLocalizations` delegates. Material and Cupertino widgets
+  placed under a bare `ShadcnApp` will now assert; wrap them in a
+  `MaterialLayer` / `CupertinoLayer`, or use `MaterialShadcnApp` /
+  `CupertinoShadcnApp`.
+- Removed `TextField.nativeContextMenuBuilder()`,
+  `TextField.materialContextMenuBuilder()` and
+  `TextField.cupertinoContextMenuBuilder()`. Their replacements are the
+  top-level `buildAdaptiveEditableTextContextMenu` and
+  `buildMaterialEditableTextContextMenu` in `shadcn_flutter_material`, and
+  `buildCupertinoEditableTextContextMenu` in `shadcn_flutter_cupertino`.
+- Removed `SelectableText.useNativeContextMenu`. Pass `contextMenuBuilder`
+  directly instead.
+- Dropped the `cross_file` dependency and the `XFile` re-export that came with
+  it; nothing in the package used it. Depend on `cross_file` directly if you
+  were importing `XFile` through `package:shadcn_flutter`.
+- `uses-material-design` is no longer set by this package, so the MaterialIcons
+  font is not bundled unless your own app sets it. Apps created by
+  `flutter create` already set it to true. Leave it on if you use
+  `shadcn_flutter_material`, or if you use `CountryFlag`, which falls back to a
+  MaterialIcons glyph for unrecognized country codes.
+
+### Added
+- `ShadcnPageRoute` and `ShadcnPage`, Material-free replacements for
+  `MaterialPageRoute` and `MaterialPage`. `ShadcnPageRoute` is the default route
+  type `ShadcnApp` builds for `routes` and `home`.
+- `shadcnTextSelectionHandleControls`, the handle-less `TextSelectionControls`
+  used by text inputs by default. Selection toolbars continue to come from
+  `buildEditableTextContextMenu`.
+- `SpellCheckSuggestionsToolbar`, a shadcn styled replacement for the Material
+  and Cupertino spell check toolbars, and the new default for `TextField`.
+- `ShadcnLocalizations.noSpellCheckReplacements`.
+- **[#424] Table**: `Table.textDirection` and `ResizableTable.textDirection`,
+  defaulting to the ambient `Directionality`. Column indices stay logical, so
+  `columnWidths` key 0 and `FrozenTableData.frozenColumns` index 0 still mean
+  the first column; under RTL it is laid out at the right edge, frozen columns
+  pin there, horizontal scrolling starts there and runs leftwards, and the
+  column resize handles mirror along with their drag direction.
+- **[#423] Select**: `Select.decoration`, `MultiSelect.decoration` and
+  `SelectTheme.decoration`, a `WidgetStatePropertyDelegate<Decoration>` that
+  overrides the trigger's decoration per `WidgetState`. One delegate covers
+  border color, focused border color, background color and hover color without
+  reaching for a `Theme` scope around the whole subtree. Applied after
+  `borderRadius`, so it can override that too.
+- **[#422] Select**: `SelectPopup.builder()` now takes `shrinkWrap`, for parity
+  with `SelectPopup()`, so a popup whose delegate mixes items with a trailing
+  action sizes to its content.
+- **[#422] Select**: `SelectPopupHandle.close()`, letting a widget inside the
+  popup dismiss it on its own terms rather than only as a side effect of
+  `onChanged` firing.
+- `WidgetStatePropertyResolver` and `WidgetStatePropertyDelegate`, the
+  component-agnostic names for what were `ButtonStateProperty` and
+  `ButtonStatePropertyDelegate`. The `Button*` names remain as aliases.
+- `Positioned.directional`, which the patched `Positioned` was missing relative
+  to Flutter's.
+- `lerpColorPremultiplied`, an alpha-correct alternative to `Color.lerp` for
+  blending two colors that differ in opacity.
+- Documentation page for localizations, covering setup, overriding strings,
+  adding a locale, the formatting helpers and right-to-left layouts.
+
 ### Changed
+- `RenderScrollableClientViewport` takes `scrollCacheExtent`
+  (`ScrollCacheExtent?`) instead of the `cacheExtent` (`double?`) that
+  Flutter deprecated after 3.41.0.
+- Documented the remaining undocumented public members in `ChatReaction`,
+  `ChatReactionTheme`, `ChatReactionContainer`, `ChatCollapsible`,
+  `FocusToFront`, `ExpandedFocusToFront`, `FlexibleFocusToFront`,
+  `DialogOverlayContent`, `buildShadcnDialogTransitions`, `DynamicFormKey`
+  and the `darken`/`lighten` color extensions.
+- Removed the deprecated `synthetic-package` key from `l10n.yaml`; leaving it
+  in made `flutter pub get` delete the generated localization sources.
+- `CircularProgressIndicator` now paints its arc directly instead of wrapping
+  Material's. Both determinate and indeterminate modes keep the same timing;
+  stroke caps are round in both modes.
+- `SelectableText` is now implemented in this package on top of `EditableText`
+  rather than wrapping Material's `SelectableText`. Cursor and selection colors
+  come from the shadcn theme and `SelectableTextTheme`.
+- Component icons that used Material's `Icons` now use the bundled
+  `LucideIcons` set: `ColorPicker`, `TimePicker`, `Accordion`, `Collapsible`,
+  `Stepper`, `Tree`, `Window` and `RefreshTrigger`.
 - `builder` now lives in the `showOverlay` method signature instead of `OverlayConfiguration`.
 - Overlay components (e.g., `Select`, `AutoComplete`, `ObjectFormField`, `FormattedObjectInput`, `showItemPicker`, `NavigationMenu`, `Tooltip`, `InstantTooltip`, and `HoverCard`) now have been migrated to use `OverlayConfiguration` instead of `OverlayHandler`.
 - `ShadcnApp` and `ShadcnLayer` no longer take `popooverHandler`/`tooltipHandler`/`menuHandler`.
@@ -7,15 +106,67 @@
 - Removed `OverlayHandler`, `OverlayManager`, `OverlayManagerLayer`, and `*OverlayHandler` from internal use.
 - `bool? adaptiveOverlay` and `OverlayConfiguration? overlayConfiguration` now lives in overlay component's component themes.
 - `DrawerContainer.intrinsic` and `DrawerContainer.expands` is moved to `PinnedSheet.contentExpands` and `DrawerContainer.contentIntrinsic`
+- `HSVColorSliderPainter` and `HSLColorSliderPainter` now paint with layered
+  gradients instead of one filled rect per sampled step. Output is unchanged
+  apart from being exact rather than quantised to 100 or 360 steps.
 
 ### Fixed
 - **[#420] DatePicker**: Calendar navigation arrow icons now flip to match RTL
   layouts instead of always pointing left/right.
+- **Button**: state transitions that changed a fill's opacity darkened on the
+  way through. `Decoration.lerp` blends with `Color.lerp`, which interpolates
+  the channels as stored, so the near-transparent end still contributed its
+  full RGB to the midpoint — fading an opaque surface out to a faint tint
+  passed through a solid mid-grey. Fills now interpolate premultiplied, via the
+  new `lerpColorPremultiplied`.
+- **Form**: `InputFeature.revalidate()` cleared the error instead of rechecking
+  it. `FormFieldHandle.revalidate` passed the field's internal cache wrapper
+  where the value itself was expected, so validators ran against an opaque
+  object and reported success — and the wrapper was stored as the field's value.
+- **Form**: comparing two validators of the same generic type threw a
+  `TypeError`. `ConditionalValidator`, `NotValidator`, `OrValidator` and
+  `CompositeValidator` tested `other is ConditionalValidator` against the raw
+  type, so reading a `T`-typed member off it forced a downcast to the `dynamic`
+  instantiation that a predicate taking `T?` cannot satisfy.
+- **[#414] DatePicker**: the month/year header was pinned to a fixed height
+  derived from the default density's padding, so at reduced or spacious density
+  the label was silently clipped. The height is now a floor rather than a fixed
+  value, leaving the default appearance unchanged and growing only where the
+  label would not otherwise fit.
 - **[#419] PinnedSheet**: Nested sheets on different drag axes (e.g. a
   horizontal `SideSheet` inside a vertical `BottomSheet`) no longer leak
   leftover drag delta into the parent sheet's own axis; the drag chain now
   only propagates between sheets that share the same drag axis.
 - Fixed PinnedSheet not immediately layout the sheet.
+- **ColorPicker**: the saturation/value field and the color sliders were drawn
+  as up to 36,000 individual rects per frame, which Impeller renders far more
+  slowly than Skia did, and whose fractional edges no longer snapped to the
+  pixel grid — leaving pale seams across the field in a grid pattern. They are
+  now a handful of gradient draws with no seams.
+- **ColorPicker**: picking a color from the screen could take the app down.
+  `EyeDropperLayer` wraps the whole application and expanded the entire window
+  screenshot into a `List<Color>` — one object per pixel, so several million on
+  a large display. It now reads the captured bytes directly.
+- **ColorPicker**: sampling a pixel on the trailing edge of the screen threw a
+  `RangeError`; positions are now clamped to the snapshot.
+- **ColorPicker**: a screenshot that failed to capture still started a picking
+  session, leaving the application unresponsive behind an `IgnorePointer` with
+  no way to dismiss it. Failures now abort the session, and <kbd>Esc</kbd>
+  cancels an active one.
+- **ColorPicker**: the eye dropper leaked the captured `ui.Image` and decoded
+  the screenshot a second time to display it.
+- **ColorPicker**: eye dropper samples were read from premultiplied bytes as if
+  they were straight, tinting colors picked from translucent pixels.
+- **ColorPicker**: the `satAlpha`, `valAlpha` and `hueAlpha` sliders did not
+  repaint for every channel they hold constant, so their gradients could go
+  stale.
+- `ScrollableClient` never updated its viewport render object, because
+  `ScrollableClientViewport` supplied no `updateRenderObject` and inherited the
+  empty default. The render object kept the delegate, scroll offsets and axis
+  directions it was first created with, so `ScrollableClient.builder` was
+  frozen at its first closure: content built from state that later changed
+  never updated, and `overscroll`, `clipBehavior` and `reverse` could not be
+  changed after the first build.
 
 ## [0.0.53]
 

@@ -1,5 +1,4 @@
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DialogTile extends StatelessWidget implements IComponentPage {
@@ -14,7 +13,7 @@ class DialogTile extends StatelessWidget implements IComponentPage {
       title: 'Dialog',
       name: 'dialog',
       example: AlertDialog(
-        barrierColor: material.Colors.transparent,
+        barrierColor: Colors.transparent,
         title: const Text('Edit profile'),
         content: IntrinsicWidth(
           child: Column(

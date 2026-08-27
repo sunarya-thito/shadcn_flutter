@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationButton"
-description: "Non-selectable navigation button for actions.   Similar to [NavigationItem] but without selection state. Used for  action buttons in navigation (e.g., settings, logout) that trigger  callbacks rather than changing navigation state.   Example:  ```dart  NavigationButton(    label: Text('Settings'),    child: Icon(Icons.settings),    onPressed: () => _openSettings(),  )  ```"
+description: "Non-selectable navigation button for actions.   Similar to [NavigationItem] but without selection state. Used for  action buttons in navigation (e.g., settings, logout) that trigger  callbacks rather than changing navigation state.   Example:  ```dart  NavigationButton(    label: Text('Settings'),    child: Icon(LucideIcons.settings),    onPressed: () => _openSettings(),  )  ```"
 ---
 
 ```dart
@@ -14,7 +14,7 @@ description: "Non-selectable navigation button for actions.   Similar to [Naviga
 /// ```dart
 /// NavigationButton(
 ///   label: Text('Settings'),
-///   child: Icon(Icons.settings),
+///   child: Icon(LucideIcons.settings),
 ///   onPressed: () => _openSettings(),
 /// )
 /// ```

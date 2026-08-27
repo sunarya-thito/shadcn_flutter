@@ -77,6 +77,14 @@ class Slider extends StatefulWidget {
   /// When `false` or `null` with no [onChanged] callback, the slider is
   /// displayed in a disabled state and does not respond to user input.
   final bool? enabled;
+  /// Optional builder for a bubble shown above a thumb while it's being
+  /// dragged or is keyboard-focused, displaying the thumb's current value.
+  ///
+  /// If both this and [SliderTheme.valueIndicatorBuilder] are `null` (the
+  /// default), no indicator is shown. Pass [SliderValueIndicator] for the
+  /// default bubble styling, e.g.:
+  /// `valueIndicatorBuilder: (context, value) => SliderValueIndicator(value: value)`.
+  final SliderValueIndicatorBuilder? valueIndicatorBuilder;
   /// Creates a [Slider].
   ///
   /// Parameters:
@@ -91,6 +99,7 @@ class Slider extends StatefulWidget {
   /// - [increaseStep] (`double?`, optional): Keyboard increment step.
   /// - [decreaseStep] (`double?`, optional): Keyboard decrement step.
   /// - [enabled] (`bool?`, optional): Whether interactive.
+  /// - [valueIndicatorBuilder] (`SliderValueIndicatorBuilder?`, optional): Bubble builder shown above the thumb while dragging/focused.
   ///
   /// Example:
   /// ```dart
@@ -101,7 +110,7 @@ class Slider extends StatefulWidget {
   ///   onChanged: (value) => print('Range: ${value.start}-${value.end}'),
   /// )
   /// ```
-  const Slider({super.key, required this.value, this.onChanged, this.onChangeStart, this.onChangeEnd, this.min = 0, this.max = 1, this.divisions, this.hintValue, this.increaseStep, this.decreaseStep, this.enabled = true});
+  const Slider({super.key, required this.value, this.onChanged, this.onChangeStart, this.onChangeEnd, this.min = 0, this.max = 1, this.divisions, this.hintValue, this.increaseStep, this.decreaseStep, this.enabled = true, this.valueIndicatorBuilder});
   State<Slider> createState();
 }
 ```

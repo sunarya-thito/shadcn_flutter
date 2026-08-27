@@ -268,18 +268,16 @@ class _SortableDraggingSession<T> {
   }) : offset = ValueNotifier(offset);
 }
 
-enum _SortableDropLocation {
-  top,
-  left,
-  right,
-  bottom,
-}
+enum _SortableDropLocation { top, left, right, bottom }
 
-_SortableDropLocation? _getPosition(Offset position, Size size,
-    {bool acceptTop = false,
-    bool acceptLeft = false,
-    bool acceptRight = false,
-    bool acceptBottom = false}) {
+_SortableDropLocation? _getPosition(
+  Offset position,
+  Size size, {
+  bool acceptTop = false,
+  bool acceptLeft = false,
+  bool acceptRight = false,
+  bool acceptBottom = false,
+}) {
   double dx = position.dx;
   double dy = position.dy;
   double width = size.width;
@@ -366,7 +364,7 @@ class SortableDropFallback<T> extends StatefulWidget {
   /// SortableDropFallback<String>(
   ///   canAccept: (data) => data.data.contains('removable'),
   ///   onAccept: (data) => removeFromList(data.data),
-  ///   child: Icon(Icons.delete, size: 48),
+  ///   child: Icon(LucideIcons.trash, size: 48),
   /// )
   /// ```
   const SortableDropFallback({
@@ -471,7 +469,9 @@ class _SortableState<T> extends State<Sortable<T>>
   final ValueNotifier<bool> _hasDraggedOff = ValueNotifier(false);
 
   (_SortableState<T>, Offset)? _findState(
-      _SortableLayerState target, Offset globalPosition) {
+    _SortableLayerState target,
+    Offset globalPosition,
+  ) {
     BoxHitTestResult result = BoxHitTestResult();
     RenderBox renderBox = target.context.findRenderObject() as RenderBox;
     renderBox.hitTest(result, position: globalPosition);
@@ -482,7 +482,7 @@ class _SortableState<T> extends State<Sortable<T>>
             metaData.metaData != this) {
           return (
             metaData.metaData as _SortableState<T>,
-            (entry as BoxHitTestEntry).localPosition
+            (entry as BoxHitTestEntry).localPosition,
           );
         }
       }
@@ -491,7 +491,9 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   _SortableDropFallbackState<T>? _findFallbackState(
-      _SortableLayerState target, Offset globalPosition) {
+    _SortableLayerState target,
+    Offset globalPosition,
+  ) {
     BoxHitTestResult result = BoxHitTestResult();
     RenderBox renderBox = target.context.findRenderObject() as RenderBox;
     renderBox.hitTest(result, position: globalPosition);
@@ -579,7 +581,9 @@ class _SortableState<T> extends State<Sortable<T>>
       lock: layer.widget.lock,
       offset: Offset.zero,
     );
-    _pointerLayerPosition = layerRenderBox.globalToLocal(details.globalPosition);
+    _pointerLayerPosition = layerRenderBox.globalToLocal(
+      details.globalPosition,
+    );
     layer.pushDraggingSession(_session!);
     widget.onDragStart?.call();
     setState(() {
@@ -589,7 +593,8 @@ class _SortableState<T> extends State<Sortable<T>>
   }
 
   ValueNotifier<_SortableDraggingSession<T>?> _getByLocation(
-      _SortableDropLocation location) {
+    _SortableDropLocation location,
+  ) {
     switch (location) {
       case _SortableDropLocation.top:
         return topCandidate;
@@ -631,11 +636,14 @@ class _SortableState<T> extends State<Sortable<T>>
       // centre, so an item leaves a zone the moment the cursor does (matches
       // expectations for drag-out-to-remove). Falls back to the item centre if
       // the pointer position is unknown.
-      Offset globalPosition = _pointerLayerPosition ??
+      Offset globalPosition =
+          _pointerLayerPosition ??
           (_session!.offset.value +
               minOffset +
-              Offset((maxOffset.dx - minOffset.dx) / 2,
-                  (maxOffset.dy - minOffset.dy) / 2));
+              Offset(
+                (maxOffset.dx - minOffset.dx) / 2,
+                (maxOffset.dy - minOffset.dy) / 2,
+              ));
       // Once the pointer leaves the item's own starting bounds the drag has
       // genuinely "moved off", so a later release on empty space counts as a
       // failed drop (removable) in any direction - not only after crossing
@@ -643,11 +651,15 @@ class _SortableState<T> extends State<Sortable<T>>
       if (!Rect.fromPoints(minOffset, maxOffset).contains(globalPosition)) {
         _hasDraggedOff.value = true;
       }
-      (_SortableState<T>, Offset)? target =
-          _findState(_session!.layer, globalPosition);
+      (_SortableState<T>, Offset)? target = _findState(
+        _session!.layer,
+        globalPosition,
+      );
       if (target == null) {
-        _SortableDropFallbackState<T>? fallback =
-            _findFallbackState(_session!.layer, globalPosition);
+        _SortableDropFallbackState<T>? fallback = _findFallbackState(
+          _session!.layer,
+          globalPosition,
+        );
         _currentFallback.value = fallback;
         if (_currentTarget.value != null && fallback == null) {
           _currentTarget.value!.dispose(_session!);
@@ -668,11 +680,13 @@ class _SortableState<T> extends State<Sortable<T>>
         final targetState = target.$1;
         RenderBox sizeBox;
         Offset localPosition;
-        final contentObject = targetState._key.currentContext?.findRenderObject();
+        final contentObject = targetState._key.currentContext
+            ?.findRenderObject();
         if (contentObject is RenderBox && contentObject.hasSize) {
           sizeBox = contentObject;
-          final globalPos =
-              _session!.layerRenderBox.localToGlobal(globalPosition);
+          final globalPos = _session!.layerRenderBox.localToGlobal(
+            globalPosition,
+          );
           localPosition = sizeBox.globalToLocal(globalPos);
         } else {
           sizeBox = targetState.context.findRenderObject() as RenderBox;
@@ -687,12 +701,15 @@ class _SortableState<T> extends State<Sortable<T>>
           acceptBottom: widget.onAcceptBottom != null,
         );
         if (location != null) {
-          ValueNotifier<_SortableDraggingSession<T>?> candidate =
-              targetState._getByLocation(location);
+          ValueNotifier<_SortableDraggingSession<T>?> candidate = targetState
+              ._getByLocation(location);
 
           candidate.value = _session;
           _currentTarget.value = _DroppingTarget(
-              candidate: candidate, source: targetState, location: location);
+            candidate: candidate,
+            source: targetState,
+            location: location,
+          );
         }
       }
     }
@@ -728,8 +745,9 @@ class _SortableState<T> extends State<Sortable<T>>
     if (_hasClaimedDrop.value) {
       return;
     }
-    _pointerLayerPosition =
-        _session?.layerRenderBox.globalToLocal(details.globalPosition);
+    _pointerLayerPosition = _session?.layerRenderBox.globalToLocal(
+      details.globalPosition,
+    );
     _handleDrag(details.delta);
     _scrollableLayer?._updateDrag(this, details.globalPosition);
   }
@@ -856,11 +874,7 @@ class _SortableState<T> extends State<Sortable<T>>
     if (!hasCandidate) {
       return child!;
     }
-    return AnimatedSize(
-      duration: duration,
-      alignment: alignment,
-      child: child,
-    );
+    return AnimatedSize(duration: duration, alignment: alignment, child: child);
   }
 
   @override
@@ -951,28 +965,28 @@ class _SortableState<T> extends State<Sortable<T>>
                           // invisible for the whole drag.
                           child: _dragging
                               ? widget.fallback ??
-                                  ListenableBuilder(
-                                    listenable: _hasDraggedOff,
-                                    builder: (context, child) {
-                                      return (_hasDraggedOff.value
-                                          ? AbsorbPointer(
-                                              child: Visibility(
-                                                visible: false,
-                                                maintainState: true,
-                                                child: widget.child,
-                                              ),
-                                            )
-                                          : AbsorbPointer(
-                                              child: Visibility(
-                                                maintainSize: true,
-                                                maintainAnimation: true,
-                                                maintainState: true,
-                                                visible: false,
-                                                child: widget.child,
-                                              ),
-                                            ));
-                                    },
-                                  )
+                                    ListenableBuilder(
+                                      listenable: _hasDraggedOff,
+                                      builder: (context, child) {
+                                        return (_hasDraggedOff.value
+                                            ? AbsorbPointer(
+                                                child: Visibility(
+                                                  visible: false,
+                                                  maintainState: true,
+                                                  child: widget.child,
+                                                ),
+                                              )
+                                            : AbsorbPointer(
+                                                child: Visibility(
+                                                  maintainSize: true,
+                                                  maintainAnimation: true,
+                                                  maintainState: true,
+                                                  visible: false,
+                                                  child: widget.child,
+                                                ),
+                                              ));
+                                      },
+                                    )
                               : ListenableBuilder(
                                   listenable: _hasClaimedDrop,
                                   builder: (context, child) {
@@ -1048,10 +1062,7 @@ class _SortableState<T> extends State<Sortable<T>>
             if (!hasCandidate) {
               return container;
             }
-            return AnimatedSize(
-              duration: kDefaultDuration,
-              child: container,
-            );
+            return AnimatedSize(duration: kDefaultDuration, child: container);
           },
         ),
       ),
@@ -1086,7 +1097,7 @@ class _SortableState<T> extends State<Sortable<T>>
 ///   child: Row(
 ///     children: [
 ///       SortableDragHandle(
-///         child: Icon(Icons.drag_handle),
+///         child: Icon(LucideIcons.gripHorizontal),
 ///       ),
 ///       Expanded(child: Text('Drag me by the handle')),
 ///     ],
@@ -1097,7 +1108,7 @@ class SortableDragHandle extends StatefulWidget {
   /// The child widget that serves as the drag handle.
   ///
   /// Type: `Widget`. This widget defines the visual appearance of the drag handle
-  /// and responds to drag gestures. Commonly an icon like Icons.drag_handle.
+  /// and responds to drag gestures. Commonly an icon like LucideIcons.gripHorizontal.
   final Widget child;
 
   /// Whether the drag handle is enabled for drag operations.
@@ -1139,16 +1150,17 @@ class SortableDragHandle extends StatefulWidget {
   ///   cursor: SystemMouseCursors.move,
   ///   child: Container(
   ///     padding: EdgeInsets.all(8),
-  ///     child: Icon(Icons.drag_indicator),
+  ///     child: Icon(LucideIcons.gripVertical),
   ///   ),
   /// )
   /// ```
-  const SortableDragHandle(
-      {super.key,
-      required this.child,
-      this.enabled = true,
-      this.behavior,
-      this.cursor});
+  const SortableDragHandle({
+    super.key,
+    required this.child,
+    this.enabled = true,
+    this.behavior,
+    this.cursor,
+  });
 
   @override
   State<SortableDragHandle> createState() => _SortableDragHandleState();
@@ -1187,8 +1199,9 @@ class _SortableDragHandleState extends State<SortableDragHandle>
                 _state!._onDragStart(details);
               }
             : null,
-        onPanUpdate:
-            widget.enabled && _state != null ? _state!._onDragUpdate : null,
+        onPanUpdate: widget.enabled && _state != null
+            ? _state!._onDragUpdate
+            : null,
         onPanEnd: widget.enabled && _state != null
             ? (details) {
                 _state!._onDragEnd(details);
@@ -1427,11 +1440,13 @@ class _SortableLayerState extends State<SortableLayer>
     with SingleTickerProviderStateMixin {
   final MutableNotifier<List<_SortableDraggingSession>> _sessions =
       MutableNotifier([]);
-  final MutableNotifier<List<_DropTransform>> _activeDrops =
-      MutableNotifier([]);
+  final MutableNotifier<List<_DropTransform>> _activeDrops = MutableNotifier(
+    [],
+  );
 
-  final ValueNotifier<_PendingDropTransform?> _pendingDrop =
-      ValueNotifier(null);
+  final ValueNotifier<_PendingDropTransform?> _pendingDrop = ValueNotifier(
+    null,
+  );
 
   late Ticker _ticker;
 
@@ -1455,8 +1470,11 @@ class _SortableLayerState extends State<SortableLayer>
     return _pendingDrop.value != null && data == _pendingDrop.value!.data;
   }
 
-  _DropTransform? _claimDrop(_SortableState item, SortableData data,
-      [bool force = false]) {
+  _DropTransform? _claimDrop(
+    _SortableState item,
+    SortableData data, [
+    bool force = false,
+  ]) {
     if (_pendingDrop.value != null &&
         (force || data == _pendingDrop.value!.data)) {
       RenderBox layerRenderBox = context.findRenderObject() as RenderBox;
@@ -1485,9 +1503,10 @@ class _SortableLayerState extends State<SortableLayer>
     List<_DropTransform> toRemove = [];
     for (final drop in _activeDrops.value) {
       drop.start ??= elapsed;
-      double progress = ((elapsed - drop.start!).inMilliseconds /
-              (widget.dropDuration ?? kDefaultDuration).inMilliseconds)
-          .clamp(0, 1);
+      double progress =
+          ((elapsed - drop.start!).inMilliseconds /
+                  (widget.dropDuration ?? kDefaultDuration).inMilliseconds)
+              .clamp(0, 1);
       progress = (widget.dropCurve ?? Curves.easeInOut).transform(progress);
       if (progress >= 1 || !drop.state.mounted) {
         drop.state._hasClaimedDrop.value = false;
@@ -1511,18 +1530,13 @@ class _SortableLayerState extends State<SortableLayer>
   }
 
   Matrix4 _tweenMatrix(Matrix4 from, Matrix4 to, double progress) {
-    return Matrix4Tween(
-      begin: from,
-      end: to,
-    ).transform(progress);
+    return Matrix4Tween(begin: from, end: to).transform(progress);
   }
 
   void pushDraggingSession(_SortableDraggingSession session) {
-    _sessions.mutate(
-      (value) {
-        value.add(session);
-      },
-    );
+    _sessions.mutate((value) {
+      value.add(session);
+    });
   }
 
   void removeDraggingSession(_SortableDraggingSession session) {
@@ -1540,10 +1554,7 @@ class _SortableLayerState extends State<SortableLayer>
           RenderBox layerRenderBox = context.findRenderObject() as RenderBox;
           _pendingDrop.value = _PendingDropTransform(
             from: ghostRenderBox.getTransformTo(layerRenderBox),
-            child: SizedBox.fromSize(
-              size: session.size,
-              child: session.ghost,
-            ),
+            child: SizedBox.fromSize(size: session.size, child: session.ghost),
             data: session.data,
           );
         }
@@ -1841,9 +1852,6 @@ class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
 
   @override
   Widget build(BuildContext context) {
-    return Data.inherit(
-      data: this,
-      child: widget.child,
-    );
+    return Data.inherit(data: this, child: widget.child);
   }
 }

@@ -39,16 +39,17 @@ class FormattedObjectInput<T> extends StatefulWidget with ControlledComponent<T?
   final BiDirectionalConvert<T?, List<String?>> converter;
   /// The input parts that make up the formatted input.
   final List<InputPart> parts;
-  /// Alignment of the popover relative to the anchor.
-  final AlignmentGeometry? popoverAlignment;
-  /// Anchor alignment for popover positioning.
-  final AlignmentGeometry? popoverAnchorAlignment;
-  /// Offset for the popover position.
-  final Offset? popoverOffset;
+  /// Overrides the [OverlayConfiguration] used to present the popup. When
+  /// null, a default [PopoverConfiguration] is used (`AlignmentDirectional.topStart`
+  /// / `AlignmentDirectional.bottomStart`).
+  final OverlayConfiguration? overlayConfiguration;
+  /// Whether the popup may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter).
+  final bool? adaptiveOverlay;
   /// Icon displayed in the popover trigger.
   final Widget? popoverIcon;
   /// Creates a [FormattedObjectInput].
-  const FormattedObjectInput({super.key, this.initialValue, this.onChanged, this.popupBuilder, this.enabled = true, this.controller, required this.converter, required this.parts, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverOffset, this.popoverIcon, this.onPartsChanged});
+  const FormattedObjectInput({super.key, this.initialValue, this.onChanged, this.popupBuilder, this.enabled = true, this.controller, required this.converter, required this.parts, this.overlayConfiguration, this.adaptiveOverlay, this.popoverIcon, this.onPartsChanged});
   State<FormattedObjectInput<T>> createState();
 }
 ```

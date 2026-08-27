@@ -18,8 +18,10 @@ class CalendarTheme extends ComponentThemeData {
   /// Creates a copy of this theme with the given fields replaced.
   CalendarTheme copyWith({ValueGetter<Color?>? arrowIconColor}) {
     return CalendarTheme(
-        arrowIconColor:
-            arrowIconColor == null ? this.arrowIconColor : arrowIconColor());
+      arrowIconColor: arrowIconColor == null
+          ? this.arrowIconColor
+          : arrowIconColor(),
+    );
   }
 
   @override
@@ -202,8 +204,11 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
     }
   }
 
-  String getHeaderText(ShadcnLocalizations localizations, CalendarView view,
-      CalendarViewType viewType) {
+  String getHeaderText(
+    ShadcnLocalizations localizations,
+    CalendarView view,
+    CalendarViewType viewType,
+  ) {
     if (viewType == CalendarViewType.date) {
       return '${localizations.getMonth(view.month)} ${view.year}';
     }
@@ -217,7 +222,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   /// layouts, so navigation arrows keep pointing towards the "previous" and
   /// "next" reading directions instead of always pointing left/right.
   Widget _buildDirectionalArrow(
-      BuildContext context, IconData icon, Color? color) {
+    BuildContext context,
+    IconData icon,
+    Color? color,
+  ) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Transform.flip(
       flipX: isRtl,
@@ -230,8 +238,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
     final compTheme = ComponentTheme.maybeOf<CalendarTheme>(context);
-    final arrowColor =
-        styleValue(themeValue: compTheme?.arrowIconColor, defaultValue: null);
+    final arrowColor = styleValue(
+      themeValue: compTheme?.arrowIconColor,
+      defaultValue: null,
+    );
     final viewMode = widget.viewMode ?? widget.selectionMode;
     if (widget.selectionMode == CalendarSelectionMode.range) {
       return IntrinsicWidth(
@@ -265,12 +275,12 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                           });
                         },
                         child: _buildDirectionalArrow(
-                                context, LucideIcons.arrowLeft, arrowColor)
-                            .iconXSmall(),
+                          context,
+                          LucideIcons.arrowLeft,
+                          arrowColor,
+                        ).iconXSmall(),
                       ),
-                      SizedBox(
-                        width: theme.scaling * 16,
-                      ),
+                      SizedBox(width: theme.scaling * 16),
                       Expanded(
                         child: GhostButton(
                           enabled: _viewType != CalendarViewType.year,
@@ -291,22 +301,15 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                                 break;
                             }
                           },
-                          child: Text(getHeaderText(
-                                  localizations, _view, _viewType))
-                              .foreground()
-                              .small()
-                              .medium()
-                              .center(),
-                        ).sized(height: theme.scaling * 32),
+                          child: Text(
+                            getHeaderText(localizations, _view, _viewType),
+                          ).foreground().small().medium().center(),
+                        ).constrained(minHeight: theme.scaling * 32),
                       ),
                       if (_viewType == CalendarViewType.date &&
                           viewMode == CalendarSelectionMode.range)
-                        SizedBox(
-                          width: theme.scaling * 32,
-                        ),
-                      SizedBox(
-                        width: theme.scaling * 16,
-                      ),
+                        SizedBox(width: theme.scaling * 32),
+                      SizedBox(width: theme.scaling * 16),
                       if (_viewType != CalendarViewType.date ||
                           viewMode != CalendarSelectionMode.range)
                         OutlineButton(
@@ -327,8 +330,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             });
                           },
                           child: _buildDirectionalArrow(
-                                  context, LucideIcons.arrowRight, arrowColor)
-                              .iconXSmall(),
+                            context,
+                            LucideIcons.arrowRight,
+                            arrowColor,
+                          ).iconXSmall(),
                         ),
                     ],
                   ),
@@ -342,9 +347,7 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(
-                          width: theme.scaling * (32 + 16),
-                        ),
+                        SizedBox(width: theme.scaling * (32 + 16)),
                         Expanded(
                           child: GhostButton(
                             onPressed: () {
@@ -364,17 +367,16 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                                   break;
                               }
                             },
-                            child: Text(getHeaderText(
-                                    localizations, _alternateView, _viewType))
-                                .foreground()
-                                .small()
-                                .medium()
-                                .center(),
-                          ).sized(height: theme.scaling * 32),
+                            child: Text(
+                              getHeaderText(
+                                localizations,
+                                _alternateView,
+                                _viewType,
+                              ),
+                            ).foreground().small().medium().center(),
+                          ).constrained(minHeight: theme.scaling * 32),
                         ),
-                        SizedBox(
-                          width: theme.scaling * 16,
-                        ),
+                        SizedBox(width: theme.scaling * 16),
                         OutlineButton(
                           density: ButtonDensity.icon,
                           onPressed: () {
@@ -394,8 +396,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                             });
                           },
                           child: _buildDirectionalArrow(
-                                  context, LucideIcons.arrowRight, arrowColor)
-                              .iconXSmall(),
+                            context,
+                            LucideIcons.arrowRight,
+                            arrowColor,
+                          ).iconXSmall(),
                         ),
                       ],
                     ),
@@ -481,12 +485,12 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   });
                 },
                 child: _buildDirectionalArrow(
-                        context, LucideIcons.arrowLeft, arrowColor)
-                    .iconXSmall(),
+                  context,
+                  LucideIcons.arrowLeft,
+                  arrowColor,
+                ).iconXSmall(),
               ),
-              SizedBox(
-                width: theme.scaling * 16,
-              ),
+              SizedBox(width: theme.scaling * 16),
               Expanded(
                 child: GhostButton(
                   enabled: _viewType != CalendarViewType.year,
@@ -511,11 +515,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                       .small()
                       .medium()
                       .center(),
-                ).sized(height: theme.scaling * 32),
+                ).constrained(minHeight: theme.scaling * 32),
               ),
-              SizedBox(
-                width: theme.scaling * 16,
-              ),
+              SizedBox(width: theme.scaling * 16),
               OutlineButton(
                 density: ButtonDensity.icon,
                 onPressed: () {
@@ -534,8 +536,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                   });
                 },
                 child: _buildDirectionalArrow(
-                        context, LucideIcons.arrowRight, arrowColor)
-                    .iconXSmall(),
+                  context,
+                  LucideIcons.arrowRight,
+                  arrowColor,
+                ).iconXSmall(),
               ),
             ],
           ),
@@ -568,12 +572,13 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
   }
 
   Widget buildView(
-      BuildContext context,
-      int yearSelectStart,
-      CalendarView view,
-      CalendarViewType viewType,
-      CalendarSelectionMode selectionMode,
-      ValueChanged<CalendarView> onViewChanged) {
+    BuildContext context,
+    int yearSelectStart,
+    CalendarView view,
+    CalendarViewType viewType,
+    CalendarSelectionMode selectionMode,
+    ValueChanged<CalendarView> onViewChanged,
+  ) {
     if (viewType == CalendarViewType.year) {
       return YearCalendar(
         value: view.year,
@@ -763,8 +768,8 @@ class RangeCalendarValue extends CalendarValue {
   ///
   /// Automatically normalizes the range so [start] is before [end].
   RangeCalendarValue(DateTime start, DateTime end)
-      : start = start.isBefore(end) ? start : end,
-        end = start.isBefore(end) ? end : start;
+    : start = start.isBefore(end) ? start : end,
+      end = start.isBefore(end) ? end : start;
 
   @override
   CalendarValueLookup lookup(int year, [int? month, int? day]) {
@@ -819,9 +824,11 @@ class RangeCalendarValue extends CalendarValue {
   @override
   MultiCalendarValue toMulti() {
     List<DateTime> dates = [];
-    for (DateTime date = start;
-        date.isBefore(end);
-        date = date.add(const Duration(days: 1))) {
+    for (
+      DateTime date = start;
+      date.isBefore(end);
+      date = date.add(const Duration(days: 1))
+    ) {
       dates.add(date);
     }
     dates.add(end);
@@ -844,8 +851,14 @@ class MultiCalendarValue extends CalendarValue {
   @override
   CalendarValueLookup lookup(int year, [int? month, int? day]) {
     DateTime current = DateTime(year, month ?? 1, day ?? 1);
-    if (dates.any((element) => _convertNecessarry(element, year, month, day)
-        .isAtSameMomentAs(current))) {
+    if (dates.any(
+      (element) => _convertNecessarry(
+        element,
+        year,
+        month,
+        day,
+      ).isAtSameMomentAs(current),
+    )) {
       return CalendarValueLookup.selected;
     }
     return CalendarValueLookup.none;
@@ -878,10 +891,12 @@ class MultiCalendarValue extends CalendarValue {
   @override
   RangeCalendarValue toRange() {
     assert(dates.isNotEmpty, 'Cannot convert empty list to range');
-    DateTime min = dates
-        .reduce((value, element) => value.isBefore(element) ? value : element);
-    DateTime max = dates
-        .reduce((value, element) => value.isAfter(element) ? value : element);
+    DateTime min = dates.reduce(
+      (value, element) => value.isBefore(element) ? value : element,
+    );
+    DateTime max = dates.reduce(
+      (value, element) => value.isAfter(element) ? value : element,
+    );
     return CalendarValue.range(min, max);
   }
 
@@ -908,7 +923,7 @@ enum CalendarValueLookup {
   end,
 
   /// Date falls within a selected range but is not start/end.
-  inRange
+  inRange,
 }
 
 /// Represents a specific month and year view in calendar navigation.
@@ -1037,10 +1052,7 @@ class CalendarView {
   int get hashCode => year.hashCode ^ month.hashCode;
 
   /// Creates a copy of this view with the given fields replaced.
-  CalendarView copyWith({
-    ValueGetter<int>? year,
-    ValueGetter<int>? month,
-  }) {
+  CalendarView copyWith({ValueGetter<int>? year, ValueGetter<int>? month}) {
     return CalendarView(
       year == null ? this.year : year(),
       month == null ? this.month : month(),
@@ -1169,8 +1181,10 @@ class _CalendarState extends State<Calendar> {
   @override
   void initState() {
     super.initState();
-    _gridData =
-        CalendarGridData(month: widget.view.month, year: widget.view.year);
+    _gridData = CalendarGridData(
+      month: widget.view.month,
+      year: widget.view.year,
+    );
   }
 
   @override
@@ -1178,8 +1192,10 @@ class _CalendarState extends State<Calendar> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.view.year != widget.view.year ||
         oldWidget.view.month != widget.view.month) {
-      _gridData =
-          CalendarGridData(month: widget.view.month, year: widget.view.year);
+      _gridData = CalendarGridData(
+        month: widget.view.month,
+        year: widget.view.year,
+      );
     }
   }
 
@@ -1268,7 +1284,7 @@ class _CalendarState extends State<Calendar> {
         DateTime date = item.date;
         CalendarValueLookup lookup =
             widget.value?.lookup(date.year, date.month, date.day) ??
-                CalendarValueLookup.none;
+            CalendarValueLookup.none;
         CalendarItemType type = CalendarItemType.none;
         switch (lookup) {
           case CalendarValueLookup.none:
@@ -1300,10 +1316,7 @@ class _CalendarState extends State<Calendar> {
           child: Text('${date.day}'),
         );
         if (item.fromAnotherMonth) {
-          return Opacity(
-            opacity: 0.5,
-            child: calendarItem,
-          );
+          return Opacity(opacity: 0.5, child: calendarItem);
         }
         return calendarItem;
       },
@@ -1397,14 +1410,9 @@ class MonthCalendar extends StatelessWidget {
     }
     for (int i = 0; i < months.length; i += 4) {
       rows.add(Gap(theme.density.baseGap * theme.scaling));
-      rows.add(Row(
-        children: months.sublist(i, i + 4),
-      ));
+      rows.add(Row(children: months.sublist(i, i + 4)));
     }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: rows,
-    );
+    return Column(mainAxisSize: MainAxisSize.min, children: rows);
   }
 }
 
@@ -1495,14 +1503,9 @@ class YearCalendar extends StatelessWidget {
     }
     for (int i = 0; i < years.length; i += 4) {
       rows.add(Gap(theme.density.baseGap * theme.scaling));
-      rows.add(Row(
-        children: years.sublist(i, i + 4),
-      ));
+      rows.add(Row(children: years.sublist(i, i + 4)));
     }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: rows,
-    );
+    return Column(mainAxisSize: MainAxisSize.min, children: rows);
   }
 }
 
@@ -1667,26 +1670,27 @@ class CalendarItem extends StatelessWidget {
             alignment: Alignment.center,
             onPressed: onTap,
             enabled: state == DateState.enabled,
-            style: const ButtonStyle(
-              variance: ButtonVariance.secondary,
-              density: ButtonDensity.compact,
-            ).copyWith(
-              decoration: (context, states, value) {
-                return (value as BoxDecoration).copyWith(
-                  borderRadius: indexAtRow == 0
-                      ? BorderRadius.only(
-                          topLeft: Radius.circular(theme.radiusMd),
-                          bottomLeft: Radius.circular(theme.radiusMd),
-                        )
-                      : indexAtRow == rowCount - 1
+            style:
+                const ButtonStyle(
+                  variance: ButtonVariance.secondary,
+                  density: ButtonDensity.compact,
+                ).copyWith(
+                  decoration: (context, states, value) {
+                    return (value as BoxDecoration).copyWith(
+                      borderRadius: indexAtRow == 0
+                          ? BorderRadius.only(
+                              topLeft: Radius.circular(theme.radiusMd),
+                              bottomLeft: Radius.circular(theme.radiusMd),
+                            )
+                          : indexAtRow == rowCount - 1
                           ? BorderRadius.only(
                               topRight: Radius.circular(theme.radiusMd),
                               bottomRight: Radius.circular(theme.radiusMd),
                             )
                           : BorderRadius.zero,
-                );
-              },
-            ),
+                    );
+                  },
+                ),
             child: child,
           ),
         );
@@ -1698,19 +1702,20 @@ class CalendarItem extends StatelessWidget {
             alignment: Alignment.center,
             onPressed: onTap,
             enabled: state == DateState.enabled,
-            style: const ButtonStyle(
-              variance: ButtonVariance.secondary,
-              density: ButtonDensity.compact,
-            ).copyWith(
-              decoration: (context, states, value) {
-                return (value as BoxDecoration).copyWith(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(theme.radiusMd),
-                    bottomLeft: Radius.circular(theme.radiusMd),
-                  ),
-                );
-              },
-            ),
+            style:
+                const ButtonStyle(
+                  variance: ButtonVariance.secondary,
+                  density: ButtonDensity.compact,
+                ).copyWith(
+                  decoration: (context, states, value) {
+                    return (value as BoxDecoration).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(theme.radiusMd),
+                        bottomLeft: Radius.circular(theme.radiusMd),
+                      ),
+                    );
+                  },
+                ),
             child: child,
           ),
         );
@@ -1722,19 +1727,20 @@ class CalendarItem extends StatelessWidget {
             alignment: Alignment.center,
             onPressed: onTap,
             enabled: state == DateState.enabled,
-            style: const ButtonStyle(
-              variance: ButtonVariance.secondary,
-              density: ButtonDensity.compact,
-            ).copyWith(
-              decoration: (context, states, value) {
-                return (value as BoxDecoration).copyWith(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(theme.radiusMd),
-                    bottomRight: Radius.circular(theme.radiusMd),
-                  ),
-                );
-              },
-            ),
+            style:
+                const ButtonStyle(
+                  variance: ButtonVariance.secondary,
+                  density: ButtonDensity.compact,
+                ).copyWith(
+                  decoration: (context, states, value) {
+                    return (value as BoxDecoration).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(theme.radiusMd),
+                        bottomRight: Radius.circular(theme.radiusMd),
+                      ),
+                    );
+                  },
+                ),
             child: child,
           ),
         );
@@ -1802,19 +1808,20 @@ class CalendarItem extends StatelessWidget {
             alignment: Alignment.center,
             onPressed: onTap,
             enabled: state == DateState.enabled,
-            style: const ButtonStyle(
-              variance: ButtonVariance.primary,
-              density: ButtonDensity.compact,
-            ).copyWith(
-              decoration: (context, states, value) {
-                return (value as BoxDecoration).copyWith(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(theme.radiusMd),
-                    bottomLeft: Radius.circular(theme.radiusMd),
-                  ),
-                );
-              },
-            ),
+            style:
+                const ButtonStyle(
+                  variance: ButtonVariance.primary,
+                  density: ButtonDensity.compact,
+                ).copyWith(
+                  decoration: (context, states, value) {
+                    return (value as BoxDecoration).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(theme.radiusMd),
+                        bottomLeft: Radius.circular(theme.radiusMd),
+                      ),
+                    );
+                  },
+                ),
             child: child,
           ),
         );
@@ -1826,19 +1833,20 @@ class CalendarItem extends StatelessWidget {
             alignment: Alignment.center,
             onPressed: onTap,
             enabled: state == DateState.enabled,
-            style: const ButtonStyle(
-              variance: ButtonVariance.primary,
-              density: ButtonDensity.compact,
-            ).copyWith(
-              decoration: (context, states, value) {
-                return (value as BoxDecoration).copyWith(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(theme.radiusMd),
-                    bottomRight: Radius.circular(theme.radiusMd),
-                  ),
-                );
-              },
-            ),
+            style:
+                const ButtonStyle(
+                  variance: ButtonVariance.primary,
+                  density: ButtonDensity.compact,
+                ).copyWith(
+                  decoration: (context, states, value) {
+                    return (value as BoxDecoration).copyWith(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(theme.radiusMd),
+                        bottomRight: Radius.circular(theme.radiusMd),
+                      ),
+                    );
+                  },
+                ),
             child: child,
           ),
         );
@@ -1850,16 +1858,17 @@ class CalendarItem extends StatelessWidget {
             alignment: Alignment.center,
             enabled: state == DateState.enabled,
             onPressed: onTap,
-            style: const ButtonStyle(
-              variance: ButtonVariance.primary,
-              density: ButtonDensity.compact,
-            ).copyWith(
-              decoration: (context, states, value) {
-                return (value as BoxDecoration).copyWith(
-                  borderRadius: BorderRadius.zero,
-                );
-              },
-            ),
+            style:
+                const ButtonStyle(
+                  variance: ButtonVariance.primary,
+                  density: ButtonDensity.compact,
+                ).copyWith(
+                  decoration: (context, states, value) {
+                    return (value as BoxDecoration).copyWith(
+                      borderRadius: BorderRadius.zero,
+                    );
+                  },
+                ),
             child: child,
           ),
         );
@@ -1891,8 +1900,9 @@ class CalendarGridData {
     int daysInMonth = DateTime(year, month == 12 ? 1 : month + 1, 0).day;
 
     int prevMonthDays = firstDayOfMonth.weekday;
-    DateTime prevMonthLastDay =
-        firstDayOfMonth.subtract(Duration(days: prevMonthDays));
+    DateTime prevMonthLastDay = firstDayOfMonth.subtract(
+      Duration(days: prevMonthDays),
+    );
 
     List<CalendarGridItem> items = [];
 
@@ -1901,24 +1911,28 @@ class CalendarGridData {
     if (prevMonthDays < 7) {
       for (int i = 0; i < prevMonthDays; i++) {
         int currentItemIndex = itemCount++;
-        items.add(CalendarGridItem(
-          prevMonthLastDay.add(Duration(days: i)),
-          currentItemIndex % 7,
-          true,
-          currentItemIndex ~/ 7,
-        ));
+        items.add(
+          CalendarGridItem(
+            prevMonthLastDay.add(Duration(days: i)),
+            currentItemIndex % 7,
+            true,
+            currentItemIndex ~/ 7,
+          ),
+        );
       }
     }
 
     for (int i = 0; i < daysInMonth; i++) {
       int currentItemIndex = itemCount++;
       DateTime currentDay = DateTime(year, month, i + 1);
-      items.add(CalendarGridItem(
-        currentDay,
-        currentItemIndex % 7,
-        false,
-        currentItemIndex ~/ 7,
-      ));
+      items.add(
+        CalendarGridItem(
+          currentDay,
+          currentItemIndex % 7,
+          false,
+          currentItemIndex ~/ 7,
+        ),
+      );
     }
 
     int remainingDays = (7 - (items.length % 7)) % 7;
@@ -1927,12 +1941,14 @@ class CalendarGridData {
     if (remainingDays < 7) {
       for (int i = 0; i < remainingDays; i++) {
         int currentItemIndex = itemCount++;
-        items.add(CalendarGridItem(
-          nextMonthFirstDay.add(Duration(days: i)),
-          currentItemIndex % 7,
-          true,
-          currentItemIndex ~/ 7,
-        ));
+        items.add(
+          CalendarGridItem(
+            nextMonthFirstDay.add(Duration(days: i)),
+            currentItemIndex % 7,
+            true,
+            currentItemIndex ~/ 7,
+          ),
+        );
       }
     }
 
@@ -1973,7 +1989,11 @@ class CalendarGridItem {
 
   /// Creates a calendar grid item.
   CalendarGridItem(
-      this.date, this.indexInRow, this.fromAnotherMonth, this.rowIndex);
+    this.date,
+    this.indexInRow,
+    this.fromAnotherMonth,
+    this.rowIndex,
+  );
 
   /// Returns true if this item represents today's date.
   bool get isToday {
@@ -2052,21 +2072,20 @@ class CalendarGrid extends StatelessWidget {
         ),
       );
     }
-    rows.add(Row(
-      mainAxisSize: MainAxisSize.min,
-      children: weekDays,
-    ));
+    rows.add(Row(mainAxisSize: MainAxisSize.min, children: weekDays));
     for (int i = 0; i < data.items.length; i += 7) {
-      rows.add(Row(
-        mainAxisSize: MainAxisSize.min,
-        children: data.items.sublist(i, i + 7).map((e) {
-          return SizedBox(
-            width: theme.scaling * 32,
-            height: theme.scaling * 32,
-            child: itemBuilder(e),
-          );
-        }).toList(),
-      ));
+      rows.add(
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: data.items.sublist(i, i + 7).map((e) {
+            return SizedBox(
+              width: theme.scaling * 32,
+              height: theme.scaling * 32,
+              child: itemBuilder(e),
+            );
+          }).toList(),
+        ),
+      );
     }
     return Column(
       mainAxisSize: MainAxisSize.min,

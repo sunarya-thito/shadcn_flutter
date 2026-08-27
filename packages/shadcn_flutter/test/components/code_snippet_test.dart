@@ -7,11 +7,7 @@ void main() {
   group('CodeSnippet', () {
     testWidgets('renders code', (tester) async {
       await tester.pumpWidget(
-        SimpleApp(
-          child: CodeSnippet(
-            code: Text('print("Hello");'),
-          ),
-        ),
+        SimpleApp(child: CodeSnippet(code: Text('print("Hello");'))),
       );
 
       expect(find.byType(CodeSnippet), findsOneWidget);
@@ -24,16 +20,13 @@ void main() {
           child: CodeSnippet(
             code: Text('code'),
             actions: [
-              GhostButton(
-                onPressed: () {},
-                child: Icon(Icons.share),
-              ),
+              GhostButton(onPressed: () {}, child: Icon(LucideIcons.share2)),
             ],
           ),
         ),
       );
 
-      expect(find.byIcon(Icons.share), findsOneWidget);
+      expect(find.byIcon(LucideIcons.share2), findsOneWidget);
     });
 
     testWidgets('applies custom constraints', (tester) async {

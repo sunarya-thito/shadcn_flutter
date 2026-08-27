@@ -129,7 +129,6 @@ class DropdownMenuExample1 extends StatelessWidget {
 ### Dropdown Menu Tile
 ```dart
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -142,7 +141,7 @@ class CursorPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = material.Colors.white
+      ..color = Colors.white
       ..style = PaintingStyle.fill;
     final path = Path()
       ..moveTo(4, 0)
@@ -155,7 +154,7 @@ class CursorPainter extends CustomPainter {
       ..close();
     canvas.drawPath(path, paint);
     paint
-      ..color = material.Colors.black
+      ..color = Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     canvas.drawPath(path, paint);

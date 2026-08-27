@@ -1,6 +1,6 @@
 ---
 title: "Class: IndentGuidePath"
-description: "Branch line implementation with connected path lines.   Displays L-shaped or T-shaped connectors showing the hierarchical  structure of the tree. This is the most common branch line style.   Example:  ```dart  TreeView(    branchLine: BranchLine.path,    // or with custom color:    branchLine: IndentGuidePath(color: Colors.grey),  );  ```"
+description: "Branch line implementation with connected path lines.   Displays L-shaped or T-shaped connectors showing the hierarchical  structure of the tree. This is the most common branch line style.   Example:  ```dart  Tree(    branchLine: BranchLine.path,    // or with custom color:    branchLine: IndentGuidePath(color: Colors.grey),  );  ```"
 ---
 
 ```dart
@@ -11,7 +11,7 @@ description: "Branch line implementation with connected path lines.   Displays L
 ///
 /// Example:
 /// ```dart
-/// TreeView(
+/// Tree(
 ///   branchLine: BranchLine.path,
 ///   // or with custom color:
 ///   branchLine: IndentGuidePath(color: Colors.grey),

@@ -75,7 +75,7 @@ class Breadcrumb extends StatelessWidget {
   /// Example:
   /// ```dart
   /// Breadcrumb(
-  ///   separator: Icon(Icons.chevron_right),
+  ///   separator: Icon(LucideIcons.chevronRight),
   ///   children: [
   ///     TextButton(onPressed: goHome, child: Text('Home')),
   ///     TextButton(onPressed: goToCategory, child: Text('Category')),

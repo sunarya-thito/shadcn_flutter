@@ -9,6 +9,7 @@ A widget that constrains the width of its child based on a factor and aligns it.
 import 'package:docs/pages/docs/component_page.dart';
 import 'package:docs/pages/docs/components/chat/chat_example_1.dart';
 import 'package:docs/pages/docs/components/chat/chat_example_2.dart';
+import 'package:docs/pages/docs/components/chat/chat_example_3.dart';
 import 'package:docs/pages/widget_usage_example.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -26,6 +27,11 @@ class ChatExample extends StatelessWidget {
           title: 'Chat Example',
           path: 'lib/pages/docs/components/chat/chat_example_2.dart',
           child: ChatExample2(),
+        ),
+        WidgetUsageExample(
+          title: 'Chat Reactions Example',
+          path: 'lib/pages/docs/components/chat/chat_example_3.dart',
+          child: ChatExample3(),
         ),
         WidgetUsageExample(
           title: 'Sandbox Chat Example',
@@ -478,6 +484,153 @@ enum ChatType {
   plain,
   tail,
   sharpCorner,
+}
+
+```
+
+### Chat Example 3
+```dart
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class ChatExample3 extends StatefulWidget {
+  const ChatExample3({super.key});
+
+  @override
+  State<ChatExample3> createState() => _ChatExample3State();
+}
+
+class _ChatExample3State extends State<ChatExample3> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      spacing: 8,
+      children: [
+        // ChatGroup example
+        ChatGroup(
+          color: Colors.blue,
+          type:
+              ChatBubbleType.tail.copyWith(position: () => AxisDirectional.end),
+          alignment: AxisAlignmentDirectional.end,
+          children: const [
+            ChatBubble(
+                child: Text(
+                    'John, did you remember what time you took the call with Mrs. Smith?')),
+            ChatBubble(child: Text('Reply ASAP')),
+          ],
+        ),
+        ChatGroup(
+          color: Colors.gray,
+          avatarPrefix: const Avatar(initials: 'JO'),
+          alignment: AxisAlignmentDirectional.start,
+          type: ChatBubbleType.tail.copyWith(
+              position: () => AxisDirectional.start,
+              tailAlignment: () => AxisAlignmentDirectional.end),
+          children: const [
+            ChatBubble(child: Text('Around 6 or 7?')),
+            ChatBubble(child: Text('New phone who dis?')),
+          ],
+        ),
+        ChatReaction(
+          reaction: ChatReactionContainer(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 4,
+              children: const [
+                Text('❓'),
+              ],
+            ),
+          ),
+          child: ChatBubble(
+            color: Colors.blue,
+            alignment: AxisAlignmentDirectional.end,
+            type: ChatBubbleType.tail
+                .copyWith(position: () => AxisDirectional.end),
+            child: const Text('SIX SEVENNN 🤤🤪'),
+          ),
+        ),
+        ChatGroup(
+          color: Colors.gray,
+          avatarPrefix: const Avatar(initials: 'JO'),
+          alignment: AxisAlignmentDirectional.start,
+          type: ChatBubbleType.tail.copyWith(
+              position: () => AxisDirectional.start,
+              tailAlignment: () => AxisAlignmentDirectional.end),
+          children: [
+            ChatBubble(child: Text('?')),
+            ChatBubble(
+              child: Text('Seriously who is this'),
+            ),
+            ChatReaction(
+              child: ChatBubble(child: Text('gonna have to block you')),
+              reaction: ChatReactionContainer(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 4,
+                  children: [
+                    Text('🤪'),
+                    Text('👍'),
+                    Text('+2').small.muted,
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+enum ChatType {
+  plain,
+  tail,
+  sharpCorner,
+}
+
+```
+
+### Chat Tile
+```dart
+import 'package:docs/pages/docs/components_page.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+class ChatTile extends StatelessWidget implements IComponentPage {
+  const ChatTile({super.key});
+
+  @override
+  String get title => 'Chat Bubble';
+
+  @override
+  Widget build(BuildContext context) {
+    return ComponentCard(
+      title: 'Chat Bubble',
+      name: 'chat',
+      center: true,
+      scale: 1.1,
+      example: SizedBox(
+        width: 260,
+        child: Column(
+          spacing: 8,
+          children: [
+            ChatGroup(
+              color: Colors.gray,
+              avatarPrefix: const Avatar(initials: 'JO'),
+              alignment: AxisAlignmentDirectional.start,
+              children: const [
+                ChatBubble(child: Text('Around 6 or 7?')),
+                ChatBubble(child: Text('New phone who dis?')),
+              ],
+            ),
+            const ChatBubble(
+              color: Colors.blue,
+              alignment: AxisAlignmentDirectional.end,
+              child: Text('SIX SEVENNN'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 ```

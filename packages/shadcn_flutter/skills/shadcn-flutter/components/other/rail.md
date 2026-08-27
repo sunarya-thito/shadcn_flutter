@@ -12,12 +12,12 @@ NavigationRail(
   children: [
     NavigationItem(
       key: ValueKey('home'),
-      icon: Icon(Icons.home),
+      icon: Icon(LucideIcons.house),
       label: Text('Home'),
     ),
     NavigationItem(
       key: ValueKey('search'),
-      icon: Icon(Icons.search),
+      icon: Icon(LucideIcons.search),
       label: Text('Search'),
     ),
   ],

@@ -52,8 +52,9 @@ class DialogExample1 extends StatelessWidget {
     return PrimaryButton(
       onPressed: () {
         // Present a Material dialog on top of the current route.
-        showDialog(
-          context: context,
+        showOverlay(
+          context,
+          DialogConfiguration(),
           builder: (context) {
             final FormController controller = FormController();
             return AlertDialog(
@@ -113,7 +114,6 @@ class DialogExample1 extends StatelessWidget {
 ### Dialog Tile
 ```dart
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class DialogTile extends StatelessWidget implements IComponentPage {
@@ -128,7 +128,7 @@ class DialogTile extends StatelessWidget implements IComponentPage {
       title: 'Dialog',
       name: 'dialog',
       example: AlertDialog(
-        barrierColor: material.Colors.transparent,
+        barrierColor: Colors.transparent,
         title: const Text('Edit profile'),
         content: IntrinsicWidth(
           child: Column(

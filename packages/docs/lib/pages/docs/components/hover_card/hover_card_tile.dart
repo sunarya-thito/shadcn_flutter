@@ -1,12 +1,11 @@
 import 'package:docs/pages/docs/components_page.dart';
-import 'package:flutter/material.dart' as material hide Card;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class CursorPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = material.Colors.black
+      ..color = Colors.black
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 

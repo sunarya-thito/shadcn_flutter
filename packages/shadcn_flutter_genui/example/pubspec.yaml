@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   shadcn_flutter: any
   shadcn_flutter_genui: any
+  shadcn_flutter_material: any
+  material_ui: ^1.1.0
   genui: ^0.9.2
   http: ^1.2.0
   shared_preferences: ^2.3.0

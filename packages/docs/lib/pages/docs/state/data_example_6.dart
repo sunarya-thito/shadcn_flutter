@@ -39,7 +39,7 @@ class DataExample6State extends State<DataExample6> {
                 });
               },
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             ),
           ],
         ),

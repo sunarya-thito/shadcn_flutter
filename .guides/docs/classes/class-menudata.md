@@ -10,11 +10,11 @@ description: "Data container for individual menu item state.   Wraps a popover c
 /// display and interaction state.
 class MenuData {
   /// Controller for this item's submenu popover.
-  final PopoverController popoverController;
+  final OverlayController overlayController;
   /// Creates menu item data.
   ///
   /// Parameters:
-  /// - [popoverController] (PopoverController?): Optional controller, creates default if null
-  MenuData({PopoverController? popoverController});
+  /// - [overlayController] (OverlayController?): Optional controller, creates default if null
+  MenuData({OverlayController? overlayController});
 }
 ```

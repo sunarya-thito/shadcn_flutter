@@ -81,7 +81,7 @@ class CounterPageState extends State<CounterPage> {
                   );
                 },
                 density: ButtonDensity.icon,
-                child: const Icon(Icons.menu),
+                child: const Icon(LucideIcons.menu),
               ),
             ),
           ],
@@ -108,7 +108,7 @@ class CounterPageState extends State<CounterPage> {
                     },
                   );
                 },
-                child: const Icon(Icons.search),
+                child: const Icon(LucideIcons.search),
               ),
             ),
           ],
@@ -125,9 +125,9 @@ class CounterPageState extends State<CounterPage> {
           },
           selectedKey: _selected,
           children: [
-            _buildButton('Home', Icons.home, const ValueKey(0)),
-            _buildButton('Explore', Icons.explore, const ValueKey(1)),
-            _buildButton('Library', Icons.library_music, const ValueKey(2)),
+            _buildButton('Home', LucideIcons.house, const ValueKey(0)),
+            _buildButton('Explore', LucideIcons.compass, const ValueKey(1)),
+            _buildButton('Library', LucideIcons.library, const ValueKey(2)),
           ],
         ),
       ],
@@ -147,7 +147,7 @@ class CounterPageState extends State<CounterPage> {
               PrimaryButton(
                 onPressed: _incrementCounter,
                 density: ButtonDensity.icon,
-                child: const Icon(Icons.add),
+                child: const Icon(LucideIcons.plus),
               ).p(),
             ],
           ),

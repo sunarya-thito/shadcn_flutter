@@ -31,12 +31,12 @@ class InputAutoCompleteFeature extends InputFeature {
   final Widget child;
   /// Constraints for the popover size.
   final BoxConstraints? popoverConstraints;
-  /// Width constraint for the popover.
-  final PopoverConstraint? popoverWidthConstraint;
-  /// Anchor alignment for the popover.
-  final AlignmentDirectional? popoverAnchorAlignment;
-  /// Popover alignment relative to the anchor.
-  final AlignmentDirectional? popoverAlignment;
+  /// Overrides the [OverlayConfiguration] used to present the suggestion
+  /// popover.
+  final OverlayConfiguration? overlayConfiguration;
+  /// Whether the suggestion popover may adapt to a different presentation on
+  /// mobile platforms (see [showOverlay]'s `adaptive` parameter).
+  final bool? adaptiveOverlay;
   /// Autocomplete mode (e.g., popover or inline).
   final AutoCompleteMode mode;
   /// Creates an [InputAutoCompleteFeature].
@@ -45,13 +45,12 @@ class InputAutoCompleteFeature extends InputFeature {
   /// - [querySuggestions] (`SuggestionBuilder`, required): Provides suggestions.
   /// - [child] (`Widget`, required): Content for suggestion items.
   /// - [popoverConstraints] (`BoxConstraints?`, optional): Size constraints.
-  /// - [popoverWidthConstraint] (`PopoverConstraint?`, optional): Width constraint.
-  /// - [popoverAnchorAlignment] (`AlignmentDirectional?`, optional): Anchor alignment.
-  /// - [popoverAlignment] (`AlignmentDirectional?`, optional): Popover alignment.
+  /// - [overlayConfiguration] (`OverlayConfiguration?`, optional): overrides the popover presentation.
+  /// - [adaptiveOverlay] (`bool?`, optional): whether `adaptiveConversion` runs for this overlay.
   /// - [mode] (`AutoCompleteMode`, required): Autocomplete display mode.
   /// - [visibility] (`InputFeatureVisibility`, optional): Controls visibility.
   /// - [skipFocusTraversal] (`bool`, optional): Whether to skip in focus order.
-  const InputAutoCompleteFeature({super.visibility, super.skipFocusTraversal, required this.querySuggestions, required this.child, this.popoverConstraints, this.popoverWidthConstraint, this.popoverAnchorAlignment, this.popoverAlignment, this.mode = AutoCompleteMode.replaceWord});
+  const InputAutoCompleteFeature({super.visibility, super.skipFocusTraversal, required this.querySuggestions, required this.child, this.popoverConstraints, this.overlayConfiguration, this.adaptiveOverlay, this.mode = AutoCompleteMode.replaceWord});
   InputFeatureState createState();
 }
 ```

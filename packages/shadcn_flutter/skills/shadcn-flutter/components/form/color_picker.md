@@ -174,17 +174,21 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Builder(builder: (context) {
-          return PrimaryButton(
+        OverlayAnchor(
+          anchor: #colorPickerButton,
+          child: PrimaryButton(
             onPressed: () {
               // Show the color picker as a popover anchored to the button.
-              showPopover(
-                context: context,
-                alignment: Alignment.topCenter,
-                anchorAlignment: Alignment.bottomCenter,
-                widthConstraint: PopoverConstraint.intrinsic,
-                heightConstraint: PopoverConstraint.intrinsic,
-                offset: const Offset(0, 8),
+              showOverlay(
+                context,
+                PopoverConfiguration(
+                  anchor: LinkedAnchor(#colorPickerButton),
+                  alignment: Alignment.topCenter,
+                  anchorAlignment: Alignment.bottomCenter,
+                  widthConstraint: PopoverConstraint.intrinsic,
+                  heightConstraint: PopoverConstraint.intrinsic,
+                  offset: const Offset(0, 8),
+                ),
                 builder: (context) {
                   return ListenableBuilder(
                       listenable: selectedColorNotifier,
@@ -206,14 +210,15 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
               );
             },
             child: const Text('Open Color Picker Popover'),
-          );
-        }),
+          ),
+        ),
         const Gap(16),
         PrimaryButton(
           onPressed: () {
             // Show the color picker as a dialog with a title.
-            showDialog(
-              context: context,
+            showOverlay(
+              context,
+              DialogConfiguration(),
               builder: (context) {
                 return AlertDialog(
                   title: const Text('Select Color'),
@@ -254,7 +259,6 @@ class _ColorPickerExample3State extends State<ColorPickerExample3> {
 
 ### Color Picker Tile
 ```dart
-import 'package:flutter/material.dart' as material;
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:docs/pages/docs/components_page.dart';
 
@@ -273,7 +277,7 @@ class ColorPickerTile extends StatelessWidget implements IComponentPage {
       reverseVertical: true,
       example: Card(
         child: ColorPicker(
-          value: ColorDerivative.fromColor(material.Colors.blue),
+          value: ColorDerivative.fromColor(Colors.blue),
         ),
       ),
     );

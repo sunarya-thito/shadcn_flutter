@@ -27,11 +27,11 @@ class AdaptiveScaling {
   /// Parameters:
   /// - [scaling] (`double`, default: 1): Scaling factor for radius, size, and text.
   const AdaptiveScaling([double scaling = 1])
-      : this.only(
-          radiusScaling: scaling,
-          sizeScaling: scaling,
-          textScaling: scaling,
-        );
+    : this.only(
+        radiusScaling: scaling,
+        sizeScaling: scaling,
+        textScaling: scaling,
+      );
 
   /// Creates [AdaptiveScaling] with individual scaling factors.
   ///
@@ -58,10 +58,12 @@ class AdaptiveScaling {
     return theme.copyWith(
       radius: radiusScaling == 1 ? null : () => theme.radius * radiusScaling,
       scaling: sizeScaling == 1 ? null : () => theme.scaling * sizeScaling,
-      typography:
-          textScaling == 1 ? null : () => theme.typography.scale(textScaling),
-      iconTheme:
-          textScaling == 1 ? null : () => theme.iconTheme.scale(textScaling),
+      typography: textScaling == 1
+          ? null
+          : () => theme.typography.scale(textScaling),
+      iconTheme: textScaling == 1
+          ? null
+          : () => theme.iconTheme.scale(textScaling),
     );
   }
 
@@ -76,11 +78,7 @@ class AdaptiveScaling {
   /// - [t] (double, required): Interpolation position (0.0 to 1.0)
   ///
   /// Returns interpolated AdaptiveScaling.
-  static AdaptiveScaling lerp(
-    AdaptiveScaling a,
-    AdaptiveScaling b,
-    double t,
-  ) {
+  static AdaptiveScaling lerp(AdaptiveScaling a, AdaptiveScaling b, double t) {
     return AdaptiveScaling.only(
       radiusScaling: lerpDouble(a.radiusScaling, b.radiusScaling, t)!,
       sizeScaling: lerpDouble(a.sizeScaling, b.sizeScaling, t)!,
@@ -125,19 +123,12 @@ class AdaptiveScaler extends StatelessWidget {
   /// Parameters:
   /// - [scaling] (`AdaptiveScaling`, required): Scaling factors to apply.
   /// - [child] (`Widget`, required): Child widget.
-  const AdaptiveScaler({
-    super.key,
-    required this.scaling,
-    required this.child,
-  });
+  const AdaptiveScaler({super.key, required this.scaling, required this.child});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Theme(
-      data: scaling.scale(theme),
-      child: child,
-    );
+    return Theme(data: scaling.scale(theme), child: child);
   }
 }
 
@@ -183,7 +174,7 @@ class ThemeData {
   /// - [scaling] (`double`, default: 1): Size scaling factor.
   /// - [typography] (`Typography`, default: Geist): Typography settings.
   /// - [iconTheme] (`IconThemeProperties`, default: standard sizes): Icon theme.
-  /// - [platform] (`TargetPlatform?`, optional): Target platform override.
+  /// - [_platform] (`TargetPlatform?`, optional): Target platform override.
   /// - [surfaceOpacity] (`double?`, optional): Surface overlay opacity.
   /// - [surfaceBlur] (`double?`, optional): Surface blur radius.
   const ThemeData({
@@ -192,12 +183,12 @@ class ThemeData {
     this.scaling = 1,
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
-    TargetPlatform? platform,
+    this._platform,
     this.surfaceOpacity,
     this.enableFeedback,
     this.surfaceBlur,
     this.density = Density.defaultDensity,
-  }) : _platform = platform;
+  });
 
   /// Creates a [ThemeData] with dark color scheme.
   ///
@@ -207,7 +198,7 @@ class ThemeData {
   /// - [scaling] (`double`, default: 1): Size scaling factor.
   /// - [typography] (`Typography`, default: Geist): Typography settings.
   /// - [iconTheme] (`IconThemeProperties`, default: standard sizes): Icon theme.
-  /// - [platform] (`TargetPlatform?`, optional): Target platform override.
+  /// - [_platform] (`TargetPlatform?`, optional): Target platform override.
   /// - [surfaceOpacity] (`double?`, optional): Surface overlay opacity.
   /// - [surfaceBlur] (`double?`, optional): Surface blur radius.
   const ThemeData.dark({
@@ -216,12 +207,12 @@ class ThemeData {
     this.scaling = 1,
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
-    TargetPlatform? platform,
+    this._platform,
     this.surfaceOpacity,
     this.surfaceBlur,
     this.density = Density.defaultDensity,
     this.enableFeedback,
-  }) : _platform = platform;
+  });
 
   /// The current platform.
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
@@ -318,11 +309,13 @@ class ThemeData {
       platform: platform == null ? _platform : platform(),
       scaling: scaling == null ? this.scaling : scaling(),
       iconTheme: iconTheme == null ? this.iconTheme : iconTheme(),
-      surfaceOpacity:
-          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceOpacity: surfaceOpacity == null
+          ? this.surfaceOpacity
+          : surfaceOpacity(),
       surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
-      enableFeedback:
-          enableFeedback == null ? this.enableFeedback : enableFeedback(),
+      enableFeedback: enableFeedback == null
+          ? this.enableFeedback
+          : enableFeedback(),
       density: density == null ? this.density : density(),
     );
   }
@@ -335,11 +328,7 @@ class ThemeData {
   /// - [t] (`double`, required): Interpolation position (0.0 to 1.0).
   ///
   /// Returns: `ThemeData` — interpolated theme.
-  static ThemeData lerp(
-    ThemeData a,
-    ThemeData b,
-    double t,
-  ) {
+  static ThemeData lerp(ThemeData a, ThemeData b, double t) {
     return ThemeData(
       colorScheme: ColorScheme.lerp(a.colorScheme, b.colorScheme, t),
       radius: lerpDouble(a.radius, b.radius, t)!,
@@ -401,11 +390,7 @@ class Theme extends InheritedTheme {
   /// Parameters:
   /// - [data] (`ThemeData`, required): Theme data to provide.
   /// - [child] (`Widget`, required): Child widget.
-  const Theme({
-    super.key,
-    required this.data,
-    required super.child,
-  });
+  const Theme({super.key, required this.data, required super.child});
 
   /// Gets the [ThemeData] from the closest [Theme] ancestor.
   ///
@@ -732,24 +717,17 @@ class ComponentTheme<T extends ComponentThemeData> extends InheritedTheme {
   /// Parameters:
   /// - [data] (`T`, required): Theme data for this component type.
   /// - [child] (`Widget`, required): Child widget.
-  const ComponentTheme({
-    super.key,
-    required this.data,
-    required super.child,
-  });
+  const ComponentTheme({super.key, required this.data, required super.child});
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    ComponentTheme<T>? ancestorTheme =
-        context.findAncestorWidgetOfExactType<ComponentTheme<T>>();
+    ComponentTheme<T>? ancestorTheme = context
+        .findAncestorWidgetOfExactType<ComponentTheme<T>>();
     // if it's the same type, we don't need to wrap it
     if (identical(this, ancestorTheme)) {
       return child;
     }
-    return ComponentTheme<T>(
-      data: data,
-      child: child,
-    );
+    return ComponentTheme<T>(data: data, child: child);
   }
 
   /// Gets the component theme data of type `T` from the closest ancestor.
@@ -769,8 +747,8 @@ class ComponentTheme<T extends ComponentThemeData> extends InheritedTheme {
   ///
   /// Returns: `T?` — the component theme data, or null.
   static T? maybeOf<T extends ComponentThemeData>(BuildContext context) {
-    final widget =
-        context.dependOnInheritedWidgetOfExactType<ComponentTheme<T>>();
+    final widget = context
+        .dependOnInheritedWidgetOfExactType<ComponentTheme<T>>();
     if (widget == null) {
       return null;
     }

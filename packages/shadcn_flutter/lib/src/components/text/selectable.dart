@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' as m;
+import 'package:flutter/scheduler.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 /// {@template selectable_text_theme}
@@ -100,13 +100,14 @@ class SelectableTextTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      cursorWidth,
-      cursorHeight,
-      cursorRadius,
-      cursorColor,
-      selectionHeightStyle,
-      selectionWidthStyle,
-      enableInteractiveSelection);
+    cursorWidth,
+    cursorHeight,
+    cursorRadius,
+    cursorColor,
+    selectionHeightStyle,
+    selectionWidthStyle,
+    enableInteractiveSelection,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -176,7 +177,7 @@ class SelectableTextTheme extends ComponentThemeData {
 /// - [Text] for non-selectable text display
 /// - [TextField] for editable text input
 /// - [SelectableTextTheme] for theming selection appearance
-class SelectableText extends StatelessWidget {
+class SelectableText extends StatefulWidget {
   /// Creates selectable text from a plain string.
   ///
   /// The [data] parameter is the text to display. All other parameters
@@ -209,7 +210,6 @@ class SelectableText extends StatelessWidget {
   /// - [textHeightBehavior]: How to handle line heights
   /// - [textWidthBasis]: Basis for measuring text width
   /// - [onSelectionChanged]: Callback when selection changes
-  /// - [useNativeContextMenu]: Use platform context menu (defaults to `false`)
   /// - [contextMenuBuilder]: Custom context menu builder
   /// - [magnifierConfiguration]: Text magnifier configuration
   const SelectableText(
@@ -240,16 +240,15 @@ class SelectableText extends StatelessWidget {
     this.textHeightBehavior,
     this.textWidthBasis,
     this.onSelectionChanged,
-    this.useNativeContextMenu = false,
     this.contextMenuBuilder = _defaultContextMenuBuilder,
     this.magnifierConfiguration,
-  })  : assert(maxLines == null || maxLines > 0),
-        assert(minLines == null || minLines > 0),
-        assert(
-          (maxLines == null) || (minLines == null) || (maxLines >= minLines),
-          "minLines can't be greater than maxLines",
-        ),
-        textSpan = null;
+  }) : assert(maxLines == null || maxLines > 0),
+       assert(minLines == null || minLines > 0),
+       assert(
+         (maxLines == null) || (minLines == null) || (maxLines >= minLines),
+         "minLines can't be greater than maxLines",
+       ),
+       textSpan = null;
 
   /// Creates selectable text from a [TextSpan] for styled/rich text.
   ///
@@ -304,16 +303,15 @@ class SelectableText extends StatelessWidget {
     this.textHeightBehavior,
     this.textWidthBasis,
     this.onSelectionChanged,
-    this.useNativeContextMenu = false,
     this.contextMenuBuilder = _defaultContextMenuBuilder,
     this.magnifierConfiguration,
-  })  : assert(maxLines == null || maxLines > 0),
-        assert(minLines == null || minLines > 0),
-        assert(
-          (maxLines == null) || (minLines == null) || (maxLines >= minLines),
-          "minLines can't be greater than maxLines",
-        ),
-        data = null;
+  }) : assert(maxLines == null || maxLines > 0),
+       assert(minLines == null || minLines > 0),
+       assert(
+         (maxLines == null) || (minLines == null) || (maxLines >= minLines),
+         "minLines can't be greater than maxLines",
+       ),
+       data = null;
 
   /// The plain text string to display.
   ///
@@ -331,12 +329,6 @@ class SelectableText extends StatelessWidget {
   ///
   /// If `null`, a focus node is created internally.
   final FocusNode? focusNode;
-
-  /// Whether to use the platform's native context menu.
-  ///
-  /// When `true`, uses the operating system's built-in context menu.
-  /// When `false`, uses Flutter's custom context menu.
-  final bool useNativeContextMenu;
 
   /// The text style to apply to the text.
   ///
@@ -439,7 +431,9 @@ class SelectableText extends StatelessWidget {
   final EditableTextContextMenuBuilder? contextMenuBuilder;
 
   static Widget _defaultContextMenuBuilder(
-      BuildContext context, EditableTextState editableTextState) {
+    BuildContext context,
+    EditableTextState editableTextState,
+  ) {
     return buildEditableTextContextMenu(context, editableTextState);
   }
 
@@ -453,89 +447,325 @@ class SelectableText extends StatelessWidget {
   final TextMagnifierConfiguration? magnifierConfiguration;
 
   @override
-  Widget build(BuildContext context) {
-    final compTheme = ComponentTheme.maybeOf<SelectableTextTheme>(context);
-    final cursorWidth = compTheme?.cursorWidth ?? this.cursorWidth;
-    final cursorHeight = compTheme?.cursorHeight ?? this.cursorHeight;
-    final cursorRadius = compTheme?.cursorRadius ?? this.cursorRadius;
-    final cursorColor = compTheme?.cursorColor ?? this.cursorColor;
-    final selectionHeightStyle =
-        compTheme?.selectionHeightStyle ?? this.selectionHeightStyle;
-    final selectionWidthStyle =
-        compTheme?.selectionWidthStyle ?? this.selectionWidthStyle;
-    final enableSelection =
-        compTheme?.enableInteractiveSelection ?? enableInteractiveSelection;
+  State<SelectableText> createState() => _SelectableTextState();
+}
 
-    if (data == null) {
-      return m.SelectableText.rich(
-        textSpan!,
-        focusNode: focusNode,
-        style: style,
-        strutStyle: strutStyle,
-        textAlign: textAlign,
-        textDirection: textDirection,
-        textHeightBehavior: textHeightBehavior,
-        textWidthBasis: textWidthBasis,
-        showCursor: showCursor,
-        autofocus: autofocus,
-        minLines: minLines,
-        maxLines: maxLines,
-        cursorWidth: cursorWidth,
-        cursorHeight: cursorHeight,
-        cursorRadius: cursorRadius,
-        cursorColor: cursorColor,
-        selectionHeightStyle: selectionHeightStyle,
-        selectionWidthStyle: selectionWidthStyle,
-        enableInteractiveSelection: enableSelection,
-        selectionControls: selectionControls,
-        onTap: onTap,
-        scrollPhysics: scrollPhysics,
-        semanticsLabel: semanticsLabel,
-        onSelectionChanged: onSelectionChanged,
-        contextMenuBuilder: useNativeContextMenu
-            ? (context, editableTextState) {
-                return m.AdaptiveTextSelectionToolbar.editableText(
-                  editableTextState: editableTextState,
-                );
-              }
-            : contextMenuBuilder,
-        magnifierConfiguration: magnifierConfiguration,
+/// A read-only controller whose text is fixed to a single [TextSpan].
+///
+/// [EditableText] drives everything through a [TextEditingController], but a
+/// [SelectableText] must not be editable and must still be able to render rich
+/// spans. This controller answers with the original span rather than
+/// re-deriving one from a plain string, so nested styles survive.
+///
+/// Ported from Flutter's Material `SelectableText` (BSD-licensed, see the
+/// Flutter LICENSE file).
+class _TextSpanEditingController extends TextEditingController {
+  _TextSpanEditingController({required TextSpan textSpan})
+    : _textSpan = textSpan,
+      super(text: textSpan.toPlainText(includeSemanticsLabels: false));
+
+  final TextSpan _textSpan;
+
+  @override
+  TextSpan buildTextSpan({
+    required BuildContext context,
+    TextStyle? style,
+    required bool withComposing,
+  }) {
+    // This does not care about composing.
+    return TextSpan(style: style, children: <TextSpan>[_textSpan]);
+  }
+
+  @override
+  set text(String? newText) {
+    // The text is owned by the widget, so this should never be reached.
+    throw UnimplementedError();
+  }
+}
+
+/// Wires tap and drag selection gestures onto the [EditableText] below.
+///
+/// Only [onSingleTapUp] is customized, so that [SelectableText.onTap] fires
+/// after the selection has been updated.
+class _SelectableTextSelectionGestureDetectorBuilder
+    extends TextSelectionGestureDetectorBuilder {
+  _SelectableTextSelectionGestureDetectorBuilder({
+    required _SelectableTextState state,
+  }) : _state = state,
+       super(delegate: state);
+
+  final _SelectableTextState _state;
+
+  @override
+  void onSingleTapUp(TapDragUpDetails details) {
+    if (!delegate.selectionEnabled) {
+      return;
+    }
+    super.onSingleTapUp(details);
+    _state.widget.onTap?.call();
+  }
+}
+
+/// Drives a read-only [EditableText] to render selectable text.
+///
+/// Ported from Flutter's Material `_SelectableTextState` (BSD-licensed, see the
+/// Flutter LICENSE file), with the Material and Cupertino theme lookups
+/// replaced by shadcn_flutter's [ThemeData] and [SelectableTextTheme], and with
+/// the per-platform selection controls replaced by the single handle-less
+/// [shadcnTextSelectionHandleControls].
+class _SelectableTextState extends State<SelectableText>
+    implements TextSelectionGestureDetectorBuilderDelegate {
+  EditableTextState? get _editableText => editableTextKey.currentState;
+
+  late _TextSpanEditingController _controller;
+
+  FocusNode? _focusNode;
+  FocusNode get _effectiveFocusNode =>
+      widget.focusNode ?? (_focusNode ??= FocusNode(skipTraversal: true));
+
+  bool _showSelectionHandles = false;
+
+  late _SelectableTextSelectionGestureDetectorBuilder
+  _selectionGestureDetectorBuilder;
+
+  // API for TextSelectionGestureDetectorBuilderDelegate.
+  @override
+  late bool forcePressEnabled;
+
+  @override
+  final GlobalKey<EditableTextState> editableTextKey =
+      GlobalKey<EditableTextState>();
+
+  @override
+  bool get selectionEnabled => widget.selectionEnabled;
+  // End of API for TextSelectionGestureDetectorBuilderDelegate.
+
+  @override
+  void initState() {
+    super.initState();
+    _selectionGestureDetectorBuilder =
+        _SelectableTextSelectionGestureDetectorBuilder(state: this);
+    _controller = _TextSpanEditingController(
+      textSpan: widget.textSpan ?? TextSpan(text: widget.data),
+    );
+    _controller.addListener(_onControllerChanged);
+    _effectiveFocusNode.addListener(_handleFocusChanged);
+  }
+
+  @override
+  void didUpdateWidget(SelectableText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.data != oldWidget.data ||
+        widget.textSpan != oldWidget.textSpan) {
+      _controller.removeListener(_onControllerChanged);
+      _controller.dispose();
+      _controller = _TextSpanEditingController(
+        textSpan: widget.textSpan ?? TextSpan(text: widget.data),
       );
-    } else {
-      return m.SelectableText(
-        data!,
-        focusNode: focusNode,
-        style: style,
-        strutStyle: strutStyle,
-        textAlign: textAlign,
-        textDirection: textDirection,
-        textHeightBehavior: textHeightBehavior,
-        textWidthBasis: textWidthBasis,
-        showCursor: showCursor,
-        autofocus: autofocus,
-        minLines: minLines,
-        maxLines: maxLines,
-        cursorWidth: cursorWidth,
-        cursorHeight: cursorHeight,
-        cursorRadius: cursorRadius,
-        cursorColor: cursorColor,
-        selectionHeightStyle: selectionHeightStyle,
-        selectionWidthStyle: selectionWidthStyle,
-        enableInteractiveSelection: enableSelection,
-        selectionControls: selectionControls,
-        onTap: onTap,
-        scrollPhysics: scrollPhysics,
-        semanticsLabel: semanticsLabel,
-        onSelectionChanged: onSelectionChanged,
-        contextMenuBuilder: useNativeContextMenu
-            ? (context, editableTextState) {
-                return m.AdaptiveTextSelectionToolbar.editableText(
-                  editableTextState: editableTextState,
-                );
-              }
-            : contextMenuBuilder,
-        magnifierConfiguration: magnifierConfiguration,
+      _controller.addListener(_onControllerChanged);
+    }
+    if (widget.focusNode != oldWidget.focusNode) {
+      (oldWidget.focusNode ?? _focusNode)?.removeListener(_handleFocusChanged);
+      (widget.focusNode ?? _focusNode)?.addListener(_handleFocusChanged);
+    }
+    _showSelectionHandles =
+        !(_effectiveFocusNode.hasFocus && _controller.selection.isCollapsed);
+  }
+
+  @override
+  void dispose() {
+    _effectiveFocusNode.removeListener(_handleFocusChanged);
+    _focusNode?.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onControllerChanged() {
+    final bool showSelectionHandles =
+        !_effectiveFocusNode.hasFocus || !_controller.selection.isCollapsed;
+    if (showSelectionHandles == _showSelectionHandles) {
+      return;
+    }
+    setState(() {
+      _showSelectionHandles = showSelectionHandles;
+    });
+  }
+
+  void _handleFocusChanged() {
+    if (!_effectiveFocusNode.hasFocus &&
+        SchedulerBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+      // Only clear the selection when this SelectableText loses focus while the
+      // application is actually running. On desktop, clicking another window
+      // makes the application inactive without the user having dismissed the
+      // selection, and it should still be there when they come back.
+      _controller.value = TextEditingValue(text: _controller.value.text);
+    }
+  }
+
+  void _handleSelectionChanged(
+    TextSelection selection,
+    SelectionChangedCause? cause,
+  ) {
+    final bool willShowSelectionHandles = _shouldShowSelectionHandles(cause);
+    if (willShowSelectionHandles != _showSelectionHandles) {
+      setState(() {
+        _showSelectionHandles = willShowSelectionHandles;
+      });
+    }
+
+    widget.onSelectionChanged?.call(selection, cause);
+
+    switch (Theme.of(context).platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        if (cause == SelectionChangedCause.longPress) {
+          _editableText?.bringIntoView(selection.base);
+        }
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+      // Do nothing.
+      // Flutter forks might add platforms to TargetPlatform.
+      // ignore: unreachable_switch_default
+      default:
+      // Do nothing.
+    }
+  }
+
+  /// Toggle the toolbar when a selection handle is tapped.
+  void _handleSelectionHandleTapped() {
+    if (_controller.selection.isCollapsed) {
+      _editableText!.toggleToolbar();
+    }
+  }
+
+  bool _shouldShowSelectionHandles(SelectionChangedCause? cause) {
+    // When the text is activated by something that doesn't trigger the
+    // selection overlay, the handles shouldn't show either.
+    if (!_selectionGestureDetectorBuilder.shouldShowSelectionToolbar) {
+      return false;
+    }
+    if (_controller.selection.isCollapsed) {
+      return false;
+    }
+    if (cause == SelectionChangedCause.keyboard) {
+      return false;
+    }
+    if (cause == SelectionChangedCause.longPress) {
+      return true;
+    }
+    return _controller.text.isNotEmpty;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    assert(debugCheckHasMediaQuery(context));
+    assert(debugCheckHasDirectionality(context));
+    assert(
+      !(widget.style != null &&
+          !widget.style!.inherit &&
+          (widget.style!.fontSize == null ||
+              widget.style!.textBaseline == null)),
+      'inherit false style must supply fontSize and textBaseline',
+    );
+
+    final ThemeData theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<SelectableTextTheme>(context);
+    final DefaultSelectionStyle selectionStyle = DefaultSelectionStyle.of(
+      context,
+    );
+    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+
+    final double cursorWidth = compTheme?.cursorWidth ?? widget.cursorWidth;
+    final double? cursorHeight = compTheme?.cursorHeight ?? widget.cursorHeight;
+    final Radius? cursorRadius = compTheme?.cursorRadius ?? widget.cursorRadius;
+    final ui.BoxHeightStyle selectionHeightStyle =
+        compTheme?.selectionHeightStyle ?? widget.selectionHeightStyle;
+    final ui.BoxWidthStyle selectionWidthStyle =
+        compTheme?.selectionWidthStyle ?? widget.selectionWidthStyle;
+    final bool enableSelection =
+        compTheme?.enableInteractiveSelection ??
+        widget.enableInteractiveSelection;
+
+    final Color cursorColor =
+        widget.cursorColor ??
+        compTheme?.cursorColor ??
+        selectionStyle.cursorColor ??
+        theme.colorScheme.primary;
+    final Color selectionColor =
+        selectionStyle.selectionColor ??
+        theme.colorScheme.primary.scaleAlpha(0.2);
+
+    // Only iOS promotes a hard press into a word selection; every other
+    // platform treats it as an ordinary press.
+    forcePressEnabled = theme.platform == TargetPlatform.iOS;
+
+    TextStyle? effectiveTextStyle = widget.style;
+    if (effectiveTextStyle == null || effectiveTextStyle.inherit) {
+      effectiveTextStyle = defaultTextStyle.style.merge(
+        widget.style ?? _controller._textSpan.style,
       );
     }
+
+    final Widget child = RepaintBoundary(
+      child: EditableText(
+        key: editableTextKey,
+        style: effectiveTextStyle,
+        readOnly: true,
+        textWidthBasis:
+            widget.textWidthBasis ?? defaultTextStyle.textWidthBasis,
+        textHeightBehavior:
+            widget.textHeightBehavior ?? defaultTextStyle.textHeightBehavior,
+        showSelectionHandles: _showSelectionHandles,
+        showCursor: widget.showCursor,
+        controller: _controller,
+        focusNode: _effectiveFocusNode,
+        strutStyle: widget.strutStyle ?? const StrutStyle(),
+        textAlign:
+            widget.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
+        textDirection: widget.textDirection,
+        textScaler: widget.textScaler,
+        autofocus: widget.autofocus,
+        forceLine: false,
+        minLines: widget.minLines,
+        maxLines: widget.maxLines ?? defaultTextStyle.maxLines,
+        selectionColor: selectionColor,
+        selectionControls: enableSelection
+            ? (widget.selectionControls ?? shadcnTextSelectionHandleControls)
+            : null,
+        onSelectionChanged: _handleSelectionChanged,
+        onSelectionHandleTapped: _handleSelectionHandleTapped,
+        rendererIgnoresPointer: true,
+        cursorWidth: cursorWidth,
+        cursorHeight: cursorHeight,
+        cursorRadius: cursorRadius,
+        cursorColor: cursorColor,
+        selectionHeightStyle: selectionHeightStyle,
+        selectionWidthStyle: selectionWidthStyle,
+        cursorOpacityAnimates: false,
+        paintCursorAboveText: true,
+        backgroundCursorColor: theme.colorScheme.border,
+        enableInteractiveSelection: enableSelection,
+        magnifierConfiguration:
+            widget.magnifierConfiguration ?? const TextMagnifierConfiguration(),
+        dragStartBehavior: widget.dragStartBehavior,
+        scrollPhysics: widget.scrollPhysics,
+        autofillHints: null,
+        contextMenuBuilder: widget.contextMenuBuilder,
+      ),
+    );
+
+    return Semantics(
+      label: widget.semanticsLabel,
+      excludeSemantics: widget.semanticsLabel != null,
+      onLongPress: () {
+        _effectiveFocusNode.requestFocus();
+      },
+      child: _selectionGestureDetectorBuilder.buildGestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: child,
+      ),
+    );
   }
 }

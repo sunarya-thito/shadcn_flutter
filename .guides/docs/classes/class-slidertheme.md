@@ -24,10 +24,13 @@ class SliderTheme extends ComponentThemeData {
   final Color? thumbFocusedBorderColor;
   /// Size of the thumb.
   final double? thumbSize;
+  /// Theme-level default for [Slider.valueIndicatorBuilder]. If both this and
+  /// the widget-level builder are null, no value indicator is shown.
+  final SliderValueIndicatorBuilder? valueIndicatorBuilder;
   /// Creates a [SliderTheme].
-  const SliderTheme({this.trackHeight, this.trackColor, this.valueColor, this.disabledTrackColor, this.disabledValueColor, this.thumbColor, this.thumbBorderColor, this.thumbFocusedBorderColor, this.thumbSize});
+  const SliderTheme({this.trackHeight, this.trackColor, this.valueColor, this.disabledTrackColor, this.disabledValueColor, this.thumbColor, this.thumbBorderColor, this.thumbFocusedBorderColor, this.thumbSize, this.valueIndicatorBuilder});
   /// Returns a copy of this theme with the given fields replaced.
-  SliderTheme copyWith({ValueGetter<double?>? trackHeight, ValueGetter<Color?>? trackColor, ValueGetter<Color?>? valueColor, ValueGetter<Color?>? disabledTrackColor, ValueGetter<Color?>? disabledValueColor, ValueGetter<Color?>? thumbColor, ValueGetter<Color?>? thumbBorderColor, ValueGetter<Color?>? thumbFocusedBorderColor, ValueGetter<double?>? thumbSize});
+  SliderTheme copyWith({ValueGetter<double?>? trackHeight, ValueGetter<Color?>? trackColor, ValueGetter<Color?>? valueColor, ValueGetter<Color?>? disabledTrackColor, ValueGetter<Color?>? disabledValueColor, ValueGetter<Color?>? thumbColor, ValueGetter<Color?>? thumbBorderColor, ValueGetter<Color?>? thumbFocusedBorderColor, ValueGetter<double?>? thumbSize, ValueGetter<SliderValueIndicatorBuilder?>? valueIndicatorBuilder});
   bool operator ==(Object other);
   int get hashCode;
 }

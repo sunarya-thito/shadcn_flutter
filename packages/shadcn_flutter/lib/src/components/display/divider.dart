@@ -37,7 +37,10 @@ class DividerProperties {
   /// Used for smooth theme transitions. Parameter [t] should be between 0.0 and 1.0,
   /// where 0.0 returns [a] and 1.0 returns [b].
   static DividerProperties lerp(
-      DividerProperties a, DividerProperties b, double t) {
+    DividerProperties a,
+    DividerProperties b,
+    double t,
+  ) {
     return DividerProperties(
       color: Color.lerp(a.color, b.color, t)!,
       thickness: lerpDouble(a.thickness, b.thickness, t)!,
@@ -104,8 +107,9 @@ class DividerTheme extends ComponentThemeData {
       indent: indent == null ? this.indent : indent(),
       endIndent: endIndent == null ? this.endIndent : endIndent(),
       padding: padding == null ? this.padding : padding(),
-      childAlignment:
-          childAlignment == null ? this.childAlignment : childAlignment(),
+      childAlignment: childAlignment == null
+          ? this.childAlignment
+          : childAlignment(),
     );
   }
 
@@ -122,7 +126,14 @@ class DividerTheme extends ComponentThemeData {
 
   @override
   int get hashCode => Object.hash(
-      color, height, thickness, indent, endIndent, padding, childAlignment);
+    color,
+    height,
+    thickness,
+    indent,
+    endIndent,
+    padding,
+    childAlignment,
+  );
 }
 
 /// A horizontal line widget used to visually separate content sections.
@@ -257,24 +268,25 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
       final leftRatio = (clampedAlignmentValue + 1) / 2;
       Widget buildLine(double lineIndent, double lineEndIndent) {
         return AnimatedValueBuilder(
-            value: DividerProperties(
-              color: color,
-              thickness: thickness,
-              indent: lineIndent,
-              endIndent: lineEndIndent,
-            ),
-            duration: kDefaultDuration,
-            lerp: DividerProperties.lerp,
-            builder: (context, value, child) {
-              return CustomPaint(
-                painter: DividerPainter(
-                  color: value.color,
-                  thickness: value.thickness,
-                  indent: value.indent,
-                  endIndent: value.endIndent,
-                ),
-              );
-            });
+          value: DividerProperties(
+            color: color,
+            thickness: thickness,
+            indent: lineIndent,
+            endIndent: lineEndIndent,
+          ),
+          duration: kDefaultDuration,
+          lerp: DividerProperties.lerp,
+          builder: (context, value, child) {
+            return CustomPaint(
+              painter: DividerPainter(
+                color: value.color,
+                thickness: value.thickness,
+                indent: value.indent,
+                endIndent: value.endIndent,
+              ),
+            );
+          },
+        );
       }
 
       return _DividerWithChild(
@@ -288,24 +300,25 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
     return _DividerLine(
       lineHeight: height,
       child: AnimatedValueBuilder(
-          value: DividerProperties(
-            color: color,
-            thickness: thickness,
-            indent: indent,
-            endIndent: endIndent,
-          ),
-          lerp: DividerProperties.lerp,
-          duration: kDefaultDuration,
-          builder: (context, value, child) {
-            return CustomPaint(
-              painter: DividerPainter(
-                color: value.color,
-                thickness: value.thickness,
-                indent: value.indent,
-                endIndent: value.endIndent,
-              ),
-            );
-          }),
+        value: DividerProperties(
+          color: color,
+          thickness: thickness,
+          indent: indent,
+          endIndent: endIndent,
+        ),
+        lerp: DividerProperties.lerp,
+        duration: kDefaultDuration,
+        builder: (context, value, child) {
+          return CustomPaint(
+            painter: DividerPainter(
+              color: value.color,
+              thickness: value.thickness,
+              indent: value.indent,
+              endIndent: value.endIndent,
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -319,10 +332,7 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
 class _DividerLine extends SingleChildRenderObjectWidget {
   final double lineHeight;
 
-  const _DividerLine({
-    required this.lineHeight,
-    required Widget super.child,
-  });
+  const _DividerLine({required this.lineHeight, required Widget super.child});
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -330,14 +340,17 @@ class _DividerLine extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderDividerLine renderObject) {
+  void updateRenderObject(
+    BuildContext context,
+    _RenderDividerLine renderObject,
+  ) {
     renderObject.lineHeight = lineHeight;
   }
 }
 
 class _RenderDividerLine extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
-  _RenderDividerLine({required double lineHeight}) : _lineHeight = lineHeight;
+  _RenderDividerLine({required this._lineHeight});
 
   double _lineHeight;
 
@@ -394,7 +407,9 @@ class _DividerWithChild extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderDividerWithChild renderObject) {
+    BuildContext context,
+    _RenderDividerWithChild renderObject,
+  ) {
     renderObject
       ..leftRatio = leftRatio
       ..lineHeight = lineHeight;
@@ -408,10 +423,9 @@ class _RenderDividerWithChild extends RenderBox
         ContainerRenderObjectMixin<RenderBox, _DividerParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, _DividerParentData> {
   _RenderDividerWithChild({
-    required double leftRatio,
-    required double lineHeight,
-  })  : _leftRatio = leftRatio,
-        _lineHeight = lineHeight;
+    required this._leftRatio,
+    required this._lineHeight,
+  });
 
   double _leftRatio;
 
@@ -453,25 +467,38 @@ class _RenderDividerWithChild extends RenderBox
     var rightWidth = 0.0;
     var totalWidth = content.size.width;
     if (bounded) {
-      final remaining =
-          (constraints.maxWidth - content.size.width).clamp(0.0, double.infinity);
+      final remaining = (constraints.maxWidth - content.size.width).clamp(
+        0.0,
+        double.infinity,
+      );
       leftWidth = remaining * _leftRatio;
       rightWidth = remaining - leftWidth;
       totalWidth = constraints.maxWidth;
     }
 
-    leftLine.layout(BoxConstraints.tightFor(width: leftWidth, height: _lineHeight));
-    rightLine
-        .layout(BoxConstraints.tightFor(width: rightWidth, height: _lineHeight));
+    leftLine.layout(
+      BoxConstraints.tightFor(width: leftWidth, height: _lineHeight),
+    );
+    rightLine.layout(
+      BoxConstraints.tightFor(width: rightWidth, height: _lineHeight),
+    );
 
-    final height = _lineHeight > content.size.height ? _lineHeight : content.size.height;
+    final height = _lineHeight > content.size.height
+        ? _lineHeight
+        : content.size.height;
 
-    (leftLine.parentData! as _DividerParentData).offset =
-        Offset(0, (height - _lineHeight) / 2);
-    (content.parentData! as _DividerParentData).offset =
-        Offset(leftWidth, (height - content.size.height) / 2);
-    (rightLine.parentData! as _DividerParentData).offset =
-        Offset(leftWidth + content.size.width, (height - _lineHeight) / 2);
+    (leftLine.parentData! as _DividerParentData).offset = Offset(
+      0,
+      (height - _lineHeight) / 2,
+    );
+    (content.parentData! as _DividerParentData).offset = Offset(
+      leftWidth,
+      (height - content.size.height) / 2,
+    );
+    (rightLine.parentData! as _DividerParentData).offset = Offset(
+      leftWidth + content.size.width,
+      (height - _lineHeight) / 2,
+    );
 
     size = constraints.constrain(Size(totalWidth, height));
   }
@@ -624,33 +651,36 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textDirection = Directionality.maybeOf(context) ?? TextDirection.ltr;
-    final resolvedChildAlignment =
-        (childAlignment ?? AxisAlignment.center).resolve(textDirection);
+    final resolvedChildAlignment = (childAlignment ?? AxisAlignment.center)
+        .resolve(textDirection);
     final lineWidth = width ?? 1;
     if (child != null) {
-      final clampedAlignmentValue =
-          resolvedChildAlignment.value.clamp(-1.0, 1.0);
+      final clampedAlignmentValue = resolvedChildAlignment.value.clamp(
+        -1.0,
+        1.0,
+      );
       final topRatio = (clampedAlignmentValue + 1) / 2;
       Widget buildLine(double lineIndent, double lineEndIndent) {
         return AnimatedValueBuilder(
-            value: DividerProperties(
-              color: color ?? theme.colorScheme.border,
-              thickness: thickness ?? 1,
-              indent: lineIndent,
-              endIndent: lineEndIndent,
-            ),
-            duration: kDefaultDuration,
-            lerp: DividerProperties.lerp,
-            builder: (context, value, child) {
-              return CustomPaint(
-                painter: VerticalDividerPainter(
-                  color: value.color,
-                  thickness: value.thickness,
-                  indent: value.indent,
-                  endIndent: value.endIndent,
-                ),
-              );
-            });
+          value: DividerProperties(
+            color: color ?? theme.colorScheme.border,
+            thickness: thickness ?? 1,
+            indent: lineIndent,
+            endIndent: lineEndIndent,
+          ),
+          duration: kDefaultDuration,
+          lerp: DividerProperties.lerp,
+          builder: (context, value, child) {
+            return CustomPaint(
+              painter: VerticalDividerPainter(
+                color: value.color,
+                thickness: value.thickness,
+                indent: value.indent,
+                endIndent: value.endIndent,
+              ),
+            );
+          },
+        );
       }
 
       return _VerticalDividerWithChild(
@@ -664,24 +694,25 @@ class VerticalDivider extends StatelessWidget implements PreferredSizeWidget {
     return _VerticalDividerLine(
       lineWidth: lineWidth,
       child: AnimatedValueBuilder(
-          value: DividerProperties(
-            color: color ?? theme.colorScheme.border,
-            thickness: thickness ?? 1,
-            indent: indent ?? 0,
-            endIndent: endIndent ?? 0,
-          ),
-          lerp: DividerProperties.lerp,
-          duration: kDefaultDuration,
-          builder: (context, value, child) {
-            return CustomPaint(
-              painter: VerticalDividerPainter(
-                color: value.color,
-                thickness: value.thickness,
-                indent: value.indent,
-                endIndent: value.endIndent,
-              ),
-            );
-          }),
+        value: DividerProperties(
+          color: color ?? theme.colorScheme.border,
+          thickness: thickness ?? 1,
+          indent: indent ?? 0,
+          endIndent: endIndent ?? 0,
+        ),
+        lerp: DividerProperties.lerp,
+        duration: kDefaultDuration,
+        builder: (context, value, child) {
+          return CustomPaint(
+            painter: VerticalDividerPainter(
+              color: value.color,
+              thickness: value.thickness,
+              indent: value.indent,
+              endIndent: value.endIndent,
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -707,15 +738,16 @@ class _VerticalDividerLine extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderVerticalDividerLine renderObject) {
+    BuildContext context,
+    _RenderVerticalDividerLine renderObject,
+  ) {
     renderObject.lineWidth = lineWidth;
   }
 }
 
 class _RenderVerticalDividerLine extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
-  _RenderVerticalDividerLine({required double lineWidth})
-      : _lineWidth = lineWidth;
+  _RenderVerticalDividerLine({required this._lineWidth});
 
   double _lineWidth;
 
@@ -772,7 +804,9 @@ class _VerticalDividerWithChild extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderVerticalDividerWithChild renderObject) {
+    BuildContext context,
+    _RenderVerticalDividerWithChild renderObject,
+  ) {
     renderObject
       ..topRatio = topRatio
       ..lineWidth = lineWidth;
@@ -784,13 +818,11 @@ class _VerticalDividerParentData extends ContainerBoxParentData<RenderBox> {}
 class _RenderVerticalDividerWithChild extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, _VerticalDividerParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox,
-            _VerticalDividerParentData> {
+        RenderBoxContainerDefaultsMixin<RenderBox, _VerticalDividerParentData> {
   _RenderVerticalDividerWithChild({
-    required double topRatio,
-    required double lineWidth,
-  })  : _topRatio = topRatio,
-        _lineWidth = lineWidth;
+    required this._topRatio,
+    required this._lineWidth,
+  });
 
   double _topRatio;
 
@@ -832,25 +864,38 @@ class _RenderVerticalDividerWithChild extends RenderBox
     var bottomHeight = 0.0;
     var totalHeight = content.size.height;
     if (bounded) {
-      final remaining =
-          (constraints.maxHeight - content.size.height).clamp(0.0, double.infinity);
+      final remaining = (constraints.maxHeight - content.size.height).clamp(
+        0.0,
+        double.infinity,
+      );
       topHeight = remaining * _topRatio;
       bottomHeight = remaining - topHeight;
       totalHeight = constraints.maxHeight;
     }
 
-    topLine.layout(BoxConstraints.tightFor(width: _lineWidth, height: topHeight));
-    bottomLine
-        .layout(BoxConstraints.tightFor(width: _lineWidth, height: bottomHeight));
+    topLine.layout(
+      BoxConstraints.tightFor(width: _lineWidth, height: topHeight),
+    );
+    bottomLine.layout(
+      BoxConstraints.tightFor(width: _lineWidth, height: bottomHeight),
+    );
 
-    final width = _lineWidth > content.size.width ? _lineWidth : content.size.width;
+    final width = _lineWidth > content.size.width
+        ? _lineWidth
+        : content.size.width;
 
-    (topLine.parentData! as _VerticalDividerParentData).offset =
-        Offset((width - _lineWidth) / 2, 0);
-    (content.parentData! as _VerticalDividerParentData).offset =
-        Offset((width - content.size.width) / 2, topHeight);
-    (bottomLine.parentData! as _VerticalDividerParentData).offset =
-        Offset((width - _lineWidth) / 2, topHeight + content.size.height);
+    (topLine.parentData! as _VerticalDividerParentData).offset = Offset(
+      (width - _lineWidth) / 2,
+      0,
+    );
+    (content.parentData! as _VerticalDividerParentData).offset = Offset(
+      (width - content.size.width) / 2,
+      topHeight,
+    );
+    (bottomLine.parentData! as _VerticalDividerParentData).offset = Offset(
+      (width - _lineWidth) / 2,
+      topHeight + content.size.height,
+    );
 
     size = constraints.constrain(Size(width, totalHeight));
   }

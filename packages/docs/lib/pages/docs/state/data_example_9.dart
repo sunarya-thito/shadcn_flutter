@@ -33,7 +33,7 @@ class DataExample9State extends State<DataExample9> {
                 counter.value++;
               },
               density: ButtonDensity.icon,
-              child: const Icon(Icons.add),
+              child: const Icon(LucideIcons.plus),
             )
           ],
         ),

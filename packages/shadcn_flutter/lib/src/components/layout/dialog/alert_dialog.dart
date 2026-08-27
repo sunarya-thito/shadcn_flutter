@@ -24,7 +24,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 /// Example:
 /// ```dart
 /// AlertDialog(
-///   leading: Icon(Icons.warning),
+///   leading: Icon(LucideIcons.triangleAlert),
 ///   title: Text('Delete Item'),
 ///   content: Text('Are you sure you want to delete this item?'),
 ///   actions: [
@@ -146,7 +146,8 @@ class _AlertDialogState extends State<AlertDialog> {
       borderRadius: themeData.borderRadiusXxl,
       barrierColor: widget.barrierColor ?? Colors.black.withValues(alpha: 0.8),
       surfaceClip: ModalBackdrop.shouldClipSurface(
-          widget.surfaceOpacity ?? themeData.surfaceOpacity),
+        widget.surfaceOpacity ?? themeData.surfaceOpacity,
+      ),
       child: ModalContainer(
         fillColor: themeData.colorScheme.popover,
         filled: true,
@@ -191,8 +192,10 @@ class _AlertDialogState extends State<AlertDialog> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 // children: widget.actions!,
-                children:
-                    join(widget.actions!, SizedBox(width: densityGap)).toList(),
+                children: join(
+                  widget.actions!,
+                  SizedBox(width: densityGap),
+                ).toList(),
               ),
           ],
         ).gap(densityGap * 2),

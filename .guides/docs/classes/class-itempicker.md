@@ -101,7 +101,7 @@ class ItemPicker<T> extends StatelessWidget {
   /// Example:
   /// ```dart
   /// ItemPicker<IconData>(
-  ///   items: ItemList([Icons.home, Icons.star, Icons.favorite]),
+  ///   items: ItemList([LucideIcons.house, LucideIcons.star, LucideIcons.heart]),
   ///   layout: ItemPickerLayout.grid,
   ///   mode: PromptMode.dialog,
   ///   builder: (context, icon, selected) => Icon(icon),

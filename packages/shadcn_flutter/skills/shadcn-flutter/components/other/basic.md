@@ -7,10 +7,10 @@ A versatile layout widget for arranging leading, title, subtitle, content, and t
 ### Basic Example
 ```dart
 Basic(
-  leading: Icon(Icons.person),
+  leading: Icon(LucideIcons.user),
   title: Text('John Doe'),
   subtitle: Text('john@example.com'),
-  trailing: Icon(Icons.chevron_right),
+  trailing: Icon(LucideIcons.chevronRight),
 )
 ```
 

@@ -91,7 +91,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                       _view = _view.previous;
                     });
                   },
-                  child: const Icon(Icons.arrow_back).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
                 ),
                 Text('${localizations.getMonth(_view.month)} ${_view.year}')
                     .small()
@@ -106,7 +106,7 @@ class _CalendarExample1State extends State<CalendarExample1> {
                       _view = _view.next;
                     });
                   },
-                  child: const Icon(Icons.arrow_forward).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowRight).iconXSmall(),
                 ),
               ],
             ),
@@ -167,7 +167,7 @@ class _CalendarExample2State extends State<CalendarExample2> {
                       _view = _view.previous;
                     });
                   },
-                  child: const Icon(Icons.arrow_back).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
                 ),
                 Text('${localizations.getMonth(_view.month)} ${_view.year}')
                     .small()
@@ -181,7 +181,7 @@ class _CalendarExample2State extends State<CalendarExample2> {
                       _view = _view.next;
                     });
                   },
-                  child: const Icon(Icons.arrow_forward).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowRight).iconXSmall(),
                 ),
               ],
             ),
@@ -242,7 +242,7 @@ class _CalendarExample3State extends State<CalendarExample3> {
                       _view = _view.previous;
                     });
                   },
-                  child: const Icon(Icons.arrow_back).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
                 ),
                 Text('${localizations.getMonth(_view.month)} ${_view.year}')
                     .small()
@@ -256,7 +256,7 @@ class _CalendarExample3State extends State<CalendarExample3> {
                       _view = _view.next;
                     });
                   },
-                  child: const Icon(Icons.arrow_forward).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowRight).iconXSmall(),
                 ),
               ],
             ),
@@ -317,7 +317,7 @@ class _CalendarExample4State extends State<CalendarExample4> {
                       _view = _view.previous;
                     });
                   },
-                  child: const Icon(Icons.arrow_back).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowLeft).iconXSmall(),
                 ),
                 Text('${localizations.getMonth(_view.month)} ${_view.year}')
                     .small()
@@ -331,7 +331,7 @@ class _CalendarExample4State extends State<CalendarExample4> {
                       _view = _view.next;
                     });
                   },
-                  child: const Icon(Icons.arrow_forward).iconXSmall(),
+                  child: const Icon(LucideIcons.arrowRight).iconXSmall(),
                 ),
               ],
             ),

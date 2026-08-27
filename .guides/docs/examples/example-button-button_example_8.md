@@ -19,32 +19,32 @@ class ButtonExample8 extends StatelessWidget {
         IconButton.primary(
           onPressed: () {},
           density: ButtonDensity.icon,
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
         ),
         IconButton.secondary(
           onPressed: () {},
           density: ButtonDensity.icon,
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
         ),
         IconButton.outline(
           onPressed: () {},
           density: ButtonDensity.icon,
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
         ),
         IconButton.ghost(
           onPressed: () {},
           density: ButtonDensity.icon,
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
         ),
         IconButton.text(
           onPressed: () {},
           density: ButtonDensity.icon,
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
         ),
         IconButton.destructive(
           onPressed: () {},
           density: ButtonDensity.icon,
-          icon: const Icon(Icons.add),
+          icon: const Icon(LucideIcons.plus),
         ),
       ],
     );

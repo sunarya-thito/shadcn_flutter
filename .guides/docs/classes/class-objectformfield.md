@@ -40,9 +40,20 @@ class ObjectFormField<T> extends StatefulWidget {
   final PromptMode mode;
   /// Builds the editor widget.
   final Widget Function(BuildContext context, ObjectFormHandler<T> handler) editorBuilder;
-  /// Popover alignment relative to the trigger.
+  /// Overrides the [OverlayConfiguration] used to present the popover editor
+  /// (only relevant when [mode] is [PromptMode.popover]). When null, a
+  /// default [PopoverConfiguration] is used, positioned via [popoverAlignment]
+  /// / [popoverAnchorAlignment].
+  final OverlayConfiguration? overlayConfiguration;
+  /// Whether the popover/dialog editor may adapt to a different presentation
+  /// on mobile platforms (see [showOverlay]'s `adaptive` parameter). Defaults
+  /// to `true` when null.
+  final bool? adaptiveOverlay;
+  /// Popover alignment relative to the trigger. Ignored when
+  /// [overlayConfiguration] is set.
   final AlignmentGeometry? popoverAlignment;
-  /// Anchor alignment for popover positioning.
+  /// Anchor alignment for popover positioning. Ignored when
+  /// [overlayConfiguration] is set.
   final AlignmentGeometry? popoverAnchorAlignment;
   /// Padding inside the popover.
   final EdgeInsetsGeometry? popoverPadding;
@@ -64,7 +75,7 @@ class ObjectFormField<T> extends StatefulWidget {
   /// If null, defaults to true for popover mode and false for dialog mode.
   final bool? immediateValueChange;
   /// Creates an [ObjectFormField].
-  const ObjectFormField({super.key, required this.value, this.onChanged, required this.placeholder, required this.builder, this.leading, this.trailing, this.mode = PromptMode.dialog, required this.editorBuilder, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.dialogTitle, this.size, this.density, this.shape, this.dialogActions, this.enabled, this.decorate = true, this.immediateValueChange});
+  const ObjectFormField({super.key, required this.value, this.onChanged, required this.placeholder, required this.builder, this.leading, this.trailing, this.mode = PromptMode.dialog, required this.editorBuilder, this.overlayConfiguration, this.adaptiveOverlay, this.popoverAlignment, this.popoverAnchorAlignment, this.popoverPadding, this.dialogTitle, this.size, this.density, this.shape, this.dialogActions, this.enabled, this.decorate = true, this.immediateValueChange});
   State<ObjectFormField<T>> createState();
 }
 ```

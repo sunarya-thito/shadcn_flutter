@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationMenuContent"
-description: "A content item displayed within a navigation menu popover.   Provides a structured layout for navigation menu content with support  for titles, descriptions, leading/trailing widgets, and interactive behavior.  This widget is designed to be used within [NavigationMenuItem] content  to create rich, informative menu options.   The content displays as a button with optional leading icon, title text,  descriptive content, and trailing elements. When pressed, it can trigger  custom actions while maintaining the navigation menu's visual consistency.   Example:  ```dart  NavigationMenuContent(    leading: Icon(Icons.dashboard),    title: Text('Dashboard'),    content: Text('View project analytics and metrics'),    onPressed: () => Navigator.pushNamed(context, '/dashboard'),  )  ```"
+description: "A content item displayed within a navigation menu popover.   Provides a structured layout for navigation menu content with support  for titles, descriptions, leading/trailing widgets, and interactive behavior.  This widget is designed to be used within [NavigationMenuItem] content  to create rich, informative menu options.   The content displays as a button with optional leading icon, title text,  descriptive content, and trailing elements. When pressed, it can trigger  custom actions while maintaining the navigation menu's visual consistency.   Example:  ```dart  NavigationMenuContent(    leading: Icon(LucideIcons.layoutDashboard),    title: Text('Dashboard'),    content: Text('View project analytics and metrics'),    onPressed: () => Navigator.pushNamed(context, '/dashboard'),  )  ```"
 ---
 
 ```dart
@@ -18,7 +18,7 @@ description: "A content item displayed within a navigation menu popover.   Provi
 /// Example:
 /// ```dart
 /// NavigationMenuContent(
-///   leading: Icon(Icons.dashboard),
+///   leading: Icon(LucideIcons.layoutDashboard),
 ///   title: Text('Dashboard'),
 ///   content: Text('View project analytics and metrics'),
 ///   onPressed: () => Navigator.pushNamed(context, '/dashboard'),
@@ -66,10 +66,10 @@ class NavigationMenuContent extends StatelessWidget {
   /// Example:
   /// ```dart
   /// NavigationMenuContent(
-  ///   leading: Icon(Icons.settings),
+  ///   leading: Icon(LucideIcons.settings),
   ///   title: Text('Settings'),
   ///   content: Text('Manage application preferences'),
-  ///   trailing: Icon(Icons.arrow_forward_ios, size: 16),
+  ///   trailing: Icon(LucideIcons.chevronRight, size: 16),
   ///   onPressed: _openSettings,
   /// )
   /// ```

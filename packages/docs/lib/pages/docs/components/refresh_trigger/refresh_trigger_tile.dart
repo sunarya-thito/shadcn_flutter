@@ -41,7 +41,7 @@ class RefreshTriggerTile extends StatelessWidget implements IComponentPage {
                       Transform.rotate(
                         angle: 0.5,
                         child: Icon(
-                          Icons.refresh,
+                          LucideIcons.refreshCw,
                           color: theme.colorScheme.primary,
                         ),
                       ),

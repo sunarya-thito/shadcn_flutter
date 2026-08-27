@@ -21,16 +21,20 @@ mixin SelectBase<T> {
   BoxConstraints? get constraints;
   /// Size constraints for the popup menu.
   BoxConstraints? get popupConstraints;
-  /// How popup width should relate to trigger width.
-  PopoverConstraint get popupWidthConstraint;
+  /// Overrides the [OverlayConfiguration] used to present the popup. When
+  /// null, a default [PopoverConfiguration] is used
+  /// (`PopoverConstraint.anchorFixedSize`, `Alignment.topCenter`).
+  OverlayConfiguration? get overlayConfiguration;
+  /// Whether the popup may adapt to a different presentation on mobile
+  /// platforms (see [showOverlay]'s `adaptive` parameter).
+  bool? get adaptiveOverlay;
   /// Border radius of the select trigger.
   BorderRadiusGeometry? get borderRadius;
   /// Internal padding of the select trigger.
   EdgeInsetsGeometry? get padding;
-  /// Alignment of popup relative to trigger.
-  AlignmentGeometry get popoverAlignment;
-  /// Alignment of anchor point for popup positioning.
-  AlignmentGeometry? get popoverAnchorAlignment;
+  /// Overrides the decoration of the select trigger, resolved per
+  /// [WidgetState]. See [SelectTheme.decoration].
+  WidgetStatePropertyDelegate<Decoration>? get decoration;
   /// Whether to disable hover effects.
   bool get disableHoverEffect;
   /// Whether clicking selected item deselects it.
@@ -47,5 +51,7 @@ mixin SelectBase<T> {
   SelectValueSelectionPredicate<T>? get valueSelectionPredicate;
   /// Predicate for showing value in trigger.
   Predicate<T>? get showValuePredicate;
+  /// Expand icon for the select
+  Widget? get expandIcon;
 }
 ```

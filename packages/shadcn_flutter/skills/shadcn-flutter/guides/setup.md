@@ -59,7 +59,7 @@ dependencies:
 ## Features
 
 - **84+ components** and growing!
-- **Standalone ecosystem**: No Material or Cupertino requirement; optional interop when needed.
+- **Standalone ecosystem**: depends on `package:flutter/widgets.dart` alone — neither `material_ui` nor `cupertino_ui`. Interop is opt-in via `shadcn_flutter_material` / `shadcn_flutter_cupertino`.
 - **shadcn/ui design tokens** and ready-to-use New York theme.
 - **Cross-platform**: First-class support across Android, iOS, Web, macOS, Windows, and Linux.
 - **Typography extensions**: Various widget extensions for typography purposes.
@@ -71,4 +71,4 @@ dependencies:
 Yes, it does. You can use GoRouter with `shadcn_flutter`.
 
 ### Can I use this with Material/Cupertino Widgets?
-Yes. If your app already uses Material or Cupertino, `shadcn_flutter` plays nicely with both. You can drop `shadcn_flutter` components into an existing `MaterialApp`/`CupertinoApp` and adopt incrementally.
+Yes, in both directions. Dropping `shadcn_flutter` components into an existing `MaterialApp`/`CupertinoApp` needs no extra package — wrap the subtree in `ShadcnLayer` or `ShadcnUI`. Going the other way, Material or Cupertino widgets inside a shadcn app need `shadcn_flutter_material` or `shadcn_flutter_cupertino`: use `MaterialShadcnApp` / `CupertinoShadcnApp` instead of `ShadcnApp`, or wrap the subtree in `MaterialLayer` / `CupertinoLayer`. See the [Interop Guide](./interop.md).

@@ -58,11 +58,11 @@ class ControlledMultiSelect<T> extends StatelessWidget with ControlledComponent<
   final FocusNode? focusNode;
   final BoxConstraints? constraints;
   final BoxConstraints? popupConstraints;
-  final PopoverConstraint popupWidthConstraint;
+  final OverlayConfiguration? overlayConfiguration;
+  final bool? adaptiveOverlay;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
-  final AlignmentGeometry popoverAlignment;
-  final AlignmentGeometry? popoverAnchorAlignment;
+  final WidgetStatePropertyDelegate<Decoration>? decoration;
   final bool disableHoverEffect;
   final bool canUnselect;
   final bool autoClosePopover;
@@ -71,6 +71,7 @@ class ControlledMultiSelect<T> extends StatelessWidget with ControlledComponent<
   final SelectValueSelectionHandler<Iterable<T>>? valueSelectionHandler;
   final SelectValueSelectionPredicate<Iterable<T>>? valueSelectionPredicate;
   final Predicate<Iterable<T>>? showValuePredicate;
+  final Widget? expandIcon;
   /// Builder for rendering individual items in multi-select mode.
   final SelectValueBuilder<T> multiItemBuilder;
   /// Creates a [ControlledMultiSelect].
@@ -89,11 +90,10 @@ class ControlledMultiSelect<T> extends StatelessWidget with ControlledComponent<
   /// - [focusNode] (FocusNode?, optional): custom focus node for keyboard handling
   /// - [constraints] (BoxConstraints?, optional): size constraints for select widget
   /// - [popupConstraints] (BoxConstraints?, optional): size constraints for popup
-  /// - [popupWidthConstraint] (PopoverConstraint, default: anchorFixedSize): popup width behavior
+  /// - [overlayConfiguration] (OverlayConfiguration?, optional): overrides the popup presentation
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override select border radius
   /// - [padding] (EdgeInsetsGeometry?, optional): override internal padding
-  /// - [popoverAlignment] (AlignmentGeometry, default: topCenter): popup alignment
-  /// - [popoverAnchorAlignment] (AlignmentGeometry?, optional): anchor alignment
+  /// - [decoration] (`WidgetStatePropertyDelegate<Decoration>?`, optional): override the trigger decoration per state
   /// - [disableHoverEffect] (bool, default: false): disable item hover effects
   /// - [canUnselect] (bool, default: false): allow deselecting all items
   /// - [autoClosePopover] (bool, default: false): close popup after each selection
@@ -103,6 +103,8 @@ class ControlledMultiSelect<T> extends StatelessWidget with ControlledComponent<
   /// - [valueSelectionHandler] (`SelectValueSelectionHandler<Iterable<T>>?`, optional): custom selection logic
   /// - [valueSelectionPredicate] (`SelectValueSelectionPredicate<Iterable<T>>?`, optional): selection validation
   /// - [showValuePredicate] (`Predicate<Iterable<T>>?`, optional): visibility filter for values
+  /// - [expandIcon] (Widget): The expand icon for the select, defaults to SelectExpandIcon widget
+  /// - [adaptiveOverlay] (bool?, optional): whether `adaptiveConversion` runs for this overlay
   ///
   /// Example:
   /// ```dart
@@ -118,7 +120,7 @@ class ControlledMultiSelect<T> extends StatelessWidget with ControlledComponent<
   ///   ),
   /// )
   /// ```
-  const ControlledMultiSelect({super.key, this.controller, this.onChanged, this.enabled = true, this.initialValue, this.placeholder, this.filled = false, this.focusNode, this.constraints, this.popupConstraints, this.popupWidthConstraint = PopoverConstraint.anchorFixedSize, this.borderRadius, this.padding, this.popoverAlignment = Alignment.topCenter, this.popoverAnchorAlignment, this.disableHoverEffect = false, this.canUnselect = true, this.autoClosePopover = false, this.showValuePredicate, required this.popup, required SelectValueBuilder<T> itemBuilder, this.valueSelectionHandler, this.valueSelectionPredicate});
+  const ControlledMultiSelect({super.key, this.controller, this.onChanged, this.enabled = true, this.initialValue, this.placeholder, this.filled = false, this.focusNode, this.constraints, this.popupConstraints, this.overlayConfiguration, this.borderRadius, this.padding, this.decoration, this.disableHoverEffect = false, this.canUnselect = true, this.autoClosePopover = false, this.showValuePredicate, this.expandIcon = const SelectExpandIcon(), required this.popup, required SelectValueBuilder<T> itemBuilder, this.valueSelectionHandler, this.valueSelectionPredicate, this.adaptiveOverlay});
   Widget build(BuildContext context);
 }
 ```

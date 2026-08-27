@@ -1,6 +1,6 @@
 ---
 title: "Class: WidgetInputOTPChild"
-description: "A widget-based OTP child that doesn't accept input.   Used for displaying static content like separators or spacers within  an [InputOTP] widget. This child does not hold any value.   Example:  ```dart  WidgetInputOTPChild(    Icon(Icons.arrow_forward),  )  ```"
+description: "A widget-based OTP child that doesn't accept input.   Used for displaying static content like separators or spacers within  an [InputOTP] widget. This child does not hold any value.   Example:  ```dart  WidgetInputOTPChild(    Icon(LucideIcons.arrowRight),  )  ```"
 ---
 
 ```dart
@@ -12,7 +12,7 @@ description: "A widget-based OTP child that doesn't accept input.   Used for dis
 /// Example:
 /// ```dart
 /// WidgetInputOTPChild(
-///   Icon(Icons.arrow_forward),
+///   Icon(LucideIcons.arrowRight),
 /// )
 /// ```
 class WidgetInputOTPChild extends InputOTPChild {

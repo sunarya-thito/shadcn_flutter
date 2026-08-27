@@ -135,7 +135,9 @@ mixin PaintOrderMixin on rendering.RenderBox {
   }
 
   rendering.RenderBox? _merge(
-      rendering.RenderBox? left, rendering.RenderBox? right) {
+    rendering.RenderBox? left,
+    rendering.RenderBox? right,
+  ) {
     if (left == null) return right;
     if (right == null) return left;
 
@@ -188,8 +190,10 @@ mixin PaintOrderMixin on rendering.RenderBox {
   }
 
   /// Hit tests children in reverse sorted paint order (top-most first).
-  bool hitTestSortedChildren(rendering.BoxHitTestResult result,
-      {required Offset position}) {
+  bool hitTestSortedChildren(
+    rendering.BoxHitTestResult result, {
+    required Offset position,
+  }) {
     rendering.RenderBox? child = lastSortedChild;
     while (child != null) {
       final parentData = child.parentData! as PaintOrderParentDataMixin;
@@ -291,8 +295,10 @@ class RenderFlex extends rendering.RenderFlex with PaintOrderMixin {
   }
 
   @override
-  bool hitTestChildren(rendering.BoxHitTestResult result,
-      {required Offset position}) {
+  bool hitTestChildren(
+    rendering.BoxHitTestResult result, {
+    required Offset position,
+  }) {
     return hitTestSortedChildren(result, position: position);
   }
 }
@@ -356,7 +362,9 @@ class Flex extends widgets.Flex {
 
   @override
   void updateRenderObject(
-      widgets.BuildContext context, covariant RenderFlex renderObject) {
+    widgets.BuildContext context,
+    covariant RenderFlex renderObject,
+  ) {
     renderObject
       ..direction = direction
       ..mainAxisAlignment = mainAxisAlignment
@@ -555,11 +563,7 @@ class Expanded extends Flexible {
 /// A widget that sets the paint order of a non-flexible child in a [Row], [Column], or [Flex].
 class PaintOrder extends widgets.ParentDataWidget<FlexParentData> {
   /// Creates a widget that sets the paint order of a child.
-  const PaintOrder({
-    super.key,
-    this.paintOrder,
-    required super.child,
-  });
+  const PaintOrder({super.key, this.paintOrder, required super.child});
 
   /// The paint order of this child. Higher values are painted on top.
   final int? paintOrder;
@@ -628,8 +632,10 @@ class RenderStack extends rendering.RenderStack with PaintOrderMixin {
   }
 
   @override
-  bool hitTestChildren(rendering.BoxHitTestResult result,
-      {required Offset position}) {
+  bool hitTestChildren(
+    rendering.BoxHitTestResult result, {
+    required Offset position,
+  }) {
     return hitTestSortedChildren(result, position: position);
   }
 }
@@ -680,7 +686,9 @@ class Stack extends widgets.Stack {
 
   @override
   void updateRenderObject(
-      widgets.BuildContext context, covariant RenderStack renderObject) {
+    widgets.BuildContext context,
+    covariant RenderStack renderObject,
+  ) {
     assert(_debugCheckHasDirectionality(context));
     renderObject
       ..alignment = alignment
@@ -736,8 +744,8 @@ class Positioned extends widgets.ParentDataWidget<StackParentData> {
     this.height,
     this.paintOrder,
     required super.child,
-  })  : assert(left == null || right == null || width == null),
-        assert(top == null || bottom == null || height == null);
+  }) : assert(left == null || right == null || width == null),
+       assert(top == null || bottom == null || height == null);
 
   /// Creates a Positioned with all edges set to 0.0 unless specified.
   const Positioned.fill({
@@ -748,8 +756,48 @@ class Positioned extends widgets.ParentDataWidget<StackParentData> {
     this.bottom = 0.0,
     this.paintOrder,
     required super.child,
-  })  : width = null,
-        height = null;
+  }) : width = null,
+       height = null;
+
+  /// Creates a positioned widget whose horizontal insets are given as [start]
+  /// and [end] rather than left and right, resolved against [textDirection].
+  ///
+  /// Under [widgets.TextDirection.ltr] [start] is the left inset; under
+  /// [widgets.TextDirection.rtl] it is the right one.
+  factory Positioned.directional({
+    widgets.Key? key,
+    required widgets.TextDirection textDirection,
+    double? start,
+    double? top,
+    double? end,
+    double? bottom,
+    double? width,
+    double? height,
+    int? paintOrder,
+    required widgets.Widget child,
+  }) {
+    final double? left;
+    final double? right;
+    switch (textDirection) {
+      case widgets.TextDirection.rtl:
+        left = end;
+        right = start;
+      case widgets.TextDirection.ltr:
+        left = start;
+        right = end;
+    }
+    return Positioned(
+      key: key,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      width: width,
+      height: height,
+      paintOrder: paintOrder,
+      child: child,
+    );
+  }
 
   /// The distance that the child's left edge is inset from the left of the stack.
   final double? left;
@@ -820,15 +868,20 @@ class Positioned extends widgets.ParentDataWidget<StackParentData> {
     super.debugFillProperties(properties);
     properties.add(foundation.DoubleProperty('left', left, defaultValue: null));
     properties.add(foundation.DoubleProperty('top', top, defaultValue: null));
-    properties
-        .add(foundation.DoubleProperty('right', right, defaultValue: null));
-    properties
-        .add(foundation.DoubleProperty('bottom', bottom, defaultValue: null));
-    properties
-        .add(foundation.DoubleProperty('width', width, defaultValue: null));
-    properties
-        .add(foundation.DoubleProperty('height', height, defaultValue: null));
     properties.add(
-        foundation.IntProperty('paintOrder', paintOrder, defaultValue: null));
+      foundation.DoubleProperty('right', right, defaultValue: null),
+    );
+    properties.add(
+      foundation.DoubleProperty('bottom', bottom, defaultValue: null),
+    );
+    properties.add(
+      foundation.DoubleProperty('width', width, defaultValue: null),
+    );
+    properties.add(
+      foundation.DoubleProperty('height', height, defaultValue: null),
+    );
+    properties.add(
+      foundation.IntProperty('paintOrder', paintOrder, defaultValue: null),
+    );
   }
 }

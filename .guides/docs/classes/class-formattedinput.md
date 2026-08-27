@@ -1,6 +1,6 @@
 ---
 title: "Class: FormattedInput"
-description: "A controlled input widget for structured data entry with formatting.   This widget provides a sophisticated input system that combines static text  elements with editable fields in a single input interface. It's ideal for  formatted inputs like phone numbers, credit cards, dates, or any structured  data that requires specific formatting patterns.   The FormattedInput manages multiple editable segments, each with their own  validation, formatting, and input restrictions. It automatically handles  focus management between segments and provides a seamless user experience  with proper keyboard navigation.   Example:  ```dart  FormattedInput(    style: TextStyle(fontFamily: 'monospace'),    leading: Icon(Icons.phone),    initialValue: FormattedValue([      FormattedValuePart.static('('),      FormattedValuePart.editable('555', length: 3),      FormattedValuePart.static(') '),      FormattedValuePart.editable('123', length: 3),      FormattedValuePart.static('-'),      FormattedValuePart.editable('4567', length: 4),    ]),  );  ```"
+description: "A controlled input widget for structured data entry with formatting.   This widget provides a sophisticated input system that combines static text  elements with editable fields in a single input interface. It's ideal for  formatted inputs like phone numbers, credit cards, dates, or any structured  data that requires specific formatting patterns.   The FormattedInput manages multiple editable segments, each with their own  validation, formatting, and input restrictions. It automatically handles  focus management between segments and provides a seamless user experience  with proper keyboard navigation.   Example:  ```dart  FormattedInput(    style: TextStyle(fontFamily: 'monospace'),    leading: Icon(LucideIcons.phone),    initialValue: FormattedValue([      FormattedValuePart.static('('),      FormattedValuePart.editable('555', length: 3),      FormattedValuePart.static(') '),      FormattedValuePart.editable('123', length: 3),      FormattedValuePart.static('-'),      FormattedValuePart.editable('4567', length: 4),    ]),  );  ```"
 ---
 
 ```dart
@@ -20,7 +20,7 @@ description: "A controlled input widget for structured data entry with formattin
 /// ```dart
 /// FormattedInput(
 ///   style: TextStyle(fontFamily: 'monospace'),
-///   leading: Icon(Icons.phone),
+///   leading: Icon(LucideIcons.phone),
 ///   initialValue: FormattedValue([
 ///     FormattedValuePart.static('('),
 ///     FormattedValuePart.editable('555', length: 3),
@@ -74,7 +74,7 @@ class FormattedInput extends StatefulWidget with ControlledComponent<FormattedVa
   ///     FormattedValuePart.static('$'),
   ///     FormattedValuePart.editable('0.00', length: 8),
   ///   ]),
-  ///   leading: Icon(Icons.attach_money),
+  ///   leading: Icon(LucideIcons.dollarSign),
   ///   style: TextStyle(fontSize: 16),
   /// );
   /// ```

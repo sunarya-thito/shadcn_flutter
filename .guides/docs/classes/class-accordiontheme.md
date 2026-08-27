@@ -1,6 +1,6 @@
 ---
 title: "Class: AccordionTheme"
-description: "Theme configuration for [Accordion], [AccordionItem], and [AccordionTrigger] widgets.   [AccordionTheme] provides comprehensive styling options for all accordion-related  widgets, including animation timing, spacing, colors, and iconography. It allows  for consistent accordion styling across an application while still permitting  per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<AccordionTheme>(    data: AccordionTheme(      duration: Duration(milliseconds: 300),      curve: Curves.easeInOut,      padding: 20.0,      arrowIcon: Icons.expand_more,      arrowIconColor: Colors.blue,    ),    child: MyAccordionWidget(),  );  ```"
+description: "Theme configuration for [Accordion], [AccordionItem], and [AccordionTrigger] widgets.   [AccordionTheme] provides comprehensive styling options for all accordion-related  widgets, including animation timing, spacing, colors, and iconography. It allows  for consistent accordion styling across an application while still permitting  per-instance customization.   Used with [ComponentTheme] to apply theme values throughout the widget tree.   Example:  ```dart  ComponentTheme<AccordionTheme>(    data: AccordionTheme(      duration: Duration(milliseconds: 300),      curve: Curves.easeInOut,      padding: 20.0,      arrowIcon: LucideIcons.chevronDown,      arrowIconColor: Colors.blue,    ),    child: MyAccordionWidget(),  );  ```"
 ---
 
 ```dart
@@ -20,7 +20,7 @@ description: "Theme configuration for [Accordion], [AccordionItem], and [Accordi
 ///     duration: Duration(milliseconds: 300),
 ///     curve: Curves.easeInOut,
 ///     padding: 20.0,
-///     arrowIcon: Icons.expand_more,
+///     arrowIcon: LucideIcons.chevronDown,
 ///     arrowIconColor: Colors.blue,
 ///   ),
 ///   child: MyAccordionWidget(),
@@ -64,7 +64,7 @@ class AccordionTheme extends ComponentThemeData {
   /// Icon displayed in the trigger to indicate expand/collapse state.
   ///
   /// This icon is rotated 180 degrees when transitioning between states.
-  /// If null, defaults to [Icons.keyboard_arrow_up].
+  /// If null, defaults to [LucideIcons.chevronUp].
   final IconData? arrowIcon;
   /// Color of the expand/collapse arrow icon.
   ///

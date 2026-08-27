@@ -50,20 +50,20 @@ class ResizableItem {
 
   /// Creates a resizable item with the given constraints.
   ///
-  /// [value] is the initial size of the item.
+  /// [_value] is the initial size of the item.
   /// [min] is the minimum size (defaults to 0).
   /// [max] is the maximum size (defaults to infinity).
   /// [collapsed] indicates if the item starts collapsed.
   /// [collapsedSize] is the size when collapsed (defaults to 0 if null).
   /// [resizable] indicates if the item can be resized (defaults to true).
   ResizableItem({
-    required double value,
+    required this._value,
     this.min = 0,
     this.max = double.infinity,
     this.collapsed = false,
     this.collapsedSize,
     this.resizable = true,
-  }) : _value = value;
+  });
 
   /// Whether this item is collapsed after resizing operations.
   bool get newCollapsed => _newCollapsed ?? collapsed;
@@ -206,8 +206,12 @@ class Resizer {
     if (newSize < minSize) {
       double overflow = newSize - minSize;
       double given = delta - overflow;
-      var borrowSize =
-          _borrowSize(index + direction, overflow, until, direction);
+      var borrowSize = _borrowSize(
+        index + direction,
+        overflow,
+        until,
+        direction,
+      );
       item._newValue = minSize;
       return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
     }
@@ -216,8 +220,12 @@ class Resizer {
       double maxOverflow = newSize - maxSize;
       double given = delta - maxOverflow;
 
-      var borrowSize =
-          _borrowSize(index + direction, maxOverflow, until, direction);
+      var borrowSize = _borrowSize(
+        index + direction,
+        maxOverflow,
+        until,
+        direction,
+      );
       item._newValue = maxSize;
       return _BorrowInfo(borrowSize.givenSize + given, borrowSize.from);
     }
@@ -278,8 +286,12 @@ class Resizer {
     } else if (direction == 0) {
       double halfDelta = delta / 2;
       var borrowedLeft = _borrowSize(index - 1, -halfDelta, 0, -1);
-      var borrowedRight =
-          _borrowSize(index + 1, -halfDelta, items.length - 1, 1);
+      var borrowedRight = _borrowSize(
+        index + 1,
+        -halfDelta,
+        items.length - 1,
+        1,
+      );
       if (borrowedLeft.givenSize != -halfDelta ||
           borrowedRight.givenSize != -halfDelta) {
         reset();
@@ -332,8 +344,12 @@ class Resizer {
       final delta = item.newValue - collapsedSize;
       final halfDelta = delta / 2;
       var borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
-      var borrowedRight =
-          _borrowSize(index + 1, halfDelta, items.length - 1, 1);
+      var borrowedRight = _borrowSize(
+        index + 1,
+        halfDelta,
+        items.length - 1,
+        1,
+      );
       if (borrowedLeft.givenSize != halfDelta ||
           borrowedRight.givenSize != halfDelta) {
         reset();
@@ -379,8 +395,12 @@ class Resizer {
     } else if (direction == 0) {
       final halfDelta = delta / 2;
       var borrowedLeft = _borrowSize(index - 1, halfDelta, 0, -1);
-      var borrowedRight =
-          _borrowSize(index + 1, halfDelta, items.length - 1, 1);
+      var borrowedRight = _borrowSize(
+        index + 1,
+        halfDelta,
+        items.length - 1,
+        1,
+      );
       if (borrowedLeft.givenSize != halfDelta ||
           borrowedRight.givenSize != halfDelta) {
         reset();
@@ -421,12 +441,18 @@ class Resizer {
     double givenBackRight = 0;
 
     if (couldNotBorrowLeft != -couldNotBorrowRight) {
-      givenBackLeft =
-          _borrowSize(borrowedRight.from, -couldNotBorrowLeft, index, -1)
-              .givenSize;
-      givenBackRight =
-          _borrowSize(borrowedLeft.from, -couldNotBorrowRight, index - 1, 1)
-              .givenSize;
+      givenBackLeft = _borrowSize(
+        borrowedRight.from,
+        -couldNotBorrowLeft,
+        index,
+        -1,
+      ).givenSize;
+      givenBackRight = _borrowSize(
+        borrowedLeft.from,
+        -couldNotBorrowRight,
+        index - 1,
+        1,
+      ).givenSize;
     }
 
     if (givenBackLeft != -couldNotBorrowLeft ||
@@ -438,10 +464,18 @@ class Resizer {
     double payOffLeft = _payOffLoanSize(index - 1, delta, -1);
     double payOffRight = _payOffLoanSize(index, -delta, 1);
 
-    double payingBackLeft =
-        _borrowSize(index - 1, -payOffLeft, 0, -1).givenSize;
-    double payingBackRight =
-        _borrowSize(index, -payOffRight, items.length - 1, 1).givenSize;
+    double payingBackLeft = _borrowSize(
+      index - 1,
+      -payOffLeft,
+      0,
+      -1,
+    ).givenSize;
+    double payingBackRight = _borrowSize(
+      index,
+      -payOffRight,
+      items.length - 1,
+      1,
+    ).givenSize;
 
     if (payingBackLeft != -payOffLeft || payingBackRight != -payOffRight) {
       reset();

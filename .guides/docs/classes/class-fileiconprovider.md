@@ -1,6 +1,6 @@
 ---
 title: "Class: FileIconProvider"
-description: "Provides customizable file icons in the widget tree.   [FileIconProvider] allows applications to define custom file icons based on  file extensions. Icons can be provided either through a builder function or  a static map of extensions to widgets.   Example using builder:  ```dart  FileIconProvider.builder(    builder: (extension) {      if (extension == 'txt') return Icon(Icons.text_snippet);      return Icon(Icons.insert_drive_file);    },    child: MyFileList(),  )  ```   Example using icon map:  ```dart  FileIconProvider(    icons: {      'pdf': Icon(Icons.picture_as_pdf),      'jpg': Icon(Icons.image),    },    child: MyFileList(),  )  ```"
+description: "Provides customizable file icons in the widget tree.   [FileIconProvider] allows applications to define custom file icons based on  file extensions. Icons can be provided either through a builder function or  a static map of extensions to widgets.   Example using builder:  ```dart  FileIconProvider.builder(    builder: (extension) {      if (extension == 'txt') return Icon(LucideIcons.fileText);      return Icon(LucideIcons.file);    },    child: MyFileList(),  )  ```   Example using icon map:  ```dart  FileIconProvider(    icons: {      'pdf': Icon(LucideIcons.fileText),      'jpg': Icon(LucideIcons.image),    },    child: MyFileList(),  )  ```"
 ---
 
 ```dart
@@ -14,8 +14,8 @@ description: "Provides customizable file icons in the widget tree.   [FileIconPr
 /// ```dart
 /// FileIconProvider.builder(
 ///   builder: (extension) {
-///     if (extension == 'txt') return Icon(Icons.text_snippet);
-///     return Icon(Icons.insert_drive_file);
+///     if (extension == 'txt') return Icon(LucideIcons.fileText);
+///     return Icon(LucideIcons.file);
 ///   },
 ///   child: MyFileList(),
 /// )
@@ -25,8 +25,8 @@ description: "Provides customizable file icons in the widget tree.   [FileIconPr
 /// ```dart
 /// FileIconProvider(
 ///   icons: {
-///     'pdf': Icon(Icons.picture_as_pdf),
-///     'jpg': Icon(Icons.image),
+///     'pdf': Icon(LucideIcons.fileText),
+///     'jpg': Icon(LucideIcons.image),
 ///   },
 ///   child: MyFileList(),
 /// )

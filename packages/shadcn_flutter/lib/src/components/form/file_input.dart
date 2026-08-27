@@ -51,8 +51,8 @@ typedef FileIconBuilder = Widget Function(String extension);
 /// ```dart
 /// FileIconProvider.builder(
 ///   builder: (extension) {
-///     if (extension == 'txt') return Icon(Icons.text_snippet);
-///     return Icon(Icons.insert_drive_file);
+///     if (extension == 'txt') return Icon(LucideIcons.fileText);
+///     return Icon(LucideIcons.file);
 ///   },
 ///   child: MyFileList(),
 /// )
@@ -62,8 +62,8 @@ typedef FileIconBuilder = Widget Function(String extension);
 /// ```dart
 /// FileIconProvider(
 ///   icons: {
-///     'pdf': Icon(Icons.picture_as_pdf),
-///     'jpg': Icon(Icons.image),
+///     'pdf': Icon(LucideIcons.fileText),
+///     'jpg': Icon(LucideIcons.image),
 ///   },
 ///   child: MyFileList(),
 /// )
@@ -86,19 +86,13 @@ class FileIconProvider extends StatelessWidget {
   }) : icons = null;
 
   /// Creates a [FileIconProvider] using a static icon map.
-  const FileIconProvider({
-    super.key,
-    required this.icons,
-    required this.child,
-  }) : builder = null;
+  const FileIconProvider({super.key, required this.icons, required this.child})
+    : builder = null;
 
   @override
   Widget build(BuildContext context) {
     return Data.inherit(
-      data: FileIconProviderData._(
-        builder: builder,
-        icons: icons,
-      ),
+      data: FileIconProviderData._(builder: builder, icons: icons),
       child: child,
     );
   }
@@ -128,10 +122,7 @@ class FileIconProviderData {
   final Map<String, Widget>? icons;
 
   /// Creates internal data for file icon provision.
-  const FileIconProviderData._({
-    this.builder,
-    this.icons,
-  });
+  const FileIconProviderData._({this.builder, this.icons});
 
   /// Builds an icon for the given file extension.
   ///

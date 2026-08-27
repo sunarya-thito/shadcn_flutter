@@ -1,4 +1,5 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 /// Provides themed icon container widgets for shadcn_flutter components.
 ///
 /// Includes [IconContainerTheme] and [IconContainer] for styling icons with background, padding, and border radius.
@@ -6,10 +7,13 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 class IconContainerTheme extends ComponentThemeData {
   /// Background color for the icon container.
   final Color? backgroundColor;
+
   /// Color for the icon inside the container.
   final Color? iconColor;
+
   /// Padding inside the icon container.
   final EdgeInsetsGeometry? padding;
+
   /// Border radius for the icon container.
   final BorderRadius? borderRadius;
 
@@ -42,8 +46,9 @@ class IconContainerTheme extends ComponentThemeData {
     ValueGetter<BorderRadius?>? borderRadius,
   }) {
     return IconContainerTheme(
-      backgroundColor:
-          backgroundColor != null ? backgroundColor() : this.backgroundColor,
+      backgroundColor: backgroundColor != null
+          ? backgroundColor()
+          : this.backgroundColor,
       iconColor: iconColor != null ? iconColor() : this.iconColor,
       padding: padding != null ? padding() : this.padding,
       borderRadius: borderRadius != null ? borderRadius() : this.borderRadius,
@@ -63,12 +68,7 @@ class IconContainerTheme extends ComponentThemeData {
 
   @override
   int get hashCode {
-    return Object.hash(
-      backgroundColor,
-      iconColor,
-      padding,
-      borderRadius,
-    );
+    return Object.hash(backgroundColor, iconColor, padding, borderRadius);
   }
 }
 
@@ -79,7 +79,7 @@ class IconContainerTheme extends ComponentThemeData {
 /// Example:
 /// ```dart
 /// IconContainer(
-///   icon: Icon(Icons.star),
+///   icon: Icon(LucideIcons.star),
 ///   backgroundColor: Colors.yellow,
 ///   borderRadius: BorderRadius.circular(8),
 /// )
@@ -87,14 +87,19 @@ class IconContainerTheme extends ComponentThemeData {
 class IconContainer extends StatelessWidget {
   /// The icon widget to display.
   final Widget icon;
+
   /// Padding inside the container.
   final EdgeInsetsGeometry? padding;
+
   /// Border radius for the container.
   final BorderRadius? borderRadius;
+
   /// Background color for the container.
   final Color? backgroundColor;
+
   /// Color for the icon.
   final Color? iconColor;
+
   /// Creates an [IconContainer].
   ///
   /// Parameters:
@@ -118,26 +123,30 @@ class IconContainer extends StatelessWidget {
     final compTheme = ComponentTheme.maybeOf<IconContainerTheme>(context);
     return Container(
       padding: styleValue(
-          defaultValue: EdgeInsetsDensity.all(padXs)
-              .resolveDensity(theme.density.baseContainerPadding),
-          widgetValue: padding,
-          themeValue: compTheme?.padding),
+        defaultValue: EdgeInsetsDensity.all(padXs)
+            .resolveDensity(theme.density.baseContainerPadding),
+        widgetValue: padding,
+        themeValue: compTheme?.padding,
+      ),
       decoration: BoxDecoration(
         color: styleValue(
-            defaultValue: theme.colorScheme.primary,
-            widgetValue: backgroundColor,
-            themeValue: compTheme?.backgroundColor),
+          defaultValue: theme.colorScheme.primary,
+          widgetValue: backgroundColor,
+          themeValue: compTheme?.backgroundColor,
+        ),
         borderRadius: styleValue(
-            defaultValue: theme.borderRadiusMd,
-            widgetValue: borderRadius,
-            themeValue: compTheme?.borderRadius),
+          defaultValue: theme.borderRadiusMd,
+          widgetValue: borderRadius,
+          themeValue: compTheme?.borderRadius,
+        ),
       ),
       child: IconTheme(
         data: IconThemeData(
           color: styleValue(
-              defaultValue: theme.colorScheme.primaryForeground,
-              widgetValue: iconColor,
-              themeValue: compTheme?.iconColor),
+            defaultValue: theme.colorScheme.primaryForeground,
+            widgetValue: iconColor,
+            themeValue: compTheme?.iconColor,
+          ),
         ),
         child: icon,
       ),

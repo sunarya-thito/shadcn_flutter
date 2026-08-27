@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -13,7 +14,9 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 ///
 /// Returns: A widget to display as the color preview label.
 typedef PreviewLabelBuilder = Widget Function(
-    BuildContext context, Color color);
+  BuildContext context,
+  Color color,
+);
 
 /// A layer widget that provides eye dropper (color picking) functionality.
 ///
@@ -72,40 +75,46 @@ class EyeDropperLayer extends StatefulWidget {
   State<EyeDropperLayer> createState() => _EyeDropperLayerState();
 }
 
+/// A frozen snapshot of the screen that colors are sampled from.
+///
+/// The raw RGBA bytes are kept as-is rather than being expanded into a list of
+/// [Color] objects: the layer wraps the whole application, so on a large
+/// display that expansion would allocate millions of objects and stall (or run
+/// the app out of memory) the moment the eye dropper is opened.
 class _ScreenshotResult {
-  final List<Color> colors;
-  final Size size;
-  final ImageProvider? image;
-
-  _ScreenshotResult(this.colors, this.size, this.image);
-
-  Color operator [](Offset position) {
-    int index =
-        (position.dy.floor() * size.width + position.dx.floor()).toInt();
-    return colors[index];
-  }
-}
-
-class _ScreenshotImage extends ImageProvider<_ScreenshotImage> {
-  _ScreenshotImage(this.bytes, this.width, this.height, this.format);
+  _ScreenshotResult(this.bytes, this.image)
+    : width = image.width,
+      height = image.height;
 
   final Uint8List bytes;
+  final ui.Image image;
   final int width;
   final int height;
-  final ui.PixelFormat format;
 
-  @override
-  Future<_ScreenshotImage> obtainKey(ImageConfiguration configuration) {
-    return SynchronousFuture<_ScreenshotImage>(this);
+  Size get size => Size(width.toDouble(), height.toDouble());
+
+  /// Reads the color at a pixel, clamped to the edges of the snapshot.
+  ///
+  /// Positions arrive from pointer events and can land exactly on the trailing
+  /// edge, so they are clamped rather than trusted to be in range.
+  Color colorAt(int x, int y) {
+    if (width == 0 || height == 0) return const Color(0x00000000);
+    final index = (y.clamp(0, height - 1) * width + x.clamp(0, width - 1)) * 4;
+    return Color.fromARGB(
+      bytes[index + 3],
+      bytes[index],
+      bytes[index + 1],
+      bytes[index + 2],
+    );
   }
 
-  @override
-  ImageStreamCompleter loadImage(
-      _ScreenshotImage key, ImageDecoderCallback decode) {
-    Completer<ui.Image> completer = Completer<ui.Image>();
-    ui.decodeImageFromPixels(bytes, width, height, format, completer.complete);
-    return OneFrameImageStreamCompleter(
-        completer.future.then((ui.Image image) => ImageInfo(image: image)));
+  /// Whether a position falls inside the snapshot.
+  bool contains(double x, double y) {
+    return x >= 0 && y >= 0 && x < width && y < height;
+  }
+
+  void dispose() {
+    image.dispose();
   }
 }
 
@@ -123,6 +132,12 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
   EyeDropperResult? _preview;
   Offset? _currentPosition;
   _EyeDropperCompleter? _session;
+
+  @override
+  void dispose() {
+    _currentPicking?.dispose();
+    super.dispose();
+  }
 
   Widget _buildPreviewLabel(BuildContext context, Color color) {
     if (widget.previewLabelBuilder != null) {
@@ -148,8 +163,14 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
       }
       return _session!.completer.future;
     }
-    final completer = Completer<Color?>();
     final screenshot = await _screenshotWidget();
+    // Without a snapshot there is nothing to sample, and entering picking mode
+    // anyway would leave the app behind an IgnorePointer with no way out.
+    if (screenshot == null || !mounted) {
+      screenshot?.dispose();
+      return null;
+    }
+    final completer = Completer<Color?>();
     setState(() {
       _session = _EyeDropperCompleter(
         completer,
@@ -164,25 +185,63 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
     return result;
   }
 
+  /// Ends the current session with [color], releasing the snapshot.
+  void _finish(Color? color) {
+    final session = _session;
+    if (session == null) return;
+    _currentPicking?.dispose();
+    if (mounted) {
+      setState(() {
+        _session = null;
+        _preview = null;
+        _currentPicking = null;
+        _currentPosition = null;
+      });
+    } else {
+      _session = null;
+      _preview = null;
+      _currentPicking = null;
+      _currentPosition = null;
+    }
+    session.completer.complete(color);
+  }
+
   Future<_ScreenshotResult?> _screenshotWidget() async {
     final currentContext = _repaintKey.currentContext;
     if (currentContext == null) return null;
-    final boundary = currentContext.findRenderObject() as RenderRepaintBoundary;
-    final image = await boundary.toImage(pixelRatio: 1);
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-    if (byteData == null) return null;
-    final colors = <Color>[];
-    for (int i = 0; i < byteData.lengthInBytes; i += 4) {
-      final r = byteData.getUint8(i);
-      final g = byteData.getUint8(i + 1);
-      final b = byteData.getUint8(i + 2);
-      final a = byteData.getUint8(i + 3);
-      colors.add(Color.fromARGB(a, r, g, b));
+    final boundary =
+        currentContext.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary == null || boundary.debugNeedsPaint) return null;
+    ui.Image? image;
+    try {
+      // Captured at a pixel ratio of 1 so that snapshot coordinates line up
+      // with the logical coordinates that pointer events report.
+      image = await boundary.toImage(pixelRatio: 1);
+      // Straight, not `rawRgba`, which is premultiplied: sampling a partly
+      // transparent pixel there would report a color already scaled by its
+      // own alpha.
+      final byteData = await image.toByteData(
+        format: ui.ImageByteFormat.rawStraightRgba,
+      );
+      if (byteData == null) {
+        image.dispose();
+        return null;
+      }
+      return _ScreenshotResult(byteData.buffer.asUint8List(), image);
+    } catch (error, stackTrace) {
+      image?.dispose();
+      FlutterError.reportError(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stackTrace,
+          library: 'shadcn_flutter',
+          context: ErrorDescription(
+            'while capturing the screen for the eye dropper',
+          ),
+        ),
+      );
+      return null;
     }
-    final img = _ScreenshotImage(byteData.buffer.asUint8List(), image.width,
-        image.height, ui.PixelFormat.rgba8888);
-    return _ScreenshotResult(
-        colors, Size(image.width.toDouble(), image.height.toDouble()), img);
   }
 
   EyeDropperResult? _getPreview(Offset globalPosition, Size size) {
@@ -191,21 +250,23 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
     final colors = <Color>[];
     for (int y = -size.height ~/ 2; y < size.height ~/ 2; y++) {
       for (int x = -size.width ~/ 2; x < size.width ~/ 2; x++) {
-        final localPosition =
-            globalPosition.translate(x.toDouble(), y.toDouble());
-        if (localPosition.dx < 0 ||
-            localPosition.dy < 0 ||
-            localPosition.dx >= image.size.width ||
-            localPosition.dy >= image.size.height) {
+        final localPosition = globalPosition.translate(
+          x.toDouble(),
+          y.toDouble(),
+        );
+        if (!image.contains(localPosition.dx, localPosition.dy)) {
           colors.add(Colors.transparent);
         } else {
-          colors.add(image[localPosition]);
+          colors.add(
+            image.colorAt(localPosition.dx.floor(), localPosition.dy.floor()),
+          );
         }
       }
     }
-    final globalIndex = globalPosition.dy.floor() * image.size.width.floor() +
-        globalPosition.dx.floor();
-    final pickedColor = image.colors[globalIndex];
+    final pickedColor = image.colorAt(
+      globalPosition.dx.floor(),
+      globalPosition.dy.floor(),
+    );
     return EyeDropperResult(colors, size, pickedColor);
   }
 
@@ -218,134 +279,141 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
       data: this,
       child: Data<EyeDropperLayerScope>.inherit(
         data: this,
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTapDown: _preview != null && _session != null
-              ? (details) async {
-                  _session!.completer.complete(_preview!.pickedColor);
-                  if (mounted) {
-                    setState(() {
-                      _session = null;
-                      _preview = null;
-                      _currentPicking = null;
-                      _currentPosition = null;
-                    });
-                  }
-                }
-              : null,
-          child: MouseRegion(
-            hitTestBehavior: HitTestBehavior.translucent,
-            onHover: _session != null
+        child: Focus(
+          autofocus: _session != null,
+          // Without an escape hatch, a session started where no hover events
+          // arrive would leave the app stuck behind the IgnorePointer below.
+          onKeyEvent: (node, event) {
+            if (_session != null &&
+                event is KeyDownEvent &&
+                event.logicalKey == LogicalKeyboardKey.escape) {
+              _finish(null);
+              return KeyEventResult.handled;
+            }
+            return KeyEventResult.ignored;
+          },
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTapDown: _preview != null && _session != null
                 ? (details) {
-                    setState(() {
-                      _preview = _getPreview(
-                        details.localPosition,
-                        previewSize / widget.previewScale,
-                      );
-                      _currentPosition = details.localPosition;
-                    });
+                    _finish(_preview!.pickedColor);
                   }
                 : null,
-            child: IgnorePointer(
-              ignoring: _session != null,
-              child: Stack(
-                fit: StackFit.passthrough,
-                children: [
-                  RepaintBoundary(
-                    key: _repaintKey,
-                    child: widget.child,
-                  ),
-                  if (_currentPicking != null)
-                    Positioned.fill(
-                        child: Image(
-                      image: _currentPicking!.image!,
-                      fit: BoxFit.fill,
-                    )),
-                  if (widget.showPreview &&
-                      _preview != null &&
-                      widget.previewAlignment != null)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                          theme.density.baseContainerPadding *
-                              theme.scaling *
-                              2,
+            child: MouseRegion(
+              hitTestBehavior: HitTestBehavior.translucent,
+              onHover: _session != null
+                  ? (details) {
+                      setState(() {
+                        _preview = _getPreview(
+                          details.localPosition,
+                          previewSize / widget.previewScale,
+                        );
+                        _currentPosition = details.localPosition;
+                      });
+                    }
+                  : null,
+              child: IgnorePointer(
+                ignoring: _session != null,
+                child: Stack(
+                  fit: StackFit.passthrough,
+                  children: [
+                    RepaintBoundary(key: _repaintKey, child: widget.child),
+                    if (_currentPicking != null)
+                      Positioned.fill(
+                        // The snapshot is painted over the live tree so that what
+                        // the user sees matches the pixels being sampled, while
+                        // the app keeps animating underneath.
+                        child: RawImage(
+                          image: _currentPicking!.image.clone(),
+                          fit: BoxFit.fill,
                         ),
-                        child: Align(
-                          alignment: widget.previewAlignment!,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.bottomCenter,
-                            fit: StackFit.passthrough,
-                            children: [
-                              SizedBox(
-                                width: previewSize.width,
-                                height: previewSize.height,
-                                child: CustomPaint(
-                                  painter: _ColorPreviewPainter(
-                                    _preview!.colors,
-                                    _preview!.size,
-                                    theme.colorScheme.border,
-                                    1 * theme.scaling,
-                                    theme.colorScheme.primary,
-                                    2 * theme.scaling,
-                                    theme.colorScheme.background,
+                      ),
+                    if (widget.showPreview &&
+                        _preview != null &&
+                        widget.previewAlignment != null)
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                            theme.density.baseContainerPadding *
+                                theme.scaling *
+                                2,
+                          ),
+                          child: Align(
+                            alignment: widget.previewAlignment!,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              alignment: Alignment.bottomCenter,
+                              fit: StackFit.passthrough,
+                              children: [
+                                SizedBox(
+                                  width: previewSize.width,
+                                  height: previewSize.height,
+                                  child: CustomPaint(
+                                    painter: _ColorPreviewPainter(
+                                      _preview!.colors,
+                                      _preview!.size,
+                                      theme.colorScheme.border,
+                                      1 * theme.scaling,
+                                      theme.colorScheme.primary,
+                                      2 * theme.scaling,
+                                      theme.colorScheme.background,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: -18 * theme.scaling,
-                                child: _buildPreviewLabel(
-                                  context,
-                                  _preview!.pickedColor,
+                                Positioned(
+                                  bottom: -18 * theme.scaling,
+                                  child: _buildPreviewLabel(
+                                    context,
+                                    _preview!.pickedColor,
+                                  ),
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  if (widget.showPreview &&
-                      _preview != null &&
-                      widget.previewAlignment == null)
-                    Positioned(
-                      top: _currentPosition!.dy,
-                      left: _currentPosition!.dx,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.bottomCenter,
-                        fit: StackFit.passthrough,
-                        children: [
-                          SizedBox(
-                            width: previewSize.width,
-                            height: previewSize.height,
-                            child: CustomPaint(
-                              painter: _ColorPreviewPainter(
-                                _preview!.colors,
-                                _preview!.size,
-                                theme.colorScheme.border,
-                                1 * theme.scaling,
-                                theme.colorScheme.primary,
-                                2 * theme.scaling,
-                                theme.colorScheme.background,
+                    if (widget.showPreview &&
+                        _preview != null &&
+                        widget.previewAlignment == null)
+                      Positioned(
+                        top: _currentPosition!.dy,
+                        left: _currentPosition!.dx,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          alignment: Alignment.bottomCenter,
+                          fit: StackFit.passthrough,
+                          children: [
+                            SizedBox(
+                              width: previewSize.width,
+                              height: previewSize.height,
+                              child: CustomPaint(
+                                painter: _ColorPreviewPainter(
+                                  _preview!.colors,
+                                  _preview!.size,
+                                  theme.colorScheme.border,
+                                  1 * theme.scaling,
+                                  theme.colorScheme.primary,
+                                  2 * theme.scaling,
+                                  theme.colorScheme.background,
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            bottom: -18 * theme.scaling,
-                            child: _buildPreviewLabel(
-                              context,
-                              _preview!.pickedColor,
+                            Positioned(
+                              bottom: -18 * theme.scaling,
+                              child: _buildPreviewLabel(
+                                context,
+                                _preview!.pickedColor,
+                              ),
                             ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -359,8 +427,10 @@ class _EyeDropperLayerState extends State<EyeDropperLayer>
 ///
 /// Returns the selected color, or null if the operation was cancelled.
 /// Optionally stores the selected color in the provided [storage].
-Future<Color?> pickColorFromScreen(BuildContext context,
-    [ColorHistoryStorage? storage]) {
+Future<Color?> pickColorFromScreen(
+  BuildContext context, [
+  ColorHistoryStorage? storage,
+]) {
   final scope = EyeDropperLayerScope.find(context);
   return scope.promptPickColor(storage);
 }
@@ -388,8 +458,14 @@ class _ColorPreviewPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // clip it to circle
     final clipPath = Path()
-      ..addOval(Rect.fromLTWH(
-          0, 0, size.width.floorToDouble(), size.height.floorToDouble()));
+      ..addOval(
+        Rect.fromLTWH(
+          0,
+          0,
+          size.width.floorToDouble(),
+          size.height.floorToDouble(),
+        ),
+      );
     canvas.clipPath(clipPath);
     final paint = Paint();
 
@@ -397,13 +473,20 @@ class _ColorPreviewPainter extends CustomPainter {
     paint.color = backgroundColor;
     paint.style = PaintingStyle.fill;
     canvas.drawRect(
-        Rect.fromLTWH(
-            0, 0, size.width.floorToDouble(), size.height.floorToDouble()),
-        paint);
+      Rect.fromLTWH(
+        0,
+        0,
+        size.width.floorToDouble(),
+        size.height.floorToDouble(),
+      ),
+      paint,
+    );
 
     // draw the color cells
-    final cellSize = Size(size.width.floor() / this.size.width.floor(),
-        size.height.floor() / this.size.height.floor());
+    final cellSize = Size(
+      size.width.floor() / this.size.width.floor(),
+      size.height.floor() / this.size.height.floor(),
+    );
     for (int y = 0; y < this.size.height.floor(); y++) {
       for (int x = 0; x < this.size.width.floor(); x++) {
         final color = colors[y * this.size.width.floor() + x];
@@ -411,10 +494,11 @@ class _ColorPreviewPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         canvas.drawRect(
           Rect.fromLTWH(
-              (x * cellSize.width).floorToDouble(),
-              (y * cellSize.height).floorToDouble(),
-              cellSize.width.floorToDouble(),
-              cellSize.height.floorToDouble()),
+            (x * cellSize.width).floorToDouble(),
+            (y * cellSize.height).floorToDouble(),
+            cellSize.width.floorToDouble(),
+            cellSize.height.floorToDouble(),
+          ),
           paint,
         );
         paint.color = borderColor;
@@ -423,11 +507,11 @@ class _ColorPreviewPainter extends CustomPainter {
         // draw a border
         canvas.drawRect(
           Rect.fromLTWH(
-                  (x * cellSize.width).floorToDouble(),
-                  (y * cellSize.height).floorToDouble(),
-                  cellSize.width.floorToDouble(),
-                  cellSize.height.floorToDouble())
-              .inflate(paint.strokeWidth / 2),
+            (x * cellSize.width).floorToDouble(),
+            (y * cellSize.height).floorToDouble(),
+            cellSize.width.floorToDouble(),
+            cellSize.height.floorToDouble(),
+          ).inflate(paint.strokeWidth / 2),
           paint,
         );
       }
@@ -454,9 +538,14 @@ class _ColorPreviewPainter extends CustomPainter {
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = borderWidth;
     canvas.drawOval(
-        Rect.fromLTWH(
-            0, 0, size.width.floorToDouble(), size.height.floorToDouble()),
-        paint);
+      Rect.fromLTWH(
+        0,
+        0,
+        size.width.floorToDouble(),
+        size.height.floorToDouble(),
+      ),
+      paint,
+    );
   }
 
   @override
@@ -532,8 +621,8 @@ class EyeDropperResult {
   ///
   /// Returns: The color at that position.
   Color operator [](Offset position) {
-    int index =
-        (position.dy.floor() * size.width + position.dx.floor()).toInt();
+    int index = (position.dy.floor() * size.width + position.dx.floor())
+        .toInt();
     return colors[index];
   }
 }

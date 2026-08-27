@@ -11,7 +11,7 @@ This ecosystem provides a wide range of customizable and responsive components, 
 ## Features
 
 - **84+ components** and growing!
-- **Standalone ecosystem**: no Material or Cupertino requirement; optional interop when needed.
+- **Standalone ecosystem**: depends on `package:flutter/widgets.dart` alone — neither `material_ui` nor `cupertino_ui`. Interop is opt-in via `shadcn_flutter_material` / `shadcn_flutter_cupertino`.
 - **Design Tokens**: Full support for shadcn/ui design tokens and the high-quality **New York** theme.
 - **Incremental Adoption**: Works inside `MaterialApp` and `CupertinoApp`; mix and match while you migrate.
 - **Multi-platform**: First-class support across Android, iOS, Web, macOS, Windows, and Linux.
@@ -27,7 +27,7 @@ Yes, it does. You can use GoRouter with `shadcn_flutter` seamlessly.
 Yes! It is free to use for personal and commercial projects. No attribution is required.
 
 ### Can I use this with Material/Cupertino Widgets?
-Yes. If your app already uses Material or Cupertino, `shadcn_flutter` plays nicely with both. You can drop components into existing apps and adopt the ecosystem incrementally. See the [Interop Guide](./interop.md) for more.
+Yes, in both directions. Dropping components into an existing `MaterialApp`/`CupertinoApp` needs no extra package. Material or Cupertino widgets inside a shadcn app need `shadcn_flutter_material` or `shadcn_flutter_cupertino`. See the [Interop Guide](./interop.md) for more.
 
 ### Can I configure the style (Default/New York)?
 Currently, this package only supports the **New York** style.

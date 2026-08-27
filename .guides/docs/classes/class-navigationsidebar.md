@@ -1,6 +1,6 @@
 ---
 title: "Class: NavigationSidebar"
-description: "A full-width navigation sidebar component for comprehensive navigation.   Provides an expanded navigation interface designed for sidebar layouts  with full-width items and extensive labeling support. Unlike [NavigationRail],  the sidebar is optimized for detailed navigation with prominent labels,  descriptions, and expanded interactive areas.   The sidebar always displays labels and typically occupies a dedicated  sidebar area in layouts. Items are arranged vertically with generous  spacing and padding to create a comfortable navigation experience.  Supports badges, icons, and detailed labeling for complex navigation hierarchies.   Integrates with responsive layout systems and can be combined with  collapsible containers or drawer systems for adaptive navigation  experiences across different screen sizes and device types.   Example:  ```dart  NavigationSidebar(    backgroundColor: Colors.grey.shade50,    labelType: NavigationLabelType.all,    selectedKey: ValueKey('dashboard'),    onSelected: (key) => _navigateToPage(key),    children: [      NavigationItem(        key: ValueKey('dashboard'),        icon: Icon(Icons.dashboard),        label: Text('Dashboard'),        badge: Badge(child: Text('New')),      ),      NavigationItem(        key: ValueKey('analytics'),        icon: Icon(Icons.analytics),        label: Text('Analytics'),      ),      NavigationItem(        key: ValueKey('settings'),        icon: Icon(Icons.settings),        label: Text('Settings'),      ),    ],  )  ```"
+description: "A full-width navigation sidebar component for comprehensive navigation.   Provides an expanded navigation interface designed for sidebar layouts  with full-width items and extensive labeling support. Unlike [NavigationRail],  the sidebar is optimized for detailed navigation with prominent labels,  descriptions, and expanded interactive areas.   The sidebar always displays labels and typically occupies a dedicated  sidebar area in layouts. Items are arranged vertically with generous  spacing and padding to create a comfortable navigation experience.  Supports badges, icons, and detailed labeling for complex navigation hierarchies.   Integrates with responsive layout systems and can be combined with  collapsible containers or drawer systems for adaptive navigation  experiences across different screen sizes and device types.   Example:  ```dart  NavigationSidebar(    backgroundColor: Colors.grey.shade50,    labelType: NavigationLabelType.all,    selectedKey: ValueKey('dashboard'),    onSelected: (key) => _navigateToPage(key),    children: [      NavigationItem(        key: ValueKey('dashboard'),        icon: Icon(LucideIcons.layoutDashboard),        label: Text('Dashboard'),        badge: Badge(child: Text('New')),      ),      NavigationItem(        key: ValueKey('analytics'),        icon: Icon(LucideIcons.chartLine),        label: Text('Analytics'),      ),      NavigationItem(        key: ValueKey('settings'),        icon: Icon(LucideIcons.settings),        label: Text('Settings'),      ),    ],  )  ```"
 ---
 
 ```dart
@@ -30,18 +30,18 @@ description: "A full-width navigation sidebar component for comprehensive naviga
 ///   children: [
 ///     NavigationItem(
 ///       key: ValueKey('dashboard'),
-///       icon: Icon(Icons.dashboard),
+///       icon: Icon(LucideIcons.layoutDashboard),
 ///       label: Text('Dashboard'),
 ///       badge: Badge(child: Text('New')),
 ///     ),
 ///     NavigationItem(
 ///       key: ValueKey('analytics'),
-///       icon: Icon(Icons.analytics),
+///       icon: Icon(LucideIcons.chartLine),
 ///       label: Text('Analytics'),
 ///     ),
 ///     NavigationItem(
 ///       key: ValueKey('settings'),
-///       icon: Icon(Icons.settings),
+///       icon: Icon(LucideIcons.settings),
 ///       label: Text('Settings'),
 ///     ),
 ///   ],

@@ -28,8 +28,9 @@ class FormExample5 extends StatelessWidget {
       width: 480,
       child: Form(
         onSubmit: (context, values) {
-          showDialog(
-            context: context,
+          showOverlay(
+            context,
+            DialogConfiguration(),
             builder: (context) {
               return AlertDialog(
                 title: const Text('Success'),
@@ -64,5 +65,4 @@ class FormExample5 extends StatelessWidget {
                     FormValidationMode.changed,
                     FormValidationMode.submitted,
                   },
-                  child: const TextField(obscureText: true),
 ```

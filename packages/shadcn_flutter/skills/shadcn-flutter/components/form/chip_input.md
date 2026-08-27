@@ -99,15 +99,19 @@ class _ChipInputExample1State extends State<ChipInputExample1> {
           suggestions: _suggestions,
           child: ChipInput<String>(
             controller: _controller,
+            clipboardHandler: DecoratedChipClipboardHandler(
+              prefix: '@',
+              delimiter: ';',
+              chipDeserializer: (inner) => inner,
+            ),
             onChipSubmitted: (value) {
               setState(() {
                 _suggestions = [];
               });
-              // Transform the chip value before storing it.
-              return '@$value';
+              return value;
             },
             chipBuilder: (context, chip) {
-              return Text(chip);
+              return Text('@$chip');
             },
           ),
         ),
@@ -185,3 +189,4 @@ class ChipInputTile extends StatelessWidget implements IComponentPage {
 | `useChips` | `bool?` | Whether to display items as visual chips (defaults to theme setting). |
 | `initialChips` | `List<T>?` | Initial chips to display in the input. |
 | `autoInsertSuggestion` | `bool` | Whether to automatically insert autocomplete suggestions as chips. |
+| `clipboardHandler` | `ClipboardHandler<T>?` | Handles serializing copied chips and deserializing pasted content.  Defaults to a [DefaultChipClipboardHandler] that copies each chip using its [Object.toString] and pastes clipboard text as plain text. |
