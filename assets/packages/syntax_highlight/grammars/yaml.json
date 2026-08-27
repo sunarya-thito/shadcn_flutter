@@ -1,0 +1,66 @@
+{
+    "name": "YAML",
+    "fileTypes": ["yaml", "yml"],
+    "scopeName": "source.yaml",
+    "patterns": [
+        {
+            "name": "comment.line.number-sign.yaml",
+            "match": "#.*",
+            "captures": {
+                "0": {
+                    "name": "punctuation.definition.comment.yaml"
+                }
+            }
+        },
+        {
+            "name": "entity.name.tag.yaml",
+            "match": "^\\s*\\w+",
+            "captures": {
+                "0": {
+                    "name": "punctuation.definition.tag.yaml"
+                }
+            }
+        },
+        {
+            "name": "punctuation.separator.key-value.yaml",
+            "match": ":",
+            "captures": {
+                "0": {
+                    "name": "punctuation.separator.key-value.yaml"
+                }
+            }
+        },
+        {
+            "name": "string.quoted.double.yaml",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.yaml",
+                    "match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{6}|.)"
+                }
+            ]
+        },
+        {
+            "name": "string.quoted.single.yaml",
+            "begin": "'",
+            "end": "'",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.yaml",
+                    "match": "''"
+                }
+            ]
+        }
+    ],
+    "repository": {
+        "scalar-plain": {
+            "patterns": [
+                {
+                    "match": "\\b(\\w+)\\b",
+                    "name": "scalar.plain.yaml"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,163 @@
+{
+  "name": "Swift",
+  "version": "1.0.0",
+  "fileTypes": ["swift"],
+  "scopeName": "source.swift",
+
+  "foldingStartMarker": "\\{\\s*$",
+  "foldingStopMarker": "^\\s*\\}",
+
+  "patterns": [
+    {
+      "name": "meta.declaration.swift",
+      "begin": "\\b(import|class|struct|protocol|extension|enum|func|let|var|typealias|init|deinit)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.other.declaration.swift"
+        }
+      },
+      "end": "(?=\\{)|;",
+      "patterns": [
+        {
+          "include": "#type-annotations"
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#constants-and-literals"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation.swift",
+          "begin": "/\\*\\*",
+          "end": "\\*/",
+          "patterns": [
+            {
+              "include": "#swiftdoc"
+            }
+          ]
+        },
+        {
+          "name": "comment.block.swift",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.line.double-slash.swift",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.swift",
+          "match": "\\b(if|else|for|while|switch|case|break|continue|fallthrough|return|throw|defer|guard|repeat|do|catch|try)\\b"
+        },
+        {
+          "name": "keyword.control.async.swift",
+          "match": "\\b(async|await)\\b"
+        },
+        {
+          "name": "keyword.declaration.swift",
+          "match": "\\b(import|class|struct|enum|protocol|extension|func|var|let|typealias|init|deinit|subscript)\\b"
+        },
+        {
+          "name": "keyword.access.swift",
+          "match": "\\b(public|private|internal|fileprivate|open)\\b"
+        },
+        {
+          "name": "keyword.other.swift",
+          "match": "\\b(static|mutating|nonmutating|override|final|required|lazy|weak|unowned|dynamic|optional)\\b"
+        }
+      ]
+    },
+    "constants-and-literals": {
+      "patterns": [
+        {
+          "name": "constant.language.swift",
+          "match": "\\b(true|false|nil)\\b"
+        },
+        {
+          "name": "constant.numeric.swift",
+          "match": "\\b([0-9]+(\\.[0-9]+)?)\\b"
+        },
+        {
+          "name": "constant.character.escape.swift",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.swift",
+          "match": "(=)"
+        },
+        {
+          "name": "keyword.operator.arithmetic.swift",
+          "match": "(\\+|\\-|\\*|\\/|%)"
+        },
+        {
+          "name": "keyword.operator.comparison.swift",
+          "match": "(==|!=|<=?|>=?)"
+        },
+        {
+          "name": "keyword.operator.logical.swift",
+          "match": "(\\!|&&|\\|\\|)"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.swift",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "string.interpolated.swift",
+              "begin": "\\\\\\(",
+              "end": "\\)"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.swift",
+          "match": "'(?:\\\\.|[^'\\\\])*'"
+        }
+      ]
+    },
+    "type-annotations": {
+      "patterns": [
+        {
+          "match": ":\\s*([A-Z][a-zA-Z0-9]*)",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.swift"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

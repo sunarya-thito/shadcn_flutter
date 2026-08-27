@@ -1,0 +1,98 @@
+{
+  "name": "Python",
+  "version": "1.0.0",
+  "fileTypes": ["py"],
+  "scopeName": "source.python",
+  "foldingStartMarker": "\\b(?:def|class)\\s*[^:]*:\\s*$",
+  "foldingStopMarker": "^\\s*\\}",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#constants-and-special-vars" },
+    { "include": "#operators" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.hash.python", "match": "#.*$" },
+        { "name": "comment.block.python", "begin": "'''", "end": "'''" },
+        { "name": "comment.block.python", "begin": "\"\"\"", "end": "\"\"\"" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.python",
+          "match": "\\b(?:if|else|while|for|in|break|continue|return)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.python",
+          "match": "\\b(?:and|or|not)\\b"
+        },
+        { "name": "keyword.operator.assignment.python", "match": "=" },
+        { "name": "storage.modifier.python", "match": "\\b(?:def|class)\\b" }
+      ]
+    },
+    "constants-and-special-vars": {
+      "patterns": [
+        {
+          "name": "constant.language.python",
+          "match": "\\b(?:True|False|None)\\b"
+        },
+        { "name": "variable.language.python", "match": "\\b(?:self)\\b" },
+        {
+          "name": "constant.numeric.python",
+          "match": "\\b(?:\\d+\\.?\\d*|\\.\\d+)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.arithmetic.python",
+          "match": "\\b(?:\\+|-|\\*|/|%|//)\\b"
+        },
+        {
+          "name": "keyword.operator.comparison.python",
+          "match": "\\b(?:==|!=|<|<=|>|>=)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.python",
+          "match": "\\b(?:and|or|not)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.double.python",
+          "begin": "\"\"\"",
+          "end": "\"\"\""
+        },
+        {
+          "name": "string.quoted.triple.single.python",
+          "begin": "'''",
+          "end": "'''"
+        },
+        {
+          "name": "string.quoted.double.python",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "include": "#string-escape" }]
+        },
+        {
+          "name": "string.quoted.single.python",
+          "begin": "'",
+          "end": "'",
+          "patterns": [{ "include": "#string-escape" }]
+        }
+      ]
+    },
+    "string-escape": {
+      "patterns": [
+        { "name": "constant.character.escape.python", "match": "\\\\[\"']" }
+      ]
+    }
+  }
+}

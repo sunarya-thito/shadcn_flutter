@@ -1,0 +1,143 @@
+{
+  "name": "HTML",
+  "version": "1.0.0",
+  "fileTypes": ["html", "htm"],
+  "scopeName": "text.html.basic",
+  "patterns": [
+    {
+      "include": "#tags"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#entities"
+    },
+    {
+      "include": "#embeddedCode"
+    }
+  ],
+  "repository": {
+    "tags": {
+      "patterns": [
+        {
+          "name": "meta.tag.html",
+          "begin": "(</?)([a-zA-Z][a-zA-Z0-9\\-]*)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.html" },
+            "2": { "name": "entity.name.tag.html" }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.html" }
+          },
+          "patterns": [
+            {
+              "include": "#attributes"
+            }
+          ]
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "entity.other.attribute-name.html",
+          "match": "\\b([a-zA-Z_:][a-zA-Z0-9_\\-:.]*)\\b"
+        },
+        {
+          "name": "string.quoted.double.html",
+          "begin": "\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.html" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.html" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.entity.html",
+              "match": "&[a-zA-Z0-9#]+;"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.html",
+          "begin": "'",
+          "end": "'",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.html" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.html" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.entity.html",
+              "match": "&[a-zA-Z0-9#]+;"
+            }
+          ]
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.html",
+          "begin": "<!--",
+          "end": "-->",
+          "captures": {
+            "0": { "name": "punctuation.definition.comment.html" }
+          }
+        }
+      ]
+    },
+    "entities": {
+      "patterns": [
+        {
+          "name": "constant.character.entity.html",
+          "match": "&[a-zA-Z0-9#]+;"
+        }
+      ]
+    },
+    "embeddedCode": {
+      "patterns": [
+        {
+          "name": "meta.embedded.script.html",
+          "begin": "(<script)(\\s[^>]*?>)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.tag.script.html" },
+            "2": { "name": "punctuation.definition.tag.html" }
+          },
+          "end": "(</script>)",
+          "endCaptures": {
+            "1": { "name": "entity.name.tag.script.html" }
+          },
+          "patterns": [
+            {
+              "include": "source.js"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.style.html",
+          "begin": "(<style)(\\s[^>]*?>)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.tag.style.html" },
+            "2": { "name": "punctuation.definition.tag.html" }
+          },
+          "end": "(</style>)",
+          "endCaptures": {
+            "1": { "name": "entity.name.tag.style.html" }
+          },
+          "patterns": [
+            {
+              "include": "source.css"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
