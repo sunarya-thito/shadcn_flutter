@@ -12,6 +12,9 @@ Widget _probe() => Builder(
   },
 );
 
+/// The pulse the recorded config resolves to.
+PulseEffect _pulse() => _seen!.resolveEffect(_seen!.brightness!) as PulseEffect;
+
 Widget _app({required Widget child, ThemeData? theme}) => ShadcnApp(
   theme: theme ?? ThemeData(colorScheme: ColorSchemes.lightZinc, radius: 0.5),
   home: child,
@@ -32,11 +35,44 @@ void main() {
         ),
       );
 
-      final effect = _seen!.effect as PulseEffect;
+      final effect = _pulse();
       expect(effect.duration, const Duration(seconds: 1));
       expect(effect.from, theme.colorScheme.primary.scaleAlpha(0.05));
       expect(effect.to, theme.colorScheme.primary.scaleAlpha(0.1));
+      expect(_seen!.brightness, theme.brightness);
       expect(_seen!.enableSwitchAnimation, isTrue);
+    });
+
+    testWidgets('the pulse ignores the brightness it is resolved with', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(
+          theme: ThemeData(colorScheme: ColorSchemes.darkZinc, radius: 0.5),
+          child: SkeletonizerLayer(child: _probe()),
+        ),
+      );
+
+      expect(_seen!.brightness, Brightness.dark);
+      expect(
+        _seen!.resolveEffect(Brightness.light),
+        _seen!.resolveEffect(Brightness.dark),
+        reason: 'the shadcn theme already decides the colors',
+      );
+    });
+
+    testWidgets('rebuilding with the same values keeps the config equal', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(child: SkeletonizerLayer(child: _probe())));
+      final first = _seen;
+
+      await tester.pumpWidget(_app(child: SkeletonizerLayer(child: _probe())));
+
+      // SkeletonizerConfigData compares effect resolvers by identity, so an
+      // unequal config would notify every skeleton below the layer.
+      expect(_seen, isNot(same(first)));
+      expect(_seen, first);
     });
 
     testWidgets('widget arguments override the derived defaults', (
@@ -54,7 +90,7 @@ void main() {
         ),
       );
 
-      final effect = _seen!.effect as PulseEffect;
+      final effect = _pulse();
       expect(effect.duration, const Duration(milliseconds: 800));
       expect(effect.from, const Color(0xFF111111));
       expect(effect.to, const Color(0xFF222222));
@@ -76,10 +112,7 @@ void main() {
         ),
       );
 
-      expect(
-        (_seen!.effect as PulseEffect).duration,
-        const Duration(milliseconds: 400),
-      );
+      expect(_pulse().duration, const Duration(milliseconds: 400));
       expect(_seen!.enableSwitchAnimation, isFalse);
     });
 
@@ -98,10 +131,7 @@ void main() {
         ),
       );
 
-      expect(
-        (_seen!.effect as PulseEffect).duration,
-        const Duration(milliseconds: 900),
-      );
+      expect(_pulse().duration, const Duration(milliseconds: 900));
     });
   });
 

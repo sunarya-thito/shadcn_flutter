@@ -19,3 +19,6 @@
 - `ShadcnApp` no longer installs the skeleton configuration. Add
   `surfaceBuilder: (context, child) => SkeletonizerLayer(child: child)`. Use
   `surfaceBuilder` rather than `builder` so overlays are covered too.
+- Requires `skeletonizer` 3.0.0. If you also depend on it directly, bump it to
+  `^3.0.0` and pass `effectResolver` instead of the deprecated `effect` to
+  `SkeletonizerConfigData`.

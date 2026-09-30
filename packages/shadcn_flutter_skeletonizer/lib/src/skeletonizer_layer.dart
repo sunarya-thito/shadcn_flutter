@@ -110,7 +110,7 @@ class SkeletonTheme extends ComponentThemeData {
 ///
 /// Use `surfaceBuilder` rather than `builder` so the configuration also covers
 /// shadcn overlays — toasts, dialogs and popovers build outside `builder`.
-class SkeletonizerLayer extends StatelessWidget
+class SkeletonizerLayer extends StatefulWidget
     implements Styleable<SkeletonTheme> {
   /// The subtree that skeleton effects apply to.
   final Widget child;
@@ -163,40 +163,60 @@ class SkeletonizerLayer extends StatelessWidget
   });
 
   @override
+  State<SkeletonizerLayer> createState() => _SkeletonizerLayerState();
+}
+
+class _SkeletonizerLayerState extends State<SkeletonizerLayer> {
+  PulseEffect? _effect;
+  EffectResolver? _effectResolver;
+
+  /// Returns a resolver for [effect], reusing the previous one while the
+  /// effect is unchanged.
+  ///
+  /// [SkeletonizerConfigData] compares resolvers by identity, so a fresh
+  /// closure on every build would notify every skeleton below this layer.
+  EffectResolver _resolverFor(PulseEffect effect) {
+    if (effect != _effect) {
+      _effect = effect;
+      _effectResolver = (_) => effect;
+    }
+    return _effectResolver!;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final compTheme =
-        this.theme ?? ComponentTheme.maybeOf<SkeletonTheme>(context);
+        widget.theme ?? ComponentTheme.maybeOf<SkeletonTheme>(context);
     final durationValue = styleValue(
-      widgetValue: duration,
+      widgetValue: widget.duration,
       themeValue: compTheme?.duration,
       defaultValue: const Duration(seconds: 1),
     );
     final fromValue = styleValue(
-      widgetValue: fromColor,
+      widgetValue: widget.fromColor,
       themeValue: compTheme?.fromColor,
       defaultValue: theme.colorScheme.primary.scaleAlpha(0.05),
     );
     final toValue = styleValue(
-      widgetValue: toColor,
+      widgetValue: widget.toColor,
       themeValue: compTheme?.toColor,
       defaultValue: theme.colorScheme.primary.scaleAlpha(0.1),
     );
     final enableSwitchAnimationValue = styleValue(
-      widgetValue: enableSwitchAnimation,
+      widgetValue: widget.enableSwitchAnimation,
       themeValue: compTheme?.enableSwitchAnimation,
       defaultValue: true,
     );
     return SkeletonizerConfig(
       data: SkeletonizerConfigData(
-        effect: PulseEffect(
-          duration: durationValue,
-          from: fromValue,
-          to: toValue,
+        effectResolver: _resolverFor(
+          PulseEffect(duration: durationValue, from: fromValue, to: toValue),
         ),
+        brightness: theme.brightness,
         enableSwitchAnimation: enableSwitchAnimationValue,
       ),
-      child: child,
+      child: widget.child,
     );
   }
 }
