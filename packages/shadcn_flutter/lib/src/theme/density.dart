@@ -469,26 +469,17 @@ class DensityGap extends StatelessWidget {
   /// The gap multiplier, applied to [Density.baseGap].
   final double gap;
 
-  /// The axis the gap spaces along.
-  ///
-  /// [Axis.vertical] — the default — puts the space between the children of a
-  /// [Column]; pass [Axis.horizontal] inside a [Row].
-  final Axis direction;
-
   /// Creates a [DensityGap].
   ///
   /// Parameters:
   /// - [gap] (`double`, required): Gap multiplier (use constants like [gapLg]).
-  /// - [direction] (`Axis`, default [Axis.vertical]): Axis to space along.
-  const DensityGap(this.gap, {super.key, this.direction = Axis.vertical});
+  const DensityGap(this.gap, {super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final adjustedGap = gap * theme.density.baseGap * theme.scaling;
-    return direction == Axis.horizontal
-        ? SizedBox(width: adjustedGap)
-        : SizedBox(height: adjustedGap);
+    return Gap(adjustedGap);
   }
 }
 

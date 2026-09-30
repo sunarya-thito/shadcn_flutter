@@ -29,6 +29,28 @@ void main() {
       expect(find.byType(OutlinedContainer), findsOneWidget);
     });
 
+    testWidgets('SurfaceCard forwards theme padding to its Card', (
+      tester,
+    ) async {
+      const contentKey = ValueKey('surface-card-content');
+      await tester.pumpWidget(
+        const SimpleApp(
+          child: Center(
+            child: SurfaceCard(
+              theme: CardTheme(padding: EdgeInsets.all(3), borderWidth: 0),
+              child: SizedBox(key: contentKey, width: 20, height: 10),
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        tester.getSize(find.byType(OutlinedContainer)),
+        const Size(26, 16),
+      );
+      expect(tester.getSize(find.byKey(contentKey)), const Size(20, 10));
+    });
+
     testWidgets('renders filled card', (tester) async {
       await tester.pumpWidget(
         SimpleApp(

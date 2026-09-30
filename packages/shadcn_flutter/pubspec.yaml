@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   data_widget: ^0.0.3
   animation_kit: ^0.0.2
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

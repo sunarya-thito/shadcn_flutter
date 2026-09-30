@@ -469,14 +469,14 @@ class SurfaceCard extends StatelessWidget implements Styleable<CardTheme> {
     }
     return Card(
       theme: CardTheme(
-        clipBehavior: clipBehavior,
-        borderRadius: borderRadius,
-        borderWidth: borderWidth,
-        borderColor: borderColor,
-        filled: filled,
-        fillColor: fillColor,
-        boxShadow: boxShadow,
-        padding: padding,
+        clipBehavior: clipBehavior ?? compTheme?.clipBehavior,
+        borderRadius: borderRadius ?? compTheme?.borderRadius,
+        borderWidth: borderWidth ?? compTheme?.borderWidth,
+        borderColor: borderColor ?? compTheme?.borderColor,
+        filled: filled ?? compTheme?.filled,
+        fillColor: fillColor ?? compTheme?.fillColor,
+        boxShadow: boxShadow ?? compTheme?.boxShadow,
+        padding: padding ?? compTheme?.padding,
         surfaceOpacity:
             surfaceOpacity ?? compTheme?.surfaceOpacity ?? theme.surfaceOpacity,
         surfaceBlur: surfaceBlur ?? compTheme?.surfaceBlur ?? theme.surfaceBlur,

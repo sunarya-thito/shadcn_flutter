@@ -10,6 +10,9 @@ export 'package:data_widget/extension.dart';
 // bundle from animation_kit
 export 'package:animation_kit/animation_kit.dart';
 
+// bundle from gap
+export 'package:gap/gap.dart';
+
 export 'package:flutter/widgets.dart'
     hide
         // these widgets are patched, see the patch export below
