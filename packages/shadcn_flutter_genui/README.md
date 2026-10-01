@@ -1,202 +1,118 @@
 # shadcn_flutter_genui
 
-A [`genui`](https://pub.dev/packages/genui) `Catalog` that renders AI-generated interfaces with `shadcn_flutter` widgets instead of Material ones. Everything genui already gives you — `Conversation`, `SurfaceController`, `Surface`, the data model, event handling — works exactly the same; this package just supplies the catalog of widgets the AI is allowed to build with.
+An A2UI catalog for [`genui`](https://pub.dev/packages/genui) that renders
+generated interfaces with `shadcn_flutter`.
 
-If you're new to `genui` itself, read its own [README](https://pub.dev/packages/genui) first — the concepts below (`Conversation`, `SurfaceController`, `Surface`, `DataModel`) are genui's, not this package's.
+This package does not replace GenUI's runtime. `Conversation`,
+`SurfaceController`, `Surface`, transport, validation, and the DataModel still
+come from `genui`. This package supplies a protocol-compatible component
+catalog and its shadcn renderers.
 
-## Getting started
-
-Add both packages:
+## Setup
 
 ```bash
 flutter pub add genui shadcn_flutter_genui
 ```
 
-Wire up a `Conversation` the same way you would with genui's own `CoreCatalogItems`, but pass `GenCatalog.asCatalog()` as the catalog:
+Create one catalog and give it to the controller and prompt builder:
 
 ```dart
 import 'package:genui/genui.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_genui/shadcn_flutter_genui.dart';
 
-class _MyHomePageState extends State<MyHomePage> {
-  late final SurfaceController _controller;
-  late final A2uiTransportAdapter _transport;
-  late final Conversation _conversation;
+final catalog = GenCatalog.asCatalog();
+final controller = SurfaceController(catalogs: [catalog]);
 
-  @override
-  void initState() {
-    super.initState();
+final prompt = PromptBuilder.custom(
+  catalog: catalog,
+  allowedOperations: SurfaceOperations.createAndUpdate(dataModel: true),
+).systemPromptJoined();
+```
 
-    // The only difference from a plain genui setup: use this package's
-    // catalog instead of (or merged with) genui's own CoreCatalogItems.
-    _controller = SurfaceController(catalogs: [GenCatalog.asCatalog()]);
+Render a surface inside `ShadcnApp`:
 
-    _transport = A2uiTransportAdapter(onSend: _onSendToLLM);
+```dart
+ShadcnApp(
+  home: Surface(
+    surfaceContext: controller.contextFor(surfaceId),
+  ),
+)
+```
 
-    _conversation = Conversation(controller: _controller, transport: _transport);
-  }
+No Material theme or localization wrapper is required by the catalog.
 
-  Future<void> _onSendToLLM(ChatMessage message) async {
-    // Call your LLM of choice and pipe the response stream in.
-    final responseStream = myLlmClient.streamGenerateContent(message);
-    await for (final chunk in responseStream) {
-      _transport.addChunk(chunk);
+## Data binding
+
+Inputs use normal A2UI two-way DataModel bindings. The model declares the
+path; the widget reads it and writes user edits back automatically:
+
+```json
+{
+  "id": "name",
+  "component": "TextField",
+  "label": "Name",
+  "value": {"path": "/profile/name"}
+}
+```
+
+The same rule applies to `CheckBox`, `ChoicePicker`, `Slider`,
+`DateTimeInput`, `Tabs`, and the shadcn extension `Switch`. Do not generate an
+`onChanged` action just to keep an input synchronized.
+
+Buttons and submitted text fields use standard A2UI actions:
+
+```json
+{
+  "id": "save",
+  "component": "Button",
+  "child": "saveLabel",
+  "action": {
+    "event": {
+      "name": "save_profile",
+      "context": {"name": {"path": "/profile/name"}}
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    // Render active surfaces with genui's own Surface widget, inside a
-    // ShadcnApp so the rendered widgets pick up your shadcn_flutter theme.
-    return Surface(host: _conversation.host, surfaceId: mySurfaceId);
-  }
-
-  @override
-  void dispose() {
-    _conversation.dispose();
-    _transport.dispose();
-    _controller.dispose();
-    super.dispose();
-  }
 }
 ```
 
-From here, everything is standard genui: `conversation.sendRequest(ChatMessage.user(text))` to talk to the model, `conversation.events` to track surfaces being added/removed, and a `Surface` widget per surface id to render them. The AI now builds with `TextField`, `Checkbox`, `Select`, `Button`, `Form`, and the rest of this package's widgets — styled by whatever `shadcn_flutter` theme your `ShadcnApp` sets up — alongside genui's own basics (`Text`, `Column`, `Row`, ...), which stay available too since `GenCatalog.asCatalog()` merges both.
+`functionCall` actions are also supported and resolve through the GenUI client
+function registry.
 
-## Trying it without an LLM
+## Components
 
-genui ships `DebugCatalogView`, which renders a catalog's built-in example data directly — no model, no network:
+The catalog implements the no-asset A2UI basic surface:
+
+- `Button`, `Card`, `CheckBox`, `ChoicePicker`
+- `Column`, `Row`, `List`
+- `DateTimeInput`, `Slider`, `Tabs`, `TextField`
+- `Divider`, `Icon`, `Modal`, `Text`
+
+It also includes `Switch` and `Progress` shadcn extensions. `TextField`'s
+`variant` supports `shortText`, `longText`, `number`, and `obscured`.
+
+The canonical catalog ID is `dev.shadcn_flutter.genui`. The standard A2UI basic
+catalog IDs are accepted as aliases for interoperability.
+
+## Adding app-specific components and functions
+
+Use GenUI's regular `CatalogItem` and `ClientFunction` APIs. Additional client
+functions can be included directly:
 
 ```dart
-runApp(ShadcnApp(home: DebugCatalogView(catalog: GenCatalog.asCatalog())));
-```
-
-Useful for sanity-checking that the catalog itself (and any widgets you've added to it) renders correctly before wiring up a real conversation.
-
-## Widgets in the catalog
-
-`TextField`, `TextArea`, `CheckBox`, `Switch`, `Select`, `RadioGroup`, `Slider`, `DatePicker`, `Button`, `Card`, `Alert`, `Badge`, `Avatar`, `Progress`, `Accordion`, `Tabs`, `Form`, `FormFieldError` — plus `Text`/`Column`/`Row`/etc. from genui's own basics.
-
-Value-bearing widgets (`TextField`, `Checkbox`, `Select`, ...) participate in a real `shadcn_flutter` `Form` when one is present — either one the AI composes with the `Form` widget, or one your app wraps around a whole `Surface`. `Form`'s `onSubmit` only fires once every field passes validation; a nested `Button` reaches it via a `submitForm` action.
-
-## Giving the AI custom capabilities
-
-Beyond widgets, you can register your own non-UI operations the AI can call directly (or a widget can trigger from an action):
-
-```dart
-class SetVolumeFunction extends GenSystemFunction {
-  late GenDataField<double> level;
-
-  @override
-  String get name => 'setVolume';
-  @override
-  String get description => 'Sets the system output volume, from 0.0 to 1.0.';
-  @override
-  void describeFields(GenDataFieldDescriptor descriptor) {
-    level = descriptor.decimal('level', label: 'Volume level (0.0-1.0)');
-  }
-  @override
-  Future<Object?> invoke([BuildContext? context]) async {
-    await MyVolumeApi.setVolume(level.value);
-    return null;
-  }
-}
-
-_controller = SurfaceController(
-  catalogs: [GenCatalog.asCatalog(systemFunctions: [SetVolumeFunction()])],
+final catalog = GenCatalog.asCatalog(
+  items: [myCatalogItem],
+  functions: [myClientFunction],
+  systemPromptFragments: [
+    'Use save_profile only after the user reviews the form.',
+  ],
 );
 ```
 
-`GenFunctions` also ships a small built-in library of arithmetic/string/boolean helpers (`add`, `round`, `concat`, `trim`, `xor`, ...), always available to the AI alongside anything you register.
+Create app-specific components with GenUI's standard `CatalogItem` API and pass
+them through `items`. There is intentionally no second schema or action DSL in
+this package: using GenUI's public A2UI types keeps custom components
+interoperable with the rest of the ecosystem.
 
-## Extending the catalog with your own widgets
-
-Everything above is enough for most apps. If you want to add a widget of your own to the catalog — one styled with `shadcn_flutter`, following the same conventions as the ones this package ships — see below.
-
-Each widget is a `GenSchema`: it declares its AI-fillable fields once in `describeFields`, then reads/writes them by name in `buildWidget`.
-
-```dart
-class GenButtonSchema extends GenSchema {
-  late final GenField<Widget> child;
-  late final GenField<GenActionDispatcher?> onPressed;
-
-  @override
-  void describeFields(GenFieldDescriptor descriptor) {
-    child = descriptor.widget(
-      'child',
-      label: 'Button content',
-      example: TextSchema.new.withExample((s) => s.text.example = 'Press me'),
-    );
-    onPressed = descriptor.optionalAction(
-      'onPressed',
-      label: 'Triggered when the button is pressed',
-      example: const EventExample('pressed'),
-    );
-  }
-
-  @override
-  Widget buildWidget(BuildContext context) {
-    return Button.primary(
-      onPressed: onPressed[context].toVoidCallback(context),
-      child: child[context],
-    );
-  }
-}
-
-const genButton = GenCatalogItem(name: 'Button', label: 'Button', schema: GenButtonSchema.new);
-
-// Merge it into the catalog alongside this package's own widgets:
-_controller = SurfaceController(
-  catalogs: [GenCatalog.asCatalog().copyWith(newItems: [genButton.asCatalogItem])],
-);
-```
-
-Every field gets an `example:` — there's no hand-typed JSON `exampleData` anywhere in this DSL. Each widget's example is generated entirely from its fields' own declarations.
-
-### Field types
-
-`GenFieldDescriptor` (passed into `describeFields`) covers:
-
-| Method | Value type |
-|---|---|
-| `string` / `optionalString` | `String` |
-| `boolean` / `optionalBoolean` | `bool` |
-| `integer` / `optionalInteger` | `int` |
-| `decimal` / `optionalDecimal` | `double` |
-| `enumerated<T>` / `optionalEnumerated<T>` | a Dart `enum` |
-| `list` / `optionalList`, `set` / `optionalSet`, `map` / `optionalMap` | collections of another field |
-| `widget` / `optionalWidget` | a single child component, by id |
-| `widgetList` | a list of child components, by id |
-| `object<T extends GenObject>` | a nested, reusable data shape |
-| `action` / `optionalAction` | fully AI-controlled interaction (see below) |
-| `valueAction` / `optionalValueAction` | an action with exactly one typed parameter |
-| `validators<T>` | AI-selectable validation rules |
-
-`GenObject` lets you declare a reusable nested shape (e.g. `{title, body}`) whose own fields are described via `GenDataFieldDescriptor` — the same field-kind vocabulary, minus `action`/`widget`, since a `GenObject` has no `BuildContext` of its own.
-
-### Actions are fully AI-controlled
-
-There's no schema-author-hardcoded "default" behavior for interactions. A field declared via `action`/`optionalAction` resolves, at runtime, to whatever the AI's JSON configured: doing nothing, notifying the AI (`event`), calling a registered `GenSystemFunction` (`functionCall`), writing to the data model (`setValue`), storing a temporary variable (`setVar`), composing several steps (`sequence`), branching (`conditional`), catching errors (`try`), firing-and-forgetting (`async`), or submitting the ambient `Form` (`submitForm`).
-
-For the common case — a callback that hands the AI exactly one new value (`onChanged`, `onSubmitted`, ...) — use `valueAction`/`optionalValueAction`:
-
-```dart
-static const newValueParam = GenStringParameter('value', description: 'The new text');
-
-onChanged = descriptor.optionalValueAction<String>(
-  'onChanged',
-  label: 'Triggered on every keystroke',
-  parameter: newValueParam,
-  example: const SetValueExample('root.value', {'var': 'value'}),
-);
-
-// buildWidget:
-onChanged: onChanged[context].toValueCallback(context),
-```
-
-`GenActionParameter<T>` ships typed subclasses (`GenStringParameter`, `GenBoolParameter`, `GenIntParameter`, `GenDecimalParameter`, `GenDateTimeParameter`, `GenOptionalStringParameter`) and is itself extensible. Use `.map<N>(...)` when a widget's native callback value (e.g. `SliderValue`, `CheckboxState`) needs projecting to the parameter's own type first.
-
-### Validation
-
-A field never renders its own error text — that's not an individual widget's concern. Instead, `descriptor.validators<T>(fieldName, available: [...])` lets the AI attach a JSON-selectable list of `GenValidator<T>` kinds (`GenNotEmptyValidator`, `GenLengthValidator`, `GenRegexValidator`, `GenEmailValidator`, `GenUrlValidator`, `GenRangeValidator<T>`, `GenNonNullValidator<T>`), each backed by a real `shadcn_flutter` `Validator` and composed with AND semantics; `wrapFormEntry` registers the field with whatever ambient `Form` exists. `FormFieldError` is a separate, AI-placed catalog item that shows another field's live error by id.
+See the included OpenRouter chat example for complete transport,
+`Conversation`, prompt, and surface wiring.

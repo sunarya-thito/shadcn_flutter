@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:material_ui/material_ui.dart' as m;
-import 'package:shadcn_flutter_material/shadcn_flutter_material.dart';
 import 'package:genui/genui.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_genui/shadcn_flutter_genui.dart';
@@ -64,11 +62,9 @@ class _ChatPageState extends State<ChatPage> {
 
     // The shadcn_flutter catalog: the model may generate any of these widgets.
     //
-    // We register it under [basicCatalogId] (the well-known A2UI basic-catalog
-    // URI). Models emit that URI as the `catalogId` on createSurface by
-    // default, and the SurfaceController resolves surfaces by matching that id,
-    // so aligning the id here avoids "catalog not found" errors.
-    _catalog = GenCatalog.asCatalog().copyWith(catalogId: basicCatalogId);
+    // The catalog owns a stable ID and also accepts the standard basic-catalog
+    // IDs as aliases, so standard A2UI producers work without rewriting it.
+    _catalog = GenCatalog.asCatalog();
 
     _controller = SurfaceController(catalogs: [_catalog]);
     _transport = A2uiTransportAdapter(onSend: _sendAndReceive);
@@ -85,13 +81,13 @@ class _ChatPageState extends State<ChatPage> {
     // of spawning a fresh duplicate surface for every retry.
     _systemPrompt = PromptBuilder.custom(
       catalog: _catalog,
-      allowedOperations: SurfaceOperations.createAndUpdate(dataModel: false),
+      allowedOperations: SurfaceOperations.createAndUpdate(dataModel: true),
       systemPromptFragments: [
         'You are a friendly assistant demonstrating the shadcn_flutter GenUI '
             'catalog inside a chat app.',
         'Whenever it helps answer the user, render rich, interactive UI '
-            '(cards, forms, text fields, buttons, alerts, badges, sliders, '
-            'tabs, accordions) instead of describing it in prose.',
+            '(cards, text fields, buttons, choice pickers, sliders and tabs) '
+            'instead of describing it in prose.',
         'For a brand new answer, create a new surface. But if you receive an '
             'error message (e.g. code VALIDATION_FAILED) for a surface, do NOT '
             'create a new surface: fix the problem and re-send an '
@@ -386,9 +382,7 @@ class _ChatPageState extends State<ChatPage> {
           color: colors.card,
           type: PlainChatBubbleType(border: BorderSide(color: colors.border)),
           widthFactor: 0.85,
-          child: _MaterialHost(
-            child: Surface(surfaceContext: _controller.contextFor(surfaceId)),
-          ),
+          child: Surface(surfaceContext: _controller.contextFor(surfaceId)),
         );
     }
   }
@@ -422,34 +416,6 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-/// Provides a Material `Theme` + `Material` ancestor so the GenUI basic widgets
-/// (e.g. `Text`, and the error fallback) that call `Theme.of(context)` work,
-/// even though the host app is built on shadcn_flutter rather than Material.
-class _MaterialHost extends StatelessWidget {
-  const _MaterialHost({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    // MaterialLayer installs the Theme, Material and ScaffoldMessenger
-    // ancestors that Material widgets need. ShadcnApp no longer provides them:
-    // shadcn_flutter does not depend on Material. Passing `theme` overrides the
-    // one that would otherwise be derived from the ambient shadcn theme.
-    return MaterialLayer(
-      theme: m.ThemeData(
-        brightness: brightness,
-        colorScheme: m.ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6366F1),
-          brightness: brightness,
-        ),
-      ),
-      child: child,
     );
   }
 }
