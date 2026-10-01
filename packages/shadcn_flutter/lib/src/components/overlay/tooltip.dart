@@ -305,11 +305,19 @@ class Tooltip extends StatefulWidget {
 
 class _TooltipState extends State<Tooltip> {
   final OverlayController _controller = OverlayController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Hover(
       onHover: (hovered) {
         if (hovered) {
+          if (!mounted) return;
           _controller.show(
             context,
             TooltipConfiguration(

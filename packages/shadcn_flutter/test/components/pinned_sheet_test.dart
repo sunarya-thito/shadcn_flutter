@@ -1,3 +1,6 @@
+import 'dart:ui' as ui;
+
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -88,6 +91,145 @@ void main() {
       await tester.pumpAndSettle();
       expect(controller.fraction, closeTo(1.0, 0.01));
 
+      controller.dispose();
+    });
+
+    testWidgets('closed modal sheet lets backdrop taps through', (
+      tester,
+    ) async {
+      final controller = SheetController();
+      var taps = 0;
+      await tester.pumpWidget(
+        SimpleApp(
+          child: SizedBox(
+            width: 300,
+            height: 400,
+            child: PinnedSheet(
+              controller: controller,
+              modal: true,
+              backdrop: Center(
+                child: PrimaryButton(
+                  onPressed: () => taps++,
+                  child: const Text('Tap me'),
+                ),
+              ),
+              child: const SizedBox(height: 200),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Tap me'));
+      await tester.pump();
+
+      expect(taps, 1);
+      controller.dispose();
+    });
+
+    testWidgets('closed sheet does not paint into surrounding padding', (
+      tester,
+    ) async {
+      final controller = SheetController();
+      final boundaryKey = GlobalKey();
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: RepaintBoundary(
+              key: boundaryKey,
+              child: SizedBox(
+                width: 300,
+                height: 400,
+                child: ColoredBox(
+                  color: const Color(0xFFFF0000),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: PinnedSheet(
+                      controller: controller,
+                      initialStage: const SheetStage.closed(),
+                      backdrop: const ColoredBox(color: Color(0xFF00FF00)),
+                      child: const SizedBox(
+                        height: 200,
+                        child: ColoredBox(color: Color(0xFF0000FF)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final boundary =
+          boundaryKey.currentContext!.findRenderObject()!
+              as RenderRepaintBoundary;
+      final image = await tester.runAsync(
+        () => boundary.toImage(pixelRatio: 1),
+      );
+      final bytes = await tester.runAsync(
+        () => image!.toByteData(format: ui.ImageByteFormat.rawRgba),
+      );
+
+      Color pixelAt(int x, int y) {
+        final offset = (y * image!.width + x) * 4;
+        return Color.fromARGB(
+          bytes!.getUint8(offset + 3),
+          bytes.getUint8(offset),
+          bytes.getUint8(offset + 1),
+          bytes.getUint8(offset + 2),
+        );
+      }
+
+      expect(pixelAt(150, 200), const Color(0xFF00FF00));
+      expect(pixelAt(150, 388), const Color(0xFFFF0000));
+
+      image!.dispose();
+      controller.dispose();
+    });
+
+    testWidgets('visible sheet blocks taps on covered backdrop controls', (
+      tester,
+    ) async {
+      final controller = SheetController();
+      var backdropTaps = 0;
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Center(
+            child: SizedBox(
+              width: 300,
+              height: 400,
+              child: PinnedSheet(
+                controller: controller,
+                initialStage: const SheetStage.fraction(0.5),
+                backdrop: Stack(
+                  children: [
+                    Positioned(
+                      left: 80,
+                      right: 80,
+                      bottom: 24,
+                      child: PrimaryButton(
+                        onPressed: () => backdropTaps++,
+                        child: const Text('Covered button'),
+                      ),
+                    ),
+                  ],
+                ),
+                child: const DrawerContainer(child: SizedBox(height: 200)),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Covered button'), warnIfMissed: false);
+      await tester.pump();
+
+      expect(backdropTaps, 0);
+      await tester.pumpWidget(const SizedBox());
       controller.dispose();
     });
 

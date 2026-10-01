@@ -36,7 +36,6 @@ class _PinnedSheetExample1State extends State<PinnedSheetExample1> {
       height: 420,
       child: OutlinedContainer(
         clipBehavior: Clip.antiAlias,
-        theme: OutlinedContainerTheme(padding: const EdgeInsets.all(24)),
         child: PinnedSheet(
           controller: controller,
           position: OverlayPosition.bottom,
@@ -44,69 +43,60 @@ class _PinnedSheetExample1State extends State<PinnedSheetExample1> {
           initialStage: const SheetStage.fraction(0.4),
           backdropTransform: const ScaleBackdropTransform(),
           // The backdrop is scaled down as the sheet opens.
-          backdrop: ListenableBuilder(
-            listenable: controller,
-            builder: (context, child) {
-              return Opacity(opacity: 1.0 - controller.fraction, child: child);
+          backdrop: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              if (controller.stage == const SheetStage.expanded()) {
+                controller.stage = const SheetStage.fraction(0.4);
+              }
             },
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                if (controller.stage == const SheetStage.expanded()) {
-                  controller.stage = const SheetStage.fraction(0.4);
-                }
-              },
-              child: Card(
-                theme: CardTheme(
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.muted,
-                ),
-                child: Center(
-                  child: IntrinsicWidth(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Text('Backdrop content')
-                            .large()
-                            .medium()
-                            .center(),
-                        const Gap(8),
-                        ListenableBuilder(
-                          listenable: controller,
-                          builder: (context, child) {
-                            final percent = (controller.fraction * 100).round();
-                            return Text('Sheet is $percent% open')
-                                .muted()
-                                .center();
-                          },
+            child: Card(
+              theme: CardTheme(
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.muted,
+              ),
+              child: Center(
+                child: IntrinsicWidth(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('Backdrop content').large().medium().center(),
+                      const Gap(8),
+                      ListenableBuilder(
+                        listenable: controller,
+                        builder: (context, child) {
+                          final percent = (controller.fraction * 100).round();
+                          return Text('Sheet is $percent% open')
+                              .muted()
+                              .center();
+                        },
+                      ),
+                      const Gap(24),
+                      PrimaryButton(
+                        onPressed: () =>
+                            controller.stage = const SheetStage.expanded(),
+                        alignment: Alignment.center,
+                        child: const Text('Expand'),
+                      ),
+                      const Gap(8),
+                      PrimaryButton(
+                        onPressed: () =>
+                            controller.stage = const SheetStage.fraction(0.4),
+                        alignment: Alignment.center,
+                        child: const Text('Peek'),
+                      ),
+                      const Gap(8),
+                      PrimaryButton(
+                        onPressed: () => controller.animateTo(
+                          const SheetStage.closed(),
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOut,
                         ),
-                        const Gap(24),
-                        PrimaryButton(
-                          onPressed: () =>
-                              controller.stage = const SheetStage.expanded(),
-                          alignment: Alignment.center,
-                          child: const Text('Expand'),
-                        ),
-                        const Gap(8),
-                        PrimaryButton(
-                          onPressed: () =>
-                              controller.stage = const SheetStage.fraction(0.4),
-                          alignment: Alignment.center,
-                          child: const Text('Peek'),
-                        ),
-                        const Gap(8),
-                        PrimaryButton(
-                          onPressed: () => controller.animateTo(
-                            const SheetStage.closed(),
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeOut,
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text('Close'),
-                        ),
-                      ],
-                    ),
+                        alignment: Alignment.center,
+                        child: const Text('Close'),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -117,6 +107,7 @@ class _PinnedSheetExample1State extends State<PinnedSheetExample1> {
           child: DrawerContainer(
             child: Container(
               height: 320,
+              padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,

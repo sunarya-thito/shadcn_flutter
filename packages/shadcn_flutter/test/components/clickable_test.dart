@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -99,6 +100,71 @@ void main() {
 
       await tester.tap(find.text('Click Me'));
       expect(tapped, isFalse);
+    });
+
+    testWidgets('does not play the Android click sound on iOS', (tester) async {
+      final calls = <MethodCall>[];
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (call) async {
+          calls.add(call);
+          return null;
+        },
+      );
+      addTearDown(
+        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          SystemChannels.platform,
+          null,
+        ),
+      );
+
+      await tester.pumpWidget(
+        ShadcnApp(
+          theme: ThemeData(
+            colorScheme: ColorSchemes.lightZinc,
+            platform: TargetPlatform.iOS,
+          ),
+          home: Clickable(onPressed: () {}, child: const Text('Click Me')),
+        ),
+      );
+      await tester.tap(find.text('Click Me'));
+      await tester.pump();
+
+      expect(calls.where((call) => call.method == 'SystemSound.play'), isEmpty);
+    });
+
+    testWidgets('plays the click sound on Android', (tester) async {
+      final calls = <MethodCall>[];
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (call) async {
+          calls.add(call);
+          return null;
+        },
+      );
+      addTearDown(
+        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          SystemChannels.platform,
+          null,
+        ),
+      );
+
+      await tester.pumpWidget(
+        ShadcnApp(
+          theme: ThemeData(
+            colorScheme: ColorSchemes.lightZinc,
+            platform: TargetPlatform.android,
+          ),
+          home: Clickable(onPressed: () {}, child: const Text('Click Me')),
+        ),
+      );
+      await tester.tap(find.text('Click Me'));
+      await tester.pump();
+
+      expect(
+        calls.where((call) => call.method == 'SystemSound.play'),
+        hasLength(1),
+      );
     });
   });
 }

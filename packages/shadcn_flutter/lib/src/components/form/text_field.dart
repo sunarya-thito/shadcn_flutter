@@ -2567,6 +2567,7 @@ class TextFieldState extends State<TextField>
             // if needed.
             Expanded(
               child: Stack(
+                clipBehavior: Clip.hardEdge,
                 // Ideally this should be baseline aligned. However that comes at
                 // the cost of the ability to compute the intrinsic dimensions of
                 // this widget.

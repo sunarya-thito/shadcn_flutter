@@ -1123,36 +1123,28 @@ class _PinnedSheetState extends State<PinnedSheet>
     // 2. Modal barrier (transparent tap target; the visual dim is painted
     // by the container's ModalBackdrop via the fade animation).
     //
-    // Deliberately not gated by an IgnorePointer synced from an
-    // AnimatedBuilder (as this used to be): that gate is a value baked into
-    // the widget tree at some earlier build, kept in sync only when
-    // something notifies AnimatedBuilder's setState()-based listener — which
-    // _settleInitialStage() can't safely do from performLayout (see its
-    // doc). For axis-dependent initial stages (SheetStage.fixed,
-    // SheetStage.peekDragHandle) that gate could stay stuck "ignoring"
-    // (stale-closed) for a frame, letting a tap reach through to whatever's
-    // behind the (already correctly dimmed — see _fadeMirror) barrier.
-    // Reading _anim.value live, at the moment of the tap, needs no such
-    // synchronization: it's exact by construction, always. The trade-off is
-    // this barrier is now always semantically tappable (screen readers see
-    // it even while closed), where IgnorePointer used to also exclude
-    // semantics — a minor accessibility nuance, and the tap itself is an
-    // inert no-op while closed either way.
+    // Read the animation value at hit-test time instead of baking it into an
+    // IgnorePointer during build. Axis-dependent initial stages can settle
+    // during layout, where rebuilding an AnimatedBuilder is unsafe; a render
+    // object gate stays exact without swallowing taps while the sheet is
+    // closed.
     if (widget.modal) {
       children.add(
         Positioned.fill(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: widget.barrierDismissible
-                ? () {
-                    if (_anim.value <= 0) return;
-                    animateToStage(
-                      const SheetStage.closed(),
-                      duration: widget.duration,
-                      curve: Curves.easeOut,
-                    );
-                  }
-                : null,
+          child: _LivePointerGate(
+            animation: _anim,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: widget.barrierDismissible
+                  ? () {
+                      animateToStage(
+                        const SheetStage.closed(),
+                        duration: widget.duration,
+                        curve: Curves.easeOut,
+                      );
+                    }
+                  : null,
+            ),
           ),
         ),
       );
@@ -1272,6 +1264,69 @@ class _PinnedSheetState extends State<PinnedSheet>
       onHorizontalDragCancel: isVertical ? null : _onDragCancel,
       child: child,
     );
+  }
+}
+
+class _LivePointerGate extends SingleChildRenderObjectWidget {
+  final Animation<double> animation;
+
+  const _LivePointerGate({required this.animation, required super.child});
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return _RenderLivePointerGate(animation);
+  }
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    covariant _RenderLivePointerGate renderObject,
+  ) {
+    renderObject.animation = animation;
+  }
+}
+
+class _RenderLivePointerGate extends RenderProxyBox {
+  Animation<double> _animation;
+
+  _RenderLivePointerGate(this._animation);
+
+  Animation<double> get animation => _animation;
+
+  set animation(Animation<double> value) {
+    if (identical(value, _animation)) return;
+    if (attached) _animation.removeListener(_handleAnimationChanged);
+    _animation = value;
+    if (attached) _animation.addListener(_handleAnimationChanged);
+    markNeedsSemanticsUpdate();
+  }
+
+  bool get _acceptsPointers => _animation.value > 0;
+
+  void _handleAnimationChanged() {
+    markNeedsSemanticsUpdate();
+  }
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    _animation.addListener(_handleAnimationChanged);
+  }
+
+  @override
+  void detach() {
+    _animation.removeListener(_handleAnimationChanged);
+    super.detach();
+  }
+
+  @override
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    return _acceptsPointers && super.hitTest(result, position: position);
+  }
+
+  @override
+  void visitChildrenForSemantics(RenderObjectVisitor visitor) {
+    if (_acceptsPointers) super.visitChildrenForSemantics(visitor);
   }
 }
 
@@ -1578,6 +1633,10 @@ class _RenderPinnedSheetSlide extends RenderShiftedBox {
         (ctx, off) => ctx.paintChild(child, off + childOffset),
       );
     } else {
+      // Preserve the original overflow presentation while the sliding sheet is
+      // visible (for example, into a surrounding padded example container),
+      // but do not paint the fully translated child at the closed stage.
+      if (state.currentFraction <= 0) return;
       context.paintChild(child, offset + childOffset);
     }
   }

@@ -276,8 +276,15 @@ ToastOverlay showToast({
   CapturedData? data;
   _ToastLayerState? layer = Data.maybeFind<_ToastLayerState>(context);
   if (layer != null) {
-    themes = InheritedTheme.capture(from: context, to: layer.context);
-    data = Data.capture(from: context, to: layer.context);
+    // Overlay content can inherit the ToastLayer state through captured Data
+    // even though the layer's element is not an ancestor of this context.
+    // In that case, capture all the way to the root instead of passing an
+    // unrelated `to` context (which InheritedTheme/Data correctly reject).
+    final captureBoundary = _isAncestorContext(layer.context, context)
+        ? layer.context
+        : null;
+    themes = InheritedTheme.capture(from: context, to: captureBoundary);
+    data = Data.capture(from: context, to: captureBoundary);
   } else {
     layer = Data.maybeFindMessenger<_ToastLayerState>(context);
   }
@@ -294,6 +301,19 @@ ToastOverlay showToast({
     showDuration: showDuration,
   );
   return layer!.addEntry(entry);
+}
+
+bool _isAncestorContext(BuildContext ancestor, BuildContext context) {
+  if (identical(ancestor, context)) return true;
+  var found = false;
+  context.visitAncestorElements((element) {
+    if (identical(element, ancestor)) {
+      found = true;
+      return false;
+    }
+    return true;
+  });
+  return found;
 }
 
 /// Screen position enumeration for toast notification placement.

@@ -62,6 +62,25 @@ void main() {
 
       expect(currentValue, isFalse);
     });
+
+    testWidgets('positions the thumb from the directional start edge', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        SimpleApp(
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Switch(value: true, onChanged: (value) {}),
+          ),
+        ),
+      );
+
+      final position = tester.widget<AnimatedPositionedDirectional>(
+        find.byType(AnimatedPositionedDirectional),
+      );
+      expect(position.start, isNotNull);
+      expect(position.end, isNull);
+    });
   });
 
   group('ControlledSwitch', () {

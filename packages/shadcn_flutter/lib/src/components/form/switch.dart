@@ -467,10 +467,10 @@ class _SwitchState extends State<Switch> with FormValueSupplier<bool, Switch> {
                 ),
                 child: Stack(
                   children: [
-                    AnimatedPositioned(
+                    AnimatedPositionedDirectional(
                       duration: kSwitchDuration,
                       curve: Curves.easeInOut,
-                      left: widget.value ? 16 * scaling : 0,
+                      start: widget.value ? 16 * scaling : 0,
                       top: 0,
                       bottom: 0,
                       child: AspectRatio(

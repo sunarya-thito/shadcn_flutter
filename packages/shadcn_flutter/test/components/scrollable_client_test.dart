@@ -72,5 +72,56 @@ void main() {
       // reversed axis starts scrolled to the far end: 200px further left.
       expect(reversed, closeTo(forward - 200, 0.01));
     });
+
+    testWidgets('survives opening and closing a sheet overlay', (tester) async {
+      await tester.pumpWidget(
+        ShadcnApp(
+          home: Scaffold(
+            child: Builder(
+              builder: (context) {
+                return Column(
+                  children: [
+                    PrimaryButton(
+                      onPressed: () {
+                        showOverlay(
+                          context,
+                          const SheetConfiguration(
+                            position: OverlayPosition.bottom,
+                          ),
+                          builder: (context) => PrimaryButton(
+                            onPressed: () => closeSheet(context),
+                            child: const Text('close sheet'),
+                          ),
+                        );
+                      },
+                      child: const Text('open sheet'),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      height: 200,
+                      child: ScrollableClient(
+                        diagonalDragBehavior: DiagonalDragBehavior.free,
+                        builder: (context, offset, viewportSize, child) {
+                          return const SizedBox(width: 500, height: 400);
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('open sheet'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('close sheet'));
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(ScrollableClient), findsOneWidget);
+    });
   });
 }

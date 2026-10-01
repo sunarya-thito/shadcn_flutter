@@ -767,10 +767,16 @@ class _ClickableState extends State<Clickable> {
   static Future<void> feedbackForTap(BuildContext context) async {
     final currentPlatform = Theme.of(context).platform;
     context.findRenderObject()!.sendSemanticsEvent(const TapSemanticEvent());
-    if (isMobile(currentPlatform)) {
-      return SystemSound.play(SystemSoundType.click);
+    switch (currentPlatform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+        return SystemSound.play(SystemSoundType.click);
+      case TargetPlatform.iOS:
+      case TargetPlatform.linux:
+      case TargetPlatform.macOS:
+      case TargetPlatform.windows:
+        return Future<void>.value();
     }
-    return Future<void>.value();
   }
 
   void _onPressed() {

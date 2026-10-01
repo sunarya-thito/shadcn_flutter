@@ -2163,14 +2163,14 @@ class IndentGuidePath implements BranchLine {
   @override
   Widget build(BuildContext context, List<TreeNodeDepth> depth, int index) {
     bool top = true;
-    bool right = true;
+    bool towardContent = true;
     bool bottom = true;
-    bool left = false;
+    bool awayFromContent = false;
 
     if (index >= 0) {
       final current = depth[index];
       if (index != depth.length - 1) {
-        right = false;
+        towardContent = false;
         if (current.childIndex >= current.childCount - 1) {
           top = false;
         }
@@ -2180,10 +2180,14 @@ class IndentGuidePath implements BranchLine {
         bottom = false;
       }
     } else {
-      left = true;
+      awayFromContent = true;
       top = false;
       bottom = false;
     }
+
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final right = isRtl ? awayFromContent : towardContent;
+    final left = isRtl ? towardContent : awayFromContent;
 
     return CustomPaint(
       painter: _PathPainter(
@@ -2246,7 +2250,8 @@ class _PathPainter extends CustomPainter {
     return oldDelegate.color != color ||
         oldDelegate.top != top ||
         oldDelegate.right != right ||
-        oldDelegate.bottom != bottom;
+        oldDelegate.bottom != bottom ||
+        oldDelegate.left != left;
   }
 }
 

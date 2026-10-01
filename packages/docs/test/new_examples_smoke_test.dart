@@ -1,3 +1,4 @@
+import 'package:docs/pages/docs/components/pinned_sheet/pinned_sheet_example_1.dart';
 import 'package:docs/pages/docs/components/select/select_example_5.dart';
 import 'package:docs/pages/docs/components/select/select_example_6.dart';
 import 'package:docs/pages/docs/components/table/table_example_4.dart';
@@ -11,6 +12,39 @@ Widget _host(Widget child) => ShadcnApp(
 );
 
 void main() {
+  testWidgets('PinnedSheet backdrop controls are blocked by the open sheet', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_host(const PinnedSheetExample1()));
+    await tester.pumpAndSettle();
+
+    final initialSheetTop = tester.getTopLeft(find.byType(DrawerContainer)).dy;
+    expect(
+      tester
+          .getRect(find.byType(DrawerContainer))
+          .contains(tester.getCenter(find.text('Close'))),
+      isTrue,
+    );
+    await tester.tap(find.text('Close'), warnIfMissed: false);
+    await tester.pumpAndSettle();
+    expect(
+      tester.getTopLeft(find.byType(DrawerContainer)).dy,
+      closeTo(initialSheetTop, 0.01),
+    );
+
+    await tester.tap(find.text('Expand'));
+    await tester.pumpAndSettle();
+    final expandedSheetTop = tester.getTopLeft(find.byType(DrawerContainer)).dy;
+    expect(expandedSheetTop, lessThan(initialSheetTop));
+
+    await tester.tap(find.text('Close'), warnIfMissed: false);
+    await tester.pumpAndSettle();
+    expect(
+      tester.getTopLeft(find.byType(DrawerContainer)).dy,
+      closeTo(expandedSheetTop, 0.01),
+    );
+  });
+
   testWidgets('TableExample4 renders and flips direction', (tester) async {
     await tester.pumpWidget(_host(const TableExample4()));
     await tester.pumpAndSettle();
