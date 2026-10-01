@@ -2,12 +2,8 @@
 
 ### Breaking
 
-- `Gap`, `SliverGap` and `MaxGap` are no longer exported, and the top-level
-  `gap(double, {double? crossGap})` helper is removed. Use `SizedBox`,
-  `Column(...).gap(8)`, `Row(...).gap(8)` or `DensityGap`. Add `package:gap` to
-  your own pubspec if you want `Gap` back.
-- `DensityGap` takes a `direction`, defaulting to `Axis.vertical`. Pass
-  `Axis.horizontal` for the ones inside a `Row`.
+- The top-level `gap(double, {double? crossGap})` helper is removed. Use `Gap`,
+  `SizedBox`, `Column(...).gap(8)`, `Row(...).gap(8)` or `DensityGap` instead.
 - Skeleton loading moved to the new `shadcn_flutter_skeletonizer` package.
   `asSkeleton`, `Bone` and `BoneMock` come from there now, and you need a
   `SkeletonizerLayer` in the tree. Its README has the three-step migration.
@@ -31,12 +27,12 @@
   `formGreaterThanOrEqualTo`, `formBetweenInclusively` and
   `formBetweenExclusively`. `formEqualTo` is new and also required. Wrap numbers
   in `formatDecimal` to keep the old output.
-- Dropped the `skeletonizer`, `country_flags`, `phonecodes`, `gap`,
-  `expressions`, `email_validator`, `web`, `intl` and `flutter_localizations`
-  dependencies. Only `data_widget` and `animation_kit` are left. `Country`,
-  `Countries`, `Currency`, `Filter` and `EmailValidator` are still exported and
-  unchanged, and `TextInputFormatters.mathExpression` still accepts the same
-  syntax.
+- Dropped the `skeletonizer`, `country_flags`, `phonecodes`, `expressions`,
+  `email_validator`, `web`, `intl` and `flutter_localizations` dependencies.
+  The core package now depends only on `data_widget`, `animation_kit` and `gap`.
+  `Country`, `Countries`, `Currency`, `Filter` and `EmailValidator` are still
+  exported and unchanged, and `TextInputFormatters.mathExpression` still
+  accepts the same syntax.
 
 ### Added
 
