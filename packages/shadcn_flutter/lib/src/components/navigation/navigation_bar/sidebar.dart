@@ -190,6 +190,10 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
     return EdgeInsets.only(top: padding.top, bottom: padding.bottom);
   }
 
+  /// Horizontal only: vertical space in a fixed zone comes from its content.
+  EdgeInsets _fixedSectionPadding(EdgeInsets padding) =>
+      EdgeInsets.only(left: padding.left, right: padding.right);
+
   void _onSelected(Key? key) {
     widget.onSelected?.call(key);
   }
@@ -245,14 +249,17 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (headerChildren.isNotEmpty)
+                      // Align the header with the body's item column.
                       _buildFixedSection(
                         context,
                         headerChildren,
-                        EdgeInsets.zero,
+                        _fixedSectionPadding(resolvedPadding),
                       ),
                     Expanded(
                       child: CustomScrollView(
-                        clipBehavior: Clip.none,
+                        // Clip the body: unclipped, scrolled-away items paint
+                        // over the fixed header/footer.
+                        clipBehavior: Clip.hardEdge,
                         shrinkWrap: true,
                         scrollDirection: direction,
                         slivers: [
@@ -281,10 +288,11 @@ class _NavigationSidebarState extends State<NavigationSidebar> {
                       ),
                     ),
                     if (footerChildren.isNotEmpty)
+                      // Same alignment as the header above.
                       _buildFixedSection(
                         context,
                         footerChildren,
-                        EdgeInsets.zero,
+                        _fixedSectionPadding(resolvedPadding),
                       ),
                   ],
                 ),
