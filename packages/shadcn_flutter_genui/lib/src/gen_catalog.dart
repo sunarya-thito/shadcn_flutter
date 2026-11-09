@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:a2ui_core/a2ui_core.dart';
+import 'package:a2ui_flutter/a2ui_flutter.dart';
+import 'package:a2ui_flutter/v0_9/basic_catalog.dart' as v0_9;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:genui/genui.dart';
-import 'package:json_schema_builder/json_schema_builder.dart';
+import 'package:json_schema_builder/json_schema_builder.dart'
+    hide ValidationResult;
 import 'package:shadcn_flutter/shadcn_flutter.dart' as shad;
 
 import 'action.dart';
@@ -10,6 +15,13 @@ import 'bound_text_input.dart';
 /// The canonical A2UI catalog identifier for this package.
 const shadcnFlutterCatalogId = 'dev.shadcn_flutter.genui';
 
+/// The ids of the standard A2UI v0.9 basic catalog, which
+/// [GenCatalog.asCatalogs] also registers the catalog under.
+const _basicCatalogIds = [
+  BasicCatalog.v0_9Id,
+  'https://a2ui.org/specification/v0_9/basic_catalog.json',
+];
+
 const _catalogRules = r'''
 Use the A2UI v0.9 message format. Create a surface with catalogId
 "dev.shadcn_flutter.genui", then send its components in updateComponents.
@@ -17,493 +29,420 @@ The root component must have id "root". Do not put components inside
 createSurface.
 
 Input values are two-way bindings. Prefer {"path":"/fieldName"} for the
-value of TextField, CheckBox, ChoicePicker, Slider, DateTimeInput, Switch, and
-Tabs. User edits are written to that path automatically; do not invent an
+value of TextField, CheckBox, ChoicePicker, Slider, DateTimeInput, and
+Switch. User edits are written to that path automatically; do not invent an
 onChanged action to synchronize input state. Actions are only for user events
 or client function calls.
 ''';
 
-String _pathFor(CatalogItemContext context, Object? reference) {
-  if (reference is Map && reference['path'] is String) {
-    return reference['path']! as String;
-  }
-  return '${context.id}.value';
+/// Writes a value to the data path that the property [key] is bound to, or
+/// is null when [key] holds a literal, which an edit cannot change. A write
+/// the data model rejects is reported on the surface.
+ValueChanged<Object?>? _writer(
+  ComponentNode<ComponentImplementation> node,
+  ComponentProps props,
+  String key,
+) {
+  final binding = props.writable(key);
+  if (binding == null) return null;
+  return (value) {
+    try {
+      binding.set(value);
+    } on A2uiDataError catch (error) {
+      final surface = node.context?.surface;
+      if (surface == null) return;
+      unawaited(
+        surface.dispatchError(
+          A2uiRendererError(
+            code: error.code,
+            surfaceId: surface.id,
+            message: error.message,
+            path: error.path,
+          ),
+        ),
+      );
+    }
+  };
 }
 
-JsonMap _data(CatalogItemContext context) => context.data as JsonMap;
+/// The widget of the child that the property [key] references.
+Widget _child(ComponentProps props, String key, ChildWidgetBuilder buildChild) {
+  final child = props.child(key);
+  return child == null ? const SizedBox.shrink() : buildChild(child);
+}
 
 Widget _withValidation(
-  CatalogItemContext context,
-  Object? checks,
+  BuildContext context,
+  ComponentProps props,
   Widget child, {
   String? localError,
 }) {
-  final definitions = (checks as List?)?.whereType<JsonMap>().toList();
-  if ((definitions == null || definitions.isEmpty) && localError == null) {
+  if (props.list('checks').isEmpty && localError == null) {
     return child;
   }
-  return StreamBuilder<String?>(
-    stream: ValidationHelper.validateStream(definitions, context.dataContext),
-    builder: (buildContext, snapshot) {
-      final error = snapshot.data ?? localError;
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          child,
-          if (error != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                error,
-                style: TextStyle(
-                  color: shad.Theme.of(buildContext).colorScheme.destructive,
-                  fontSize: 12,
-                ),
-              ),
+  final error = props.validationErrors.firstOrNull ?? localError;
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      child,
+      if (error != null)
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            error,
+            style: TextStyle(
+              color: shad.Theme.of(context).colorScheme.destructive,
+              fontSize: 12,
             ),
-        ],
-      );
-    },
+          ),
+        ),
+    ],
   );
 }
 
-final _text = CatalogItem(
+final _text = ComponentImplementation(
   name: 'Text',
-  dataSchema: BasicCatalogItems.text.dataSchema,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final field = BoundString(
-      dataContext: context.dataContext,
-      value: data['text'],
-      builder: (buildContext, value) {
-        final style = switch (data['variant']) {
-          'h1' => const TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-          'h2' => const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-          'h3' => const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-          'h4' => const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          'h5' => const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          'caption' => const TextStyle(fontSize: 12),
-          _ => null,
-        };
-        return Text(value ?? '', style: style);
-      },
-    );
-    return field;
+  schema: v0_9.BasicComponents.text.schema,
+  builder: (context, node, props, buildChild) {
+    final style = switch (props.string('variant')) {
+      'h1' => const TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+      'h2' => const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+      'h3' => const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+      'h4' => const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+      'h5' => const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      'caption' => const TextStyle(fontSize: 12),
+      _ => null,
+    };
+    return Text(props.string('text') ?? '', style: style);
   },
-  exampleData: BasicCatalogItems.text.exampleData,
 );
 
-final _button = CatalogItem(
+final _button = ComponentImplementation(
   name: 'Button',
-  dataSchema: BasicCatalogItems.button.dataSchema,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final action = data['action'] as JsonMap;
-    Future<void> callback() => dispatchA2uiAction(context, action);
-    final checks = (data['checks'] as List?)?.whereType<JsonMap>().toList();
-    return StreamBuilder<String?>(
-      stream: ValidationHelper.validateStream(checks, context.dataContext),
-      builder: (buildContext, validation) {
-        final onPressed = validation.data == null ? callback : null;
-        return switch (data['variant']) {
-          'borderless' => shad.Button.ghost(
-            onPressed: onPressed,
-            child: context.buildChild(data['child']! as String),
-          ),
-          'primary' => shad.Button.primary(
-            onPressed: onPressed,
-            child: context.buildChild(data['child']! as String),
-          ),
-          _ => shad.Button.outline(
-            onPressed: onPressed,
-            child: context.buildChild(data['child']! as String),
-          ),
-        };
-      },
-    );
+  schema: v0_9.BasicComponents.button.schema,
+  builder: (context, node, props, buildChild) {
+    void callback() => dispatchA2uiAction(context, node, props, 'action');
+    final onPressed = props.isValid ? callback : null;
+    return switch (props.string('variant')) {
+      'borderless' => shad.Button.ghost(
+        onPressed: onPressed,
+        child: _child(props, 'child', buildChild),
+      ),
+      'primary' => shad.Button.primary(
+        onPressed: onPressed,
+        child: _child(props, 'child', buildChild),
+      ),
+      _ => shad.Button.outline(
+        onPressed: onPressed,
+        child: _child(props, 'child', buildChild),
+      ),
+    };
   },
-  exampleData: BasicCatalogItems.button.exampleData,
 );
 
-final _card = CatalogItem(
+final _card = ComponentImplementation(
   name: 'Card',
-  dataSchema: BasicCatalogItems.card.dataSchema,
-  widgetBuilder: (context) {
-    final child = _data(context)['child']! as String;
-    return shad.Card(child: context.buildChild(child));
+  schema: v0_9.BasicComponents.card.schema,
+  builder: (context, node, props, buildChild) {
+    return shad.Card(child: _child(props, 'child', buildChild));
   },
-  exampleData: BasicCatalogItems.card.exampleData,
 );
 
-final _checkBox = CatalogItem(
+final _checkBox = ComponentImplementation(
   name: 'CheckBox',
-  dataSchema: BasicCatalogItems.checkBox.dataSchema,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final reference = data['value'];
-    final path = _pathFor(context, reference);
-    final field = BoundString(
-      dataContext: context.dataContext,
-      value: data['label'],
-      builder: (buildContext, label) => BoundBool(
-        dataContext: context.dataContext,
-        value: {'path': path},
-        builder: (buildContext, boundValue) {
-          final literal = reference is bool ? reference : false;
-          return shad.Checkbox(
-            state: (boundValue ?? literal)
-                ? shad.CheckboxState.checked
-                : shad.CheckboxState.unchecked,
-            trailing: Text(label ?? ''),
-            onChanged: (state) => context.dataContext.update(
-              DataPath(path),
-              state == shad.CheckboxState.checked,
-            ),
-          );
-        },
-      ),
+  schema: v0_9.BasicComponents.checkBox.schema,
+  builder: (context, node, props, buildChild) {
+    final write = _writer(node, props, 'value');
+    final field = shad.Checkbox(
+      state: (props.boolean('value') ?? false)
+          ? shad.CheckboxState.checked
+          : shad.CheckboxState.unchecked,
+      trailing: Text(props.string('label') ?? ''),
+      onChanged: write == null
+          ? null
+          : (state) => write(state == shad.CheckboxState.checked),
     );
-    return _withValidation(context, data['checks'], field);
+    return _withValidation(context, props, field);
   },
-  exampleData: BasicCatalogItems.checkBox.exampleData,
 );
 
-final _textField = CatalogItem(
+final _textField = ComponentImplementation(
   name: 'TextField',
-  dataSchema: BasicCatalogItems.textField.dataSchema,
-  isImplicitlyFlexible: true,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final reference = data['value'];
-    final path = _pathFor(context, reference);
-    return BoundString(
-      dataContext: context.dataContext,
-      value: {'path': path},
-      builder: (buildContext, boundValue) => BoundString(
-        dataContext: context.dataContext,
-        value: data['label'],
-        builder: (buildContext, label) {
-          final literal = reference is String ? reference : '';
-          final variant = data['variant'] as String?;
-          String? formatError;
-          final regexp = data['validationRegexp'];
-          final currentValue = boundValue ?? literal;
-          if (regexp is String && currentValue.isNotEmpty) {
-            try {
-              if (!RegExp('^(?:$regexp)\$').hasMatch(currentValue)) {
-                formatError = 'Invalid format';
-              }
-            } on FormatException {
-              formatError = 'Invalid validation pattern';
-            }
-          }
-          final field = BoundShadcnTextInput(
-            value: boundValue ?? literal,
-            label: label,
-            multiline: variant == 'longText',
-            obscureText: variant == 'obscured',
-            keyboardType: variant == 'number'
-                ? const TextInputType.numberWithOptions(decimal: true)
-                : null,
-            inputFormatters: variant == 'number'
-                ? [FilteringTextInputFormatter.allow(RegExp(r'^-?\d*\.?\d*'))]
-                : null,
-            onChanged: (value) =>
-                context.dataContext.update(DataPath(path), value),
-            onSubmitted: (value) {
-              context.dataContext.update(DataPath(path), value);
-              final action = data['onSubmittedAction'];
-              if (action is JsonMap) dispatchA2uiAction(context, action);
-            },
-          );
-          return _withValidation(
-            context,
-            data['checks'],
-            field,
-            localError: formatError,
-          );
-        },
-      ),
+  schema: v0_9.BasicComponents.textField.schema,
+  builder: (context, node, props, buildChild) {
+    final write = _writer(node, props, 'value');
+    final variant = props.string('variant');
+    String? formatError;
+    final regexp = props.string('validationRegexp');
+    final currentValue = props.string('value') ?? '';
+    if (regexp != null && currentValue.isNotEmpty) {
+      try {
+        if (!RegExp('^(?:$regexp)\$').hasMatch(currentValue)) {
+          formatError = 'Invalid format';
+        }
+      } on FormatException {
+        formatError = 'Invalid validation pattern';
+      }
+    }
+    final field = BoundShadcnTextInput(
+      value: currentValue,
+      label: props.string('label'),
+      multiline: variant == 'longText',
+      obscureText: variant == 'obscured',
+      keyboardType: variant == 'number'
+          ? const TextInputType.numberWithOptions(decimal: true)
+          : null,
+      inputFormatters: variant == 'number'
+          ? [FilteringTextInputFormatter.allow(RegExp(r'^-?\d*\.?\d*'))]
+          : null,
+      onChanged: (value) => write?.call(value),
+      onSubmitted: (value) => write?.call(value),
     );
+    return _withValidation(context, props, field, localError: formatError);
   },
-  exampleData: BasicCatalogItems.textField.exampleData,
 );
 
-final _slider = CatalogItem(
+final _slider = ComponentImplementation(
   name: 'Slider',
-  dataSchema: BasicCatalogItems.slider.dataSchema,
-  isImplicitlyFlexible: true,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final reference = data['value'];
-    final path = _pathFor(context, reference);
-    final min = (data['min'] as num?)?.toDouble() ?? 0;
-    final max = (data['max'] as num?)?.toDouble() ?? 1;
-    final field = BoundNumber(
-      dataContext: context.dataContext,
-      value: {'path': path},
-      builder: (buildContext, boundValue) {
-        final literal = reference is num ? reference.toDouble() : min;
-        final value = (boundValue?.toDouble() ?? literal).clamp(min, max);
-        return shad.Slider(
-          value: shad.SliderValue.single(value),
-          min: min,
-          max: max,
-          onChanged: (value) =>
-              context.dataContext.update(DataPath(path), value.value),
-        );
-      },
+  schema: v0_9.BasicComponents.slider.schema,
+  builder: (context, node, props, buildChild) {
+    final min = props.number('min') ?? 0;
+    final max = props.number('max') ?? 1;
+    final write = _writer(node, props, 'value');
+    final value = (props.number('value') ?? min).clamp(min, max);
+    final field = shad.Slider(
+      value: shad.SliderValue.single(value),
+      min: min,
+      max: max,
+      onChanged: write == null ? null : (value) => write(value.value),
     );
-    return _withValidation(context, data['checks'], field);
+    return _withValidation(context, props, field);
   },
-  exampleData: BasicCatalogItems.slider.exampleData,
 );
 
-final _tabs = CatalogItem(
+final _tabs = ComponentImplementation(
   name: 'Tabs',
-  dataSchema: BasicCatalogItems.tabs.dataSchema,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final tabs = (data['tabs'] as List).cast<JsonMap>();
+  schema: v0_9.BasicComponents.tabs.schema,
+  builder: (context, node, props, buildChild) {
+    final tabs = props.list('tabs').whereType<Map<String, Object?>>().toList();
     if (tabs.isEmpty) return const SizedBox.shrink();
-    final reference = data['activeTab'];
-    final path = _pathFor(context, reference);
-    return BoundNumber(
-      dataContext: context.dataContext,
-      value: {'path': path},
-      builder: (buildContext, boundValue) {
-        final literal = reference is num ? reference.toInt() : 0;
-        final index = (boundValue?.toInt() ?? literal).clamp(
-          0,
-          tabs.length - 1,
-        );
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            shad.Tabs(
-              index: index,
-              onChanged: (value) =>
-                  context.dataContext.update(DataPath(path), value),
-              children: [
-                for (final tab in tabs)
-                  shad.TabItem(
-                    child: BoundString(
-                      dataContext: context.dataContext,
-                      value: tab['label'],
-                      builder: (context, value) => Text(value ?? ''),
-                    ),
-                  ),
-              ],
+    return _Tabs(
+      titles: [
+        for (final tab in tabs) ComponentProps.asString(tab['title']) ?? '',
+      ],
+      children: [
+        for (final tab in tabs)
+          switch (tab['child']) {
+            final ComponentNode<ComponentImplementation> child => buildChild(
+              child,
             ),
-            IndexedStack(
-              index: index,
-              children: [
-                for (final tab in tabs)
-                  context.buildChild(tab['content']! as String),
-              ],
-            ),
-          ],
-        );
-      },
+            _ => const SizedBox.shrink(),
+          },
+      ],
     );
   },
-  exampleData: BasicCatalogItems.tabs.exampleData,
 );
 
-final _choicePicker = CatalogItem(
+/// Tabs that keep the selected index themselves, since the A2UI basic
+/// catalog's Tabs have no value to bind it to.
+class _Tabs extends StatefulWidget {
+  const _Tabs({required this.titles, required this.children});
+
+  final List<String> titles;
+  final List<Widget> children;
+
+  @override
+  State<_Tabs> createState() => _TabsState();
+}
+
+class _TabsState extends State<_Tabs> {
+  int _index = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final index = _index.clamp(0, widget.children.length - 1);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        shad.Tabs(
+          index: index,
+          onChanged: (value) => setState(() => _index = value),
+          children: [
+            for (final title in widget.titles) shad.TabItem(child: Text(title)),
+          ],
+        ),
+        IndexedStack(index: index, children: widget.children),
+      ],
+    );
+  }
+}
+
+final _choicePicker = ComponentImplementation(
   name: 'ChoicePicker',
-  dataSchema: BasicCatalogItems.choicePicker.dataSchema,
-  isImplicitlyFlexible: true,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final reference = data['value'];
-    final path = _pathFor(context, reference);
-    final field = StreamBuilder<Object?>(
-      stream: context.dataContext.resolve(reference),
-      builder: (buildContext, snapshot) {
-        final rawValue = snapshot.data ?? reference;
-        final selected = rawValue is List
-            ? rawValue.whereType<String>().toSet()
-            : rawValue is String
-            ? {rawValue}
-            : <String>{};
-        return BoundList(
-          dataContext: context.dataContext,
-          value: data['options'],
-          builder: (buildContext, options) => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (data['label'] != null)
-                BoundString(
-                  dataContext: context.dataContext,
-                  value: data['label'],
-                  builder: (context, value) => Text(value ?? ''),
-                ),
-              for (final option in options ?? const <Object?>[])
-                if (option is JsonMap && option['value'] is String)
-                  BoundString(
-                    dataContext: context.dataContext,
-                    value: option['label'],
-                    builder: (buildContext, label) {
+  schema: v0_9.BasicComponents.choicePicker.schema,
+  builder: (context, node, props, buildChild) {
+    final rawValue = props.value('value');
+    final selected = rawValue is List
+        ? rawValue.whereType<String>().toSet()
+        : rawValue is String
+        ? {rawValue}
+        : <String>{};
+    final label = props.string('label');
+    final write = _writer(node, props, 'value');
+    final field = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (label != null) Text(label),
+        for (final option in props.list('options'))
+          if (option is Map<String, Object?> && option['value'] is String)
+            shad.Checkbox(
+              state: selected.contains(option['value'])
+                  ? shad.CheckboxState.checked
+                  : shad.CheckboxState.unchecked,
+              trailing: Text(
+                ComponentProps.asString(option['label']) ??
+                    option['value']! as String,
+              ),
+              onChanged: write == null
+                  ? null
+                  : (state) {
                       final value = option['value']! as String;
-                      return shad.Checkbox(
-                        state: selected.contains(value)
-                            ? shad.CheckboxState.checked
-                            : shad.CheckboxState.unchecked,
-                        trailing: Text(label ?? value),
-                        onChanged: (state) {
-                          final next = <String>{...selected};
-                          if (data['variant'] == 'mutuallyExclusive') {
-                            next
-                              ..clear()
-                              ..add(value);
-                          } else if (state == shad.CheckboxState.checked) {
-                            next.add(value);
-                          } else {
-                            next.remove(value);
-                          }
-                          context.dataContext.update(
-                            DataPath(path),
-                            data['variant'] == 'mutuallyExclusive'
-                                ? next.firstOrNull
-                                : next.toList(),
-                          );
-                        },
+                      final next = <String>{...selected};
+                      if (props.string('variant') == 'mutuallyExclusive') {
+                        next
+                          ..clear()
+                          ..add(value);
+                      } else if (state == shad.CheckboxState.checked) {
+                        next.add(value);
+                      } else {
+                        next.remove(value);
+                      }
+                      write(
+                        props.string('variant') == 'mutuallyExclusive'
+                            ? next.firstOrNull
+                            : next.toList(),
                       );
                     },
-                  ),
-            ],
-          ),
-        );
-      },
+            ),
+      ],
     );
-    return _withValidation(context, data['checks'], field);
+    return _withValidation(context, props, field);
   },
-  exampleData: BasicCatalogItems.choicePicker.exampleData,
 );
 
-final _dateTimeInput = CatalogItem(
+final _dateTimeInput = ComponentImplementation(
   name: 'DateTimeInput',
-  dataSchema: BasicCatalogItems.dateTimeInput.dataSchema,
-  isImplicitlyFlexible: true,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final reference = data['value'];
-    final path = _pathFor(context, reference);
-    final field = BoundString(
-      dataContext: context.dataContext,
-      value: {'path': path},
-      builder: (buildContext, boundValue) {
-        final literal = reference is String ? reference : null;
-        final rawValue = boundValue ?? literal ?? '';
-        final value =
-            DateTime.tryParse(rawValue) ??
-            DateTime.tryParse('1970-01-01T$rawValue');
-        final variant = data['variant'] as String? ?? 'datetime';
-        final min = DateTime.tryParse(data['min'] as String? ?? '');
-        final max = DateTime.tryParse(data['max'] as String? ?? '');
+  schema: v0_9.BasicComponents.dateTimeInput.schema,
+  builder: (context, node, props, buildChild) {
+    final rawValue = props.string('value') ?? '';
+    final value =
+        DateTime.tryParse(rawValue) ??
+        DateTime.tryParse('1970-01-01T$rawValue');
+    final enableDate = props.boolean('enableDate') ?? false;
+    final enableTime = props.boolean('enableTime') ?? false;
+    final variant = enableDate == enableTime
+        ? 'datetime'
+        : enableDate
+        ? 'date'
+        : 'time';
+    final min = DateTime.tryParse(props.string('min') ?? '');
+    final max = DateTime.tryParse(props.string('max') ?? '');
+    final write = _writer(node, props, 'value');
 
-        void update(DateTime? next) {
-          if (next == null) {
-            context.dataContext.update(DataPath(path), null);
-            return;
-          }
-          final formatted = switch (variant) {
-            'date' => next.toIso8601String().split('T').first,
-            'time' =>
-              '${next.hour.toString().padLeft(2, '0')}:'
-                  '${next.minute.toString().padLeft(2, '0')}:00',
-            _ => next.toIso8601String(),
-          };
-          context.dataContext.update(DataPath(path), formatted);
-        }
+    void update(DateTime? next) {
+      if (next == null) {
+        write?.call(null);
+        return;
+      }
+      final formatted = switch (variant) {
+        'date' => next.toIso8601String().split('T').first,
+        'time' =>
+          '${next.hour.toString().padLeft(2, '0')}:'
+              '${next.minute.toString().padLeft(2, '0')}:00',
+        _ => next.toIso8601String(),
+      };
+      write?.call(formatted);
+    }
 
-        final placeholder = BoundString(
-          dataContext: context.dataContext,
-          value: data['label'],
-          builder: (context, label) => Text(
-            label ?? (variant == 'time' ? 'Choose a time' : 'Choose a date'),
-          ),
-        );
-        final datePicker = shad.DatePicker(
-          value: value,
-          placeholder: placeholder,
-          stateBuilder: (date) {
-            if ((min != null && date.isBefore(min)) ||
-                (max != null && date.isAfter(max))) {
-              return shad.DateState.disabled;
-            }
-            return shad.DateState.enabled;
-          },
-          onChanged: (date) {
-            if (date == null) return update(null);
-            update(
-              DateTime(
-                date.year,
-                date.month,
-                date.day,
-                value?.hour ?? 0,
-                value?.minute ?? 0,
-              ),
-            );
-          },
-        );
-        final timePicker = shad.TimePicker(
-          value: value == null ? null : shad.TimeOfDay.fromDateTime(value),
-          placeholder: placeholder,
-          showSeconds: true,
-          onChanged: (time) {
-            if (time == null) return update(null);
-            final date = value ?? DateTime.now();
-            update(
-              DateTime(
-                date.year,
-                date.month,
-                date.day,
-                time.hour,
-                time.minute,
-                time.second,
-              ),
-            );
-          },
-        );
-        return switch (variant) {
-          'date' => datePicker,
-          'time' => timePicker,
-          _ => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [datePicker, const SizedBox(height: 8), timePicker],
-          ),
-        };
-      },
+    final placeholder = Text(
+      props.string('label') ??
+          (variant == 'time' ? 'Choose a time' : 'Choose a date'),
     );
-    return _withValidation(context, data['checks'], field);
+    final datePicker = shad.DatePicker(
+      value: value,
+      placeholder: placeholder,
+      stateBuilder: (date) {
+        if ((min != null && date.isBefore(min)) ||
+            (max != null && date.isAfter(max))) {
+          return shad.DateState.disabled;
+        }
+        return shad.DateState.enabled;
+      },
+      onChanged: write == null
+          ? null
+          : (date) {
+              if (date == null) return update(null);
+              update(
+                DateTime(
+                  date.year,
+                  date.month,
+                  date.day,
+                  value?.hour ?? 0,
+                  value?.minute ?? 0,
+                ),
+              );
+            },
+    );
+    final timePicker = shad.TimePicker(
+      value: value == null ? null : shad.TimeOfDay.fromDateTime(value),
+      placeholder: placeholder,
+      showSeconds: true,
+      onChanged: write == null
+          ? null
+          : (time) {
+              if (time == null) return update(null);
+              final date = value ?? DateTime.now();
+              update(
+                DateTime(
+                  date.year,
+                  date.month,
+                  date.day,
+                  time.hour,
+                  time.minute,
+                  time.second,
+                ),
+              );
+            },
+    );
+    final field = switch (variant) {
+      'date' => datePicker,
+      'time' => timePicker,
+      _ => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [datePicker, const SizedBox(height: 8), timePicker],
+      ),
+    };
+    return _withValidation(context, props, field);
   },
-  exampleData: BasicCatalogItems.dateTimeInput.exampleData,
 );
 
-final _divider = CatalogItem(
+final _divider = ComponentImplementation(
   name: 'Divider',
-  dataSchema: BasicCatalogItems.divider.dataSchema,
-  widgetBuilder: (context) => _data(context)['axis'] == 'vertical'
+  schema: v0_9.BasicComponents.divider.schema,
+  builder: (context, node, props, buildChild) =>
+      props.string('axis') == 'vertical'
       ? const shad.VerticalDivider()
       : const shad.Divider(),
-  exampleData: BasicCatalogItems.divider.exampleData,
 );
 
-final _icon = CatalogItem(
+final _icon = ComponentImplementation(
   name: 'Icon',
-  dataSchema: BasicCatalogItems.icon.dataSchema,
-  widgetBuilder: (context) => BoundString(
-    dataContext: context.dataContext,
-    value: _data(context)['name'],
-    builder: (context, name) =>
-        Icon(_icons[name] ?? shad.LucideIcons.circleHelp),
-  ),
-  exampleData: BasicCatalogItems.icon.exampleData,
+  schema: v0_9.BasicComponents.icon.schema,
+  builder: (context, node, props, buildChild) =>
+      Icon(_icons[props.string('name')] ?? shad.LucideIcons.circleHelp),
 );
 
 const _icons = <String, IconData>{
@@ -527,87 +466,76 @@ const _icons = <String, IconData>{
   'warning': shad.LucideIcons.triangleAlert,
 };
 
-final _modal = CatalogItem(
+final _modal = ComponentImplementation(
   name: 'Modal',
-  dataSchema: BasicCatalogItems.modal.dataSchema,
-  widgetBuilder: (context) {
-    final data = _data(context);
+  schema: v0_9.BasicComponents.modal.schema,
+  builder: (context, node, props, buildChild) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => shad.showOverlay<void>(
-        context.buildContext,
+        context,
         const shad.DialogConfiguration(),
-        builder: (buildContext) =>
-            context.buildChild(data['content']! as String),
+        builder: (buildContext) => _child(props, 'content', buildChild),
       ),
-      child: context.buildChild(data['trigger']! as String),
+      child: _child(props, 'trigger', buildChild),
     );
   },
-  exampleData: BasicCatalogItems.modal.exampleData,
 );
+
+/// The properties that any component may have besides its own: its weight
+/// in a Row or Column, and its accessibility attributes.
+final _commonProperties = {
+  'weight': S.number(),
+  'accessibility': CommonSchemas.accessibilityAttributes,
+};
 
 final _switchSchema = S.object(
   description: 'A shadcn switch with a two-way boolean value binding.',
   properties: {
-    'label': A2uiSchemas.stringReference(),
-    'value': A2uiSchemas.booleanReference(),
+    ..._commonProperties,
+    'label': CommonSchemas.dynamicString,
+    'value': CommonSchemas.dynamicBoolean,
   },
   required: ['label', 'value'],
 );
 
-final _switchItem = CatalogItem(
+final _switchItem = ComponentImplementation(
   name: 'Switch',
-  dataSchema: _switchSchema,
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final reference = data['value'];
-    final path = _pathFor(context, reference);
-    return BoundBool(
-      dataContext: context.dataContext,
-      value: {'path': path},
-      builder: (buildContext, value) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          shad.Switch(
-            value: value ?? (reference is bool ? reference : false),
-            onChanged: (value) =>
-                context.dataContext.update(DataPath(path), value),
-          ),
-          const SizedBox(width: 8),
-          BoundString(
-            dataContext: context.dataContext,
-            value: data['label'],
-            builder: (context, value) => Text(value ?? ''),
-          ),
-        ],
-      ),
+  schema: _switchSchema,
+  builder: (context, node, props, buildChild) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        shad.Switch(
+          value: props.boolean('value') ?? false,
+          onChanged: _writer(node, props, 'value'),
+        ),
+        const SizedBox(width: 8),
+        Text(props.string('label') ?? ''),
+      ],
     );
   },
 );
 
-final _progressItem = CatalogItem(
+final _progressItem = ComponentImplementation(
   name: 'Progress',
-  dataSchema: S.object(
+  schema: S.object(
     description: 'A progress indicator.',
     properties: {
-      'value': A2uiSchemas.numberReference(),
+      ..._commonProperties,
+      'value': CommonSchemas.dynamicNumber,
       'min': S.number(),
       'max': S.number(),
     },
     required: ['value'],
   ),
-  widgetBuilder: (context) {
-    final data = _data(context);
-    final min = (data['min'] as num?)?.toDouble() ?? 0;
-    final max = (data['max'] as num?)?.toDouble() ?? 1;
-    return BoundNumber(
-      dataContext: context.dataContext,
-      value: data['value'],
-      builder: (context, value) => shad.Progress(
-        progress: value?.toDouble().clamp(min, max),
-        min: min,
-        max: max,
-      ),
+  builder: (context, node, props, buildChild) {
+    final min = props.number('min') ?? 0;
+    final max = props.number('max') ?? 1;
+    return shad.Progress(
+      progress: props.number('value')?.clamp(min, max),
+      min: min,
+      max: max,
     );
   },
 );
@@ -616,25 +544,25 @@ final _progressItem = CatalogItem(
 abstract final class GenCatalog {
   GenCatalog._();
 
-  static final CatalogItem text = _text;
-  static final CatalogItem button = _button;
-  static final CatalogItem card = _card;
-  static final CatalogItem checkBox = _checkBox;
-  static final CatalogItem choicePicker = _choicePicker;
-  static final CatalogItem column = BasicCatalogItems.column;
-  static final CatalogItem dateTimeInput = _dateTimeInput;
-  static final CatalogItem divider = _divider;
-  static final CatalogItem icon = _icon;
-  static final CatalogItem list = BasicCatalogItems.list;
-  static final CatalogItem modal = _modal;
-  static final CatalogItem row = BasicCatalogItems.row;
-  static final CatalogItem slider = _slider;
-  static final CatalogItem tabs = _tabs;
-  static final CatalogItem textField = _textField;
-  static final CatalogItem switchItem = _switchItem;
-  static final CatalogItem progress = _progressItem;
+  static final ComponentImplementation text = _text;
+  static final ComponentImplementation button = _button;
+  static final ComponentImplementation card = _card;
+  static final ComponentImplementation checkBox = _checkBox;
+  static final ComponentImplementation choicePicker = _choicePicker;
+  static final ComponentImplementation column = v0_9.BasicComponents.column;
+  static final ComponentImplementation dateTimeInput = _dateTimeInput;
+  static final ComponentImplementation divider = _divider;
+  static final ComponentImplementation icon = _icon;
+  static final ComponentImplementation list = v0_9.BasicComponents.list;
+  static final ComponentImplementation modal = _modal;
+  static final ComponentImplementation row = v0_9.BasicComponents.row;
+  static final ComponentImplementation slider = _slider;
+  static final ComponentImplementation tabs = _tabs;
+  static final ComponentImplementation textField = _textField;
+  static final ComponentImplementation switchItem = _switchItem;
+  static final ComponentImplementation progress = _progressItem;
 
-  static List<CatalogItem> get all => [
+  static List<ComponentImplementation> get all => [
     text,
     button,
     card,
@@ -655,21 +583,51 @@ abstract final class GenCatalog {
   ];
 
   /// Creates a protocol-aligned, Material-independent catalog.
-  static Catalog asCatalog({
-    List<CatalogItem> items = const [],
-    List<ClientFunction> functions = const [],
+  ///
+  /// [items] are added to the components, replacing one of the same name.
+  /// [functions] are added to the basic A2UI functions, which format for
+  /// [locale]. [openUrl] opens the URL of an `openUrl` call, which fails
+  /// without it. [systemPromptFragments] follow the catalog's own rules in
+  /// its instructions.
+  static CatalogImplementation asCatalog({
+    List<ComponentImplementation> items = const [],
+    List<FunctionImplementation> functions = const [],
     List<String> systemPromptFragments = const [],
+    String locale = 'en-US',
+    OpenUrlCallback? openUrl,
   }) {
-    return Catalog(
-      [...all, ...items],
-      functions: [...BasicFunctions.all, ...functions],
-      catalogId: shadcnFlutterCatalogId,
-      catalogIdAliases: const [
-        basicCatalogId,
-        // ignore: deprecated_member_use
-        legacyBasicCatalogId,
-      ],
-      systemPromptFragments: [_catalogRules, ...systemPromptFragments],
+    return v0_9
+        .basicCatalog(locale: locale, openUrl: openUrl)
+        .derive(
+          catalogId: shadcnFlutterCatalogId,
+          components: const [],
+          addComponents: [...all, ...items],
+          addFunctions: [CloseModalFunction(), ...functions],
+          instructions: [_catalogRules, ...systemPromptFragments].join('\n\n'),
+        );
+  }
+
+  /// Creates the catalog of [asCatalog] under [shadcnFlutterCatalogId] and
+  /// under each id of the standard A2UI v0.9 basic catalog, for a renderer
+  /// whose agent may create surfaces with the basic catalog's id.
+  static List<CatalogImplementation> asCatalogs({
+    List<ComponentImplementation> items = const [],
+    List<FunctionImplementation> functions = const [],
+    List<String> systemPromptFragments = const [],
+    String locale = 'en-US',
+    OpenUrlCallback? openUrl,
+  }) {
+    final catalog = asCatalog(
+      items: items,
+      functions: functions,
+      systemPromptFragments: systemPromptFragments,
+      locale: locale,
+      openUrl: openUrl,
     );
+    return [
+      catalog,
+      for (final id in _basicCatalogIds)
+        catalog.derive(catalogId: id, instructions: catalog.instructions),
+    ];
   }
 }

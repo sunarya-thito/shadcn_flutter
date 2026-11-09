@@ -1,7 +1,34 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:genui/genui.dart';
+import 'package:a2ui_agent/a2ui_agent.dart'
+    show
+        A2uiErrorPartialResults,
+        A2uiGenerator,
+        A2uiPart,
+        A2uiRequestProcessor,
+        CatalogConfig,
+        DirectJsonFormatFactory,
+        ErrorPart,
+        RendererState,
+        StreamPart,
+        TextPart;
+import 'package:a2ui_core/a2ui_core.dart'
+    show
+        A2uiError,
+        A2uiProtocolVersion,
+        A2uiRendererAction,
+        A2uiRendererCapabilities,
+        A2uiRendererError,
+        ActionMessage,
+        AgentToRendererMessagePayload,
+        ErrorMessage,
+        MessageErrorMapper,
+        MessageProcessor,
+        Subscription,
+        UpdateComponentsMessage,
+        ValidationConfig;
+import 'package:a2ui_flutter/a2ui_flutter.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter_genui/shadcn_flutter_genui.dart';
 
@@ -9,7 +36,7 @@ import 'openrouter_client.dart';
 
 /// A full chat screen: the user talks to an OpenRouter model, and the model's
 /// replies are rendered both as plain text bubbles and as live shadcn_flutter
-/// UI (via GenUI surfaces) inline in the conversation.
+/// UI (via A2UI surfaces) inline in the conversation.
 class ChatPage extends StatefulWidget {
   const ChatPage({
     super.key,
@@ -30,13 +57,18 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  // --- GenUI wiring -----------------------------------------------------
-  late final Catalog _catalog;
-  late final SurfaceController _controller;
-  late final A2uiTransportAdapter _transport;
-  late final Conversation _conversation;
+  // --- A2UI wiring ------------------------------------------------------
+  late final CatalogImplementation _catalog;
+  late final MessageProcessor<ComponentImplementation> _processor;
+  late final A2uiRequestProcessor _agent;
+  late final RendererState _state;
   late final String _systemPrompt;
-  StreamSubscription<ConversationEvent>? _events;
+  late final List<Subscription> _subscriptions;
+  static final String _version = A2uiProtocolVersion.v0_9.jsonValue;
+
+  /// How many requests to the model are in flight. The typing indicator and
+  /// the Stop button show while it is above zero.
+  final _pending = ValueNotifier<int>(0);
 
   // --- OpenRouter -------------------------------------------------------
   late final OpenRouterClient _client;
@@ -62,50 +94,76 @@ class _ChatPageState extends State<ChatPage> {
 
     // The shadcn_flutter catalog: the model may generate any of these widgets.
     //
-    // The catalog owns a stable ID and also accepts the standard basic-catalog
-    // IDs as aliases, so standard A2UI producers work without rewriting it.
+    // The model is told to use the catalog's own stable ID. For agents that
+    // address the standard basic catalog instead, GenCatalog.asCatalogs()
+    // registers the catalog under the basic-catalog IDs too.
     _catalog = GenCatalog.asCatalog();
 
-    _controller = SurfaceController(catalogs: [_catalog]);
-    _transport = A2uiTransportAdapter(onSend: _sendAndReceive);
-    _conversation = Conversation(
-      controller: _controller,
-      transport: _transport,
+    _processor = MessageProcessor(
+      catalogs: [_catalog],
+      validationConfig: ValidationConfig.relaxed,
+      // Report a rejected message on onError instead of throwing.
+      reportErrorsOnly: true,
     );
 
-    // Instructions that teach the model the A2UI protocol plus our persona.
+    // Teaches the model the A2UI protocol and reads its replies.
     //
-    // We use `custom` with create+update operations (rather than `chat`, which
-    // is create-only) so that when a surface fails validation the model can
-    // repair it in place via `updateComponents` on the SAME surfaceId, instead
-    // of spawning a fresh duplicate surface for every retry.
-    _systemPrompt = PromptBuilder.custom(
-      catalog: _catalog,
-      allowedOperations: SurfaceOperations.createAndUpdate(dataModel: true),
-      systemPromptFragments: [
-        'You are a friendly assistant demonstrating the shadcn_flutter GenUI '
-            'catalog inside a chat app.',
-        'Whenever it helps answer the user, render rich, interactive UI '
-            '(cards, text fields, buttons, choice pickers, sliders and tabs) '
-            'instead of describing it in prose.',
-        'For a brand new answer, create a new surface. But if you receive an '
-            'error message (e.g. code VALIDATION_FAILED) for a surface, do NOT '
-            'create a new surface: fix the problem and re-send an '
-            '`updateComponents` message reusing that same `surfaceId`.',
-        PromptFragments.acknowledgeUser(),
-        PromptFragments.currentDate(),
-      ],
-    ).systemPromptJoined();
+    // We allow create+update messages (rather than create-only) so that when
+    // a surface fails validation the model can repair it in place via
+    // `updateComponents` on the SAME surfaceId, instead of spawning a fresh
+    // duplicate surface for every retry.
+    _agent =
+        A2uiGenerator(
+          catalogs: [CatalogConfig(_catalog)],
+          inferenceFormatFactory: const DirectJsonFormatFactory(
+            allowedMessages: [
+              'createSurface',
+              'updateComponents',
+              'updateDataModel',
+            ],
+          ),
+        ).createProcessor(
+          A2uiRendererCapabilities.forCatalogIds([
+            _catalog.id,
+          ], version: A2uiProtocolVersion.v0_9),
+        );
+    // The surfaces of earlier turns, which each reply is checked against.
+    _state = _agent.createState();
 
-    _events = _conversation.events.listen(_onConversationEvent);
+    // Instructions that teach the model the A2UI protocol plus our persona.
+    _systemPrompt = [
+      'You are a friendly assistant demonstrating the shadcn_flutter GenUI '
+          'catalog inside a chat app.',
+      'Whenever it helps answer the user, render rich, interactive UI '
+          '(cards, text fields, buttons, choice pickers, sliders and tabs) '
+          'instead of describing it in prose.',
+      'For a brand new answer, create a new surface. But if you receive an '
+          'error message (e.g. code VALIDATION_FAILED) for a surface, do NOT '
+          'create a new surface: fix the problem and re-send an '
+          '`updateComponents` message reusing that same `surfaceId`.',
+      'Your responses should contain acknowledgment of the user message.',
+      'Current Date: ${DateTime.now().toIso8601String().split('T').first}',
+      _agent.promptSnippet,
+    ].join('\n\n');
+
+    _subscriptions = [
+      _processor.model.onSurfaceCreated.subscribe(
+        (surface) => _append(_AssistantSurface(surface.id)),
+      ),
+      _processor.model.onSurfaceDeleted.subscribe(_removeSurface),
+      _processor.model.onAction.subscribe(_sendAction),
+      _processor.model.onError.subscribe(_sendError),
+    ];
   }
 
   @override
   void dispose() {
-    _events?.cancel();
-    _conversation.dispose();
-    _transport.dispose();
-    _controller.dispose();
+    for (final subscription in _subscriptions) {
+      subscription.unsubscribe();
+    }
+    _state.dispose();
+    _processor.dispose();
+    _pending.dispose();
     _client.dispose();
     _input.dispose();
     _scroll.dispose();
@@ -113,34 +171,60 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   // ----------------------------------------------------------------------
-  // Conversation events -> display list
+  // Model replies and surface events -> display list
   // ----------------------------------------------------------------------
 
-  void _onConversationEvent(ConversationEvent event) {
-    switch (event) {
-      case ConversationContentReceived(:final text):
-        _append(_AssistantText(text));
-      case ConversationSurfaceAdded(:final surfaceId):
-        _append(_AssistantSurface(surfaceId));
-      case ConversationComponentsUpdated(:final surfaceId):
-        // The model revised an existing surface (e.g. fixing a validation
-        // error). Promote it to the latest position so the updated UI becomes
-        // the "current" one instead of updating silently up in the history.
-        _promoteSurface(surfaceId);
-      case ConversationSurfaceRemoved(:final surfaceId):
-        if (!mounted) return;
-        setState(() {
-          _items.removeWhere(
-            (i) => i is _AssistantSurface && i.surfaceId == surfaceId,
-          );
-        });
-      case ConversationError(:final error):
-        _append(_AssistantText('⚠️ $error', isError: true));
-      default:
-        // ConversationWaiting needs no list change: the typing indicator
-        // watches conversation.state.
-        break;
+  /// Shows the text of [reply] and applies its A2UI messages to the surfaces.
+  /// A block of A2UI the model got wrong goes back to it as an error.
+  void _showReply(String reply) {
+    final stream = _agent.openContinuingStream(state: _state);
+    final parts = <StreamPart>[];
+    try {
+      parts
+        ..addAll(stream.feed(reply))
+        ..addAll(stream.close());
+    } on A2uiError catch (error) {
+      parts
+        ..addAll(error.partialResults)
+        ..add(ErrorPart(error));
     }
+
+    final text = StringBuffer();
+    void showText() {
+      final content = text.toString().trim();
+      text.clear();
+      if (content.isNotEmpty) _append(_AssistantText(content));
+    }
+
+    for (final part in parts) {
+      switch (part) {
+        case TextPart():
+          text.write(part.text);
+        case A2uiPart(:final a2ui):
+          showText();
+          _processor.processMessages(AgentToRendererMessagePayload(a2ui));
+          for (final message in a2ui.whereType<UpdateComponentsMessage>()) {
+            // The model revised an existing surface (e.g. fixing a validation
+            // error). Promote it to the latest position so the updated UI
+            // becomes the "current" one instead of updating silently up in
+            // the history.
+            _promoteSurface(message.surfaceId);
+          }
+        case ErrorPart(:final error):
+          showText();
+          _sendError(MessageErrorMapper.map(error).error);
+      }
+    }
+    showText();
+  }
+
+  void _removeSurface(String surfaceId) {
+    if (!mounted) return;
+    setState(() {
+      _items.removeWhere(
+        (i) => i is _AssistantSurface && i.surfaceId == surfaceId,
+      );
+    });
   }
 
   /// Moves the surface with [surfaceId] to the end of the list (and scrolls to
@@ -184,8 +268,33 @@ class _ChatPageState extends State<ChatPage> {
     if (text.isEmpty) return;
     _input.clear();
     _append(_UserText(text));
-    // Kicks off _sendAndReceive via the transport's onSend.
-    _conversation.sendRequest(ChatMessage.user(text));
+    unawaited(_request(text));
+  }
+
+  /// Sends a user interaction with a generated widget (button press, form
+  /// submit, ...) to the model.
+  void _sendAction(A2uiRendererAction action) {
+    final message = ActionMessage(version: _version, action: action);
+    unawaited(_request(jsonEncode(message.toJson())));
+  }
+
+  /// Sends an error the renderer met to the model, so it can fix the surface.
+  void _sendError(A2uiRendererError error) {
+    final message = ErrorMessage(version: _version, error: error);
+    unawaited(_request(jsonEncode(message.toJson()), isErrorReport: true));
+  }
+
+  /// Runs [_sendAndReceive] while the typing indicator shows, and shows what
+  /// it throws as an error.
+  Future<void> _request(String content, {bool isErrorReport = false}) async {
+    _pending.value++;
+    try {
+      await _sendAndReceive(content, isErrorReport: isErrorReport);
+    } catch (error) {
+      _append(_AssistantText('⚠️ $error', isError: true));
+    } finally {
+      if (mounted) _pending.value--;
+    }
   }
 
   /// Aborts the in-flight model request. The pending HTTP call is torn down and
@@ -194,26 +303,15 @@ class _ChatPageState extends State<ChatPage> {
     _client.cancel();
   }
 
-  /// Called by the transport whenever a message must go to the model: either a
-  /// typed message or a user interaction with a generated widget (button press,
-  /// form submit, ...). Feeds the reply back through [A2uiTransportAdapter].
-  Future<void> _sendAndReceive(ChatMessage message) async {
-    final buffer = StringBuffer();
-    var isErrorReport = false;
-    for (final part in message.parts) {
-      if (part.isUiInteractionPart) {
-        final interaction = part.asUiInteractionPart!.interaction;
-        if (_isErrorInteraction(interaction)) isErrorReport = true;
-        buffer.write(interaction);
-      } else if (part is TextPart) {
-        buffer.write(part.text);
-      }
-    }
-    final content = buffer.toString();
-    if (content.isEmpty) return;
-
-    // Break runaway self-talk. genui forwards every validation failure back to
-    // the model as a new request; with models that emit imperfect A2UI this can
+  /// Called whenever a message must go to the model: either a typed message
+  /// or, as A2UI JSON, a user interaction with a generated widget or an error
+  /// report. Feeds the reply back through [_showReply].
+  Future<void> _sendAndReceive(
+    String content, {
+    required bool isErrorReport,
+  }) async {
+    // Break runaway self-talk. Every validation failure goes back to the
+    // model as a new request; with models that emit imperfect A2UI this can
     // loop forever ("keeps sending after the response is done"). Cap consecutive
     // automatic error-recovery attempts, and reset on any real turn.
     if (isErrorReport) {
@@ -242,24 +340,14 @@ class _ChatPageState extends State<ChatPage> {
       ]);
     } on OpenRouterCanceled {
       // User pressed Stop: drop the unanswered turn and end quietly (no error
-      // bubble). Returning normally lets Conversation clear its waiting state.
+      // bubble). Returning normally lets _request clear its waiting state.
       if (_history.isNotEmpty) _history.removeLast();
       return;
     }
 
     _history.add({'role': 'assistant', 'content': reply});
-    _transport.addChunk(reply);
-  }
-
-  /// Whether a UI interaction payload is a genui error report (as opposed to a
-  /// genuine user action like a button press).
-  bool _isErrorInteraction(String interaction) {
-    try {
-      final decoded = jsonDecode(interaction);
-      return decoded is Map && decoded['error'] != null;
-    } catch (_) {
-      return false;
-    }
+    if (!mounted) return;
+    _showReply(reply);
   }
 
   // ----------------------------------------------------------------------
@@ -307,9 +395,9 @@ class _ChatPageState extends State<ChatPage> {
                     },
                   ),
           ),
-          ValueListenableBuilder<ConversationState>(
-            valueListenable: _conversation.state,
-            builder: (context, state, _) => state.isWaiting
+          ValueListenableBuilder<int>(
+            valueListenable: _pending,
+            builder: (context, pending, _) => pending > 0
                 ? const _TypingIndicator()
                 : const SizedBox.shrink(),
           ),
@@ -378,11 +466,14 @@ class _ChatPageState extends State<ChatPage> {
           ),
         );
       case _AssistantSurface(:final surfaceId):
+        final surface = _processor.model.getSurface(surfaceId);
         return ChatBubble(
           color: colors.card,
           type: PlainChatBubbleType(border: BorderSide(color: colors.border)),
           widthFactor: 0.85,
-          child: Surface(surfaceContext: _controller.contextFor(surfaceId)),
+          child: surface == null
+              ? const SizedBox.shrink()
+              : A2uiSurface(key: ObjectKey(surface), surface: surface),
         );
     }
   }
@@ -401,9 +492,9 @@ class _ChatPageState extends State<ChatPage> {
                 onSubmitted: (_) => _send(),
               ),
             ),
-            ValueListenableBuilder<ConversationState>(
-              valueListenable: _conversation.state,
-              builder: (context, state, _) => state.isWaiting
+            ValueListenableBuilder<int>(
+              valueListenable: _pending,
+              builder: (context, pending, _) => pending > 0
                   ? DestructiveButton(
                       onPressed: _stop,
                       child: const Icon(LucideIcons.square),

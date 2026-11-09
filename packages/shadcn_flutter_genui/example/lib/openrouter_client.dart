@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 /// OpenRouter exposes an OpenAI-compatible `/chat/completions` endpoint, so a
 /// request is just a list of `{role, content}` messages. This example uses the
 /// non-streaming variant: the whole assistant reply comes back in one response
-/// body, which the GenUI parser then splits into text and A2UI messages.
+/// body, which the a2ui_agent parser then splits into text and A2UI messages.
 ///
 /// An in-flight request can be aborted with [cancel]: each request runs on its
 /// own [http.Client], and closing that client tears down the pending

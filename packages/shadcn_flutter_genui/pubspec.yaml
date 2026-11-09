@@ -1,5 +1,5 @@
 name: shadcn_flutter_genui
-description: "GenUI catalog that renders AI-generated interfaces using shadcn_flutter widgets."
+description: "A2UI catalog that renders AI-generated interfaces using shadcn_flutter widgets."
 version: 0.0.2
 homepage: "https://github.com/sunarya-thito/shadcn_flutter"
 repository: "https://github.com/sunarya-thito/shadcn_flutter"
@@ -15,11 +15,11 @@ dependencies:
   flutter:
     sdk: flutter
   shadcn_flutter: '>=0.0.55 <0.1.0'
-  genui: ^0.10.4
+  a2ui_core: ^0.5.0
+  a2ui_flutter: ^0.1.0
   json_schema_builder: ^0.1.7
 
 dev_dependencies:
-  a2ui_core: ^0.1.1
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
