@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 
+import 'package:a2ui_core/a2ui_core.dart';
+import 'package:a2ui_flutter/a2ui_flutter.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:genui/genui.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as shad;
 import 'package:shadcn_flutter_genui/shadcn_flutter_genui.dart';
 
@@ -10,50 +10,23 @@ void main() {
   testWidgets(
     'a model-authored A2UI response renders, lays out, and remains interactive',
     (tester) async {
-      final submittedAction = Completer<ChatMessage>();
-      final catalog = GenCatalog.asCatalog();
-      final controller = SurfaceController(catalogs: [catalog]);
-      final transport = A2uiTransportAdapter(
-        onSend: (message) async {
-          final isSaveAction = message.parts.uiInteractionParts.any(
-            (part) => part.interaction.contains('save_profile'),
-          );
-          if (isSaveAction && !submittedAction.isCompleted) {
-            submittedAction.complete(message);
-          }
-        },
+      // The model addresses the standard basic catalog, which asCatalogs
+      // registers the catalog under too.
+      final processor = MessageProcessor<ComponentImplementation>(
+        catalogs: GenCatalog.asCatalogs(),
+        validationConfig: ValidationConfig.strict,
       );
-      final conversation = Conversation(
-        controller: controller,
-        transport: transport,
-      );
-      addTearDown(() {
-        conversation.dispose();
-        transport.dispose();
-        controller.dispose();
-      });
+      addTearDown(processor.dispose);
+      final actions = <A2uiRendererAction>[];
+      processor.model.onAction.subscribe(actions.add);
 
-      final surfaceAdded = conversation.events
-          .where((event) => event is ConversationSurfaceAdded)
-          .cast<ConversationSurfaceAdded>()
-          .firstWhere((event) => event.surfaceId == 'profile-editor');
-      final componentsUpdated = conversation.events
-          .where((event) => event is ConversationComponentsUpdated)
-          .cast<ConversationComponentsUpdated>()
-          .firstWhere((event) => event.surfaceId == 'profile-editor');
-
-      // This is intentionally a raw model response, including prose and JSON
-      // fences. No Component or DataModel objects are constructed by the test.
-      transport.addChunk(_modelResponse);
-      await Future.wait([surfaceAdded, componentsUpdated])
-          .timeout(const Duration(seconds: 2));
+      // This is intentionally the raw A2UI JSON a model wrote. No Component
+      // or DataModel objects are constructed by the test.
+      processor.processMessages(jsonDecode(_modelResponse));
+      final surface = processor.model.getSurface('profile-editor')!;
 
       await tester.pumpWidget(
-        shad.ShadcnApp(
-          home: Surface(
-            surfaceContext: controller.contextFor('profile-editor'),
-          ),
-        ),
+        shad.ShadcnApp(home: A2uiSurface(surface: surface)),
       );
       await tester.pumpAndSettle();
 
@@ -89,19 +62,17 @@ void main() {
       await tester.tap(find.text('Accept terms'));
       await tester.pumpAndSettle();
 
-      final model = controller.contextFor('profile-editor').dataModel;
-      expect(model.getValue<String>(DataPath('/profile/name')), 'Grace Hopper');
-      expect(model.getValue<bool>(DataPath('/profile/accepted')), isTrue);
+      final model = surface.dataModel;
+      expect(model.get('/profile/name'), 'Grace Hopper');
+      expect(model.get('/profile/accepted'), isTrue);
 
       // The submitted event resolves its context from the latest input state.
       await tester.tap(find.text('Save profile'));
       await tester.pump();
-      final submitted = await submittedAction.future.timeout(
-        const Duration(seconds: 1),
-      );
-      final interaction = jsonDecode(
-        submitted.parts.uiInteractionParts.single.interaction,
-      ) as Map<String, Object?>;
+      final interaction = ActionMessage(
+        version: 'v0.9',
+        action: actions.single,
+      ).toJson();
       final action = interaction['action'] as Map<String, Object?>;
       final actionContext = action['context'] as Map<String, Object?>;
 
@@ -114,17 +85,9 @@ void main() {
 }
 
 const _modelResponse = r'''
-I'll show an editable profile form.
-
-```json
-{"version":"v0.9","createSurface":{"surfaceId":"profile-editor","catalogId":"https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json","sendDataModel":true}}
-```
-
-```json
-{"version":"v0.9","updateDataModel":{"surfaceId":"profile-editor","path":"/","value":{"profile":{"name":"Ada Lovelace","accepted":false}}}}
-```
-
-```json
+[
+{"version":"v0.9","createSurface":{"surfaceId":"profile-editor","catalogId":"https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json","sendDataModel":true}},
+{"version":"v0.9","updateDataModel":{"surfaceId":"profile-editor","path":"/","value":{"profile":{"name":"Ada Lovelace","accepted":false}}}},
 {"version":"v0.9","updateComponents":{"surfaceId":"profile-editor","components":[{"id":"root","component":"Column","children":["title","name","accepted","save"]},{"id":"title","component":"Text","text":"Edit profile","variant":"h2"},{"id":"name","component":"TextField","label":"Full name","value":{"path":"/profile/name"}},{"id":"accepted","component":"CheckBox","label":"Accept terms","value":{"path":"/profile/accepted"}},{"id":"save","component":"Button","variant":"primary","child":"save-label","action":{"event":{"name":"save_profile","context":{"name":{"path":"/profile/name"},"accepted":{"path":"/profile/accepted"}}}}},{"id":"save-label","component":"Text","text":"Save profile"}]}}
-```
+]
 ''';

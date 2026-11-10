@@ -1,5 +1,5 @@
 name: genui_chat_example
-description: "A full chat example that renders AI-generated shadcn_flutter UI with GenUI, backed by OpenRouter."
+description: "A full chat example that renders AI-generated shadcn_flutter UI with A2UI, backed by OpenRouter."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -13,8 +13,11 @@ dependencies:
     sdk: flutter
   shadcn_flutter: any
   shadcn_flutter_genui: any
-  genui: ^0.10.4
+  a2ui_agent: ^0.2.0
+  a2ui_core: ^0.6.0
+  a2ui_flutter: ^0.2.0
   http: ^1.2.0
+  logging: ^1.3.0
   shared_preferences: ^2.3.0
 
 dev_dependencies:

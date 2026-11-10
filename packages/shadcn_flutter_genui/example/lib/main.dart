@@ -1,4 +1,4 @@
-import 'package:genui/genui.dart' show configureLogging;
+import 'package:logging/logging.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,10 +19,10 @@ const String kDefaultModel = String.fromEnvironment(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // Forward GenUI's internal logging to the debug console. Handy when the model
-  // emits malformed A2UI JSON.
-  configureLogging(
-    logCallback: (level, msg) => debugPrint('GenUI $level: $msg'),
+  // Forward the A2UI packages' internal logging to the debug console. Handy
+  // when the model emits malformed A2UI JSON.
+  Logger.root.onRecord.listen(
+    (record) => debugPrint('A2UI ${record.level}: ${record.message}'),
   );
   runApp(const GenUiChatApp());
 }
